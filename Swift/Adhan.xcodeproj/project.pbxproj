@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		846495F11C7ABBD100D43909 /* Adhan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F8E11F1C7AB542004C48D7 /* Adhan.framework */; };
 		84F8E1231C7AB542004C48D7 /* Adhan.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F8E1221C7AB542004C48D7 /* Adhan.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84F8E12A1C7AB542004C48D7 /* Adhan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F8E11F1C7AB542004C48D7 /* Adhan.framework */; };
 		84F8E12F1C7AB542004C48D7 /* AdhanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E12E1C7AB542004C48D7 /* AdhanTests.swift */; };
@@ -69,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				846495F11C7ABBD100D43909 /* Adhan.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +509,7 @@
 				84F8E1351C7AB542004C48D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		84F8E1361C7AB542004C48D7 /* Build configuration list for PBXNativeTarget "AdhanTests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +518,7 @@
 				84F8E1381C7AB542004C48D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		84F8E1521C7AB6AB004C48D7 /* Build configuration list for PBXNativeTarget "Sample" */ = {
 			isa = XCConfigurationList;
@@ -523,6 +527,7 @@
 				84F8E1541C7AB6AB004C48D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
