@@ -1,7 +1,11 @@
 # Adhan
 *High precision prayer time library*
 
-Adhan is a well tested and well documented library for calculating Islamic prayer times. All astronomical calculations are high precision equations directly from the book “Astronomical Algorithms”.
+Adhan is a well tested and well documented library for calculating Islamic prayer times. All astronomical calculations 
+are high precision equations directly from the book 
+[“Astronomical Algorithms” by Jean Meeus](http://www.willbell.com/math/mc1.htm). This book is recommended 
+by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory 
+Department of the National Oceanic and Atmospheric Administration.
 
 ## Languages
 
