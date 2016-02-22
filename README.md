@@ -25,7 +25,10 @@ This is an initial release of the library. The following items are planned:
 
 ## Contributing
 
-Adhan is made publicly available to provide a well tested and well documented library to all developers. We accept feature contributions provided that they are properly documented and include the appropriate unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different locations, we do ask that the source of the comparison values be properly documented.
+Adhan is made publicly available to provide a well tested and well documented library for Islamic prayer times to all 
+developers. We accept feature contributions provided that they are properly documented and include the appropriate 
+unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different 
+locations, we do ask that the source of the comparison values be properly documented.
 
 ## License
 
