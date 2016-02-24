@@ -14,20 +14,23 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let date = NSDateComponents()
-        date.year = 2016
-        date.month = 2
-        date.day = 21
+        let cal = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
+        let date = cal.components([.Year, .Month, .Day], fromDate: NSDate())
+        let coordinates = Coordinates(latitude: 35.78056, longitude: -78.6389)
         var params = CalculationMethod.MoonsightingCommittee.params
-        params.offsets = [0, 0, 0, 0, 0, 0]
-        let prayers = PrayerTimes(coordinates: Coordinates(latitude: 51.5155, longitude: -0.0922), date: date, calculationParameters: params)!
-        
-        NSLog("fajr %@", prayers.fajr)
-        NSLog("sunrise %@", prayers.sunrise)
-        NSLog("dhuhr %@", prayers.dhuhr)
-        NSLog("asr %@", prayers.asr)
-        NSLog("maghrib %@", prayers.maghrib)
-        NSLog("isha %@", prayers.isha)
+        params.madhab = .Hanafi
+        if let prayers = PrayerTimes(coordinates: coordinates, date: date, calculationParameters: params) {
+            let formatter = NSDateFormatter()
+            formatter.timeStyle = .MediumStyle
+            formatter.timeZone = NSTimeZone(name: "America/New_York")!
+            
+            NSLog("fajr %@", formatter.stringFromDate(prayers.fajr))
+            NSLog("sunrise %@", formatter.stringFromDate(prayers.sunrise))
+            NSLog("dhuhr %@", formatter.stringFromDate(prayers.dhuhr))
+            NSLog("asr %@", formatter.stringFromDate(prayers.asr))
+            NSLog("maghrib %@", formatter.stringFromDate(prayers.maghrib))
+            NSLog("isha %@", formatter.stringFromDate(prayers.isha))
+        }
     }
 }
 
