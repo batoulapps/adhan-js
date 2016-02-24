@@ -1,0 +1,4 @@
+language: objective-c
+xcode_project: Swift/Adhan.xcodeproj
+xcode_scheme: AdhanTests
+xcode_sdk: iphonesimulator
