@@ -43,6 +43,16 @@ public struct Coordinates {
     }
 }
 
+/* Adjustment value for prayer times, in minutes */
+public struct PrayerAdjustments {
+    public var fajr: Int = 0
+    public var sunrise: Int = 0
+    public var dhuhr: Int = 0
+    public var asr: Int = 0
+    public var maghrib: Int = 0
+    public var isha: Int = 0
+}
+
 // MARK: All customizable parameters for calculating prayer times
 
 public struct CalculationParameters {
