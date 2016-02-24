@@ -1,6 +1,8 @@
 # Adhan
 *High precision prayer time library*
 
+[![Build Status](https://travis-ci.org/batoulapps/Adhan.svg?branch=master)](https://travis-ci.org/batoulapps/Adhan)
+
 Adhan is a well tested and well documented library for calculating Islamic prayer times. All astronomical calculations 
 are high precision equations directly from the book 
 [“Astronomical Algorithms” by Jean Meeus](http://www.willbell.com/math/mc1.htm). This book is recommended 
@@ -11,7 +13,7 @@ of the National Oceanic and Atmospheric Administration.
 
 Adhan is available for the following languages:
 
-- Swift
+- Swift [(Usage and examples)](Swift/)
 
 ## Roadmap
 
