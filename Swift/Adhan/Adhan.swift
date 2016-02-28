@@ -51,6 +51,15 @@ public struct PrayerAdjustments {
     public var asr: Int = 0
     public var maghrib: Int = 0
     public var isha: Int = 0
+    
+    public init(fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, maghrib: Int = 0, isha: Int = 0) {
+        self.fajr = fajr
+        self.sunrise = sunrise
+        self.dhuhr = dhuhr
+        self.asr = asr
+        self.maghrib = maghrib
+        self.isha = isha
+    }
 }
 
 // MARK: All customizable parameters for calculating prayer times
@@ -59,17 +68,17 @@ public struct CalculationParameters {
     public var method: CalculationMethod = .Other
     public var fajrAngle: Double
     public var ishaAngle: Double
-    public var ishaInterval: NSTimeInterval = 0
+    public var ishaInterval: Int = 0
     public var madhab: Madhab = .Shafi
     public var highLatitudeRule: HighLatitudeRule = .MiddleOfTheNight
-    public var offsets: [NSTimeInterval] = [NSTimeInterval](count: 6, repeatedValue: 0.0)
+    public var adjustments: PrayerAdjustments = PrayerAdjustments()
     
     init(fajrAngle: Double, ishaAngle: Double) {
         self.fajrAngle = fajrAngle
         self.ishaAngle = ishaAngle
     }
     
-    init(fajrAngle: Double, ishaInterval: NSTimeInterval) {
+    init(fajrAngle: Double, ishaInterval: Int) {
         self.init(fajrAngle: fajrAngle, ishaAngle: 0)
         self.ishaInterval = ishaInterval
     }
@@ -79,7 +88,7 @@ public struct CalculationParameters {
         self.method = method
     }
     
-    init(fajrAngle: Double, ishaInterval: NSTimeInterval, method: CalculationMethod) {
+    init(fajrAngle: Double, ishaInterval: Int, method: CalculationMethod) {
         self.init(fajrAngle: fajrAngle, ishaInterval: ishaInterval)
         self.method = method
     }
@@ -117,9 +126,9 @@ public enum CalculationMethod {
         case .Karachi:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
         case .UmmAlQura:
-            return CalculationParameters(fajrAngle: 18, ishaInterval: 90 * 60, method: self)
+            return CalculationParameters(fajrAngle: 18, ishaInterval: 90, method: self)
         case .Gulf:
-            return CalculationParameters(fajrAngle: 19.5, ishaInterval: 90 * 60, method: self)
+            return CalculationParameters(fajrAngle: 19.5, ishaInterval: 90, method: self)
         case .MoonsightingCommittee:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
         case .NorthAmerica:
@@ -208,7 +217,7 @@ public struct PrayerTimes {
         
         // Isha calculation with check against safe value
         if calculationParameters.ishaInterval > 0 {
-            tempIsha = tempMaghrib?.dateByAddingTimeInterval(calculationParameters.ishaInterval)
+            tempIsha = tempMaghrib?.dateByAddingTimeInterval(calculationParameters.ishaInterval.timeInterval())
         } else {
             if let ishaComponents = solarTime.hourAngle(-calculationParameters.ishaAngle, afterTransit: true).timeComponents()?.dateComponents(date) {
                 tempIsha = cal.dateFromComponents(ishaComponents)
@@ -275,12 +284,12 @@ public struct PrayerTimes {
         
         
         // Assign final times to public struct members with all offsets
-        self.fajr = fajr.dateByAddingTimeInterval(calculationParameters.offsets[0]).roundedMinute()
-        self.sunrise = sunrise.dateByAddingTimeInterval(calculationParameters.offsets[1]).roundedMinute()
-        self.dhuhr = dhuhr.dateByAddingTimeInterval(calculationParameters.offsets[2]).dateByAddingTimeInterval(dhuhrOffset).roundedMinute()
-        self.asr = asr.dateByAddingTimeInterval(calculationParameters.offsets[3]).roundedMinute()
-        self.maghrib = maghrib.dateByAddingTimeInterval(calculationParameters.offsets[4]).dateByAddingTimeInterval(maghribOffset).roundedMinute()
-        self.isha = isha.dateByAddingTimeInterval(calculationParameters.offsets[5]).roundedMinute()
+        self.fajr = fajr.dateByAddingTimeInterval(calculationParameters.adjustments.fajr.timeInterval()).roundedMinute()
+        self.sunrise = sunrise.dateByAddingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval()).roundedMinute()
+        self.dhuhr = dhuhr.dateByAddingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval()).dateByAddingTimeInterval(dhuhrOffset).roundedMinute()
+        self.asr = asr.dateByAddingTimeInterval(calculationParameters.adjustments.asr.timeInterval()).roundedMinute()
+        self.maghrib = maghrib.dateByAddingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval()).dateByAddingTimeInterval(maghribOffset).roundedMinute()
+        self.isha = isha.dateByAddingTimeInterval(calculationParameters.adjustments.isha.timeInterval()).roundedMinute()
     }
     
     static func seasonAdjustedFajr(latitude: Double, day: Int, sunrise: NSDate) -> NSDate {
@@ -711,6 +720,12 @@ extension NSDateComponents {
         let minute: Double = self.minute != NSDateComponentUndefined ? Double(self.minute) : 0
         
         return julianDay(year: year, month: month, day: day, hours: hour + (minute / 60))
+    }
+}
+
+extension Int {
+    func timeInterval() -> NSTimeInterval {
+        return Double(self) * 60
     }
 }
 

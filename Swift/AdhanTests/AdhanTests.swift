@@ -112,7 +112,12 @@ class AdhanTests: XCTestCase {
             XCTAssert(false)
         }
         
-        params.offsets = [600, 600, 600, 600, 600, 600]
+        params.adjustments.fajr = 10
+        params.adjustments.sunrise = 10
+        params.adjustments.dhuhr = 10
+        params.adjustments.asr = 10
+        params.adjustments.maghrib = 10
+        params.adjustments.isha = 10
         if let p2 = PrayerTimes(coordinates: Coordinates(latitude: 35.7750, longitude: -78.6336), date: comps, calculationParameters: params) {
             XCTAssertEqual(dateFormatter.stringFromDate(p2.fajr), "5:45 AM")
             XCTAssertEqual(dateFormatter.stringFromDate(p2.sunrise), "7:16 AM")
@@ -120,6 +125,18 @@ class AdhanTests: XCTestCase {
             XCTAssertEqual(dateFormatter.stringFromDate(p2.asr), "2:52 PM")
             XCTAssertEqual(dateFormatter.stringFromDate(p2.maghrib), "5:11 PM")
             XCTAssertEqual(dateFormatter.stringFromDate(p2.isha), "6:36 PM")
+        } else {
+            XCTAssert(false)
+        }
+        
+        params.adjustments = PrayerAdjustments()
+        if let p3 = PrayerTimes(coordinates: Coordinates(latitude: 35.7750, longitude: -78.6336), date: comps, calculationParameters: params) {
+            XCTAssertEqual(dateFormatter.stringFromDate(p3.fajr), "5:35 AM")
+            XCTAssertEqual(dateFormatter.stringFromDate(p3.sunrise), "7:06 AM")
+            XCTAssertEqual(dateFormatter.stringFromDate(p3.dhuhr), "12:05 PM")
+            XCTAssertEqual(dateFormatter.stringFromDate(p3.asr), "2:42 PM")
+            XCTAssertEqual(dateFormatter.stringFromDate(p3.maghrib), "5:01 PM")
+            XCTAssertEqual(dateFormatter.stringFromDate(p3.isha), "6:26 PM")
         } else {
             XCTAssert(false)
         }
