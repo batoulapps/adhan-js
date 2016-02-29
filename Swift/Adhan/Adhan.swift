@@ -8,8 +8,6 @@
 
 import Foundation
 
-// MARK: Calculation Parameters data types
-
 /* Madhab for determining how Asr is calculated */
 public enum Madhab {
     case Shafi
@@ -62,8 +60,7 @@ public struct PrayerAdjustments {
     }
 }
 
-// MARK: All customizable parameters for calculating prayer times
-
+/* All customizable parameters for calculating prayer times */
 public struct CalculationParameters {
     public var method: CalculationMethod = .Other
     public var fajrAngle: Double
@@ -105,8 +102,7 @@ public struct CalculationParameters {
     }
 }
 
-// MARK: Preset calculation parameters
-
+/* Preset calculation parameters */
 public enum CalculationMethod {
     case MuslimWorldLeague
     case Egyptian
@@ -139,6 +135,9 @@ public enum CalculationMethod {
     }
 }
 
+/* Prayer times for a location and date using the given calculation parameters.
+All prayer times are in UTC and should be display using an NSDateFormatter that
+has the correct timezone set. */
 public struct PrayerTimes {
     public let fajr: NSDate
     public let sunrise: NSDate
@@ -197,7 +196,7 @@ public struct PrayerTimes {
             if calculationParameters.method == .MoonsightingCommittee {
                 if coordinates.latitude < 55 {
                     let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                    return PrayerTimes.seasonAdjustedFajr(coordinates.latitude, day: dayOfYear, sunrise: sunriseDate)
+                    return PrayerTimes.seasonAdjustedFajr(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: sunriseDate)
                 } else {
                     let nightFraction = night / 7
                     return sunriseDate.dateByAddingTimeInterval(-nightFraction)
@@ -227,7 +226,7 @@ public struct PrayerTimes {
                 if calculationParameters.method == .MoonsightingCommittee {
                     if coordinates.latitude < 55 {
                         let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                        return PrayerTimes.seasonAdjustedIsha(coordinates.latitude, day: dayOfYear, sunset: sunsetDate)
+                        return PrayerTimes.seasonAdjustedIsha(coordinates.latitude, day: dayOfYear, year: date.year, sunset: sunsetDate)
                     } else {
                         let nightFraction = night / 7
                         return sunsetDate.dateByAddingTimeInterval(nightFraction)
@@ -292,14 +291,14 @@ public struct PrayerTimes {
         self.isha = isha.dateByAddingTimeInterval(calculationParameters.adjustments.isha.timeInterval()).roundedMinute()
     }
     
-    static func seasonAdjustedFajr(latitude: Double, day: Int, sunrise: NSDate) -> NSDate {
+    static func seasonAdjustedFajr(latitude: Double, day: Int, year: Int, sunrise: NSDate) -> NSDate {
         let a: Double = 75 + ((28.65 / 55.0) * fabs(latitude))
         let b: Double = 75 + ((19.44 / 55.0) * fabs(latitude))
         let c: Double = 75 + ((32.74 / 55.0) * fabs(latitude))
         let d: Double = 75 + ((48.10 / 55.0) * fabs(latitude))
         
         let adjustment: Double = {
-            let dyy = Double(PrayerTimes.daysSinceSolstice(day, latitude: latitude))
+            let dyy = Double(PrayerTimes.daysSinceSolstice(day, year: year, latitude: latitude))
             if ( dyy < 91) {
                 return a + ( b - a ) / 91.0 * dyy
             } else if ( dyy < 137) {
@@ -318,14 +317,14 @@ public struct PrayerTimes {
         return sunrise.dateByAddingTimeInterval(floor(adjustment) * -60.0)
     }
     
-    static func seasonAdjustedIsha(latitude: Double, day: Int, sunset: NSDate) -> NSDate {
+    static func seasonAdjustedIsha(latitude: Double, day: Int, year: Int, sunset: NSDate) -> NSDate {
         let a: Double = 75 + ((25.60 / 55.0) * fabs(latitude))
         let b: Double = 75 + ((2.050 / 55.0) * fabs(latitude))
         let c: Double = 75 - ((9.210 / 55.0) * fabs(latitude))
         let d: Double = 75 + ((6.140 / 55.0) * fabs(latitude))
         
         let adjustment: Double = {
-            let dyy = Double(PrayerTimes.daysSinceSolstice(day, latitude: latitude))
+            let dyy = Double(PrayerTimes.daysSinceSolstice(day, year: year, latitude: latitude))
             if ( dyy < 91) {
                 return a + ( b - a ) / 91.0 * dyy
             } else if ( dyy < 137) {
@@ -344,18 +343,21 @@ public struct PrayerTimes {
         return sunset.dateByAddingTimeInterval(ceil(adjustment) * 60.0)
     }
     
-    static func daysSinceSolstice(dayOfYear: Int, latitude: Double) -> Int {
+    static func daysSinceSolstice(dayOfYear: Int, year: Int, latitude: Double) -> Int {
         var daysSinceSolstice = 0
+        let northernOffset = 10
+        let southernOffset = isLeapYear(year) ? 173 : 172
+        let daysInYear = isLeapYear(year) ? 366 : 365
         
         if (latitude >= 0) {
-            daysSinceSolstice = dayOfYear + 10;
-            if (daysSinceSolstice > 365) {
-                daysSinceSolstice = daysSinceSolstice - 365;
+            daysSinceSolstice = dayOfYear + northernOffset;
+            if (daysSinceSolstice >= daysInYear) {
+                daysSinceSolstice = daysSinceSolstice - daysInYear;
             }
         } else {
-            daysSinceSolstice = dayOfYear - 172;
+            daysSinceSolstice = dayOfYear - southernOffset;
             if (daysSinceSolstice < 0) {
-                daysSinceSolstice = daysSinceSolstice + 365;
+                daysSinceSolstice = daysSinceSolstice + daysInYear;
             }
         }
         
@@ -364,7 +366,7 @@ public struct PrayerTimes {
 }
 
 //
-// MARK: Astronomical equations
+// MARK: Calendrical equations
 //
 
 /* The Julian Day for a given Gregorian date. */
@@ -391,6 +393,23 @@ func julianCentury(julianDay JD: Double) -> Double {
     /* Equation from Astronomical Algorithms page 163 */
     return (JD - 2451545.0) / 36525
 }
+
+/* Whether or not a year is a leap year (has 366 days). */
+func isLeapYear(year: Int) -> Bool {
+    if year % 4 != 0 {
+        return false
+    }
+    
+    if year % 100 == 0 && year % 400 != 0 {
+        return false
+    }
+    
+    return true
+}
+
+//
+// MARK: Astronomical equations
+//
 
 /* The geometric mean longitude of the sun in degrees. */
 func meanSolarLongitude(julianCentury T: Double) -> Double {
@@ -740,8 +759,7 @@ extension Double {
     }
     
     func normalizeWithBound(max: Double) -> Double {
-        let normalized = self - (max * (floor(self / max)))
-        return normalized < 0 ? normalized + max : normalized
+        return self - (max * (floor(self / max)))
     }
     
     func unwindAngle() -> Double {

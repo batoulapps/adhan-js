@@ -30,6 +30,12 @@ class MathTests: XCTestCase {
     }
     
     func testNormalizing() {
+        XCTAssertEqual(2.0.normalizeWithBound(-5), -3)
+        XCTAssertEqual((-4.0).normalizeWithBound(-5), -4)
+        XCTAssertEqual((-6.0).normalizeWithBound(-5), -1)
+        
+        XCTAssertEqual((-1.0).normalizeWithBound(24), 23)
+        XCTAssertEqual(1.0.normalizeWithBound(24), 1)
         XCTAssertEqual(49.0.normalizeWithBound(24), 1)
         
         XCTAssertEqual(361.0.normalizeWithBound(360), 1)
@@ -37,6 +43,7 @@ class MathTests: XCTestCase {
         XCTAssertEqual(259.0.normalizeWithBound(360), 259)
         XCTAssertEqual(2592.0.normalizeWithBound(360), 72)
         
+        XCTAssertEqual((-45.0).unwindAngle(), 315)
         XCTAssertEqual(361.0.unwindAngle(), 1)
         XCTAssertEqual(360.0.unwindAngle(), 0)
         XCTAssertEqual(259.0.unwindAngle(), 259)

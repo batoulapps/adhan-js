@@ -45,24 +45,100 @@ func date(year year: Int, month: Int, day: Int, hours: Double = 0) -> NSDateComp
 
 class AdhanTests: XCTestCase {
     
-    func testMoonsightingMethod() {
-        let comps = NSDateComponents()
-        comps.year = 2016
-        comps.month = 1
-        comps.day = 31
-        let p = PrayerTimes(coordinates: Coordinates(latitude: 35.7750, longitude: -78.6336), date: comps, calculationParameters: CalculationMethod.MoonsightingCommittee.params)!
+    func testNightPortion() {
+        var p1 = CalculationParameters(fajrAngle: 18, ishaAngle: 18)
+        p1.highLatitudeRule = .MiddleOfTheNight
+        XCTAssertEqual(p1.nightPortions().fajr, 0.5)
+        XCTAssertEqual(p1.nightPortions().isha, 0.5)
         
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.timeZone = NSTimeZone(name: "America/New_York")!
-        dateFormatter.dateStyle = .NoStyle
-        dateFormatter.timeStyle = .ShortStyle
+        var p2 = CalculationParameters(fajrAngle: 18, ishaAngle: 18)
+        p2.highLatitudeRule = .SeventhOfTheNight
+        XCTAssertEqual(p2.nightPortions().fajr, 1/7)
+        XCTAssertEqual(p2.nightPortions().isha, 1/7)
         
-        XCTAssertEqual(dateFormatter.stringFromDate(p.fajr), "5:48 AM")
-        XCTAssertEqual(dateFormatter.stringFromDate(p.sunrise), "7:16 AM")
-        XCTAssertEqual(dateFormatter.stringFromDate(p.dhuhr), "12:33 PM")
-        XCTAssertEqual(dateFormatter.stringFromDate(p.asr), "3:20 PM")
-        XCTAssertEqual(dateFormatter.stringFromDate(p.maghrib), "5:43 PM")
-        XCTAssertEqual(dateFormatter.stringFromDate(p.isha), "7:05 PM")
+        var p3 = CalculationParameters(fajrAngle: 10, ishaAngle: 15)
+        p3.highLatitudeRule = .TwilightAngle
+        XCTAssertEqual(p3.nightPortions().fajr, 10/60)
+        XCTAssertEqual(p3.nightPortions().isha, 15/60)
+    }
+    
+    func testCalculationMethods() {
+        let p1 = CalculationMethod.MuslimWorldLeague.params
+        XCTAssertEqual(p1.fajrAngle, 18)
+        XCTAssertEqual(p1.ishaAngle, 17)
+        XCTAssertEqual(p1.ishaInterval, 0)
+        XCTAssertEqual(p1.method, CalculationMethod.MuslimWorldLeague)
+        
+        let p2 = CalculationMethod.Egyptian.params
+        XCTAssertEqual(p2.fajrAngle, 20)
+        XCTAssertEqual(p2.ishaAngle, 18)
+        XCTAssertEqual(p2.ishaInterval, 0)
+        XCTAssertEqual(p2.method, CalculationMethod.Egyptian)
+        
+        let p3 = CalculationMethod.Karachi.params
+        XCTAssertEqual(p3.fajrAngle, 18)
+        XCTAssertEqual(p3.ishaAngle, 18)
+        XCTAssertEqual(p3.ishaInterval, 0)
+        XCTAssertEqual(p3.method, CalculationMethod.Karachi)
+        
+        let p4 = CalculationMethod.UmmAlQura.params
+        XCTAssertEqual(p4.fajrAngle, 18)
+        XCTAssertEqual(p4.ishaAngle, 0)
+        XCTAssertEqual(p4.ishaInterval, 90)
+        XCTAssertEqual(p4.method, CalculationMethod.UmmAlQura)
+        
+        let p5 = CalculationMethod.Gulf.params
+        XCTAssertEqual(p5.fajrAngle, 19.5)
+        XCTAssertEqual(p5.ishaAngle, 0)
+        XCTAssertEqual(p5.ishaInterval, 90)
+        XCTAssertEqual(p5.method, CalculationMethod.Gulf)
+        
+        let p6 = CalculationMethod.MoonsightingCommittee.params
+        XCTAssertEqual(p6.fajrAngle, 18)
+        XCTAssertEqual(p6.ishaAngle, 18)
+        XCTAssertEqual(p6.ishaInterval, 0)
+        XCTAssertEqual(p6.method, CalculationMethod.MoonsightingCommittee)
+        
+        let p7 = CalculationMethod.NorthAmerica.params
+        XCTAssertEqual(p7.fajrAngle, 15)
+        XCTAssertEqual(p7.ishaAngle, 15)
+        XCTAssertEqual(p7.ishaInterval, 0)
+        XCTAssertEqual(p7.method, CalculationMethod.NorthAmerica)
+        
+        let p8 = CalculationMethod.Other.params
+        XCTAssertEqual(p8.fajrAngle, 0)
+        XCTAssertEqual(p8.ishaAngle, 0)
+        XCTAssertEqual(p8.ishaInterval, 0)
+        XCTAssertEqual(p8.method, CalculationMethod.Other)
+    }
+    
+    func daysSinceSolsticeTest(value: Int, year: Int, month: Int, day: Int, latitude: Double) {
+        // For Northern Hemisphere start from December 21
+        // (DYY=0 for December 21, and counting forward, DYY=11 for January 1 and so on).
+        // For Southern Hemisphere start from June 21
+        // (DYY=0 for June 21, and counting forward)
+        
+        let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+        let dateComponents = date(year: year, month: month, day: day)
+        let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: cal.dateFromComponents(dateComponents)!)
+        XCTAssertEqual(PrayerTimes.daysSinceSolstice(dayOfYear, year: dateComponents.year, latitude: latitude), value)
+    }
+    
+    func testDaysSinceSolstice() {
+        daysSinceSolsticeTest(11, year: 2016, month: 1, day: 1, latitude: 1)
+        daysSinceSolsticeTest(10, year: 2015, month: 12, day: 31, latitude: 1)
+        daysSinceSolsticeTest(10, year: 2016, month: 12, day: 31, latitude: 1)
+        daysSinceSolsticeTest(0, year: 2016, month: 12, day: 21, latitude: 1)
+        daysSinceSolsticeTest(1, year: 2016, month: 12, day: 22, latitude: 1)
+        daysSinceSolsticeTest(71, year: 2016, month: 3, day: 1, latitude: 1)
+        daysSinceSolsticeTest(70, year: 2015, month: 3, day: 1, latitude: 1)
+        daysSinceSolsticeTest(365, year: 2016, month: 12, day: 20, latitude: 1)
+        daysSinceSolsticeTest(364, year: 2015, month: 12, day: 20, latitude: 1)
+        
+        daysSinceSolsticeTest(0, year: 2015, month: 6, day: 21, latitude: -1)
+        daysSinceSolsticeTest(0, year: 2016, month: 6, day: 21, latitude: -1)
+        daysSinceSolsticeTest(364, year: 2015, month: 6, day: 20, latitude: -1)
+        daysSinceSolsticeTest(365, year: 2016, month: 6, day: 20, latitude: -1)
     }
     
     func testPrayerTimes() {
@@ -140,5 +216,25 @@ class AdhanTests: XCTestCase {
         } else {
             XCTAssert(false)
         }
+    }
+    
+    func testMoonsightingMethod() {
+        let comps = NSDateComponents()
+        comps.year = 2016
+        comps.month = 1
+        comps.day = 31
+        let p = PrayerTimes(coordinates: Coordinates(latitude: 35.7750, longitude: -78.6336), date: comps, calculationParameters: CalculationMethod.MoonsightingCommittee.params)!
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.timeZone = NSTimeZone(name: "America/New_York")!
+        dateFormatter.dateStyle = .NoStyle
+        dateFormatter.timeStyle = .ShortStyle
+        
+        XCTAssertEqual(dateFormatter.stringFromDate(p.fajr), "5:48 AM")
+        XCTAssertEqual(dateFormatter.stringFromDate(p.sunrise), "7:16 AM")
+        XCTAssertEqual(dateFormatter.stringFromDate(p.dhuhr), "12:33 PM")
+        XCTAssertEqual(dateFormatter.stringFromDate(p.asr), "3:20 PM")
+        XCTAssertEqual(dateFormatter.stringFromDate(p.maghrib), "5:43 PM")
+        XCTAssertEqual(dateFormatter.stringFromDate(p.isha), "7:05 PM")
     }
 }

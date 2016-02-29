@@ -215,4 +215,19 @@ class AstronomicalTests: XCTestCase {
         XCTAssertEqual(j1, j2)
     }
     
+    func testLeapYear() {
+        XCTAssertFalse(isLeapYear(2015))
+        XCTAssertTrue(isLeapYear(2016))
+        XCTAssertTrue(isLeapYear(1600))
+        XCTAssertTrue(isLeapYear(2000))
+        XCTAssertTrue(isLeapYear(2400))
+        XCTAssertFalse(isLeapYear(1700))
+        XCTAssertFalse(isLeapYear(1800))
+        XCTAssertFalse(isLeapYear(1900))
+        XCTAssertFalse(isLeapYear(2100))
+        XCTAssertFalse(isLeapYear(2200))
+        XCTAssertFalse(isLeapYear(2300))
+        XCTAssertFalse(isLeapYear(2500))
+        XCTAssertFalse(isLeapYear(2600))
+    }
 }
