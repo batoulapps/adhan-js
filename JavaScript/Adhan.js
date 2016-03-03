@@ -85,3 +85,11 @@ Number.prototype.normalizeWithBound = function(max) {
 Number.prototype.unwindAngle = function() {
 	return this.normalizeWithBound(360.0);
 }
+
+//
+// Polyfill
+//
+
+Math.trunc = Math.trunc || function(x) {
+  return x < 0 ? Math.ceil(x) : Math.floor(x);
+}
