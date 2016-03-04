@@ -121,7 +121,7 @@ class AdhanTests: XCTestCase {
         let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
         let dateComponents = date(year: year, month: month, day: day)
         let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: cal.dateFromComponents(dateComponents)!)
-        XCTAssertEqual(PrayerTimes.daysSinceSolstice(dayOfYear, year: dateComponents.year, latitude: latitude), value)
+        XCTAssertEqual(Solar.daysSinceSolstice(dayOfYear, year: dateComponents.year, latitude: latitude), value)
     }
     
     func testDaysSinceSolstice() {
