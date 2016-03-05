@@ -425,16 +425,6 @@ struct Solar {
         return Lp.unwindAngle()
     }
     
-    /* The apparent longitude of the Sun, referred to the
-    true equinox of the date. */
-    static func apparentSolarLongitude(julianCentury T: Double, meanLongitude L0: Double) -> Double {
-        /* Equation from Astronomical Algorithms page 164 */
-        let longitude = L0 + solarEquationOfTheCenter(julianCentury: T, meanAnomaly: meanSolarAnomaly(julianCentury: T))
-        let Ω = 125.04 - (1934.136 * T)
-        let λ = longitude - 0.00569 - (0.00478 * sin(Ω.degreesToRadians()))
-        return λ.unwindAngle()
-    }
-    
     static func ascendingLunarNodeLongitude(julianCentury T: Double) -> Double {
         /* Equation from Astronomical Algorithms page 144 */
         let term1 = 125.04452
@@ -463,6 +453,16 @@ struct Solar {
         let term2 = (0.019993 - (0.000101 * T)) * sin(2 * Mrad)
         let term3 = 0.000289 * sin(3 * Mrad)
         return term1 + term2 + term3
+    }
+    
+    /* The apparent longitude of the Sun, referred to the
+    true equinox of the date. */
+    static func apparentSolarLongitude(julianCentury T: Double, meanLongitude L0: Double) -> Double {
+        /* Equation from Astronomical Algorithms page 164 */
+        let longitude = L0 + Solar.solarEquationOfTheCenter(julianCentury: T, meanAnomaly: Solar.meanSolarAnomaly(julianCentury: T))
+        let Ω = 125.04 - (1934.136 * T)
+        let λ = longitude - 0.00569 - (0.00478 * sin(Ω.degreesToRadians()))
+        return λ.unwindAngle()
     }
     
     /* The mean obliquity of the ecliptic, formula
@@ -534,7 +534,7 @@ struct Solar {
             /* Equation from page Astronomical Algorithms 102 */
             let Lw = L * -1
             let θ = (Θ0 + (360.985647 * m0)).unwindAngle()
-            let α = interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m0)
+            let α = Solar.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m0)
             let H = (θ - Lw - α)
             let Δm = (H >= -180 && H <= 180) ? H / -360 : 0
             return (m0 + Δm) * 24
@@ -550,10 +550,10 @@ struct Solar {
             let H0 = acos(term1 / term2).radiansToDegrees()
             let m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360)
             let θ = (Θ0 + (360.985647 * m)).unwindAngle()
-            let α = interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m)
-            let δ = interpolate(value: δ2, previousValue: δ1, nextValue: δ3, factor: m)
+            let α = Solar.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m)
+            let δ = Solar.interpolate(value: δ2, previousValue: δ1, nextValue: δ3, factor: m)
             let H = (θ - Lw - α)
-            let h = altitudeOfCelestialBody(observerLatitude: coordinates.latitude, declination: δ, localHourAngle: H)
+            let h = Solar.altitudeOfCelestialBody(observerLatitude: coordinates.latitude, declination: δ, localHourAngle: H)
             let term3 = h - h0
             let term4 = 360 * cos(δ.degreesToRadians()) * cos(coordinates.latitude.degreesToRadians()) * sin(H.degreesToRadians())
             let Δm = term3 / term4

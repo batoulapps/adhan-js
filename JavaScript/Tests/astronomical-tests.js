@@ -10,9 +10,67 @@ QUnit.test("Solar Coordinates", function(assert) {
 	
 	var T = Solar.julianCentury(jd);
 	var L0 = Solar.meanSolarLongitude(T);
+	var ε0 = Solar.meanObliquityOfTheEcliptic(T);
+	var εapp = Solar.apparentObliquityOfTheEcliptic(T, ε0);
+	var M = Solar.meanSolarAnomaly(T);
+    var C = Solar.solarEquationOfTheCenter(T, M);
+    var λ = Solar.apparentSolarLongitude(T, L0);
 
 	QUnit.close(T, -0.072183436, 0.00000000001);
 	QUnit.close(L0, 201.80720, 0.00001);
+	QUnit.close(ε0, 23.44023, 0.00001);
+	QUnit.close(εapp, 23.43999, 0.00001);
+	QUnit.close(M, 278.99397, 0.00001);
+	QUnit.close(C, -1.89732, 0.00001);
+	QUnit.close(λ, 199.90895, 0.00002);
+
+    // values from Astronomical Algorithms page 88
+    
+    jd = Solar.julianDay(1987, 4, 10);
+    T = Solar.julianCentury(jd);
+
+	var θ0 = Solar.meanSiderealTime(T);
+	var Ω = Solar.ascendingLunarNodeLongitude(T);
+    var Lp = Solar.meanLunarLongitude(T);
+    var ΔΨ = Solar.nutationInLongitude(T, L0, Lp, Ω);
+    var Δε = Solar.nutationInObliquity(T, L0, Lp, Ω);
+
+    QUnit.close(θ0, 197.693195, 0.000001);
+    QUnit.close(ΔΨ, -0.0010522, 0.0001);
+    QUnit.close(Δε, 0.0026230556, 0.00001);
+});
+
+QUnit.test("Altitude Of Celestial Body", function(assert) {
+	var φ = 38 + (55 / 60) + (17.0 / 3600);
+    var δ = -6 - (43 / 60) - (11.61 / 3600);
+    var H = 64.352133;
+    var altitude = Solar.altitudeOfCelestialBody(φ, δ, H);
+	QUnit.close(altitude, 15.1249, 0.0001);
+});
+
+QUnit.test("Transit and Hour Angle", function(assert) {
+	// values from Astronomical Algorithms page 103
+	var longitude = -71.0833;
+	var Θ = 177.74208;
+	var α1 = 40.68021;
+	var α2 = 41.73129;
+	var α3 = 42.78204;
+	var m0 = Solar.approximateTransit(longitude, Θ, α2);
+
+	QUnit.close(m0, 0.81965, 0.00001);
+
+    var transit = Solar.correctedTransit(m0, longitude, Θ, α2, α1, α3) / 24;
+        
+    QUnit.close(transit, 0.81980, 0.00001);
+
+    var δ1 = 18.04761;
+    var δ2 = 18.44092;
+    var δ3 = 18.82742;
+    var coordinates = new Coordinates(42.3333, longitude);
+    
+    var rise = Solar.correctedHourAngle(m0, -0.5667, coordinates, false, Θ, α2, α1, α3, δ2, δ1, δ3) / 24;
+    QUnit.close(rise, 0.51766, 0.00001);
+
 });
 
 QUnit.test("Interpolation", function(assert) {
