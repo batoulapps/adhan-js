@@ -5,6 +5,47 @@ function Coordinates(latitude, longitude) {
     this.longitude = longitude;
 }
 
+//
+// Astronomical equations
+//
+
+function SolarTime(date, coordinates) {
+    // calculations need to occur at 0h0m UTC
+    date.setHours(0);
+    date.setMinutes(0);
+    this.date = date;
+    this.observer = coordinates;
+    this.solar = new SolarCoordinates(date.julianDate());
+
+    var previous = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+    var next = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+
+    this.prevSolar = new SolarCoordinates(previous.julianDate());
+    this.nextSolar = new SolarCoordinates(next.julianDate());
+
+    var m0 = Solar.approximateTransit(coordinates.longitude, this.solar.apparentSiderealTime, this.solar.rightAscension);
+    var solarAltitude = -50.0 / 60.0;
+
+    this.approxTransit = m0;
+    
+    this.transit = Solar.correctedTransit(m0, coordinates.longitude, this.solar.apparentSiderealTime, 
+        this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension);
+    
+    this.sunrise = Solar.correctedHourAngle(m0, solarAltitude, coordinates, false, this.solar.apparentSiderealTime, 
+        this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension,
+        this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
+
+    this.sunset = Solar.correctedHourAngle(m0, solarAltitude, coordinates, true, this.solar.apparentSiderealTime,
+        this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension,
+        this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
+
+    this.hourAngle = function(angle, afterTransit) {
+        return Solar.correctedHourAngle(this.approxTransit, angle, this.observer, afterTransit, this.solar.apparentSiderealTime,
+            this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension,
+            this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
+    }
+}
+
 function SolarCoordinates(julianDay) {
 
     /* declination: The declination of the sun, the angle between
@@ -40,10 +81,6 @@ function SolarCoordinates(julianDay) {
     /* Equation from Astronomical Algorithms page 88 */
     this.apparentSiderealTime = θ0 + (((ΔΨ * 3600) * Math.cos((ε0 + Δε).degreesToRadians())) / 3600);
 }
-
-//
-// Astronomical equations
-//
 
 var Solar = {
 
@@ -341,7 +378,7 @@ Number.prototype.unwindAngle = function() {
 }
 
 Number.prototype.timeComponents = function() {
-    if (Number.isNaN(this)) {
+    if (isNaN(this)) {
         return null;
     }
 
@@ -365,14 +402,14 @@ Date.prototype.dayOfYear = function() {
     return dayOfYear;
 }
 
+Date.prototype.julianDate = function() {
+    return Solar.julianDay(this.getFullYear(), this.getMonth() + 1, this.getDate(), this.getHours() + (this.getMinutes() / 60));
+}
+
 //
 // Polyfill
 //
 
 Math.trunc = Math.trunc || function(x) {
   return x < 0 ? Math.ceil(x) : Math.floor(x);
-}
-
-Number.isNaN = Number.isNaN || function(value) {
-    return typeof value === "number" && isNaN(value);
 }

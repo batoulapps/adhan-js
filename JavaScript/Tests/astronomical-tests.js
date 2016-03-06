@@ -3,6 +3,20 @@
 // Astronomical Tests
 //
 
+function timeString(hours) {
+	var comps = hours.timeComponents();
+    if (comps == null) {
+        return "";
+    }
+    
+    // round to the nearest minute
+    var minutes = (comps.minutes + Math.round((comps.seconds)/60)).toString();
+    if (minutes.length == 1) {
+    	minutes = "0" + minutes;
+    }
+    return comps.hours + ":" + minutes;
+}
+
 QUnit.test("Solar Coordinates", function(assert) {
 	// values from Astronomical Algorithms page 165
 
@@ -90,6 +104,40 @@ QUnit.test("Transit and Hour Angle", function(assert) {
 
 });
 
+QUnit.test("Solar Time", function(assert) {
+    /*
+    Comparison values generated from http://aa.usno.navy.mil/rstt/onedaytable?form=1&ID=AA&year=2015&month=7&day=12&state=NC&place=raleigh
+    */
+    var coordinates = new Coordinates(35 + 47/60, -78 - 39/60);
+    var solar = new SolarTime(new Date(2015, 6, 12), coordinates);
+    
+    var transit = solar.transit;
+    var sunrise = solar.sunrise;
+    var sunset = solar.sunset;
+    var twilightStart = solar.hourAngle(-6, false);
+    var twilightEnd = solar.hourAngle(-6, true);
+    var invalid = solar.hourAngle(-36, true);
+    assert.equal(timeString(twilightStart), "9:38");
+    assert.equal(timeString(sunrise), "10:08");
+    assert.equal(timeString(transit), "17:20");
+    assert.equal(timeString(sunset), "24:32");
+    assert.equal(timeString(twilightEnd), "25:02");
+    assert.equal(timeString(invalid), "");
+});
+
+QUnit.test("Calendrical Date", function(assert) {
+	// generated from http://aa.usno.navy.mil/data/docs/RS_OneYear.php for KUKUIHAELE, HAWAII
+    var coordinates = new Coordinates(20 + 7/60, -155 - 34/60);
+    var day1solar = new SolarTime(new Date(2015, 3, 2), coordinates);
+    var day2solar = new SolarTime(new Date(2015, 3, 3), coordinates);
+    
+    var day1 = day1solar.sunrise;
+    var day2 = day2solar.sunrise;
+    
+    assert.equal(timeString(day1), "16:15")
+    assert.equal(timeString(day2), "16:14")
+});
+
 QUnit.test("Interpolation", function(assert) {
 	var interpolatedValue = Solar.interpolate(0.877366, 0.884226, 0.870531, 4.35/24)
 	QUnit.close(interpolatedValue, 0.876125, 0.000001);
@@ -112,7 +160,12 @@ QUnit.test("Julian Day", function(assert) {
 	assert.equal(Solar.julianDay(2020, 11, 22), 2459175.500000);
 	assert.equal(Solar.julianDay(2021, 12, 24), 2459572.500000);
 
-	QUnit.close(Solar.julianDay(2015, 7, 12, 4.25), 2457215.67708333, 0.000001);
+	var jdVal = 2457215.67708333;
+	QUnit.close(Solar.julianDay(2015, 7, 12, 4.25), jdVal, 0.000001);
+	        
+    var date = new Date(2015, 6, 12, 4, 15);
+    QUnit.close(date.julianDate(), jdVal, 0.000001);
+
 	QUnit.close(Solar.julianDay(2015, 7, 12, 8.0), 2457215.833333, 0.000001);
 	QUnit.close(Solar.julianDay(1992, 10, 13, 0.0), 2448908.5, 0.000001);
 });
