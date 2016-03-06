@@ -669,14 +669,14 @@ struct Solar {
         let daysInYear = Solar.isLeapYear(year) ? 366 : 365
         
         if (latitude >= 0) {
-            daysSinceSolstice = dayOfYear + northernOffset;
+            daysSinceSolstice = dayOfYear + northernOffset
             if (daysSinceSolstice >= daysInYear) {
-                daysSinceSolstice = daysSinceSolstice - daysInYear;
+                daysSinceSolstice = daysSinceSolstice - daysInYear
             }
         } else {
-            daysSinceSolstice = dayOfYear - southernOffset;
+            daysSinceSolstice = dayOfYear - southernOffset
             if (daysSinceSolstice < 0) {
-                daysSinceSolstice = daysSinceSolstice + daysInYear;
+                daysSinceSolstice = daysSinceSolstice + daysInYear
             }
         }
         

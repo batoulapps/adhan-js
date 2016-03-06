@@ -5,6 +5,42 @@ function Coordinates(latitude, longitude) {
     this.longitude = longitude;
 }
 
+function SolarCoordinates(julianDay) {
+
+    /* declination: The declination of the sun, the angle between
+    the rays of the Sun and the plane of the Earth's
+    equator, in degrees. */
+
+    /* rightAscension: Right ascension of the Sun, the angular distance on the
+    celestial equator from the vernal equinox to the hour circle,
+    in degrees. */
+
+    /* apparentSiderealTime: Apparent sidereal time, the hour angle of the vernal
+    equinox, in degrees. */
+
+    var T = Solar.julianCentury(julianDay);
+    var L0 = Solar.meanSolarLongitude(T);
+    var Lp = Solar.meanLunarLongitude(T);
+    var Ω = Solar.ascendingLunarNodeLongitude(T);
+    var λ = Solar.apparentSolarLongitude(T, L0).degreesToRadians();
+    
+    var θ0 = Solar.meanSiderealTime(T);
+    var ΔΨ = Solar.nutationInLongitude(T, L0, Lp, Ω);
+    var Δε = Solar.nutationInObliquity(T, L0, Lp, Ω);
+    
+    var ε0 = Solar.meanObliquityOfTheEcliptic(T);
+    var εapp = Solar.apparentObliquityOfTheEcliptic(T, ε0).degreesToRadians();
+    
+    /* Equation from Astronomical Algorithms page 165 */
+    this.declination = Math.asin(Math.sin(εapp) * Math.sin(λ)).radiansToDegrees();
+    
+    /* Equation from Astronomical Algorithms page 165 */
+    this.rightAscension = Math.atan2(Math.cos(εapp) * Math.sin(λ), Math.cos(λ)).radiansToDegrees().unwindAngle();
+    
+    /* Equation from Astronomical Algorithms page 88 */
+    this.apparentSiderealTime = θ0 + (((ΔΨ * 3600) * Math.cos((ε0 + Δε).degreesToRadians())) / 3600);
+}
+
 //
 // Astronomical equations
 //
@@ -253,6 +289,27 @@ var Solar = {
         }
         
         return true;
+    },
+
+    daysSinceSolstice: function(dayOfYear, year, latitude) {
+        var daysSinceSolstice = 0;
+        var northernOffset = 10;
+        var southernOffset = Solar.isLeapYear(year) ? 173 : 172;
+        var daysInYear = Solar.isLeapYear(year) ? 366 : 365;
+        
+        if (latitude >= 0) {
+            daysSinceSolstice = dayOfYear + northernOffset;
+            if (daysSinceSolstice >= daysInYear) {
+                daysSinceSolstice = daysSinceSolstice - daysInYear;
+            }
+        } else {
+            daysSinceSolstice = dayOfYear - southernOffset;
+            if (daysSinceSolstice < 0) {
+                daysSinceSolstice = daysSinceSolstice + daysInYear;
+            }
+        }
+        
+        return daysSinceSolstice;
     }
 };
 
@@ -295,6 +352,18 @@ Number.prototype.timeComponents = function() {
     return new TimeComponents(hours, minutes, seconds);
 }
 
+Date.prototype.dayOfYear = function() {
+    var dayOfYear = 0;
+    var feb = Solar.isLeapYear(this.getFullYear()) ? 29 : 28;
+    var months = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    for (var i = 0; i < this.getMonth(); i++) {
+        dayOfYear += months[i];
+    }
+
+    dayOfYear += this.getDate();
+
+    return dayOfYear;
+}
 
 //
 // Polyfill

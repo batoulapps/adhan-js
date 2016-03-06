@@ -7,7 +7,8 @@ QUnit.test("Solar Coordinates", function(assert) {
 	// values from Astronomical Algorithms page 165
 
 	var jd = Solar.julianDay(1992, 10, 13);
-	
+	var solar = new SolarCoordinates(jd);
+
 	var T = Solar.julianCentury(jd);
 	var L0 = Solar.meanSolarLongitude(T);
 	var ε0 = Solar.meanObliquityOfTheEcliptic(T);
@@ -15,6 +16,8 @@ QUnit.test("Solar Coordinates", function(assert) {
 	var M = Solar.meanSolarAnomaly(T);
     var C = Solar.solarEquationOfTheCenter(T, M);
     var λ = Solar.apparentSolarLongitude(T, L0);
+    var δ = solar.declination;
+    var α = solar.rightAscension;    
 
 	QUnit.close(T, -0.072183436, 0.00000000001);
 	QUnit.close(L0, 201.80720, 0.00001);
@@ -23,21 +26,35 @@ QUnit.test("Solar Coordinates", function(assert) {
 	QUnit.close(M, 278.99397, 0.00001);
 	QUnit.close(C, -1.89732, 0.00001);
 	QUnit.close(λ, 199.90895, 0.00002);
+    QUnit.close(δ, -7.78507, 0.00001);
+    QUnit.close(α, 198.38083, 0.00001);
 
     // values from Astronomical Algorithms page 88
     
     jd = Solar.julianDay(1987, 4, 10);
+    solar = new SolarCoordinates(jd);
     T = Solar.julianCentury(jd);
 
-	var θ0 = Solar.meanSiderealTime(T);
-	var Ω = Solar.ascendingLunarNodeLongitude(T);
+    var θ0 = Solar.meanSiderealTime(T);
+    var θapp = solar.apparentSiderealTime;
+    var Ω = Solar.ascendingLunarNodeLongitude(T);
+    ε0 = Solar.meanObliquityOfTheEcliptic(T);
+    L0 = Solar.meanSolarLongitude(T);
     var Lp = Solar.meanLunarLongitude(T);
     var ΔΨ = Solar.nutationInLongitude(T, L0, Lp, Ω);
     var Δε = Solar.nutationInObliquity(T, L0, Lp, Ω);
+    var ε = ε0 + Δε;
 
-    QUnit.close(θ0, 197.693195, 0.000001);
-    QUnit.close(ΔΨ, -0.0010522, 0.0001);
+	QUnit.close(θ0, 197.693195, 0.000001);        
+    QUnit.close(θapp, 197.6922295833, 0.0001);
+    
+    // values from Astronomical Algorithms page 148
+    
+    QUnit.close(Ω, 11.2531, 0.0001);
+    QUnit.close(ΔΨ, -0.0010522,  0.0001);
     QUnit.close(Δε, 0.0026230556, 0.00001);
+    QUnit.close(ε0, 23.4409463889, 0.000001);
+    QUnit.close(ε, 23.4435694444, 0.00001);
 });
 
 QUnit.test("Altitude Of Celestial Body", function(assert) {
@@ -120,4 +137,28 @@ QUnit.test("Leap Year", function(assert) {
 	assert.notOk(Solar.isLeapYear(2300));
 	assert.notOk(Solar.isLeapYear(2500));
 	assert.notOk(Solar.isLeapYear(2600));
+});
+
+QUnit.test("Day of Year", function(assert) {
+	assert.equal(1, new Date(2015, 0, 1).dayOfYear());
+	assert.equal(365, new Date(2015, 11, 31).dayOfYear());
+	assert.equal(366, new Date(2016, 11, 31).dayOfYear());
+	assert.equal(32, new Date(2015, 1, 1).dayOfYear());
+});
+
+QUnit.test("Days since solstice", function(assert) {
+	assert.equal(11, Solar.daysSinceSolstice(new Date(2016, 0, 1).dayOfYear(), 2016, 1));
+	assert.equal(10, Solar.daysSinceSolstice(new Date(2015, 11, 31).dayOfYear(), 2015, 1));
+	assert.equal(10, Solar.daysSinceSolstice(new Date(2016, 11, 31).dayOfYear(), 2016, 1));
+	assert.equal(0, Solar.daysSinceSolstice(new Date(2016, 11, 21).dayOfYear(), 2016, 1));
+	assert.equal(1, Solar.daysSinceSolstice(new Date(2016, 11, 22).dayOfYear(), 2016, 1));
+	assert.equal(71, Solar.daysSinceSolstice(new Date(2016, 2, 1).dayOfYear(), 2016, 1));
+	assert.equal(70, Solar.daysSinceSolstice(new Date(2015, 2, 1).dayOfYear(), 2015, 1));
+	assert.equal(365, Solar.daysSinceSolstice(new Date(2016, 11, 20).dayOfYear(), 2016, 1));
+	assert.equal(364, Solar.daysSinceSolstice(new Date(2015, 11, 20).dayOfYear(), 2015, 1));
+
+	assert.equal(0, Solar.daysSinceSolstice(new Date(2015, 5, 21).dayOfYear(), 2015, -1));
+	assert.equal(0, Solar.daysSinceSolstice(new Date(2016, 5, 21).dayOfYear(), 2016, -1));
+	assert.equal(364, Solar.daysSinceSolstice(new Date(2015, 5, 20).dayOfYear(), 2015, -1));
+	assert.equal(365, Solar.daysSinceSolstice(new Date(2016, 5, 20).dayOfYear(), 2016, -1));
 });

@@ -230,4 +230,33 @@ class AstronomicalTests: XCTestCase {
         XCTAssertFalse(Solar.isLeapYear(2500))
         XCTAssertFalse(Solar.isLeapYear(2600))
     }
+    
+    func daysSinceSolsticeTest(value: Int, year: Int, month: Int, day: Int, latitude: Double) {
+        // For Northern Hemisphere start from December 21
+        // (DYY=0 for December 21, and counting forward, DYY=11 for January 1 and so on).
+        // For Southern Hemisphere start from June 21
+        // (DYY=0 for June 21, and counting forward)
+        
+        let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+        let dateComponents = date(year: year, month: month, day: day)
+        let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: cal.dateFromComponents(dateComponents)!)
+        XCTAssertEqual(Solar.daysSinceSolstice(dayOfYear, year: dateComponents.year, latitude: latitude), value)
+    }
+    
+    func testDaysSinceSolstice() {
+        daysSinceSolsticeTest(11, year: 2016, month: 1, day: 1, latitude: 1)
+        daysSinceSolsticeTest(10, year: 2015, month: 12, day: 31, latitude: 1)
+        daysSinceSolsticeTest(10, year: 2016, month: 12, day: 31, latitude: 1)
+        daysSinceSolsticeTest(0, year: 2016, month: 12, day: 21, latitude: 1)
+        daysSinceSolsticeTest(1, year: 2016, month: 12, day: 22, latitude: 1)
+        daysSinceSolsticeTest(71, year: 2016, month: 3, day: 1, latitude: 1)
+        daysSinceSolsticeTest(70, year: 2015, month: 3, day: 1, latitude: 1)
+        daysSinceSolsticeTest(365, year: 2016, month: 12, day: 20, latitude: 1)
+        daysSinceSolsticeTest(364, year: 2015, month: 12, day: 20, latitude: 1)
+        
+        daysSinceSolsticeTest(0, year: 2015, month: 6, day: 21, latitude: -1)
+        daysSinceSolsticeTest(0, year: 2016, month: 6, day: 21, latitude: -1)
+        daysSinceSolsticeTest(364, year: 2015, month: 6, day: 20, latitude: -1)
+        daysSinceSolsticeTest(365, year: 2016, month: 6, day: 20, latitude: -1)
+    }
 }
