@@ -25,23 +25,23 @@ QUnit.test("Solar Coordinates", function(assert) {
 
 	var T = Solar.julianCentury(jd);
 	var L0 = Solar.meanSolarLongitude(T);
-	var ε0 = Solar.meanObliquityOfTheEcliptic(T);
-	var εapp = Solar.apparentObliquityOfTheEcliptic(T, ε0);
+	var E0 = Solar.meanObliquityOfTheEcliptic(T);
+	var Eapp = Solar.apparentObliquityOfTheEcliptic(T, E0);
 	var M = Solar.meanSolarAnomaly(T);
     var C = Solar.solarEquationOfTheCenter(T, M);
-    var λ = Solar.apparentSolarLongitude(T, L0);
-    var δ = solar.declination;
-    var α = solar.rightAscension;    
+    var Lambda = Solar.apparentSolarLongitude(T, L0);
+    var Delta = solar.declination;
+    var Alpha = solar.rightAscension;    
 
 	QUnit.close(T, -0.072183436, 0.00000000001);
 	QUnit.close(L0, 201.80720, 0.00001);
-	QUnit.close(ε0, 23.44023, 0.00001);
-	QUnit.close(εapp, 23.43999, 0.00001);
+	QUnit.close(E0, 23.44023, 0.00001);
+	QUnit.close(Eapp, 23.43999, 0.00001);
 	QUnit.close(M, 278.99397, 0.00001);
 	QUnit.close(C, -1.89732, 0.00001);
-	QUnit.close(λ, 199.90895, 0.00002);
-    QUnit.close(δ, -7.78507, 0.00001);
-    QUnit.close(α, 198.38083, 0.00001);
+	QUnit.close(Lambda, 199.90895, 0.00002);
+    QUnit.close(Delta, -7.78507, 0.00001);
+    QUnit.close(Alpha, 198.38083, 0.00001);
 
     // values from Astronomical Algorithms page 88
     
@@ -49,57 +49,57 @@ QUnit.test("Solar Coordinates", function(assert) {
     solar = new SolarCoordinates(jd);
     T = Solar.julianCentury(jd);
 
-    var θ0 = Solar.meanSiderealTime(T);
-    var θapp = solar.apparentSiderealTime;
-    var Ω = Solar.ascendingLunarNodeLongitude(T);
-    ε0 = Solar.meanObliquityOfTheEcliptic(T);
+    var Theta0 = Solar.meanSiderealTime(T);
+    var Thetaapp = solar.apparentSiderealTime;
+    var Omega = Solar.ascendingLunarNodeLongitude(T);
+    E0 = Solar.meanObliquityOfTheEcliptic(T);
     L0 = Solar.meanSolarLongitude(T);
     var Lp = Solar.meanLunarLongitude(T);
-    var ΔΨ = Solar.nutationInLongitude(T, L0, Lp, Ω);
-    var Δε = Solar.nutationInObliquity(T, L0, Lp, Ω);
-    var ε = ε0 + Δε;
+    var dPsi = Solar.nutationInLongitude(T, L0, Lp, Omega);
+    var dE = Solar.nutationInObliquity(T, L0, Lp, Omega);
+    var E = E0 + dE;
 
-	QUnit.close(θ0, 197.693195, 0.000001);        
-    QUnit.close(θapp, 197.6922295833, 0.0001);
+	QUnit.close(Theta0, 197.693195, 0.000001);        
+    QUnit.close(Thetaapp, 197.6922295833, 0.0001);
     
     // values from Astronomical Algorithms page 148
     
-    QUnit.close(Ω, 11.2531, 0.0001);
-    QUnit.close(ΔΨ, -0.0010522,  0.0001);
-    QUnit.close(Δε, 0.0026230556, 0.00001);
-    QUnit.close(ε0, 23.4409463889, 0.000001);
-    QUnit.close(ε, 23.4435694444, 0.00001);
+    QUnit.close(Omega, 11.2531, 0.0001);
+    QUnit.close(dPsi, -0.0010522,  0.0001);
+    QUnit.close(dE, 0.0026230556, 0.00001);
+    QUnit.close(E0, 23.4409463889, 0.000001);
+    QUnit.close(E, 23.4435694444, 0.00001);
 });
 
 QUnit.test("Altitude Of Celestial Body", function(assert) {
-	var φ = 38 + (55 / 60) + (17.0 / 3600);
-    var δ = -6 - (43 / 60) - (11.61 / 3600);
+	var Phi = 38 + (55 / 60) + (17.0 / 3600);
+    var Delta = -6 - (43 / 60) - (11.61 / 3600);
     var H = 64.352133;
-    var altitude = Solar.altitudeOfCelestialBody(φ, δ, H);
+    var altitude = Solar.altitudeOfCelestialBody(Phi, Delta, H);
 	QUnit.close(altitude, 15.1249, 0.0001);
 });
 
 QUnit.test("Transit and Hour Angle", function(assert) {
 	// values from Astronomical Algorithms page 103
 	var longitude = -71.0833;
-	var Θ = 177.74208;
-	var α1 = 40.68021;
-	var α2 = 41.73129;
-	var α3 = 42.78204;
-	var m0 = Solar.approximateTransit(longitude, Θ, α2);
+	var Theta = 177.74208;
+	var Alpha1 = 40.68021;
+	var Alpha2 = 41.73129;
+	var Alpha3 = 42.78204;
+	var m0 = Solar.approximateTransit(longitude, Theta, Alpha2);
 
 	QUnit.close(m0, 0.81965, 0.00001);
 
-    var transit = Solar.correctedTransit(m0, longitude, Θ, α2, α1, α3) / 24;
+    var transit = Solar.correctedTransit(m0, longitude, Theta, Alpha2, Alpha1, Alpha3) / 24;
         
     QUnit.close(transit, 0.81980, 0.00001);
 
-    var δ1 = 18.04761;
-    var δ2 = 18.44092;
-    var δ3 = 18.82742;
+    var Delta1 = 18.04761;
+    var Delta2 = 18.44092;
+    var Delta3 = 18.82742;
     var coordinates = new Coordinates(42.3333, longitude);
     
-    var rise = Solar.correctedHourAngle(m0, -0.5667, coordinates, false, Θ, α2, α1, α3, δ2, δ1, δ3) / 24;
+    var rise = Solar.correctedHourAngle(m0, -0.5667, coordinates, false, Theta, Alpha2, Alpha1, Alpha3, Delta2, Delta1, Delta3) / 24;
     QUnit.close(rise, 0.51766, 0.00001);
 
 });

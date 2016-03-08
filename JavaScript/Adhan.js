@@ -62,24 +62,24 @@ function SolarCoordinates(julianDay) {
     var T = Solar.julianCentury(julianDay);
     var L0 = Solar.meanSolarLongitude(T);
     var Lp = Solar.meanLunarLongitude(T);
-    var Ω = Solar.ascendingLunarNodeLongitude(T);
-    var λ = Solar.apparentSolarLongitude(T, L0).degreesToRadians();
+    var Omega = Solar.ascendingLunarNodeLongitude(T);
+    var Lambda = Solar.apparentSolarLongitude(T, L0).degreesToRadians();
     
-    var θ0 = Solar.meanSiderealTime(T);
-    var ΔΨ = Solar.nutationInLongitude(T, L0, Lp, Ω);
-    var Δε = Solar.nutationInObliquity(T, L0, Lp, Ω);
+    var Theta0 = Solar.meanSiderealTime(T);
+    var dPsi = Solar.nutationInLongitude(T, L0, Lp, Omega);
+    var dEpsilon = Solar.nutationInObliquity(T, L0, Lp, Omega);
     
-    var ε0 = Solar.meanObliquityOfTheEcliptic(T);
-    var εapp = Solar.apparentObliquityOfTheEcliptic(T, ε0).degreesToRadians();
-    
-    /* Equation from Astronomical Algorithms page 165 */
-    this.declination = Math.asin(Math.sin(εapp) * Math.sin(λ)).radiansToDegrees();
+    var Epsilon0 = Solar.meanObliquityOfTheEcliptic(T);
+    var EpsilonApparent = Solar.apparentObliquityOfTheEcliptic(T, Epsilon0).degreesToRadians();
     
     /* Equation from Astronomical Algorithms page 165 */
-    this.rightAscension = Math.atan2(Math.cos(εapp) * Math.sin(λ), Math.cos(λ)).radiansToDegrees().unwindAngle();
+    this.declination = Math.asin(Math.sin(EpsilonApparent) * Math.sin(Lambda)).radiansToDegrees();
+    
+    /* Equation from Astronomical Algorithms page 165 */
+    this.rightAscension = Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda)).radiansToDegrees().unwindAngle();
     
     /* Equation from Astronomical Algorithms page 88 */
-    this.apparentSiderealTime = θ0 + (((ΔΨ * 3600) * Math.cos((ε0 + Δε).degreesToRadians())) / 3600);
+    this.apparentSiderealTime = Theta0 + (((dPsi * 3600) * Math.cos((Epsilon0 + dEpsilon).degreesToRadians())) / 3600);
 }
 
 var Solar = {
@@ -112,8 +112,8 @@ var Solar = {
         var term2 = 1934.136261 * T;
         var term3 = 0.0020708 * Math.pow(T, 2);
         var term4 = Math.pow(T, 3) / 450000;
-        var Ω = term1 - term2 + term3 + term4;
-        return Ω.unwindAngle();
+        var Omega = term1 - term2 + term3 + term4;
+        return Omega.unwindAngle();
     },
 
     /* The mean anomaly of the sun. */
@@ -145,9 +145,9 @@ var Solar = {
         var L0 = meanLongitude;
         /* Equation from Astronomical Algorithms page 164 */
         var longitude = L0 + Solar.solarEquationOfTheCenter(T, Solar.meanSolarAnomaly(T));
-        var Ω = 125.04 - (1934.136 * T);
-        var λ = longitude - 0.00569 - (0.00478 * Math.sin(Ω.degreesToRadians()));
-        return λ.unwindAngle();
+        var Omega = 125.04 - (1934.136 * T);
+        var Lambda = longitude - 0.00569 - (0.00478 * Math.sin(Omega.degreesToRadians()));
+        return Lambda.unwindAngle();
     },
 
     /* The mean obliquity of the ecliptic, formula
@@ -167,10 +167,10 @@ var Solar = {
     calculating the apparent position of the sun, in degrees. */
     apparentObliquityOfTheEcliptic: function(julianCentury, meanObliquityOfTheEcliptic) {
         var T = julianCentury;
-        var ε0 = meanObliquityOfTheEcliptic;
+        var Epsilon0 = meanObliquityOfTheEcliptic;
         /* Equation from Astronomical Algorithms page 165 */
         var O = 125.04 - (1934.136 * T);
-        return ε0 + (0.00256 * Math.cos(O.degreesToRadians()));
+        return Epsilon0 + (0.00256 * Math.cos(O.degreesToRadians()));
     },
 
     /* Mean sidereal time, the hour angle of the vernal equinox, in degrees. */
@@ -182,20 +182,20 @@ var Solar = {
         var term2 = 360.98564736629 * (JD - 2451545);
         var term3 = 0.000387933 * Math.pow(T, 2);
         var term4 = Math.pow(T, 3) / 38710000;
-        var θ = term1 + term2 + term3 - term4;
-        return θ.unwindAngle()
+        var Theta = term1 + term2 + term3 - term4;
+        return Theta.unwindAngle()
     },    
 
     nutationInLongitude: function(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
         var T = julianCentury;
         var L0 = solarLongitude;
         var Lp = lunarLongitude;
-        var Ω = ascendingNode;
+        var Omega = ascendingNode;
         /* Equation from Astronomical Algorithms page 144 */
-        var term1 = (-17.2/3600) * Math.sin(Ω.degreesToRadians());
+        var term1 = (-17.2/3600) * Math.sin(Omega.degreesToRadians());
         var term2 =  (1.32/3600) * Math.sin(2 * L0.degreesToRadians());
         var term3 =  (0.23/3600) * Math.sin(2 * Lp.degreesToRadians());
-        var term4 =  (0.21/3600) * Math.sin(2 * Ω.degreesToRadians());
+        var term4 =  (0.21/3600) * Math.sin(2 * Omega.degreesToRadians());
         return term1 - term2 - term3 + term4;
     },
 
@@ -203,78 +203,78 @@ var Solar = {
         var T = julianCentury;
         var L0 = solarLongitude;
         var Lp = lunarLongitude;
-        var Ω = ascendingNode;
+        var Omega = ascendingNode;
         /* Equation from Astronomical Algorithms page 144 */
-        var term1 =  (9.2/3600) * Math.cos(Ω.degreesToRadians());
+        var term1 =  (9.2/3600) * Math.cos(Omega.degreesToRadians());
         var term2 = (0.57/3600) * Math.cos(2 * L0.degreesToRadians());
         var term3 = (0.10/3600) * Math.cos(2 * Lp.degreesToRadians());
-        var term4 = (0.09/3600) * Math.cos(2 * Ω.degreesToRadians());
+        var term4 = (0.09/3600) * Math.cos(2 * Omega.degreesToRadians());
         return term1 + term2 + term3 - term4;
     },
 
     altitudeOfCelestialBody: function(observerLatitude, declination, localHourAngle) {
-        var φ = observerLatitude;
-        var δ = declination;
+        var Phi = observerLatitude;
+        var delta = declination;
         var H = localHourAngle;
         /* Equation from Astronomical Algorithms page 93 */
-        var term1 = Math.sin(φ.degreesToRadians()) * Math.sin(δ.degreesToRadians());
-        var term2 = Math.cos(φ.degreesToRadians()) * Math.cos(δ.degreesToRadians()) * Math.cos(H.degreesToRadians());
+        var term1 = Math.sin(Phi.degreesToRadians()) * Math.sin(delta.degreesToRadians());
+        var term2 = Math.cos(Phi.degreesToRadians()) * Math.cos(delta.degreesToRadians()) * Math.cos(H.degreesToRadians());
         return Math.asin(term1 + term2).radiansToDegrees();
     },
 
     approximateTransit: function(longitude, siderealTime, rightAscension) {
         var L = longitude;
-        var Θ0 = siderealTime;
-        var α2 = rightAscension;
+        var Theta0 = siderealTime;
+        var a2 = rightAscension;
         /* Equation from page Astronomical Algorithms 102 */
         var Lw = L * -1;
-        return ((α2 + Lw - Θ0) / 360).normalizeWithBound(1);
+        return ((a2 + Lw - Theta0) / 360).normalizeWithBound(1);
     },
 
     /* The time at which the sun is at its highest point in the sky (in universal time) */
     correctedTransit: function(approximateTransit, longitude, siderealTime, rightAscension, previousRightAscension, nextRightAscension) {
         var m0 = approximateTransit;
         var L = longitude;
-        var Θ0 = siderealTime;
-        var α2 = rightAscension;
-        var α1 = previousRightAscension;
-        var α3 = nextRightAscension;
+        var Theta0 = siderealTime;
+        var a2 = rightAscension;
+        var a1 = previousRightAscension;
+        var a3 = nextRightAscension;
         /* Equation from page Astronomical Algorithms 102 */
         var Lw = L * -1;
-        var θ = (Θ0 + (360.985647 * m0)).unwindAngle();
-        var α = Solar.interpolate(α2, α1, α3, m0);
-        var H = (θ - Lw - α);
-        var Δm = (H >= -180 && H <= 180) ? H / -360 : 0;
-        return (m0 + Δm) * 24;
+        var Theta = (Theta0 + (360.985647 * m0)).unwindAngle();
+        var a = Solar.interpolate(a2, a1, a3, m0);
+        var H = (Theta - Lw - a);
+        var dm = (H >= -180 && H <= 180) ? H / -360 : 0;
+        return (m0 + dm) * 24;
     },
 
     correctedHourAngle: function(approximateTransit, angle, coordinates, afterTransit, siderealTime, 
         rightAscension, previousRightAscension, nextRightAscension, declination, previousDeclination, nextDeclination) {
         var m0 = approximateTransit;
         var h0 = angle;
-        var Θ0 = siderealTime;
-        var α2 = rightAscension;
-        var α1 = previousRightAscension;
-        var α3 = nextRightAscension;
-        var δ2 = declination;
-        var δ1 = previousDeclination;
-        var δ3 = nextDeclination;
+        var Theta0 = siderealTime;
+        var a2 = rightAscension;
+        var a1 = previousRightAscension;
+        var a3 = nextRightAscension;
+        var d2 = declination;
+        var d1 = previousDeclination;
+        var d3 = nextDeclination;
 
         /* Equation from page Astronomical Algorithms 102 */
         var Lw = coordinates.longitude * -1;
-        var term1 = Math.sin(h0.degreesToRadians()) - (Math.sin(coordinates.latitude.degreesToRadians()) * Math.sin(δ2.degreesToRadians()));
-        var term2 = Math.cos(coordinates.latitude.degreesToRadians()) * Math.cos(δ2.degreesToRadians());
+        var term1 = Math.sin(h0.degreesToRadians()) - (Math.sin(coordinates.latitude.degreesToRadians()) * Math.sin(d2.degreesToRadians()));
+        var term2 = Math.cos(coordinates.latitude.degreesToRadians()) * Math.cos(d2.degreesToRadians());
         var H0 = Math.acos(term1 / term2).radiansToDegrees();
         var m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360);
-        var θ = (Θ0 + (360.985647 * m)).unwindAngle();
-        var α = Solar.interpolate(α2, α1, α3, m);
-        var δ = Solar.interpolate(δ2, δ1, δ3, m);
-        var H = (θ - Lw - α);
-        var h = Solar.altitudeOfCelestialBody(coordinates.latitude, δ, H);
+        var Theta = (Theta0 + (360.985647 * m)).unwindAngle();
+        var a = Solar.interpolate(a2, a1, a3, m);
+        var delta = Solar.interpolate(d2, d1, d3, m);
+        var H = (Theta - Lw - a);
+        var h = Solar.altitudeOfCelestialBody(coordinates.latitude, delta, H);
         var term3 = h - h0;
-        var term4 = 360 * Math.cos(δ.degreesToRadians()) * Math.cos(coordinates.latitude.degreesToRadians()) * Math.sin(H.degreesToRadians());
-        var Δm = term3 / term4;
-        return (m + Δm) * 24;
+        var term4 = 360 * Math.cos(delta.degreesToRadians()) * Math.cos(coordinates.latitude.degreesToRadians()) * Math.sin(H.degreesToRadians());
+        var dm = term3 / term4;
+        return (m + dm) * 24;
     },
 
     /* Interpolation of a value given equidistant
