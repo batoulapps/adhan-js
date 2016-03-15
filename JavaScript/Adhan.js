@@ -1,8 +1,119 @@
+var Madhab = {
+    Shafi: 1,
+    Hanafi: 2
+}
 
+var HighLatitudeRule = {
+    MiddleOfTheNight: 1,
+    SeventhOfTheNight: 2,
+    TwilightAngle: 3
+}
 
 function Coordinates(latitude, longitude) {
     this.latitude = latitude;
     this.longitude = longitude;
+}
+
+function CalculationParameters(fajrAngle, ishaAngle, ishaInterval, methodName) {
+    this.method = methodName || "Other";
+    this.fajrAngle = fajrAngle || 0;
+    this.ishaAngle = ishaAngle || 0;
+    this.ishaInterval = ishaInterval || 0;
+    this.madhab = Madhab.Shafi;
+    this.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight;
+    this.adjustments = { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 };
+
+    this.nightPortions = function() {
+    	switch(this.highLatitudeRule) {
+    		case HighLatitudeRule.MiddleOfTheNight:
+    			return { fajr: 1/2, isha: 1/2 };
+    		case HighLatitudeRule.SeventhOfTheNight:
+    			return { fajr: 1/7, isha: 1/7 };
+    		case HighLatitudeRule.TwilightAngle:
+    			return { fajr: this.fajrAngle / 60, isha: this.ishaAngle / 60 };
+    	}
+    }
+}
+
+var CalculationMethod = {
+	// Muslim World League
+    MuslimWorldLeague: new CalculationParameters(18, 17, 0, "MuslimWorldLeague"),
+
+    // Egyptian General Authority of Survey
+	Egyptian: new CalculationParameters(19.5, 17.5, 0, "Egyptian"),
+
+	// University of Islamic Sciences, Karachi
+	Karachi: new CalculationParameters(18, 18, 0, "Karachi"),
+
+	// Umm al-Qura University, Makkah
+	UmmAlQura: new CalculationParameters(18.5, 0, 90, "UmmAlQura"),
+
+	// The Gulf Region
+	Gulf: new CalculationParameters(19.5, 0, 90, "The Gulf Region"),
+
+	// Moonsighting Committee
+	MoonsightingCommittee: new CalculationParameters(18, 18, 0, "MoonsightingCommittee"),
+
+	// ISNA
+	NorthAmerica: new CalculationParameters(15, 15, 0, "NorthAmerica"),
+
+	// Other
+	Other: new CalculationParameters(0, 0, 0, "Other")
+}
+
+function PrayerTimes(coordinates, date, calculationParameters) {
+    var solarTime = new SolarTime(date, coordinates);
+
+    var dhuhrTime = solarTime.transit.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+    var sunriseTime = solarTime.sunrise.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+    var maghribTime = solarTime.sunset.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+
+    var asrTime = solarTime.afternoon(calculationParameters.madhab).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+    var fajrTime = solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+
+    // TODO: calculate and compare safe fajr
+
+
+    var ishaTime = null;
+    if (calculationParameters.ishaInterval > 0) {
+        ishaTime = maghribTime.dateByAddingMinutes(calculationParameters.ishaInterval);
+    } else {
+        ishaTime = solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+
+        // TODO: calculate and compare safe isha
+    }
+
+    // method based offsets
+    var dhuhrOffset = (function(){
+        switch(calculationParameters.method) {
+        case "MoonsightingCommittee":
+            // Moonsighting Committee requires 5 minutes for
+            // the sun to pass the zenith and dhuhr to enter
+            return 5;
+        default:
+            // Default behavior waits 1 minute for the
+            // sun to pass the zenith and dhuhr to enter
+            return 1;
+        }
+    })();
+    
+    var maghribOffset = (function(){
+        switch(calculationParameters.method) {
+        case "MoonsightingCommittee":
+            // Moonsighting Committee adds 3 minutes to
+            // sunset time to account for light refraction
+            return 3;
+        default:
+            return 0;
+        }
+    })();
+
+    this.fajr = fajrTime.dateByAddingMinutes(calculationParameters.adjustments.fajr).roundedMinute();
+    this.sunrise = sunriseTime.dateByAddingMinutes(calculationParameters.adjustments.sunrise).roundedMinute();
+    this.dhuhr = dhuhrTime.dateByAddingMinutes(calculationParameters.adjustments.dhuhr).dateByAddingMinutes(dhuhrOffset).roundedMinute();
+    this.asr = asrTime.dateByAddingMinutes(calculationParameters.adjustments.asr).roundedMinute();
+    this.maghrib = maghribTime.dateByAddingMinutes(calculationParameters.adjustments.maghrib).dateByAddingMinutes(maghribOffset).roundedMinute();
+    this.isha = ishaTime.dateByAddingMinutes(calculationParameters.adjustments.isha).roundedMinute();
 }
 
 //
@@ -23,26 +134,38 @@ function SolarTime(date, coordinates) {
     this.prevSolar = new SolarCoordinates(previous.julianDate());
     this.nextSolar = new SolarCoordinates(next.julianDate());
 
-    var m0 = Solar.approximateTransit(coordinates.longitude, this.solar.apparentSiderealTime, this.solar.rightAscension);
+    var m0 = Astronomical.approximateTransit(coordinates.longitude, this.solar.apparentSiderealTime, this.solar.rightAscension);
     var solarAltitude = -50.0 / 60.0;
 
     this.approxTransit = m0;
     
-    this.transit = Solar.correctedTransit(m0, coordinates.longitude, this.solar.apparentSiderealTime, 
+    this.transit = Astronomical.correctedTransit(m0, coordinates.longitude, this.solar.apparentSiderealTime, 
         this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension);
     
-    this.sunrise = Solar.correctedHourAngle(m0, solarAltitude, coordinates, false, this.solar.apparentSiderealTime, 
+    this.sunrise = Astronomical.correctedHourAngle(m0, solarAltitude, coordinates, false, this.solar.apparentSiderealTime, 
         this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension,
         this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
 
-    this.sunset = Solar.correctedHourAngle(m0, solarAltitude, coordinates, true, this.solar.apparentSiderealTime,
+    this.sunset = Astronomical.correctedHourAngle(m0, solarAltitude, coordinates, true, this.solar.apparentSiderealTime,
         this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension,
         this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
+
+
+    // Methods
 
     this.hourAngle = function(angle, afterTransit) {
-        return Solar.correctedHourAngle(this.approxTransit, angle, this.observer, afterTransit, this.solar.apparentSiderealTime,
+        return Astronomical.correctedHourAngle(this.approxTransit, angle, this.observer, afterTransit, this.solar.apparentSiderealTime,
             this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension,
             this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
+    }
+
+    this.afternoon = function(shadowLength) {
+        // TODO source shadow angle calculation
+        var tangent = Math.abs(this.observer.latitude - this.solar.declination);
+        var inverse = shadowLength + Math.tan(tangent.degreesToRadians());
+        var angle = Math.atan(1.0 / inverse).radiansToDegrees();
+        
+        return this.hourAngle(angle, true);
     }
 }
 
@@ -59,18 +182,18 @@ function SolarCoordinates(julianDay) {
     /* apparentSiderealTime: Apparent sidereal time, the hour angle of the vernal
     equinox, in degrees. */
 
-    var T = Solar.julianCentury(julianDay);
-    var L0 = Solar.meanSolarLongitude(T);
-    var Lp = Solar.meanLunarLongitude(T);
-    var Omega = Solar.ascendingLunarNodeLongitude(T);
-    var Lambda = Solar.apparentSolarLongitude(T, L0).degreesToRadians();
+    var T = Astronomical.julianCentury(julianDay);
+    var L0 = Astronomical.meanSolarLongitude(T);
+    var Lp = Astronomical.meanLunarLongitude(T);
+    var Omega = Astronomical.ascendingLunarNodeLongitude(T);
+    var Lambda = Astronomical.apparentSolarLongitude(T, L0).degreesToRadians();
     
-    var Theta0 = Solar.meanSiderealTime(T);
-    var dPsi = Solar.nutationInLongitude(T, L0, Lp, Omega);
-    var dEpsilon = Solar.nutationInObliquity(T, L0, Lp, Omega);
+    var Theta0 = Astronomical.meanSiderealTime(T);
+    var dPsi = Astronomical.nutationInLongitude(T, L0, Lp, Omega);
+    var dEpsilon = Astronomical.nutationInObliquity(T, L0, Lp, Omega);
     
-    var Epsilon0 = Solar.meanObliquityOfTheEcliptic(T);
-    var EpsilonApparent = Solar.apparentObliquityOfTheEcliptic(T, Epsilon0).degreesToRadians();
+    var Epsilon0 = Astronomical.meanObliquityOfTheEcliptic(T);
+    var EpsilonApparent = Astronomical.apparentObliquityOfTheEcliptic(T, Epsilon0).degreesToRadians();
     
     /* Equation from Astronomical Algorithms page 165 */
     this.declination = Math.asin(Math.sin(EpsilonApparent) * Math.sin(Lambda)).radiansToDegrees();
@@ -82,7 +205,7 @@ function SolarCoordinates(julianDay) {
     this.apparentSiderealTime = Theta0 + (((dPsi * 3600) * Math.cos((Epsilon0 + dEpsilon).degreesToRadians())) / 3600);
 }
 
-var Solar = {
+var Astronomical = {
 
     /* The geometric mean longitude of the sun in degrees. */
     meanSolarLongitude: function(julianCentury) {
@@ -144,7 +267,7 @@ var Solar = {
         var T = julianCentury;
         var L0 = meanLongitude;
         /* Equation from Astronomical Algorithms page 164 */
-        var longitude = L0 + Solar.solarEquationOfTheCenter(T, Solar.meanSolarAnomaly(T));
+        var longitude = L0 + Astronomical.solarEquationOfTheCenter(T, Astronomical.meanSolarAnomaly(T));
         var Omega = 125.04 - (1934.136 * T);
         var Lambda = longitude - 0.00569 - (0.00478 * Math.sin(Omega.degreesToRadians()));
         return Lambda.unwindAngle();
@@ -242,7 +365,7 @@ var Solar = {
         /* Equation from page Astronomical Algorithms 102 */
         var Lw = L * -1;
         var Theta = (Theta0 + (360.985647 * m0)).unwindAngle();
-        var a = Solar.interpolate(a2, a1, a3, m0);
+        var a = Astronomical.interpolate(a2, a1, a3, m0);
         var H = (Theta - Lw - a);
         var dm = (H >= -180 && H <= 180) ? H / -360 : 0;
         return (m0 + dm) * 24;
@@ -267,10 +390,10 @@ var Solar = {
         var H0 = Math.acos(term1 / term2).radiansToDegrees();
         var m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360);
         var Theta = (Theta0 + (360.985647 * m)).unwindAngle();
-        var a = Solar.interpolate(a2, a1, a3, m);
-        var delta = Solar.interpolate(d2, d1, d3, m);
+        var a = Astronomical.interpolate(a2, a1, a3, m);
+        var delta = Astronomical.interpolate(d2, d1, d3, m);
         var H = (Theta - Lw - a);
-        var h = Solar.altitudeOfCelestialBody(coordinates.latitude, delta, H);
+        var h = Astronomical.altitudeOfCelestialBody(coordinates.latitude, delta, H);
         var term3 = h - h0;
         var term4 = 360 * Math.cos(delta.degreesToRadians()) * Math.cos(coordinates.latitude.degreesToRadians()) * Math.sin(H.degreesToRadians());
         var dm = term3 / term4;
@@ -331,8 +454,8 @@ var Solar = {
     daysSinceSolstice: function(dayOfYear, year, latitude) {
         var daysSinceSolstice = 0;
         var northernOffset = 10;
-        var southernOffset = Solar.isLeapYear(year) ? 173 : 172;
-        var daysInYear = Solar.isLeapYear(year) ? 366 : 365;
+        var southernOffset = Astronomical.isLeapYear(year) ? 173 : 172;
+        var daysInYear = Astronomical.isLeapYear(year) ? 366 : 365;
         
         if (latitude >= 0) {
             daysSinceSolstice = dayOfYear + northernOffset;
@@ -359,6 +482,10 @@ function TimeComponents(hours, minutes, seconds) {
     this.hours = hours;
     this.minutes = minutes;
     this.seconds = seconds;
+
+    this.UTCDate = function(year, month, date) {
+        return new Date(Date.UTC(year, month, date, this.hours, this.minutes, this.seconds));
+    }
 }
 
 Number.prototype.degreesToRadians = function() {
@@ -389,9 +516,27 @@ Number.prototype.timeComponents = function() {
     return new TimeComponents(hours, minutes, seconds);
 }
 
+Date.prototype.dateByAddingHours = function(hours) {
+    return this.dateByAddingMinutes(hours * 60);
+}
+
+Date.prototype.dateByAddingMinutes = function(minutes) {
+    return this.dateByAddingSeconds(minutes * 60);
+}
+
+Date.prototype.dateByAddingSeconds = function(seconds) {
+    return new Date(this.getTime() + (seconds * 1000));
+}
+
+Date.prototype.roundedMinute = function() {
+    var seconds = this.getUTCSeconds();
+    var offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
+    return this.dateByAddingSeconds(offset);
+}
+
 Date.prototype.dayOfYear = function() {
     var dayOfYear = 0;
-    var feb = Solar.isLeapYear(this.getFullYear()) ? 29 : 28;
+    var feb = Astronomical.isLeapYear(this.getFullYear()) ? 29 : 28;
     var months = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     for (var i = 0; i < this.getMonth(); i++) {
         dayOfYear += months[i];
@@ -403,7 +548,7 @@ Date.prototype.dayOfYear = function() {
 }
 
 Date.prototype.julianDate = function() {
-    return Solar.julianDay(this.getFullYear(), this.getMonth() + 1, this.getDate(), this.getHours() + (this.getMinutes() / 60));
+    return Astronomical.julianDay(this.getFullYear(), this.getMonth() + 1, this.getDate(), this.getHours() + (this.getMinutes() / 60));
 }
 
 //

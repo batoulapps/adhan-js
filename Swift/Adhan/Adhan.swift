@@ -104,13 +104,29 @@ public struct CalculationParameters {
 
 /* Preset calculation parameters */
 public enum CalculationMethod {
+    
+    // Muslim World League
     case MuslimWorldLeague
+    
+    //Egyptian General Authority of Survey
     case Egyptian
+    
+    // University of Islamic Sciences, Karachi
     case Karachi
+    
+    // Umm al-Qura University, Makkah
     case UmmAlQura
+    
+    // The Gulf Region
     case Gulf
+    
+    // Moonsighting Committee
     case MoonsightingCommittee
+    
+    // ISNA
     case NorthAmerica
+    
+    // Other
     case Other
     
     public var params: CalculationParameters {
@@ -118,7 +134,7 @@ public enum CalculationMethod {
         case .MuslimWorldLeague:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 17, method: self)
         case .Egyptian:
-            return CalculationParameters(fajrAngle: 20, ishaAngle: 18, method: self)
+            return CalculationParameters(fajrAngle: 19.5, ishaAngle: 17.5, method: self)
         case .Karachi:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
         case .UmmAlQura:
@@ -196,7 +212,7 @@ public struct PrayerTimes {
             if calculationParameters.method == .MoonsightingCommittee {
                 if coordinates.latitude < 55 {
                     let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                    return Solar.seasonAdjustedFajr(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: sunriseDate)
+                    return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: sunriseDate)
                 } else {
                     let nightFraction = night / 7
                     return sunriseDate.dateByAddingTimeInterval(-nightFraction)
@@ -226,7 +242,7 @@ public struct PrayerTimes {
                 if calculationParameters.method == .MoonsightingCommittee {
                     if coordinates.latitude < 55 {
                         let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                        return Solar.seasonAdjustedIsha(coordinates.latitude, day: dayOfYear, year: date.year, sunset: sunsetDate)
+                        return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunset: sunsetDate)
                     } else {
                         let nightFraction = night / 7
                         return sunsetDate.dateByAddingTimeInterval(nightFraction)
@@ -326,7 +342,7 @@ struct SolarTime {
         let prevSolar = SolarCoordinates(julianDay: previous.julianDate())
         let solar = SolarCoordinates(julianDay: date.julianDate())
         let nextSolar = SolarCoordinates(julianDay: next.julianDate())
-        let m0 = Solar.approximateTransit(longitude: coordinates.longitude, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
+        let m0 = Astronomical.approximateTransit(longitude: coordinates.longitude, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
         let solarAltitude = -50.0 / 60.0
         
         self.date = date
@@ -335,18 +351,18 @@ struct SolarTime {
         self.prevSolar = prevSolar
         self.nextSolar = nextSolar
         self.approxTransit = m0
-        self.transit = Solar.correctedTransit(approximateTransit: m0, longitude: coordinates.longitude, siderealTime: solar.apparentSiderealTime,
+        self.transit = Astronomical.correctedTransit(approximateTransit: m0, longitude: coordinates.longitude, siderealTime: solar.apparentSiderealTime,
             rightAscension: solar.rightAscension, previousRightAscension: prevSolar.rightAscension, nextRightAscension: nextSolar.rightAscension)
-        self.sunrise = Solar.correctedHourAngle(approximateTransit: m0, angle: solarAltitude, coordinates: coordinates, afterTransit: false, siderealTime: solar.apparentSiderealTime,
+        self.sunrise = Astronomical.correctedHourAngle(approximateTransit: m0, angle: solarAltitude, coordinates: coordinates, afterTransit: false, siderealTime: solar.apparentSiderealTime,
             rightAscension: solar.rightAscension, previousRightAscension: prevSolar.rightAscension, nextRightAscension: nextSolar.rightAscension,
             declination: solar.declination, previousDeclination: prevSolar.declination, nextDeclination: nextSolar.declination)
-        self.sunset = Solar.correctedHourAngle(approximateTransit: m0, angle: solarAltitude, coordinates: coordinates, afterTransit: true, siderealTime: solar.apparentSiderealTime,
+        self.sunset = Astronomical.correctedHourAngle(approximateTransit: m0, angle: solarAltitude, coordinates: coordinates, afterTransit: true, siderealTime: solar.apparentSiderealTime,
             rightAscension: solar.rightAscension, previousRightAscension: prevSolar.rightAscension, nextRightAscension: nextSolar.rightAscension,
             declination: solar.declination, previousDeclination: prevSolar.declination, nextDeclination: nextSolar.declination)
     }
     
     func hourAngle(angle: Double, afterTransit: Bool) -> Double {
-        return Solar.correctedHourAngle(approximateTransit: approxTransit, angle: angle, coordinates: observer, afterTransit: afterTransit, siderealTime: solar.apparentSiderealTime,
+        return Astronomical.correctedHourAngle(approximateTransit: approxTransit, angle: angle, coordinates: observer, afterTransit: afterTransit, siderealTime: solar.apparentSiderealTime,
             rightAscension: solar.rightAscension, previousRightAscension: prevSolar.rightAscension, nextRightAscension: nextSolar.rightAscension,
             declination: solar.declination, previousDeclination: prevSolar.declination, nextDeclination: nextSolar.declination)
     }
@@ -380,18 +396,18 @@ struct SolarCoordinates {
     
     init(julianDay: Double) {
         
-        let T = Solar.julianCentury(julianDay: julianDay)
-        let L0 = Solar.meanSolarLongitude(julianCentury: T)
-        let Lp = Solar.meanLunarLongitude(julianCentury: T)
-        let Ω = Solar.ascendingLunarNodeLongitude(julianCentury: T)
-        let λ = Solar.apparentSolarLongitude(julianCentury: T, meanLongitude: L0).degreesToRadians()
+        let T = Astronomical.julianCentury(julianDay: julianDay)
+        let L0 = Astronomical.meanSolarLongitude(julianCentury: T)
+        let Lp = Astronomical.meanLunarLongitude(julianCentury: T)
+        let Ω = Astronomical.ascendingLunarNodeLongitude(julianCentury: T)
+        let λ = Astronomical.apparentSolarLongitude(julianCentury: T, meanLongitude: L0).degreesToRadians()
         
-        let θ0 = Solar.meanSiderealTime(julianCentury: T)
-        let ΔΨ = Solar.nutationInLongitude(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
-        let Δε = Solar.nutationInObliquity(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
+        let θ0 = Astronomical.meanSiderealTime(julianCentury: T)
+        let ΔΨ = Astronomical.nutationInLongitude(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
+        let Δε = Astronomical.nutationInObliquity(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
         
-        let ε0 = Solar.meanObliquityOfTheEcliptic(julianCentury: T)
-        let εapp = Solar.apparentObliquityOfTheEcliptic(julianCentury: T, meanObliquityOfTheEcliptic: ε0).degreesToRadians()
+        let ε0 = Astronomical.meanObliquityOfTheEcliptic(julianCentury: T)
+        let εapp = Astronomical.apparentObliquityOfTheEcliptic(julianCentury: T, meanObliquityOfTheEcliptic: ε0).degreesToRadians()
         
         /* Equation from Astronomical Algorithms page 165 */
         self.declination = asin(sin(εapp) * sin(λ)).radiansToDegrees()
@@ -404,7 +420,7 @@ struct SolarCoordinates {
     }
 }
 
-struct Solar {
+struct Astronomical {
     
     /* The geometric mean longitude of the sun in degrees. */
     static func meanSolarLongitude(julianCentury T: Double) -> Double {
@@ -459,7 +475,7 @@ struct Solar {
     true equinox of the date. */
     static func apparentSolarLongitude(julianCentury T: Double, meanLongitude L0: Double) -> Double {
         /* Equation from Astronomical Algorithms page 164 */
-        let longitude = L0 + Solar.solarEquationOfTheCenter(julianCentury: T, meanAnomaly: Solar.meanSolarAnomaly(julianCentury: T))
+        let longitude = L0 + Astronomical.solarEquationOfTheCenter(julianCentury: T, meanAnomaly: Astronomical.meanSolarAnomaly(julianCentury: T))
         let Ω = 125.04 - (1934.136 * T)
         let λ = longitude - 0.00569 - (0.00478 * sin(Ω.degreesToRadians()))
         return λ.unwindAngle()
@@ -534,7 +550,7 @@ struct Solar {
             /* Equation from page Astronomical Algorithms 102 */
             let Lw = L * -1
             let θ = (Θ0 + (360.985647 * m0)).unwindAngle()
-            let α = Solar.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m0)
+            let α = Astronomical.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m0)
             let H = (θ - Lw - α)
             let Δm = (H >= -180 && H <= 180) ? H / -360 : 0
             return (m0 + Δm) * 24
@@ -550,10 +566,10 @@ struct Solar {
             let H0 = acos(term1 / term2).radiansToDegrees()
             let m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360)
             let θ = (Θ0 + (360.985647 * m)).unwindAngle()
-            let α = Solar.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m)
-            let δ = Solar.interpolate(value: δ2, previousValue: δ1, nextValue: δ3, factor: m)
+            let α = Astronomical.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m)
+            let δ = Astronomical.interpolate(value: δ2, previousValue: δ1, nextValue: δ3, factor: m)
             let H = (θ - Lw - α)
-            let h = Solar.altitudeOfCelestialBody(observerLatitude: coordinates.latitude, declination: δ, localHourAngle: H)
+            let h = Astronomical.altitudeOfCelestialBody(observerLatitude: coordinates.latitude, declination: δ, localHourAngle: H)
             let term3 = h - h0
             let term4 = 360 * cos(δ.degreesToRadians()) * cos(coordinates.latitude.degreesToRadians()) * sin(H.degreesToRadians())
             let Δm = term3 / term4
@@ -610,14 +626,14 @@ struct Solar {
         return true
     }
     
-    static func seasonAdjustedFajr(latitude: Double, day: Int, year: Int, sunrise: NSDate) -> NSDate {
+    static func seasonAdjustedMorningTwilight(latitude: Double, day: Int, year: Int, sunrise: NSDate) -> NSDate {
         let a: Double = 75 + ((28.65 / 55.0) * fabs(latitude))
         let b: Double = 75 + ((19.44 / 55.0) * fabs(latitude))
         let c: Double = 75 + ((32.74 / 55.0) * fabs(latitude))
         let d: Double = 75 + ((48.10 / 55.0) * fabs(latitude))
         
         let adjustment: Double = {
-            let dyy = Double(Solar.daysSinceSolstice(day, year: year, latitude: latitude))
+            let dyy = Double(Astronomical.daysSinceSolstice(day, year: year, latitude: latitude))
             if ( dyy < 91) {
                 return a + ( b - a ) / 91.0 * dyy
             } else if ( dyy < 137) {
@@ -636,14 +652,14 @@ struct Solar {
         return sunrise.dateByAddingTimeInterval(floor(adjustment) * -60.0)
     }
     
-    static func seasonAdjustedIsha(latitude: Double, day: Int, year: Int, sunset: NSDate) -> NSDate {
+    static func seasonAdjustedEveningTwilight(latitude: Double, day: Int, year: Int, sunset: NSDate) -> NSDate {
         let a: Double = 75 + ((25.60 / 55.0) * fabs(latitude))
         let b: Double = 75 + ((2.050 / 55.0) * fabs(latitude))
         let c: Double = 75 - ((9.210 / 55.0) * fabs(latitude))
         let d: Double = 75 + ((6.140 / 55.0) * fabs(latitude))
         
         let adjustment: Double = {
-            let dyy = Double(Solar.daysSinceSolstice(day, year: year, latitude: latitude))
+            let dyy = Double(Astronomical.daysSinceSolstice(day, year: year, latitude: latitude))
             if ( dyy < 91) {
                 return a + ( b - a ) / 91.0 * dyy
             } else if ( dyy < 137) {
@@ -665,8 +681,8 @@ struct Solar {
     static func daysSinceSolstice(dayOfYear: Int, year: Int, latitude: Double) -> Int {
         var daysSinceSolstice = 0
         let northernOffset = 10
-        let southernOffset = Solar.isLeapYear(year) ? 173 : 172
-        let daysInYear = Solar.isLeapYear(year) ? 366 : 365
+        let southernOffset = Astronomical.isLeapYear(year) ? 173 : 172
+        let daysInYear = Astronomical.isLeapYear(year) ? 366 : 365
         
         if (latitude >= 0) {
             daysSinceSolstice = dayOfYear + northernOffset
@@ -736,7 +752,7 @@ extension NSDateComponents {
         let hour: Double = self.hour != NSDateComponentUndefined ? Double(self.hour) : 0
         let minute: Double = self.minute != NSDateComponentUndefined ? Double(self.minute) : 0
         
-        return Solar.julianDay(year: year, month: month, day: day, hours: hour + (minute / 60))
+        return Astronomical.julianDay(year: year, month: month, day: day, hours: hour + (minute / 60))
     }
 }
 

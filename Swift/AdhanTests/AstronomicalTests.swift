@@ -15,16 +15,16 @@ class AstronomicalTests: XCTestCase {
         
         // values from Astronomical Algorithms page 165
         
-        var jd = Solar.julianDay(year: 1992, month: 10, day: 13)
+        var jd = Astronomical.julianDay(year: 1992, month: 10, day: 13)
         var solar = SolarCoordinates(julianDay: jd)
         
-        var T = Solar.julianCentury(julianDay: jd)
-        var L0 = Solar.meanSolarLongitude(julianCentury: T)
-        var ε0 = Solar.meanObliquityOfTheEcliptic(julianCentury: T)
-        let εapp = Solar.apparentObliquityOfTheEcliptic(julianCentury: T, meanObliquityOfTheEcliptic: ε0)
-        let M = Solar.meanSolarAnomaly(julianCentury: T)
-        let C = Solar.solarEquationOfTheCenter(julianCentury: T, meanAnomaly: M)
-        let λ = Solar.apparentSolarLongitude(julianCentury: T, meanLongitude: L0)
+        var T = Astronomical.julianCentury(julianDay: jd)
+        var L0 = Astronomical.meanSolarLongitude(julianCentury: T)
+        var ε0 = Astronomical.meanObliquityOfTheEcliptic(julianCentury: T)
+        let εapp = Astronomical.apparentObliquityOfTheEcliptic(julianCentury: T, meanObliquityOfTheEcliptic: ε0)
+        let M = Astronomical.meanSolarAnomaly(julianCentury: T)
+        let C = Astronomical.solarEquationOfTheCenter(julianCentury: T, meanAnomaly: M)
+        let λ = Astronomical.apparentSolarLongitude(julianCentury: T, meanLongitude: L0)
         let δ = solar.declination
         let α = solar.rightAscension
         
@@ -58,18 +58,18 @@ class AstronomicalTests: XCTestCase {
         
         // values from Astronomical Algorithms page 88
         
-        jd = Solar.julianDay(year: 1987, month: 4, day: 10)
+        jd = Astronomical.julianDay(year: 1987, month: 4, day: 10)
         solar = SolarCoordinates(julianDay: jd)
-        T = Solar.julianCentury(julianDay: jd)
+        T = Astronomical.julianCentury(julianDay: jd)
         
-        let θ0 = Solar.meanSiderealTime(julianCentury: T)
+        let θ0 = Astronomical.meanSiderealTime(julianCentury: T)
         let θapp = solar.apparentSiderealTime
-        let Ω = Solar.ascendingLunarNodeLongitude(julianCentury: T)
-        ε0 = Solar.meanObliquityOfTheEcliptic(julianCentury: T)
-        L0 = Solar.meanSolarLongitude(julianCentury: T)
-        let Lp = Solar.meanLunarLongitude(julianCentury: T)
-        let ΔΨ = Solar.nutationInLongitude(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
-        let Δε = Solar.nutationInObliquity(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
+        let Ω = Astronomical.ascendingLunarNodeLongitude(julianCentury: T)
+        ε0 = Astronomical.meanObliquityOfTheEcliptic(julianCentury: T)
+        L0 = Astronomical.meanSolarLongitude(julianCentury: T)
+        let Lp = Astronomical.meanLunarLongitude(julianCentury: T)
+        let ΔΨ = Astronomical.nutationInLongitude(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
+        let Δε = Astronomical.nutationInObliquity(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
         let ε = ε0 + Δε
         
         XCTAssertEqualWithAccuracy(θ0, 197.693195,
@@ -100,7 +100,7 @@ class AstronomicalTests: XCTestCase {
         let φ = 38 + (55 / 60) + (17.0 / 3600)
         let δ = -6 - (43 / 60) - (11.61 / 3600)
         let H = 64.352133
-        let h = Solar.altitudeOfCelestialBody(observerLatitude: φ, declination: δ, localHourAngle: H)
+        let h = Astronomical.altitudeOfCelestialBody(observerLatitude: φ, declination: δ, localHourAngle: H)
         XCTAssertEqualWithAccuracy(h, 15.1249,
             accuracy: 0.0001)
     }
@@ -112,12 +112,12 @@ class AstronomicalTests: XCTestCase {
         let α1 = 40.68021
         let α2 = 41.73129
         let α3 = 42.78204
-        let m0 = Solar.approximateTransit(longitude: longitude, siderealTime: Θ, rightAscension: α2)
+        let m0 = Astronomical.approximateTransit(longitude: longitude, siderealTime: Θ, rightAscension: α2)
         
         XCTAssertEqualWithAccuracy(m0, 0.81965,
             accuracy: 0.00001)
         
-        let transit = Solar.correctedTransit(approximateTransit: m0, longitude: longitude, siderealTime: Θ, rightAscension: α2, previousRightAscension: α1, nextRightAscension: α3) / 24
+        let transit = Astronomical.correctedTransit(approximateTransit: m0, longitude: longitude, siderealTime: Θ, rightAscension: α2, previousRightAscension: α1, nextRightAscension: α3) / 24
         
         XCTAssertEqualWithAccuracy(transit, 0.81980,
             accuracy: 0.00001)
@@ -126,7 +126,7 @@ class AstronomicalTests: XCTestCase {
         let δ2 = 18.44092
         let δ3 = 18.82742
         
-        let rise = Solar.correctedHourAngle(approximateTransit: m0, angle: -0.5667, coordinates: Coordinates(latitude: 42.3333, longitude: longitude), afterTransit: false, siderealTime: Θ,
+        let rise = Astronomical.correctedHourAngle(approximateTransit: m0, angle: -0.5667, coordinates: Coordinates(latitude: 42.3333, longitude: longitude), afterTransit: false, siderealTime: Θ,
             rightAscension: α2, previousRightAscension: α1, nextRightAscension: α3, declination: δ2, previousDeclination: δ1, nextDeclination: δ3) / 24
         XCTAssertEqualWithAccuracy(rise, 0.51766,
             accuracy: 0.00001)
@@ -171,7 +171,7 @@ class AstronomicalTests: XCTestCase {
         
         // values from Astronomical Algorithms page 25
         
-        let interpolatedValue = Solar.interpolate(value: 0.877366, previousValue: 0.884226, nextValue: 0.870531, factor: 4.35/24)
+        let interpolatedValue = Astronomical.interpolate(value: 0.877366, previousValue: 0.884226, nextValue: 0.870531, factor: 4.35/24)
         XCTAssertEqualWithAccuracy(interpolatedValue, 0.876125,
             accuracy: 0.000001)
     }
@@ -181,21 +181,21 @@ class AstronomicalTests: XCTestCase {
         Comparison values generated from http://aa.usno.navy.mil/data/docs/JulianDate.php
         */
         
-        XCTAssertEqual(Solar.julianDay(year: 2010, month: 1, day: 2), 2455198.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2011, month: 2, day: 4), 2455596.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2012, month: 3, day: 6), 2455992.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2013, month: 4, day: 8), 2456390.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2014, month: 5, day: 10), 2456787.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2015, month: 6, day: 12), 2457185.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2016, month: 7, day: 14), 2457583.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2017, month: 8, day: 16), 2457981.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2018, month: 9, day: 18), 2458379.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2019, month: 10, day: 20), 2458776.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2020, month: 11, day: 22), 2459175.500000)
-        XCTAssertEqual(Solar.julianDay(year: 2021, month: 12, day: 24), 2459572.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2010, month: 1, day: 2), 2455198.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2011, month: 2, day: 4), 2455596.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2012, month: 3, day: 6), 2455992.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2013, month: 4, day: 8), 2456390.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2014, month: 5, day: 10), 2456787.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2015, month: 6, day: 12), 2457185.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2016, month: 7, day: 14), 2457583.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2017, month: 8, day: 16), 2457981.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2018, month: 9, day: 18), 2458379.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2019, month: 10, day: 20), 2458776.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2020, month: 11, day: 22), 2459175.500000)
+        XCTAssertEqual(Astronomical.julianDay(year: 2021, month: 12, day: 24), 2459572.500000)
         
         let jdVal = 2457215.67708333
-        XCTAssertEqualWithAccuracy(Solar.julianDay(year: 2015, month: 7, day: 12, hours: 4.25), jdVal, accuracy: 0.000001)
+        XCTAssertEqualWithAccuracy(Astronomical.julianDay(year: 2015, month: 7, day: 12, hours: 4.25), jdVal, accuracy: 0.000001)
         
         let components = NSDateComponents()
         components.year = 2015
@@ -205,30 +205,30 @@ class AstronomicalTests: XCTestCase {
         components.minute = 15
         XCTAssertEqualWithAccuracy(components.julianDate(), jdVal, accuracy: 0.000001)
         
-        XCTAssertEqualWithAccuracy(Solar.julianDay(year: 2015, month: 7, day: 12, hours: 8.0), 2457215.833333, accuracy: 0.000001)
-        XCTAssertEqualWithAccuracy(Solar.julianDay(year: 1992, month: 10, day: 13, hours: 0.0), 2448908.5, accuracy: 0.000001)
+        XCTAssertEqualWithAccuracy(Astronomical.julianDay(year: 2015, month: 7, day: 12, hours: 8.0), 2457215.833333, accuracy: 0.000001)
+        XCTAssertEqualWithAccuracy(Astronomical.julianDay(year: 1992, month: 10, day: 13, hours: 0.0), 2448908.5, accuracy: 0.000001)
     }
     
     func testJulianHours() {
-        let j1 = Solar.julianDay(year: 2010, month: 1, day: 3)
-        let j2 = Solar.julianDay(year: 2010, month: 1, day: 1, hours: 48)
+        let j1 = Astronomical.julianDay(year: 2010, month: 1, day: 3)
+        let j2 = Astronomical.julianDay(year: 2010, month: 1, day: 1, hours: 48)
         XCTAssertEqual(j1, j2)
     }
     
     func testLeapYear() {
-        XCTAssertFalse(Solar.isLeapYear(2015))
-        XCTAssertTrue(Solar.isLeapYear(2016))
-        XCTAssertTrue(Solar.isLeapYear(1600))
-        XCTAssertTrue(Solar.isLeapYear(2000))
-        XCTAssertTrue(Solar.isLeapYear(2400))
-        XCTAssertFalse(Solar.isLeapYear(1700))
-        XCTAssertFalse(Solar.isLeapYear(1800))
-        XCTAssertFalse(Solar.isLeapYear(1900))
-        XCTAssertFalse(Solar.isLeapYear(2100))
-        XCTAssertFalse(Solar.isLeapYear(2200))
-        XCTAssertFalse(Solar.isLeapYear(2300))
-        XCTAssertFalse(Solar.isLeapYear(2500))
-        XCTAssertFalse(Solar.isLeapYear(2600))
+        XCTAssertFalse(Astronomical.isLeapYear(2015))
+        XCTAssertTrue(Astronomical.isLeapYear(2016))
+        XCTAssertTrue(Astronomical.isLeapYear(1600))
+        XCTAssertTrue(Astronomical.isLeapYear(2000))
+        XCTAssertTrue(Astronomical.isLeapYear(2400))
+        XCTAssertFalse(Astronomical.isLeapYear(1700))
+        XCTAssertFalse(Astronomical.isLeapYear(1800))
+        XCTAssertFalse(Astronomical.isLeapYear(1900))
+        XCTAssertFalse(Astronomical.isLeapYear(2100))
+        XCTAssertFalse(Astronomical.isLeapYear(2200))
+        XCTAssertFalse(Astronomical.isLeapYear(2300))
+        XCTAssertFalse(Astronomical.isLeapYear(2500))
+        XCTAssertFalse(Astronomical.isLeapYear(2600))
     }
     
     func daysSinceSolsticeTest(value: Int, year: Int, month: Int, day: Int, latitude: Double) {
@@ -240,7 +240,7 @@ class AstronomicalTests: XCTestCase {
         let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
         let dateComponents = date(year: year, month: month, day: day)
         let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: cal.dateFromComponents(dateComponents)!)
-        XCTAssertEqual(Solar.daysSinceSolstice(dayOfYear, year: dateComponents.year, latitude: latitude), value)
+        XCTAssertEqual(Astronomical.daysSinceSolstice(dayOfYear, year: dateComponents.year, latitude: latitude), value)
     }
     
     func testDaysSinceSolstice() {

@@ -20,16 +20,16 @@ function timeString(hours) {
 QUnit.test("Solar Coordinates", function(assert) {
 	// values from Astronomical Algorithms page 165
 
-	var jd = Solar.julianDay(1992, 10, 13);
+	var jd = Astronomical.julianDay(1992, 10, 13);
 	var solar = new SolarCoordinates(jd);
 
-	var T = Solar.julianCentury(jd);
-	var L0 = Solar.meanSolarLongitude(T);
-	var E0 = Solar.meanObliquityOfTheEcliptic(T);
-	var Eapp = Solar.apparentObliquityOfTheEcliptic(T, E0);
-	var M = Solar.meanSolarAnomaly(T);
-    var C = Solar.solarEquationOfTheCenter(T, M);
-    var Lambda = Solar.apparentSolarLongitude(T, L0);
+	var T = Astronomical.julianCentury(jd);
+	var L0 = Astronomical.meanSolarLongitude(T);
+	var E0 = Astronomical.meanObliquityOfTheEcliptic(T);
+	var Eapp = Astronomical.apparentObliquityOfTheEcliptic(T, E0);
+	var M = Astronomical.meanSolarAnomaly(T);
+    var C = Astronomical.solarEquationOfTheCenter(T, M);
+    var Lambda = Astronomical.apparentSolarLongitude(T, L0);
     var Delta = solar.declination;
     var Alpha = solar.rightAscension;    
 
@@ -45,18 +45,18 @@ QUnit.test("Solar Coordinates", function(assert) {
 
     // values from Astronomical Algorithms page 88
     
-    jd = Solar.julianDay(1987, 4, 10);
+    jd = Astronomical.julianDay(1987, 4, 10);
     solar = new SolarCoordinates(jd);
-    T = Solar.julianCentury(jd);
+    T = Astronomical.julianCentury(jd);
 
-    var Theta0 = Solar.meanSiderealTime(T);
+    var Theta0 = Astronomical.meanSiderealTime(T);
     var Thetaapp = solar.apparentSiderealTime;
-    var Omega = Solar.ascendingLunarNodeLongitude(T);
-    E0 = Solar.meanObliquityOfTheEcliptic(T);
-    L0 = Solar.meanSolarLongitude(T);
-    var Lp = Solar.meanLunarLongitude(T);
-    var dPsi = Solar.nutationInLongitude(T, L0, Lp, Omega);
-    var dE = Solar.nutationInObliquity(T, L0, Lp, Omega);
+    var Omega = Astronomical.ascendingLunarNodeLongitude(T);
+    E0 = Astronomical.meanObliquityOfTheEcliptic(T);
+    L0 = Astronomical.meanSolarLongitude(T);
+    var Lp = Astronomical.meanLunarLongitude(T);
+    var dPsi = Astronomical.nutationInLongitude(T, L0, Lp, Omega);
+    var dE = Astronomical.nutationInObliquity(T, L0, Lp, Omega);
     var E = E0 + dE;
 
 	QUnit.close(Theta0, 197.693195, 0.000001);        
@@ -75,7 +75,7 @@ QUnit.test("Altitude Of Celestial Body", function(assert) {
 	var Phi = 38 + (55 / 60) + (17.0 / 3600);
     var Delta = -6 - (43 / 60) - (11.61 / 3600);
     var H = 64.352133;
-    var altitude = Solar.altitudeOfCelestialBody(Phi, Delta, H);
+    var altitude = Astronomical.altitudeOfCelestialBody(Phi, Delta, H);
 	QUnit.close(altitude, 15.1249, 0.0001);
 });
 
@@ -86,11 +86,11 @@ QUnit.test("Transit and Hour Angle", function(assert) {
 	var Alpha1 = 40.68021;
 	var Alpha2 = 41.73129;
 	var Alpha3 = 42.78204;
-	var m0 = Solar.approximateTransit(longitude, Theta, Alpha2);
+	var m0 = Astronomical.approximateTransit(longitude, Theta, Alpha2);
 
 	QUnit.close(m0, 0.81965, 0.00001);
 
-    var transit = Solar.correctedTransit(m0, longitude, Theta, Alpha2, Alpha1, Alpha3) / 24;
+    var transit = Astronomical.correctedTransit(m0, longitude, Theta, Alpha2, Alpha1, Alpha3) / 24;
         
     QUnit.close(transit, 0.81980, 0.00001);
 
@@ -99,7 +99,7 @@ QUnit.test("Transit and Hour Angle", function(assert) {
     var Delta3 = 18.82742;
     var coordinates = new Coordinates(42.3333, longitude);
     
-    var rise = Solar.correctedHourAngle(m0, -0.5667, coordinates, false, Theta, Alpha2, Alpha1, Alpha3, Delta2, Delta1, Delta3) / 24;
+    var rise = Astronomical.correctedHourAngle(m0, -0.5667, coordinates, false, Theta, Alpha2, Alpha1, Alpha3, Delta2, Delta1, Delta3) / 24;
     QUnit.close(rise, 0.51766, 0.00001);
 
 });
@@ -139,7 +139,7 @@ QUnit.test("Calendrical Date", function(assert) {
 });
 
 QUnit.test("Interpolation", function(assert) {
-	var interpolatedValue = Solar.interpolate(0.877366, 0.884226, 0.870531, 4.35/24)
+	var interpolatedValue = Astronomical.interpolate(0.877366, 0.884226, 0.870531, 4.35/24)
 	QUnit.close(interpolatedValue, 0.876125, 0.000001);
 });
 
@@ -147,49 +147,49 @@ QUnit.test("Julian Day", function(assert) {
 	/*
 	Comparison values generated from http://aa.usno.navy.mil/data/docs/JulianDate.php
 	*/
-	assert.equal(Solar.julianDay(2010, 1, 2), 2455198.500000);
-	assert.equal(Solar.julianDay(2011, 2, 4), 2455596.500000);
-	assert.equal(Solar.julianDay(2012, 3, 6), 2455992.500000);
-	assert.equal(Solar.julianDay(2013, 4, 8), 2456390.500000);
-	assert.equal(Solar.julianDay(2014, 5, 10), 2456787.500000);
-	assert.equal(Solar.julianDay(2015, 6, 12), 2457185.500000);
-	assert.equal(Solar.julianDay(2016, 7, 14), 2457583.500000);
-	assert.equal(Solar.julianDay(2017, 8, 16), 2457981.500000);
-	assert.equal(Solar.julianDay(2018, 9, 18), 2458379.500000);
-	assert.equal(Solar.julianDay(2019, 10, 20), 2458776.500000);
-	assert.equal(Solar.julianDay(2020, 11, 22), 2459175.500000);
-	assert.equal(Solar.julianDay(2021, 12, 24), 2459572.500000);
+	assert.equal(Astronomical.julianDay(2010, 1, 2), 2455198.500000);
+	assert.equal(Astronomical.julianDay(2011, 2, 4), 2455596.500000);
+	assert.equal(Astronomical.julianDay(2012, 3, 6), 2455992.500000);
+	assert.equal(Astronomical.julianDay(2013, 4, 8), 2456390.500000);
+	assert.equal(Astronomical.julianDay(2014, 5, 10), 2456787.500000);
+	assert.equal(Astronomical.julianDay(2015, 6, 12), 2457185.500000);
+	assert.equal(Astronomical.julianDay(2016, 7, 14), 2457583.500000);
+	assert.equal(Astronomical.julianDay(2017, 8, 16), 2457981.500000);
+	assert.equal(Astronomical.julianDay(2018, 9, 18), 2458379.500000);
+	assert.equal(Astronomical.julianDay(2019, 10, 20), 2458776.500000);
+	assert.equal(Astronomical.julianDay(2020, 11, 22), 2459175.500000);
+	assert.equal(Astronomical.julianDay(2021, 12, 24), 2459572.500000);
 
 	var jdVal = 2457215.67708333;
-	QUnit.close(Solar.julianDay(2015, 7, 12, 4.25), jdVal, 0.000001);
+	QUnit.close(Astronomical.julianDay(2015, 7, 12, 4.25), jdVal, 0.000001);
 	        
     var date = new Date(2015, 6, 12, 4, 15);
     QUnit.close(date.julianDate(), jdVal, 0.000001);
 
-	QUnit.close(Solar.julianDay(2015, 7, 12, 8.0), 2457215.833333, 0.000001);
-	QUnit.close(Solar.julianDay(1992, 10, 13, 0.0), 2448908.5, 0.000001);
+	QUnit.close(Astronomical.julianDay(2015, 7, 12, 8.0), 2457215.833333, 0.000001);
+	QUnit.close(Astronomical.julianDay(1992, 10, 13, 0.0), 2448908.5, 0.000001);
 });
 
 QUnit.test("Julian Hours", function(assert) {
-	var j1 = Solar.julianDay(2010, 1, 3);
-	var j2 = Solar.julianDay(2010, 1, 1, 48);
+	var j1 = Astronomical.julianDay(2010, 1, 3);
+	var j2 = Astronomical.julianDay(2010, 1, 1, 48);
 	assert.equal(j1, j2);
 });
 
 QUnit.test("Leap Year", function(assert) {
-	assert.notOk(Solar.isLeapYear(2015));
-	assert.ok(Solar.isLeapYear(2016));
-	assert.ok(Solar.isLeapYear(1600));
-	assert.ok(Solar.isLeapYear(2000));
-	assert.ok(Solar.isLeapYear(2400));
-	assert.notOk(Solar.isLeapYear(1700));
-	assert.notOk(Solar.isLeapYear(1800));
-	assert.notOk(Solar.isLeapYear(1900));
-	assert.notOk(Solar.isLeapYear(2100));
-	assert.notOk(Solar.isLeapYear(2200));
-	assert.notOk(Solar.isLeapYear(2300));
-	assert.notOk(Solar.isLeapYear(2500));
-	assert.notOk(Solar.isLeapYear(2600));
+	assert.notOk(Astronomical.isLeapYear(2015));
+	assert.ok(Astronomical.isLeapYear(2016));
+	assert.ok(Astronomical.isLeapYear(1600));
+	assert.ok(Astronomical.isLeapYear(2000));
+	assert.ok(Astronomical.isLeapYear(2400));
+	assert.notOk(Astronomical.isLeapYear(1700));
+	assert.notOk(Astronomical.isLeapYear(1800));
+	assert.notOk(Astronomical.isLeapYear(1900));
+	assert.notOk(Astronomical.isLeapYear(2100));
+	assert.notOk(Astronomical.isLeapYear(2200));
+	assert.notOk(Astronomical.isLeapYear(2300));
+	assert.notOk(Astronomical.isLeapYear(2500));
+	assert.notOk(Astronomical.isLeapYear(2600));
 });
 
 QUnit.test("Day of Year", function(assert) {
@@ -200,18 +200,18 @@ QUnit.test("Day of Year", function(assert) {
 });
 
 QUnit.test("Days since solstice", function(assert) {
-	assert.equal(11, Solar.daysSinceSolstice(new Date(2016, 0, 1).dayOfYear(), 2016, 1));
-	assert.equal(10, Solar.daysSinceSolstice(new Date(2015, 11, 31).dayOfYear(), 2015, 1));
-	assert.equal(10, Solar.daysSinceSolstice(new Date(2016, 11, 31).dayOfYear(), 2016, 1));
-	assert.equal(0, Solar.daysSinceSolstice(new Date(2016, 11, 21).dayOfYear(), 2016, 1));
-	assert.equal(1, Solar.daysSinceSolstice(new Date(2016, 11, 22).dayOfYear(), 2016, 1));
-	assert.equal(71, Solar.daysSinceSolstice(new Date(2016, 2, 1).dayOfYear(), 2016, 1));
-	assert.equal(70, Solar.daysSinceSolstice(new Date(2015, 2, 1).dayOfYear(), 2015, 1));
-	assert.equal(365, Solar.daysSinceSolstice(new Date(2016, 11, 20).dayOfYear(), 2016, 1));
-	assert.equal(364, Solar.daysSinceSolstice(new Date(2015, 11, 20).dayOfYear(), 2015, 1));
+	assert.equal(11, Astronomical.daysSinceSolstice(new Date(2016, 0, 1).dayOfYear(), 2016, 1));
+	assert.equal(10, Astronomical.daysSinceSolstice(new Date(2015, 11, 31).dayOfYear(), 2015, 1));
+	assert.equal(10, Astronomical.daysSinceSolstice(new Date(2016, 11, 31).dayOfYear(), 2016, 1));
+	assert.equal(0, Astronomical.daysSinceSolstice(new Date(2016, 11, 21).dayOfYear(), 2016, 1));
+	assert.equal(1, Astronomical.daysSinceSolstice(new Date(2016, 11, 22).dayOfYear(), 2016, 1));
+	assert.equal(71, Astronomical.daysSinceSolstice(new Date(2016, 2, 1).dayOfYear(), 2016, 1));
+	assert.equal(70, Astronomical.daysSinceSolstice(new Date(2015, 2, 1).dayOfYear(), 2015, 1));
+	assert.equal(365, Astronomical.daysSinceSolstice(new Date(2016, 11, 20).dayOfYear(), 2016, 1));
+	assert.equal(364, Astronomical.daysSinceSolstice(new Date(2015, 11, 20).dayOfYear(), 2015, 1));
 
-	assert.equal(0, Solar.daysSinceSolstice(new Date(2015, 5, 21).dayOfYear(), 2015, -1));
-	assert.equal(0, Solar.daysSinceSolstice(new Date(2016, 5, 21).dayOfYear(), 2016, -1));
-	assert.equal(364, Solar.daysSinceSolstice(new Date(2015, 5, 20).dayOfYear(), 2015, -1));
-	assert.equal(365, Solar.daysSinceSolstice(new Date(2016, 5, 20).dayOfYear(), 2016, -1));
+	assert.equal(0, Astronomical.daysSinceSolstice(new Date(2015, 5, 21).dayOfYear(), 2015, -1));
+	assert.equal(0, Astronomical.daysSinceSolstice(new Date(2016, 5, 21).dayOfYear(), 2016, -1));
+	assert.equal(364, Astronomical.daysSinceSolstice(new Date(2015, 5, 20).dayOfYear(), 2015, -1));
+	assert.equal(365, Astronomical.daysSinceSolstice(new Date(2016, 5, 20).dayOfYear(), 2016, -1));
 });
