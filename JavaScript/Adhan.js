@@ -516,6 +516,32 @@ Number.prototype.timeComponents = function() {
     return new TimeComponents(hours, minutes, seconds);
 }
 
+Date.prototype.formattedTime = function(UTCOffset, style) {
+    var offset = this.dateByAddingHours(UTCOffset);
+    if (style == '24h') {
+        var hours = offset.getUTCHours().toString();
+        if (hours.length < 2) {
+            hours = '0' + hours;
+        }
+        
+        var minutes = offset.getUTCMinutes().toString();
+        if (minutes.length < 2) {
+            minutes = '0' + minutes;
+        }
+
+        return hours + ':' + minutes;
+    } else {
+        var hours = offset.getUTCHours().normalizeWithBound(12).toString();
+        var minutes = offset.getUTCMinutes().toString();
+        if (minutes.length < 2) {
+            minutes = '0' + minutes;
+        }
+        var ampm = offset.getUTCHours() >= 12 ? 'PM' : 'AM';
+
+        return hours + ':' + minutes + ' ' + ampm;
+    }
+}
+
 Date.prototype.dateByAddingHours = function(hours) {
     return this.dateByAddingMinutes(hours * 60);
 }
