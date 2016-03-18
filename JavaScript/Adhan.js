@@ -72,7 +72,30 @@ function PrayerTimes(coordinates, date, calculationParameters) {
     var fajrTime = solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
 
     // TODO: calculate and compare safe fajr
+    var tomorrowSunrise = sunriseTime.dateByAddingDays(1);
+    var night = (tomorrowSunrise - maghribTime) / 1000;
 
+    var safeFajr = (function(){
+        if (calculationParameters.method == "MoonsightingCommittee") {
+            if (coordinates.latitude < 55) {
+                // let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
+                // return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: sunriseDate)
+                return new Date();
+            } else {
+                var nightFraction = night / 7;
+                return sunriseTime.dateByAddingSeconds(-nightFraction);
+            }
+        } else {
+            var portion = calculationParameters.nightPortions().fajr;
+            var nightFraction = portion * night;
+            
+            return sunriseTime.dateByAddingSeconds(-nightFraction);
+        }
+    })();
+
+    if (isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
+        fajrTime = safeFajr
+    }
 
     var ishaTime = null;
     if (calculationParameters.ishaInterval > 0) {
@@ -80,7 +103,27 @@ function PrayerTimes(coordinates, date, calculationParameters) {
     } else {
         ishaTime = solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
 
-        // TODO: calculate and compare safe isha
+        var safeIsha = (function(){
+            if (calculationParameters.method == "MoonsightingCommittee") {
+                if (coordinates.latitude < 55) {
+                    // let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
+                    // return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: maghribTime)
+                    return new Date();
+                } else {
+                    var nightFraction = night / 7;
+                    return maghribTime.dateByAddingSeconds(nightFraction);
+                }
+            } else {
+                var portion = calculationParameters.nightPortions().isha;
+                var nightFraction = portion * night;
+                
+                return maghribTime.dateByAddingSeconds(nightFraction);
+            }
+        })();
+
+        if (isNaN(ishaTime.getTime()) || safeIsha < ishaTime) {
+            ishaTime = safeIsha
+        }
     }
 
     // method based offsets
@@ -540,6 +583,16 @@ Date.prototype.formattedTime = function(UTCOffset, style) {
 
         return hours + ':' + minutes + ' ' + ampm;
     }
+}
+
+Date.prototype.dateByAddingDays = function(days) {
+    var year = this.getUTCFullYear();
+    var month = this.getUTCMonth();
+    var day = this.getUTCDate() + days;
+    var hours = this.getUTCHours();
+    var minutes = this.getUTCMinutes();
+    var seconds = this.getUTCSeconds();
+    return new Date(Date.UTC(year, month, day, hours, minutes, seconds));
 }
 
 Date.prototype.dateByAddingHours = function(hours) {
