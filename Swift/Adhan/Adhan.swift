@@ -649,7 +649,7 @@ struct Astronomical {
             }
         }()
         
-        return sunrise.dateByAddingTimeInterval(floor(adjustment) * -60.0)
+        return sunrise.dateByAddingTimeInterval(round(adjustment * -60.0))
     }
     
     static func seasonAdjustedEveningTwilight(latitude: Double, day: Int, year: Int, sunset: NSDate) -> NSDate {
@@ -675,7 +675,7 @@ struct Astronomical {
             }
         }()
         
-        return sunset.dateByAddingTimeInterval(ceil(adjustment) * 60.0)
+        return sunset.dateByAddingTimeInterval(round(adjustment * 60.0))
     }
     
     static func daysSinceSolstice(dayOfYear: Int, year: Int, latitude: Double) -> Int {

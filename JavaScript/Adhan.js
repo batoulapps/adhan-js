@@ -46,10 +46,10 @@ var CalculationMethod = {
 	Karachi: new CalculationParameters(18, 18, 0, "Karachi"),
 
 	// Umm al-Qura University, Makkah
-	UmmAlQura: new CalculationParameters(18.5, 0, 90, "UmmAlQura"),
+	UmmAlQura: new CalculationParameters(18, 0, 90, "UmmAlQura"),
 
 	// The Gulf Region
-	Gulf: new CalculationParameters(19.5, 0, 90, "The Gulf Region"),
+	Gulf: new CalculationParameters(19.5, 0, 90, "Gulf"),
 
 	// Moonsighting Committee
 	MoonsightingCommittee: new CalculationParameters(18, 18, 0, "MoonsightingCommittee"),
@@ -78,9 +78,7 @@ function PrayerTimes(coordinates, date, calculationParameters) {
     var safeFajr = (function(){
         if (calculationParameters.method == "MoonsightingCommittee") {
             if (coordinates.latitude < 55) {
-                // let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                // return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: sunriseDate)
-                return new Date();
+                return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, date.dayOfYear(), date.getFullYear(), sunriseTime);
             } else {
                 var nightFraction = night / 7;
                 return sunriseTime.dateByAddingSeconds(-nightFraction);
@@ -106,9 +104,7 @@ function PrayerTimes(coordinates, date, calculationParameters) {
         var safeIsha = (function(){
             if (calculationParameters.method == "MoonsightingCommittee") {
                 if (coordinates.latitude < 55) {
-                    // let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                    // return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: maghribTime)
-                    return new Date();
+                    return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, date.dayOfYear(), date.getFullYear(), maghribTime);
                 } else {
                     var nightFraction = night / 7;
                     return maghribTime.dateByAddingSeconds(nightFraction);
@@ -494,6 +490,58 @@ var Astronomical = {
         return true;
     },
 
+    seasonAdjustedMorningTwilight: function(latitude, dayOfYear, year, sunrise) {
+        var a = 75 + ((28.65 / 55.0) * Math.abs(latitude));
+        var b = 75 + ((19.44 / 55.0) * Math.abs(latitude));
+        var c = 75 + ((32.74 / 55.0) * Math.abs(latitude));
+        var d = 75 + ((48.10 / 55.0) * Math.abs(latitude));
+        
+        var adjustment = (function() {
+            var dyy = Astronomical.daysSinceSolstice(dayOfYear, year, latitude);
+            if ( dyy < 91) {
+                return a + ( b - a ) / 91.0 * dyy;
+            } else if ( dyy < 137) {
+                return b + ( c - b ) / 46.0 * ( dyy - 91 );
+            } else if ( dyy < 183 ) {
+                return c + ( d - c ) / 46.0 * ( dyy - 137 );
+            } else if ( dyy < 229 ) {
+                return d + ( c - d ) / 46.0 * ( dyy - 183 );
+            } else if ( dyy < 275 ) {
+                return c + ( b - c ) / 46.0 * ( dyy - 229 );
+            } else {
+                return b + ( a - b ) / 91.0 * ( dyy - 275 );
+            }
+        })();
+        
+        return sunrise.dateByAddingSeconds(Math.round(adjustment * -60.0));
+    },
+
+    seasonAdjustedEveningTwilight: function(latitude, dayOfYear, year, sunset) {
+        var a = 75 + ((25.60 / 55.0) * Math.abs(latitude));
+        var b = 75 + ((2.050 / 55.0) * Math.abs(latitude));
+        var c = 75 - ((9.210 / 55.0) * Math.abs(latitude));
+        var d = 75 + ((6.140 / 55.0) * Math.abs(latitude));
+        
+        var adjustment = (function() {
+            var dyy = Astronomical.daysSinceSolstice(dayOfYear, year, latitude);
+            if ( dyy < 91) {
+                return a + ( b - a ) / 91.0 * dyy;
+            } else if ( dyy < 137) {
+                return b + ( c - b ) / 46.0 * ( dyy - 91 );
+            } else if ( dyy < 183 ) {
+                return c + ( d - c ) / 46.0 * ( dyy - 137 );
+            } else if ( dyy < 229 ) {
+                return d + ( c - d ) / 46.0 * ( dyy - 183 );
+            } else if ( dyy < 275 ) {
+                return c + ( b - c ) / 46.0 * ( dyy - 229 );
+            } else {
+                return b + ( a - b ) / 91.0 * ( dyy - 275 );
+            }
+        })();
+        
+        return sunset.dateByAddingSeconds(Math.round(adjustment * 60.0));
+    },
+
     daysSinceSolstice: function(dayOfYear, year, latitude) {
         var daysSinceSolstice = 0;
         var northernOffset = 10;
@@ -574,7 +622,7 @@ Date.prototype.formattedTime = function(UTCOffset, style) {
 
         return hours + ':' + minutes;
     } else {
-        var hours = offset.getUTCHours().normalizeWithBound(12).toString();
+        var hours = offset.getUTCHours() > 12 ? (offset.getUTCHours() - 12).toString() : offset.getUTCHours().toString();
         var minutes = offset.getUTCMinutes().toString();
         if (minutes.length < 2) {
             minutes = '0' + minutes;
