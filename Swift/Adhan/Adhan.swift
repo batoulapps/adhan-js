@@ -403,8 +403,8 @@ struct SolarCoordinates {
         let λ = Astronomical.apparentSolarLongitude(julianCentury: T, meanLongitude: L0).degreesToRadians()
         
         let θ0 = Astronomical.meanSiderealTime(julianCentury: T)
-        let ΔΨ = Astronomical.nutationInLongitude(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
-        let Δε = Astronomical.nutationInObliquity(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
+        let ΔΨ = Astronomical.nutationInLongitude(solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
+        let Δε = Astronomical.nutationInObliquity(solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
         
         let ε0 = Astronomical.meanObliquityOfTheEcliptic(julianCentury: T)
         let εapp = Astronomical.apparentObliquityOfTheEcliptic(julianCentury: T, meanObliquityOfTheEcliptic: ε0).degreesToRadians()
@@ -513,7 +513,7 @@ struct Astronomical {
         return θ.unwindAngle()
     }
     
-    static func nutationInLongitude(julianCentury T: Double, solarLongitude L0: Double, lunarLongitude Lp: Double, ascendingNode Ω: Double) -> Double {
+    static func nutationInLongitude(solarLongitude L0: Double, lunarLongitude Lp: Double, ascendingNode Ω: Double) -> Double {
         /* Equation from Astronomical Algorithms page 144 */
         let term1 = (-17.2/3600) * sin(Ω.degreesToRadians())
         let term2 =  (1.32/3600) * sin(2 * L0.degreesToRadians())
@@ -522,7 +522,7 @@ struct Astronomical {
         return term1 - term2 - term3 + term4
     }
     
-    static func nutationInObliquity(julianCentury T: Double, solarLongitude L0: Double, lunarLongitude Lp: Double, ascendingNode Ω: Double) -> Double {
+    static func nutationInObliquity(solarLongitude L0: Double, lunarLongitude Lp: Double, ascendingNode Ω: Double) -> Double {
         /* Equation from Astronomical Algorithms page 144 */
         let term1 =  (9.2/3600) * cos(Ω.degreesToRadians())
         let term2 = (0.57/3600) * cos(2 * L0.degreesToRadians())

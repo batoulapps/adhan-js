@@ -68,8 +68,8 @@ class AstronomicalTests: XCTestCase {
         ε0 = Astronomical.meanObliquityOfTheEcliptic(julianCentury: T)
         L0 = Astronomical.meanSolarLongitude(julianCentury: T)
         let Lp = Astronomical.meanLunarLongitude(julianCentury: T)
-        let ΔΨ = Astronomical.nutationInLongitude(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
-        let Δε = Astronomical.nutationInObliquity(julianCentury: T, solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
+        let ΔΨ = Astronomical.nutationInLongitude(solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
+        let Δε = Astronomical.nutationInObliquity(solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
         let ε = ε0 + Δε
         
         XCTAssertEqualWithAccuracy(θ0, 197.693195,
