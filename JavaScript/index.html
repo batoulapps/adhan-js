@@ -3,16 +3,18 @@
 	<script src="Adhan.js"></script>
 </head>
 <body>
-	<script type="text/javascript">
-		var x = 1;
-		var c = (function(){
-			var y = 2;
-			return x + y;
-		})();
-		console.log(c);
-		var d = new Date(Date.UTC(2015, 6, 12, 10.131073326242708));
-		d.setUTCHours(1/0);
-		console.log(d);
-	</script>
+	<pre><script type="text/javascript">
+	var date = new Date();
+    var coordinates = new Coordinates(35.78056, -78.6389);
+    var params = CalculationMethod.MuslimWorldLeague;
+    params.madhab = Madhab.Hanafi;
+    var prayerTimes = new PrayerTimes(coordinates, date, params);
+    document.write('Fajr: ' + prayerTimes.fajr.formattedTime(-4) + '\n');
+    document.write('Sunrise: ' + prayerTimes.sunrise.formattedTime(-4) + '\n');
+    document.write('Dhuhr: ' + prayerTimes.dhuhr.formattedTime(-4) + '\n');
+    document.write('Asr: ' + prayerTimes.asr.formattedTime(-4) + '\n');
+    document.write('Maghrib: ' + prayerTimes.maghrib.formattedTime(-4) + '\n');
+    document.write('Isha: ' + prayerTimes.isha.formattedTime(-4) + '\n');
+	</script></pre>
 </body>
 </html>

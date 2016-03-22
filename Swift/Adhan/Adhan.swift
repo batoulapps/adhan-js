@@ -413,7 +413,7 @@ struct SolarCoordinates {
         self.declination = asin(sin(εapp) * sin(λ)).radiansToDegrees()
         
         /* Equation from Astronomical Algorithms page 165 */
-        self.rightAscension = atan2(cos(εapp) * sin(λ), cos(λ)).radiansToDegrees().unwindAngle()
+        self.rightAscension = atan2(cos(εapp) * sin(λ), cos(λ)).radiansToDegrees()
         
         /* Equation from Astronomical Algorithms page 88 */
         self.apparentSiderealTime = θ0 + (((ΔΨ * 3600) * cos((ε0 + Δε).degreesToRadians())) / 3600)
@@ -541,7 +541,7 @@ struct Astronomical {
     static func approximateTransit(longitude L: Double, siderealTime Θ0: Double, rightAscension α2: Double) -> Double {
         /* Equation from page Astronomical Algorithms 102 */
         let Lw = L * -1
-        return ((α2 + Lw - Θ0) / 360).normalizeWithBound(1)
+        return ((α2.unwindAngle() + Lw - Θ0) / 360).normalizeWithBound(1)
     }
     
     /* The time at which the sun is at its highest point in the sky (in universal time) */
@@ -550,7 +550,7 @@ struct Astronomical {
             /* Equation from page Astronomical Algorithms 102 */
             let Lw = L * -1
             let θ = (Θ0 + (360.985647 * m0)).unwindAngle()
-            let α = Astronomical.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m0)
+            let α = Astronomical.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m0).unwindAngle()
             let H = (θ - Lw - α)
             let Δm = (H >= -180 && H <= 180) ? H / -360 : 0
             return (m0 + Δm) * 24
@@ -566,7 +566,7 @@ struct Astronomical {
             let H0 = acos(term1 / term2).radiansToDegrees()
             let m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360)
             let θ = (Θ0 + (360.985647 * m)).unwindAngle()
-            let α = Astronomical.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m)
+            let α = Astronomical.interpolate(value: α2, previousValue: α1, nextValue: α3, factor: m).unwindAngle()
             let δ = Astronomical.interpolate(value: δ2, previousValue: δ1, nextValue: δ3, factor: m)
             let H = (θ - Lw - α)
             let h = Astronomical.altitudeOfCelestialBody(observerLatitude: coordinates.latitude, declination: δ, localHourAngle: H)

@@ -26,7 +26,7 @@ class AstronomicalTests: XCTestCase {
         let C = Astronomical.solarEquationOfTheCenter(julianCentury: T, meanAnomaly: M)
         let λ = Astronomical.apparentSolarLongitude(julianCentury: T, meanLongitude: L0)
         let δ = solar.declination
-        let α = solar.rightAscension
+        let α = solar.rightAscension.unwindAngle()
         
         XCTAssertEqualWithAccuracy(T, -0.072183436,
             accuracy: 0.00000000001)
@@ -152,6 +152,26 @@ class AstronomicalTests: XCTestCase {
         XCTAssertEqual(sunset.timeString(), "24:32")
         XCTAssertEqual(twilightEnd.timeString(), "25:02")
         XCTAssertEqual(invalid.timeString(), "")
+    }
+    
+    func testRightAscensionEdgeCase() {
+        /*
+        Comparison values generated from http://aa.usno.navy.mil/rstt/onedaytable?form=1&ID=AA&year=2016&month=3&day=21&state=NC&place=raleigh
+        */
+        
+        let coordinates = Coordinates(latitude: 35 + 47/60, longitude: -78 - 39/60)
+        let solar = SolarTime(date: date(year: 2016, month: 3, day: 21, hours: 0), coordinates: coordinates)
+        
+        let transit = solar.transit
+        let sunrise = solar.sunrise
+        let sunset = solar.sunset
+        let twilightStart = solar.hourAngle(-6, afterTransit: false)
+        let twilightEnd = solar.hourAngle(-6, afterTransit: true)
+        XCTAssertEqual(twilightStart.timeString(), "10:51")
+        XCTAssertEqual(sunrise.timeString(), "11:16")
+        XCTAssertEqual(transit.timeString(), "17:22")
+        XCTAssertEqual(sunset.timeString(), "23:28")
+        XCTAssertEqual(twilightEnd.timeString(), "23:53")
     }
     
     func testCalendricalDate() {

@@ -31,7 +31,7 @@ QUnit.test("Solar Coordinates", function(assert) {
     var C = Astronomical.solarEquationOfTheCenter(T, M);
     var Lambda = Astronomical.apparentSolarLongitude(T, L0);
     var Delta = solar.declination;
-    var Alpha = solar.rightAscension;    
+    var Alpha = solar.rightAscension.unwindAngle();
 
 	QUnit.close(T, -0.072183436, 0.00000000001);
 	QUnit.close(L0, 201.80720, 0.00001);
@@ -123,6 +123,25 @@ QUnit.test("Solar Time", function(assert) {
     assert.equal(timeString(sunset), "24:32");
     assert.equal(timeString(twilightEnd), "25:02");
     assert.equal(timeString(invalid), "");
+});
+
+QUnit.test("Right Ascension Edge Case", function(assert) {
+    /*
+    Comparison values generated from http://aa.usno.navy.mil/rstt/onedaytable?form=1&ID=AA&year=2016&month=3&day=21&state=NC&place=raleigh
+    */
+    var coordinates = new Coordinates(35 + 47/60, -78 - 39/60);
+    var solar = new SolarTime(new Date(2016, 2, 21), coordinates);
+    
+    var transit = solar.transit;
+    var sunrise = solar.sunrise;
+    var sunset = solar.sunset;
+    var twilightStart = solar.hourAngle(-6, false);
+    var twilightEnd = solar.hourAngle(-6, true);
+    assert.equal(timeString(twilightStart), "10:51");
+    assert.equal(timeString(sunrise), "11:16");
+    assert.equal(timeString(transit), "17:22");
+    assert.equal(timeString(sunset), "23:28");
+    assert.equal(timeString(twilightEnd), "23:53");
 });
 
 QUnit.test("Calendrical Date", function(assert) {
