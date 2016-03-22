@@ -70,8 +70,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p1.method, CalculationMethod.MuslimWorldLeague)
         
         let p2 = CalculationMethod.Egyptian.params
-        XCTAssertEqual(p2.fajrAngle, 20)
-        XCTAssertEqual(p2.ishaAngle, 18)
+        XCTAssertEqual(p2.fajrAngle, 19.5)
+        XCTAssertEqual(p2.ishaAngle, 17.5)
         XCTAssertEqual(p2.ishaInterval, 0)
         XCTAssertEqual(p2.method, CalculationMethod.Egyptian)
         
@@ -110,35 +110,6 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p8.ishaAngle, 0)
         XCTAssertEqual(p8.ishaInterval, 0)
         XCTAssertEqual(p8.method, CalculationMethod.Other)
-    }
-    
-    func daysSinceSolsticeTest(value: Int, year: Int, month: Int, day: Int, latitude: Double) {
-        // For Northern Hemisphere start from December 21
-        // (DYY=0 for December 21, and counting forward, DYY=11 for January 1 and so on).
-        // For Southern Hemisphere start from June 21
-        // (DYY=0 for June 21, and counting forward)
-        
-        let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-        let dateComponents = date(year: year, month: month, day: day)
-        let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: cal.dateFromComponents(dateComponents)!)
-        XCTAssertEqual(PrayerTimes.daysSinceSolstice(dayOfYear, year: dateComponents.year, latitude: latitude), value)
-    }
-    
-    func testDaysSinceSolstice() {
-        daysSinceSolsticeTest(11, year: 2016, month: 1, day: 1, latitude: 1)
-        daysSinceSolsticeTest(10, year: 2015, month: 12, day: 31, latitude: 1)
-        daysSinceSolsticeTest(10, year: 2016, month: 12, day: 31, latitude: 1)
-        daysSinceSolsticeTest(0, year: 2016, month: 12, day: 21, latitude: 1)
-        daysSinceSolsticeTest(1, year: 2016, month: 12, day: 22, latitude: 1)
-        daysSinceSolsticeTest(71, year: 2016, month: 3, day: 1, latitude: 1)
-        daysSinceSolsticeTest(70, year: 2015, month: 3, day: 1, latitude: 1)
-        daysSinceSolsticeTest(365, year: 2016, month: 12, day: 20, latitude: 1)
-        daysSinceSolsticeTest(364, year: 2015, month: 12, day: 20, latitude: 1)
-        
-        daysSinceSolsticeTest(0, year: 2015, month: 6, day: 21, latitude: -1)
-        daysSinceSolsticeTest(0, year: 2016, month: 6, day: 21, latitude: -1)
-        daysSinceSolsticeTest(364, year: 2015, month: 6, day: 20, latitude: -1)
-        daysSinceSolsticeTest(365, year: 2016, month: 6, day: 20, latitude: -1)
     }
     
     func testPrayerTimes() {

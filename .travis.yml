@@ -3,3 +3,8 @@ osx_image: xcode7.2
 xcode_project: Swift/Adhan.xcodeproj
 xcode_scheme: AdhanTests
 xcode_sdk: iphonesimulator
+before_script:
+ - npm install -g node-qunit-phantomjs
+script:
+ - xctool -project Swift/Adhan.xcodeproj -scheme AdhanTests -sdk iphonesimulator build test
+ - node-qunit-phantomjs JavaScript/Tests/tests.html

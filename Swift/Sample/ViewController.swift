@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         let cal = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
         let date = cal.components([.Year, .Month, .Day], fromDate: NSDate())
         let coordinates = Coordinates(latitude: 35.78056, longitude: -78.6389)
-        var params = CalculationMethod.MoonsightingCommittee.params
+        var params = CalculationMethod.MuslimWorldLeague.params
         params.madhab = .Hanafi
         if let prayers = PrayerTimes(coordinates: coordinates, date: date, calculationParameters: params) {
             let formatter = NSDateFormatter()
