@@ -54,3 +54,13 @@ QUnit.test("Time Components", function(assert) {
     assert.equal(comps5.hours, 3);
     assert.equal(comps5.minutes, 30);
 });
+
+QUnit.test("Minute Rounding", function(assert) {
+	var date1 = new Date(2015, 0, 1, 10, 2, 29).roundedMinute();
+	assert.equal(date1.getMinutes(), 2);
+	assert.equal(date1.getSeconds(), 0);
+
+	var date2 = new Date(2015, 0, 1, 10, 2, 31).roundedMinute();
+	assert.equal(date2.getMinutes(), 3);
+	assert.equal(date2.getSeconds(), 0);
+});
