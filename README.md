@@ -14,6 +14,7 @@ of the National Oceanic and Atmospheric Administration.
 Adhan is available for the following languages:
 
 - Swift [(Usage and examples)](Swift/)
+- JavaScript [(Usage and examples)](JavaScript/)
 
 ## Roadmap
 
