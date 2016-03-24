@@ -57,7 +57,7 @@ params.adjustments.fajr = 2
 | highLatitudeRule | Member of the HighLatitudeRule enum, used to set a minimum time for Fajr and a max time for Isha |
 | adjustments | PrayerAdjustments struct with custom prayer time adjustments in minutes for each prayer time |
 
-** CalculationMethod **
+**CalculationMethod**
 
 | Value | Description |
 | ----- | ----------- |
@@ -70,14 +70,14 @@ params.adjustments.fajr = 2
 | NorthAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
 | Other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` struct. |
 
-** Madhab **
+**Madhab**
 
 | Value | Description |
 | ----- | ----------- |
 | Shafi | Earlier Asr time |
 | Hanafi | Later Asr time |
 
-** HighLatitudeRule **
+**HighLatitudeRule**
 
 | Value | Description |
 | ----- | ----------- |
