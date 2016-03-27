@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  Sample
+//  Example
 //
-//  Created by Ameir Al-Zoubi on 2/21/16.
+//  Created by Ameir Al-Zoubi on 3/27/16.
 //  Copyright © 2016 Batoul Apps. All rights reserved.
 //
 
