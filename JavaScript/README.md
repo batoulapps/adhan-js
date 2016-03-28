@@ -1,6 +1,6 @@
 # Adhan JavaScript
 
-The Adhan JavaScript implementation is written to be compatible with the latest version all major browsers.
+The Adhan JavaScript implementation is written to be compatible with the latest version of all major browsers.
 
 ## Usage
 
@@ -31,12 +31,13 @@ that you want prayer times for. These date values are expected to be for the Gre
 
 ```js
 var date = new Date();
+var date = new Date(2015, 11, 1);
 ```
 
 #### Calculation parameters
 
 The rest of the needed information is contained within the `CalculationParameters` object.
-Instead of manually initializing this struct it is recommended to use one of the pre-populated
+Instead of manually initializing this object it is recommended to use one of the pre-populated
 instances in the `CalculationMethod` object. You can then further
 customize the calculation parameters if needed.
 
@@ -48,13 +49,13 @@ params.adjustments.fajr = 2;
 
 | Parameter | Description |
 | --------- | ----------- |
-| method    | Member of CalculationMethod enum |
+| method    | CalculationMethod name |
 | fajrAngle | Angle of the sun used to calculate Fajr |
 | ishaAngle | Angle of the sun used to calculate Isha |
 | ishaInterval | Minutes after Maghrib (if set, the time for Isha will be Maghrib plus ishaInterval) |
-| madhab | Member of the Madhab enum, used to calculate Asr |
-| highLatitudeRule | Member of the HighLatitudeRule enum, used to set a minimum time for Fajr and a max time for Isha |
-| adjustments | PrayerAdjustments struct with custom prayer time adjustments in minutes for each prayer time |
+| madhab | Value from the Madhab object, used to calculate Asr |
+| highLatitudeRule | Value from the HighLatitudeRule object, used to set a minimum time for Fajr and a max time for Isha |
+| adjustments | JavaScript object with custom prayer time adjustments in minutes for each prayer time |
 
 **CalculationMethod**
 
@@ -67,7 +68,7 @@ params.adjustments.fajr = 2;
 | Gulf | The Gulf Region. Fajr angle: 19.5, Isha interval: 90. |
 | MoonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
 | NorthAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
-| Other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` struct. |
+| Other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` object. |
 
 **Madhab**
 
