@@ -159,7 +159,6 @@ class AstronomicalTests: XCTestCase {
         let solar = [Int](0...365).map { SolarTime(date: date(year: 2016, month: 0, day: $0, hours: 0), coordinates: coordinates) }
         for (index, time) in solar.enumerate() {
             if index > 0 {
-                print(time.transit)
                 let previousTime = solar[index-1]
                 // transit from one day to another should not differ more than one minute
                 XCTAssertLessThan(fabs(time.transit - previousTime.transit), 1/60)
