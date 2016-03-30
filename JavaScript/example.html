@@ -9,6 +9,8 @@
     var params = CalculationMethod.MuslimWorldLeague;
     params.madhab = Madhab.Hanafi;
     var prayerTimes = new PrayerTimes(coordinates, date, params);
+
+    document.write('Prayer times for ' + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '\n');
     document.write('Fajr: ' + prayerTimes.fajr.formattedTime(-4) + '\n');
     document.write('Sunrise: ' + prayerTimes.sunrise.formattedTime(-4) + '\n');
     document.write('Dhuhr: ' + prayerTimes.dhuhr.formattedTime(-4) + '\n');

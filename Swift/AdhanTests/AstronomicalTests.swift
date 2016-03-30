@@ -155,23 +155,19 @@ class AstronomicalTests: XCTestCase {
     }
     
     func testRightAscensionEdgeCase() {
-        /*
-        Comparison values generated from http://aa.usno.navy.mil/rstt/onedaytable?form=1&ID=AA&year=2016&month=3&day=21&state=NC&place=raleigh
-        */
-        
         let coordinates = Coordinates(latitude: 35 + 47/60, longitude: -78 - 39/60)
-        let solar = SolarTime(date: date(year: 2016, month: 3, day: 21, hours: 0), coordinates: coordinates)
-        
-        let transit = solar.transit
-        let sunrise = solar.sunrise
-        let sunset = solar.sunset
-        let twilightStart = solar.hourAngle(-6, afterTransit: false)
-        let twilightEnd = solar.hourAngle(-6, afterTransit: true)
-        XCTAssertEqual(twilightStart.timeString(), "10:51")
-        XCTAssertEqual(sunrise.timeString(), "11:16")
-        XCTAssertEqual(transit.timeString(), "17:22")
-        XCTAssertEqual(sunset.timeString(), "23:28")
-        XCTAssertEqual(twilightEnd.timeString(), "23:53")
+        let solar = [Int](0...365).map { SolarTime(date: date(year: 2016, month: 0, day: $0, hours: 0), coordinates: coordinates) }
+        for (index, time) in solar.enumerate() {
+            if index > 0 {
+                let previousTime = solar[index-1]
+                // transit from one day to another should not differ more than one minute
+                XCTAssertLessThan(fabs(time.transit - previousTime.transit), 1/60)
+                
+                // sunrise and sunset from one day to another should not differ more than two minutes
+                XCTAssertLessThan(fabs(time.sunrise - previousTime.sunrise), 2/60)
+                XCTAssertLessThan(fabs(time.sunset - previousTime.sunset), 2/60)
+            }
+        }
     }
     
     func testCalendricalDate() {
@@ -193,7 +189,18 @@ class AstronomicalTests: XCTestCase {
         
         let interpolatedValue = Astronomical.interpolate(value: 0.877366, previousValue: 0.884226, nextValue: 0.870531, factor: 4.35/24)
         XCTAssertEqualWithAccuracy(interpolatedValue, 0.876125,
-            accuracy: 0.000001)
+                                            accuracy: 0.000001)
+        
+        let i1 = Astronomical.interpolate(value: 1, previousValue: -1, nextValue: 3, factor: 0.6)
+        XCTAssertEqualWithAccuracy(i1, 2.2, accuracy: 0.000001)
+    }
+    
+    func testAngleInterpolation() {
+        let i1 = Astronomical.interpolateAngles(value: 1, previousValue: -1, nextValue: 3, factor: 0.6)
+        XCTAssertEqualWithAccuracy(i1, 2.2, accuracy: 0.000001)
+        
+        let i2 = Astronomical.interpolateAngles(value: 1, previousValue: 359, nextValue: 3, factor: 0.6)
+        XCTAssertEqualWithAccuracy(i2, 2.2, accuracy: 0.000001)
     }
     
     func testJulianDay() {

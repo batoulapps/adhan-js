@@ -24,11 +24,26 @@ QUnit.test("Normalizing", function(assert) {
 	assert.equal((259).normalizeWithBound(360), 259);
 	assert.equal((2592.0).normalizeWithBound(360), 72);
 
-	assert.equal((-45).unwindAngle(), 315)
-	assert.equal((361.0).unwindAngle(), 1)
-	assert.equal((360).unwindAngle(), 0)
-	assert.equal((259.0).unwindAngle(), 259)
-	assert.equal((2592).unwindAngle(), 72)
+	assert.equal((-45).unwindAngle(), 315);
+	assert.equal((361.0).unwindAngle(), 1);
+	assert.equal((360).unwindAngle(), 0);
+	assert.equal((259.0).unwindAngle(), 259);
+	assert.equal((2592).unwindAngle(), 72);
+
+	QUnit.close((360.1).normalizeWithBound(360), 0.1, 0.01);
+});
+
+QUnit.test("Closest Angle", function(assert) {
+    assert.equal((360.0).closestAngle(), 0);
+    assert.equal((361.0).closestAngle(), 1);
+    assert.equal((1.0).closestAngle(), 1);
+    assert.equal((-1.0).closestAngle(), -1);
+    assert.equal((-181.0).closestAngle(), 179);
+    assert.equal((180.0).closestAngle(), 180);
+    assert.equal((359.0).closestAngle(), -1);
+    assert.equal((-359.0).closestAngle(), 1);
+    assert.equal((1261.0).closestAngle(), -179);
+    QUnit.close((-360.1).closestAngle(), -0.1, 0.01);
 });
 
 QUnit.test("Time Components", function(assert) {

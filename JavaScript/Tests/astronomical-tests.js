@@ -126,22 +126,19 @@ QUnit.test("Solar Time", function(assert) {
 });
 
 QUnit.test("Right Ascension Edge Case", function(assert) {
-    /*
-    Comparison values generated from http://aa.usno.navy.mil/rstt/onedaytable?form=1&ID=AA&year=2016&month=3&day=21&state=NC&place=raleigh
-    */
     var coordinates = new Coordinates(35 + 47/60, -78 - 39/60);
-    var solar = new SolarTime(new Date(2016, 2, 21), coordinates);
-    
-    var transit = solar.transit;
-    var sunrise = solar.sunrise;
-    var sunset = solar.sunset;
-    var twilightStart = solar.hourAngle(-6, false);
-    var twilightEnd = solar.hourAngle(-6, true);
-    assert.equal(timeString(twilightStart), "10:51");
-    assert.equal(timeString(sunrise), "11:16");
-    assert.equal(timeString(transit), "17:22");
-    assert.equal(timeString(sunset), "23:28");
-    assert.equal(timeString(twilightEnd), "23:53");
+    var solar = [];
+    for (var i = 0; i <= 365; i++) {
+        solar.push(new SolarTime(new Date(2016, 0, i), coordinates));
+    }
+
+    for (var i = 1; i < solar.length; i++) {
+        var time = solar[i];
+        var previousTime = solar[i-1];
+        assert.ok(Math.abs(time.transit - previousTime.transit) < 1/60);
+        assert.ok(Math.abs(time.sunrise - previousTime.sunrise) < 2/60);
+        assert.ok(Math.abs(time.sunset - previousTime.sunset) < 2/60);
+    }
 });
 
 QUnit.test("Calendrical Date", function(assert) {
@@ -160,6 +157,17 @@ QUnit.test("Calendrical Date", function(assert) {
 QUnit.test("Interpolation", function(assert) {
 	var interpolatedValue = Astronomical.interpolate(0.877366, 0.884226, 0.870531, 4.35/24)
 	QUnit.close(interpolatedValue, 0.876125, 0.000001);
+
+    var i1 = Astronomical.interpolate(1, -1, 3, 0.6);
+    QUnit.close(i1, 2.2, 0.000001);
+});
+
+QUnit.test("Angle Interpolation", function(assert) {
+    var i1 = Astronomical.interpolateAngles(1, -1, 3, 0.6);
+    QUnit.close(i1, 2.2, 0.000001);
+    
+    var i2 = Astronomical.interpolateAngles(1, 359, 3, 0.6);
+    QUnit.close(i2, 2.2, 0.000001);
 });
 
 QUnit.test("Julian Day", function(assert) {

@@ -238,7 +238,7 @@ function SolarCoordinates(julianDay) {
     this.declination = Math.asin(Math.sin(EpsilonApparent) * Math.sin(Lambda)).radiansToDegrees();
     
     /* Equation from Astronomical Algorithms page 165 */
-    this.rightAscension = Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda)).radiansToDegrees();
+    this.rightAscension = Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda)).radiansToDegrees().unwindAngle();
     
     /* Equation from Astronomical Algorithms page 88 */
     this.apparentSiderealTime = Theta0 + (((dPsi * 3600) * Math.cos((Epsilon0 + dEpsilon).degreesToRadians())) / 3600);
@@ -390,7 +390,7 @@ var Astronomical = {
         var a2 = rightAscension;
         /* Equation from page Astronomical Algorithms 102 */
         var Lw = L * -1;
-        return ((a2.unwindAngle() + Lw - Theta0) / 360).normalizeWithBound(1);
+        return ((a2 + Lw - Theta0) / 360).normalizeWithBound(1);
     },
 
     /* The time at which the sun is at its highest point in the sky (in universal time) */
@@ -404,9 +404,9 @@ var Astronomical = {
         /* Equation from page Astronomical Algorithms 102 */
         var Lw = L * -1;
         var Theta = (Theta0 + (360.985647 * m0)).unwindAngle();
-        var a = Astronomical.interpolate(a2, a1, a3, m0).unwindAngle();
-        var H = (Theta - Lw - a);
-        var dm = (H >= -180 && H <= 180) ? H / -360 : 0;
+        var a = Astronomical.interpolateAngles(a2, a1, a3, m0).unwindAngle();
+        var H = (Theta - Lw - a).closestAngle();
+        var dm = H / -360;
         return (m0 + dm) * 24;
     },
 
@@ -429,7 +429,7 @@ var Astronomical = {
         var H0 = Math.acos(term1 / term2).radiansToDegrees();
         var m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360);
         var Theta = (Theta0 + (360.985647 * m)).unwindAngle();
-        var a = Astronomical.interpolate(a2, a1, a3, m).unwindAngle();
+        var a = Astronomical.interpolateAngles(a2, a1, a3, m).unwindAngle();
         var delta = Astronomical.interpolate(d2, d1, d3, m);
         var H = (Theta - Lw - a);
         var h = Astronomical.altitudeOfCelestialBody(coordinates.latitude, delta, H);
@@ -450,6 +450,16 @@ var Astronomical = {
         var c = b - a;
         return y2 + ((n/2) * (a + b + (n * c)));
     },
+
+    /* Interpolation of three angles, accounting for
+     angle unwinding. */
+    interpolateAngles: function(y2, y1, y3, n) {
+        /* Equation from Astronomical Algorithms page 24 */
+        var a = (y2 - y1).unwindAngle();
+        var b = (y3 - y2).unwindAngle();
+        var c = b - a;
+        return y2 + ((n/2) * (a + b + (n * c)));
+    },    
 
     /* The Julian Day for a given Gregorian date. */
     julianDay: function(year, month, day, hours) {
@@ -581,18 +591,26 @@ function TimeComponents(hours, minutes, seconds) {
 
 Number.prototype.degreesToRadians = function() {
 	return (this * Math.PI) / 180.0;
-};
+}
 
 Number.prototype.radiansToDegrees = function() {
 	return (this * 180.0) / Math.PI;
-};
+}
 
 Number.prototype.normalizeWithBound = function(max) {
 	return this - (max * (Math.floor(this / max)))
-};
+}
 
 Number.prototype.unwindAngle = function() {
 	return this.normalizeWithBound(360.0);
+}
+
+Number.prototype.closestAngle = function() {
+    if (this >= -180 && this <= 180) {
+        return this;
+    }
+    
+    return this - (360 * Math.round(this/360));
 }
 
 Number.prototype.timeComponents = function() {
