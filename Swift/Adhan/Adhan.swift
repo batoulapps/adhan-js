@@ -550,9 +550,9 @@ struct Astronomical {
             /* Equation from page Astronomical Algorithms 102 */
             let Lw = L * -1
             let θ = (Θ0 + (360.985647 * m0)).unwindAngle()
-            let α = Astronomical.interpolateAngles(value: α2, previousValue: α1, nextValue: α3, factor: m0)
-            let H = (θ - Lw - α)
-            let Δm = (H >= -180 && H <= 180) ? H / -360 : 0
+            let α = Astronomical.interpolateAngles(value: α2, previousValue: α1, nextValue: α3, factor: m0).unwindAngle()
+            let H = (θ - Lw - α).closestAngle()
+            let Δm = H / -360
             return (m0 + Δm) * 24
     }
     
@@ -566,7 +566,7 @@ struct Astronomical {
             let H0 = acos(term1 / term2).radiansToDegrees()
             let m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360)
             let θ = (Θ0 + (360.985647 * m)).unwindAngle()
-            let α = Astronomical.interpolateAngles(value: α2, previousValue: α1, nextValue: α3, factor: m)
+            let α = Astronomical.interpolateAngles(value: α2, previousValue: α1, nextValue: α3, factor: m).unwindAngle()
             let δ = Astronomical.interpolate(value: δ2, previousValue: δ1, nextValue: δ3, factor: m)
             let H = (θ - Lw - α)
             let h = Astronomical.altitudeOfCelestialBody(observerLatitude: coordinates.latitude, declination: δ, localHourAngle: H)
@@ -788,6 +788,14 @@ extension Double {
     
     func unwindAngle() -> Double {
         return self.normalizeWithBound(360)
+    }
+    
+    func closestAngle() -> Double {
+        if self >= -180 && self <= 180 {
+            return self
+        }
+        
+        return self - (360 * round(self/360))
     }
     
     func timeComponents() -> TimeComponents? {

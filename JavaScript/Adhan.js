@@ -404,9 +404,9 @@ var Astronomical = {
         /* Equation from page Astronomical Algorithms 102 */
         var Lw = L * -1;
         var Theta = (Theta0 + (360.985647 * m0)).unwindAngle();
-        var a = Astronomical.interpolateAngles(a2, a1, a3, m0);
-        var H = (Theta - Lw - a);
-        var dm = (H >= -180 && H <= 180) ? H / -360 : 0;
+        var a = Astronomical.interpolateAngles(a2, a1, a3, m0).unwindAngle();
+        var H = (Theta - Lw - a).closestAngle();
+        var dm = H / -360;
         return (m0 + dm) * 24;
     },
 
@@ -429,7 +429,7 @@ var Astronomical = {
         var H0 = Math.acos(term1 / term2).radiansToDegrees();
         var m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360);
         var Theta = (Theta0 + (360.985647 * m)).unwindAngle();
-        var a = Astronomical.interpolateAngles(a2, a1, a3, m);
+        var a = Astronomical.interpolateAngles(a2, a1, a3, m).unwindAngle();
         var delta = Astronomical.interpolate(d2, d1, d3, m);
         var H = (Theta - Lw - a);
         var h = Astronomical.altitudeOfCelestialBody(coordinates.latitude, delta, H);
@@ -603,6 +603,14 @@ Number.prototype.normalizeWithBound = function(max) {
 
 Number.prototype.unwindAngle = function() {
 	return this.normalizeWithBound(360.0);
+}
+
+Number.prototype.closestAngle = function() {
+    if (this >= -180 && this <= 180) {
+        return this;
+    }
+    
+    return this - (360 * Math.round(this/360));
 }
 
 Number.prototype.timeComponents = function() {
