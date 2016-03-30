@@ -455,10 +455,10 @@ var Astronomical = {
      angle unwinding. */
     interpolateAngles: function(y2, y1, y3, n) {
         /* Equation from Astronomical Algorithms page 24 */
-        var a = (y2 - y1).unwindAngle()
-        var b = (y3 - y2).unwindAngle()
-        var c = b - a
-        return y2 + ((n/2) * (a + b + (n * c)))
+        var a = (y2 - y1).unwindAngle();
+        var b = (y3 - y2).unwindAngle();
+        var c = b - a;
+        return y2 + ((n/2) * (a + b + (n * c)));
     },    
 
     /* The Julian Day for a given Gregorian date. */
