@@ -71,6 +71,7 @@ class TimeTests: XCTestCase {
             let calculationParameters = parseParams(params)
             
             let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+            cal.timeZone = NSTimeZone(name: "UTC")!
             
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "YYYY-MM-dd"

@@ -1,5 +1,4 @@
 {
-	"source": "http://www.ummulqura.org.sa/Index.aspx adjusted +/- 2 minutes",
 	"params": {
 		"latitude": 21.427009,
 		"longitude": 39.828685,
@@ -8,12 +7,28 @@
 		"madhab": "Shafi",
 		"highLatitudeRule": "MiddleOfTheNight"
 	},
+	"source": [
+		"http://www.ummulqura.org.sa/Index.aspx",
+		"adjusted +/- 1 minute",
+		"1/5/15 -  25/3/1437    Mecca    05:39-1  06:59+1  12:26+1  03:32-1  05:53-1  07:23-1",
+		"2/4/16 -  25/4/1437    Mecca    05:39    06:57    12:35+1  03:49-1  06:13-1  07:43-1",
+		"3/5/16 -  25/5/1437    Mecca    05:22    06:37+1  12:33    03:55    06:27    07:57",
+		"4/3/16 -  25/6/1437    Mecca    04:55    06:11+1  12:24+1  03:50    06:37-1  08:07-1",
+		"5/2/16 -  25/7/1437    Mecca    04:27+1  05:48+1  12:18+1  03:39    06:47    08:17",
+		"6/4/16 -  28/8/1437    Mecca    04:11    05:37+1  12:20    03:37-1  07:01    08:31",
+		"7/8/16 -  3/10/1437    Mecca    04:18    05:44+1  12:26+1  03:43    07:07    08:37",
+		"8/2/16 -  28/10/1437   Mecca    04:32-1  05:54    12:27+1  03:46    07:00-1  08:30-1",
+		"9/4/16 -  3/12/1437    Mecca    04:48-1  06:04+1  12:20+1  03:45-1  06:34    08:04",
+		"10/6/16 -  5/1/1438    Mecca    04:58-1  06:13    12:09+1  03:32-1  06:04    07:34",
+		"11/5/16 -  5/2/1438    Mecca    05:09-1  06:26    12:05    03:19-1  05:43-1  07:13-1",
+		"12/4/16 -  5/3/1438    Mecca    05:24-1  06:44    12:12    03:17    05:38    07:08",
+	],
 	"times": [
 		{
 			"date": "2016-01-05",
 			"fajr": "5:38 AM",
-			"sunrise": "6:59 AM",
-			"dhuhr": "12:26 PM",
+			"sunrise": "7:00 AM",
+			"dhuhr": "12:27 PM",
 			"asr": "3:31 PM",
 			"maghrib": "5:52 PM",
 			"isha": "7:22 PM"
@@ -21,25 +36,25 @@
 		{
 			"date": "2016-02-04",
 			"fajr": "5:39 AM",
-			"sunrise": "6:58 AM",
-			"dhuhr": "12:35 PM",
+			"sunrise": "6:57 AM",
+			"dhuhr": "12:36 PM",
 			"asr": "3:48 PM",
-			"maghrib": "6:11 PM",
-			"isha": "7:41 PM"
+			"maghrib": "6:12 PM",
+			"isha": "7:42 PM"
 		},	
 		{
 			"date": "2016-03-05",
-			"fajr": "5:23 AM",
-			"sunrise": "6:39 AM",
+			"fajr": "5:22 AM",
+			"sunrise": "6:38 AM",
 			"dhuhr": "12:33 PM",
 			"asr": "3:55 PM",
-			"maghrib": "6:26 PM",
-			"isha": "7:56 PM"
+			"maghrib": "6:27 PM",
+			"isha": "7:57 PM"
 		},	
 		{
 			"date": "2016-04-03",
-			"fajr": "4:56 AM",
-			"sunrise": "6:13 AM",
+			"fajr": "4:55 AM",
+			"sunrise": "6:12 AM",
 			"dhuhr": "12:25 PM",
 			"asr": "3:50 PM",
 			"maghrib": "6:36 PM",
@@ -48,11 +63,11 @@
 		{
 			"date": "2016-05-02",
 			"fajr": "4:28 AM",
-			"sunrise": "5:50 AM",
+			"sunrise": "5:49 AM",
 			"dhuhr": "12:19 PM",
 			"asr": "3:39 PM",
-			"maghrib": "6:46 PM",
-			"isha": "8:16 PM"
+			"maghrib": "6:47 PM",
+			"isha": "8:17 PM"
 		},
 		{
 			"date": "2016-06-04",
@@ -60,13 +75,13 @@
 			"sunrise": "5:38 AM",
 			"dhuhr": "12:20 PM",
 			"asr": "3:36 PM",
-			"maghrib": "7:00 PM",
-			"isha": "8:30 PM"
+			"maghrib": "7:01 PM",
+			"isha": "8:31 PM"
 		},
 		{
 			"date": "2016-07-08",
-			"fajr": "4:17 AM",
-			"sunrise": "5:44 AM",
+			"fajr": "4:18 AM",
+			"sunrise": "5:45 AM",
 			"dhuhr": "12:27 PM",
 			"asr": "3:43 PM",
 			"maghrib": "7:07 PM",
@@ -77,9 +92,9 @@
 			"fajr": "4:31 AM",
 			"sunrise": "5:54 AM",
 			"dhuhr": "12:28 PM",
-			"asr": "3:45 PM",
-			"maghrib": "7:00 PM",
-			"isha": "8:30 PM"
+			"asr": "3:46 PM",
+			"maghrib": "6:59 PM",
+			"isha": "8:29 PM"
 		},
 		{
 			"date": "2016-09-04",
@@ -87,8 +102,8 @@
 			"sunrise": "6:05 AM",
 			"dhuhr": "12:21 PM",
 			"asr": "3:44 PM",
-			"maghrib": "6:35 PM",
-			"isha": "8:05 PM"
+			"maghrib": "6:34 PM",
+			"isha": "8:04 PM"
 		},
 		{
 			"date": "2016-10-06",
@@ -96,24 +111,24 @@
 			"sunrise": "6:13 AM",
 			"dhuhr": "12:10 PM",
 			"asr": "3:31 PM",
-			"maghrib": "6:05 PM",
-			"isha": "7:35 PM"
+			"maghrib": "6:04 PM",
+			"isha": "7:34 PM"
 		},
 		{
 			"date": "2016-11-05",
 			"fajr": "5:08 AM",
-			"sunrise": "6:25 AM",
+			"sunrise": "6:26 AM",
 			"dhuhr": "12:05 PM",
 			"asr": "3:18 PM",
-			"maghrib": "5:43 PM",
-			"isha": "7:13 PM"
+			"maghrib": "5:42 PM",
+			"isha": "7:12 PM"
 		},
 		{
 			"date": "2016-12-04",
-			"fajr": "5:22 AM",
-			"sunrise": "6:43 AM",
+			"fajr": "5:23 AM",
+			"sunrise": "6:44 AM",
 			"dhuhr": "12:12 PM",
-			"asr": "3:16 PM",
+			"asr": "3:17 PM",
 			"maghrib": "5:38 PM",
 			"isha": "7:08 PM"
 		}

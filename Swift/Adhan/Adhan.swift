@@ -706,7 +706,7 @@ struct Astronomical {
             }
         }
         
-        return daysSinceSolstice;
+        return daysSinceSolstice
     }
 }
 
