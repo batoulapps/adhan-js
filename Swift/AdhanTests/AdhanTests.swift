@@ -82,7 +82,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p3.method, CalculationMethod.Karachi)
         
         let p4 = CalculationMethod.UmmAlQura.params
-        XCTAssertEqual(p4.fajrAngle, 18)
+        XCTAssertEqual(p4.fajrAngle, 18.5)
         XCTAssertEqual(p4.ishaAngle, 0)
         XCTAssertEqual(p4.ishaInterval, 90)
         XCTAssertEqual(p4.method, CalculationMethod.UmmAlQura)

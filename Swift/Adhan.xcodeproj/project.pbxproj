@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84BCD1AE1CB09A5900614D12 /* Times in Resources */ = {isa = PBXBuildFile; fileRef = 84BCD1AD1CB09A5900614D12 /* Times */; };
+		84BCD1B01CB09A7700614D12 /* TimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BCD1AF1CB09A7700614D12 /* TimeTests.swift */; };
 		84E8ABC71CA8A673004E252F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E8ABC61CA8A673004E252F /* AppDelegate.swift */; };
 		84E8ABC91CA8A673004E252F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E8ABC81CA8A673004E252F /* ViewController.swift */; };
 		84E8ABCC1CA8A673004E252F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84E8ABCA1CA8A673004E252F /* Main.storyboard */; };
@@ -31,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		84BCD1AD1CB09A5900614D12 /* Times */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Times; path = ../../Times; sourceTree = "<group>"; };
+		84BCD1AF1CB09A7700614D12 /* TimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTests.swift; sourceTree = "<group>"; };
 		84E8ABC41CA8A672004E252F /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84E8ABC61CA8A673004E252F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84E8ABC81CA8A673004E252F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +125,8 @@
 		84F8E12D1C7AB542004C48D7 /* AdhanTests */ = {
 			isa = PBXGroup;
 			children = (
+				84BCD1AD1CB09A5900614D12 /* Times */,
+				84BCD1AF1CB09A7700614D12 /* TimeTests.swift */,
 				84F8E12E1C7AB542004C48D7 /* AdhanTests.swift */,
 				84F8E13B1C7AB5DE004C48D7 /* AstronomicalTests.swift */,
 				84F8E13D1C7AB635004C48D7 /* MathTests.swift */,
@@ -259,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84BCD1AE1CB09A5900614D12 /* Times in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84BCD1B01CB09A7700614D12 /* TimeTests.swift in Sources */,
 				84F8E13E1C7AB635004C48D7 /* MathTests.swift in Sources */,
 				84F8E12F1C7AB542004C48D7 /* AdhanTests.swift in Sources */,
 				84F8E13C1C7AB5DE004C48D7 /* AstronomicalTests.swift in Sources */,
@@ -502,6 +510,7 @@
 				84E8ABD51CA8A673004E252F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		84F8E1191C7AB541004C48D7 /* Build configuration list for PBXProject "Adhan" */ = {
 			isa = XCConfigurationList;

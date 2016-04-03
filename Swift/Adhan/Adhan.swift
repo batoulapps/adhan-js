@@ -138,7 +138,7 @@ public enum CalculationMethod {
         case .Karachi:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
         case .UmmAlQura:
-            return CalculationParameters(fajrAngle: 18, ishaInterval: 90, method: self)
+            return CalculationParameters(fajrAngle: 18.5, ishaInterval: 90, method: self)
         case .Gulf:
             return CalculationParameters(fajrAngle: 19.5, ishaInterval: 90, method: self)
         case .MoonsightingCommittee:

@@ -1,0 +1,113 @@
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+	<script src="Adhan.js"></script>
+	<style type="text/css">
+		ul {
+			list-style: none;
+			margin: 0px;
+			padding: 0px;
+			font-family: Helvetica;
+		}
+		.line-legend li span{
+		    display: inline-block;
+		    width: 12px;
+		    height: 12px;
+		    margin-right: 5px;
+		}
+	</style>
+</head>
+<body>
+	<script type="text/javascript">
+		function hourDecimal(date, offset) {
+			var utcDate = date.dateByAddingHours(offset);
+			return (utcDate.getUTCHours() + (utcDate.getUTCMinutes() / 60));
+		}
+	
+		var coordinates = new Coordinates(35.78056, -78.6389);
+		var params = CalculationMethod.MuslimWorldLeague;
+
+    	var _labels = [];
+    	var fajr_data = [];
+    	var sunrise_data = [];
+    	var dhuhr_data = [];
+    	var asr_data = [];
+    	var maghrib_data = [];
+    	var isha_data = [];
+
+    	for (var i = 1; i <= 365; i++) {
+    		var date = new Date(2016, 0, i);	
+		    var prayerTimes = new PrayerTimes(coordinates, date, params);
+		    _labels.push("");
+		    var offset = -5;
+		    if (i > 75 && i < 300) {
+		    	offset = -4;
+		    }
+		    fajr_data.push(hourDecimal(prayerTimes.fajr, offset));
+		    sunrise_data.push(hourDecimal(prayerTimes.sunrise, offset));
+		    dhuhr_data.push(hourDecimal(prayerTimes.dhuhr, offset));
+		    asr_data.push(hourDecimal(prayerTimes.asr, offset));
+		    maghrib_data.push(hourDecimal(prayerTimes.maghrib, offset));
+		    isha_data.push(hourDecimal(prayerTimes.isha, offset));
+    	}
+    	// debugger;
+		var lineChartData = {
+			labels : _labels,
+			datasets : [
+				{
+					label: "Fajr",
+					fillColor : "rgba(199,83,48,0)",
+					strokeColor : "rgba(199,83,48,1)",
+					data : fajr_data
+				},
+				{
+					label: "Sunrise",
+					fillColor : "rgba(199,83,48,0)",
+					strokeColor : "rgba(199,83,48,1)",
+					data : sunrise_data
+				},
+				{
+					label: "Dhuhr",
+					fillColor : "rgba(26,134,61,0)",
+					strokeColor : "rgba(26,134,61,1)",
+					data : dhuhr_data
+				},
+				{
+					label: "Asr",
+					fillColor : "rgba(22,143,183,0)",
+					strokeColor : "rgba(22,143,183,1)",
+					data : asr_data
+				},
+				{
+					label: "Maghrib",
+					fillColor : "rgba(173,95,12,0)",
+					strokeColor : "rgba(173,95,12,1)",
+					data : maghrib_data
+				},
+				{
+					label: "Isha",
+					fillColor : "rgba(63,47,115,0)",
+					strokeColor : "rgba(63,47,115,1)",
+					data : isha_data
+				}
+			]
+		}
+
+	window.onload = function(){
+		var ctx = document.getElementById("fajr").getContext("2d");
+		window.prayerLineChart = new Chart(ctx).Line(lineChartData, {
+			pointDot: false,
+			scaleShowVerticalLines: false,
+			scaleOverride : true,
+        	scaleSteps : 11,
+        	scaleStepWidth : 2,
+        	scaleStartValue : 2 
+		});
+		document.getElementById('legend').innerHTML = prayerLineChart.generateLegend();
+	}
+
+	</script>
+	<canvas id="fajr" width="1200" height="750"></canvas>
+	<div id="legend"></div>
+</body>
+</html>

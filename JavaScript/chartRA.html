@@ -1,0 +1,52 @@
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+	<script src="Adhan.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		function hourDecimal(date, offset) {
+			var utcDate = date.dateByAddingHours(offset);
+			return (utcDate.getUTCHours() + (utcDate.getUTCMinutes() / 60));
+		}
+	
+		var coordinates = new Coordinates(-35.78056, -78.6389);
+		var params = CalculationMethod.MuslimWorldLeague;
+
+    	var plabels = [];
+    	var pdata = [];
+
+    	for (var i = 1; i <= 365; i++) {
+    		var date = new Date(2016, 0, i);	
+		    var solar = new SolarCoordinates(date.julianDate());
+		    plabels.push(i);
+		    pdata.push(solar.rightAscension);
+    	}
+    	// debugger;
+		var lineChartData = {
+			labels : plabels,
+			datasets : [
+				{
+					label: "Fajr",
+					fillColor : "rgba(220,220,220,0.2)",
+					strokeColor : "rgba(220,220,220,1)",
+					pointColor : "rgba(220,220,220,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(220,220,220,1)",
+					data : pdata
+				}
+			]
+		}
+
+	window.onload = function(){
+		var ctx = document.getElementById("fajr").getContext("2d");
+		window.myLine = new Chart(ctx).Line(lineChartData, {
+			// responsive: true
+		});
+	}
+
+	</script>
+	<canvas id="fajr" width="1200" height="400"></canvas>
+</body>
+</html>
