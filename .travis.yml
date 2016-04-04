@@ -7,4 +7,4 @@ before_script:
  - npm install -g node-qunit-phantomjs
 script:
  - xctool -project Swift/Adhan.xcodeproj -scheme AdhanTests -sdk iphonesimulator build test
- - node-qunit-phantomjs JavaScript/Tests/tests.html
+ - JavaScript/Tests/runtests
