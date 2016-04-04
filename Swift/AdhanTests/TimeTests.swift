@@ -82,6 +82,7 @@ class TimeTests: XCTestCase {
             timeFormatter.timeZone = timezone
          
             let times = json["times"] as! [NSDictionary]
+            print("Testing \((path as NSString).lastPathComponent) (\(times.count) days)")
             for time in times {
                 let date = dateFormatter.dateFromString(time["date"] as! String)!
                 let prayerTimes = PrayerTimes(coordinates: coordinates, date: cal.components([.Year, .Month, .Day], fromDate: date), calculationParameters: calculationParameters)!

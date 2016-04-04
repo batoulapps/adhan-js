@@ -35,7 +35,7 @@ QUnit.test("Calculation Method", function(assert) {
     assert.equal(p3.method, "Karachi");
 
     var p4 = CalculationMethod.UmmAlQura;
-    assert.equal(p4.fajrAngle, 18);
+    assert.equal(p4.fajrAngle, 18.5);
     assert.equal(p4.ishaAngle, 0);
     assert.equal(p4.ishaInterval, 90);
     assert.equal(p4.method, "UmmAlQura");
@@ -78,7 +78,7 @@ QUnit.test("Prayer Times", function(assert) {
     assert.equal(p.maghrib.formattedTime(-4), "8:32 PM");
     assert.equal(p.isha.formattedTime(-4), "9:57 PM");
     assert.equal(p.isha.formattedTime(-4, '24h'), "21:57");
-    assert.equal(moment(p.isha).tz("America/New_York").format("h:m A"), "9:57 PM");
+    assert.equal(moment(p.isha).tz("America/New_York").format("h:mm A"), "9:57 PM");
 });
 
 QUnit.test("Offset", function(assert) {

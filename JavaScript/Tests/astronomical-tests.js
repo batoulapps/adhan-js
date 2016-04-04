@@ -5,7 +5,7 @@
 
 function timeString(hours) {
 	var comps = hours.timeComponents();
-    if (comps == null) {
+    if (isNaN(comps.hours) || isNaN(comps.minutes) || isNaN(comps.seconds)) {
         return "";
     }
     

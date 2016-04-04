@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width">
+	<title>QUnit Tests</title>
+	<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.22.0.css">
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+
+	<script src="../Adhan.js"></script>
+
+	<script src="https://code.jquery.com/qunit/qunit-1.22.0.js"></script>
+	<script src="plugins/qunit-close-enough.js"></script>
+	<script src="plugins/moment.min.js"></script>
+	<script src="plugins/moment-timezone-with-data-2010-2020.min.js"></script>
+	<script src="times.js"></script>
+	<script type="text/javascript">
+		function parseParams(data) {
+			var params;
+
+			var method = data["method"];
+			if (method == "MuslimWorldLeague") {
+				params = CalculationMethod.MuslimWorldLeague;
+			} else if (method == "Egyptian") {
+				params = CalculationMethod.Egyptian;
+			} else if (method == "Karachi") {
+				params = CalculationMethod.Karachi;
+			} else if (method == "UmmAlQura") {
+				params = CalculationMethod.UmmAlQura;
+			} else if (method == "Gulf") {
+				params = CalculationMethod.Gulf;
+			} else if (method == "MoonsightingCommittee") {
+				params = CalculationMethod.MoonsightingCommittee;
+			} else if (method == "NorthAmerica") {
+				params = CalculationMethod.NorthAmerica;
+			} else {
+				params = CalculationMethod.Other;
+			}
+
+			var madhab = data["madhab"];
+        	if (madhab == "Shafi") {
+            	params.madhab = Madhab.Shafi;
+        	} else if (madhab == "Hanafi") {
+            	params.madhab = Madhab.Hanafi;
+        	}
+
+	        var highLatRule = data["highLatitudeRule"];
+        	if (highLatRule == "SeventhOfTheNight") {
+            	params.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight;
+	        } else if (highLatRule == "TwilightAngle") {
+            	params.highLatitudeRule = HighLatitudeRule.TwilightAngle;
+        	} else {
+            	params.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight;
+        	}
+
+        	return params;
+		}
+
+		QUnit.test("Prayer Times", function(assert) {
+			times.forEach(function(data) {
+				var coordinates = new Coordinates(data["params"]["latitude"], data["params"]["longitude"]);
+				var params = parseParams(data["params"]);
+				data["times"].forEach(function(time) {
+					var date = moment(time["date"], "YYYY-MM-DD").toDate();
+					var p = new PrayerTimes(coordinates, date, params);
+					assert.equal(moment(p.fajr).tz(data["params"]["timezone"]).format("h:mm A"), time["fajr"]);
+					assert.equal(moment(p.sunrise).tz(data["params"]["timezone"]).format("h:mm A"), time["sunrise"]);
+					assert.equal(moment(p.dhuhr).tz(data["params"]["timezone"]).format("h:mm A"), time["dhuhr"]);
+					assert.equal(moment(p.asr).tz(data["params"]["timezone"]).format("h:mm A"), time["asr"]);
+					assert.equal(moment(p.maghrib).tz(data["params"]["timezone"]).format("h:mm A"), time["maghrib"]);
+					assert.equal(moment(p.isha).tz(data["params"]["timezone"]).format("h:mm A"), time["isha"]);
+				});
+			});
+		});
+	</script>
+</body>
+</html>

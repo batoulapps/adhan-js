@@ -46,7 +46,7 @@ var CalculationMethod = {
 	Karachi: new CalculationParameters(18, 18, 0, "Karachi"),
 
 	// Umm al-Qura University, Makkah
-	UmmAlQura: new CalculationParameters(18, 0, 90, "UmmAlQura"),
+	UmmAlQura: new CalculationParameters(18.5, 0, 90, "UmmAlQura"),
 
 	// The Gulf Region
 	Gulf: new CalculationParameters(19.5, 0, 90, "Gulf"),
@@ -64,14 +64,20 @@ var CalculationMethod = {
 function PrayerTimes(coordinates, date, calculationParameters) {
     var solarTime = new SolarTime(date, coordinates);
 
-    var dhuhrTime = solarTime.transit.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
-    var sunriseTime = solarTime.sunrise.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
-    var maghribTime = solarTime.sunset.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+    var fajrTime = null;
+    var sunriseTime = null;
+    var dhuhrTime = null;
+    var asrTime = null;
+    var maghribTime = null;
+    var ishaTime = null;
 
-    var asrTime = solarTime.afternoon(calculationParameters.madhab).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
-    var fajrTime = solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+    dhuhrTime = solarTime.transit.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+    sunriseTime = solarTime.sunrise.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+    maghribTime = solarTime.sunset.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
 
-    // TODO: calculate and compare safe fajr
+    asrTime = solarTime.afternoon(calculationParameters.madhab).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+    fajrTime = solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+
     var tomorrowSunrise = sunriseTime.dateByAddingDays(1);
     var night = (tomorrowSunrise - maghribTime) / 1000;
 
@@ -91,11 +97,10 @@ function PrayerTimes(coordinates, date, calculationParameters) {
         }
     })();
 
-    if (isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
+    if (fajrTime == null || isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
         fajrTime = safeFajr
     }
 
-    var ishaTime = null;
     if (calculationParameters.ishaInterval > 0) {
         ishaTime = maghribTime.dateByAddingMinutes(calculationParameters.ishaInterval);
     } else {
@@ -117,7 +122,7 @@ function PrayerTimes(coordinates, date, calculationParameters) {
             }
         })();
 
-        if (isNaN(ishaTime.getTime()) || safeIsha < ishaTime) {
+        if (ishaTime == null || isNaN(ishaTime.getTime()) || safeIsha < ishaTime) {
             ishaTime = safeIsha
         }
     }
@@ -615,7 +620,7 @@ Number.prototype.closestAngle = function() {
 
 Number.prototype.timeComponents = function() {
     if (isNaN(this)) {
-        return null;
+        return new TimeComponents(NaN, NaN, NaN);
     }
 
     var hours = Math.floor(this);
