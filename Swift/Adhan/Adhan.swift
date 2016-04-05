@@ -198,25 +198,26 @@ public struct PrayerTimes {
             tempAsr = cal.dateFromComponents(asrComponents)
         }
         
-        if let fajrComponents = solarTime.hourAngle(-calculationParameters.fajrAngle, afterTransit: false).timeComponents()?.dateComponents(date) {
-            tempFajr = cal.dateFromComponents(fajrComponents)
-        }
-        
         // get night length
         let tomorrowSunrise = cal.dateByAddingUnit(.Day, value: 1, toDate: sunriseDate, options: [])
         guard let night = tomorrowSunrise?.timeIntervalSinceDate(sunsetDate) else {
             return nil
         }
         
+        if let fajrComponents = solarTime.hourAngle(-calculationParameters.fajrAngle, afterTransit: false).timeComponents()?.dateComponents(date) {
+            tempFajr = cal.dateFromComponents(fajrComponents)
+        }
+        
+        // special case for moonsighting committee above latitude 55
+        if calculationParameters.method == .MoonsightingCommittee && coordinates.latitude >= 55 {
+            let nightFraction = night / 7
+            tempFajr = sunriseDate.dateByAddingTimeInterval(-nightFraction)
+        }
+        
         let safeFajr: NSDate = {
             if calculationParameters.method == .MoonsightingCommittee {
-                if coordinates.latitude < 55 {
-                    let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                    return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: sunriseDate)
-                } else {
-                    let nightFraction = night / 7
-                    return sunriseDate.dateByAddingTimeInterval(-nightFraction)
-                }
+                let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
+                return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: sunriseDate)
             } else {
                 let portion = calculationParameters.nightPortions().fajr
                 let nightFraction = portion * night
@@ -238,15 +239,16 @@ public struct PrayerTimes {
                 tempIsha = cal.dateFromComponents(ishaComponents)
             }
             
+            // special case for moonsighting committee above latitude 55
+            if calculationParameters.method == .MoonsightingCommittee && coordinates.latitude >= 55 {
+                let nightFraction = night / 7
+                tempIsha = sunsetDate.dateByAddingTimeInterval(nightFraction)
+            }
+            
             let safeIsha: NSDate = {
                 if calculationParameters.method == .MoonsightingCommittee {
-                    if coordinates.latitude < 55 {
-                        let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                        return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunset: sunsetDate)
-                    } else {
-                        let nightFraction = night / 7
-                        return sunsetDate.dateByAddingTimeInterval(nightFraction)
-                    }
+                    let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
+                    return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunset: sunsetDate)
                 } else {
                     let portion = calculationParameters.nightPortions().isha
                     let nightFraction = portion * night
