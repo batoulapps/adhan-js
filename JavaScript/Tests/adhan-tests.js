@@ -16,49 +16,49 @@ QUnit.test("Night Portion", function(assert) {
 });
 
 QUnit.test("Calculation Method", function(assert) {
-    var p1 = CalculationMethod.MuslimWorldLeague;
+    var p1 = CalculationMethod.MuslimWorldLeague();
     assert.equal(p1.fajrAngle, 18);
     assert.equal(p1.ishaAngle, 17);
     assert.equal(p1.ishaInterval, 0);
     assert.equal(p1.method, "MuslimWorldLeague");
 
-    var p2 = CalculationMethod.Egyptian;
+    var p2 = CalculationMethod.Egyptian();
     assert.equal(p2.fajrAngle, 19.5);
     assert.equal(p2.ishaAngle, 17.5);
     assert.equal(p2.ishaInterval, 0);
     assert.equal(p2.method, "Egyptian");
 
-    var p3 = CalculationMethod.Karachi;
+    var p3 = CalculationMethod.Karachi();
     assert.equal(p3.fajrAngle, 18);
     assert.equal(p3.ishaAngle, 18);
     assert.equal(p3.ishaInterval, 0);
     assert.equal(p3.method, "Karachi");
 
-    var p4 = CalculationMethod.UmmAlQura;
+    var p4 = CalculationMethod.UmmAlQura();
     assert.equal(p4.fajrAngle, 18.5);
     assert.equal(p4.ishaAngle, 0);
     assert.equal(p4.ishaInterval, 90);
     assert.equal(p4.method, "UmmAlQura");
 
-    var p5 = CalculationMethod.Gulf;
+    var p5 = CalculationMethod.Gulf();
     assert.equal(p5.fajrAngle, 19.5);
     assert.equal(p5.ishaAngle, 0);
     assert.equal(p5.ishaInterval, 90);
     assert.equal(p5.method, "Gulf");
 
-    var p6 = CalculationMethod.MoonsightingCommittee;
+    var p6 = CalculationMethod.MoonsightingCommittee();
     assert.equal(p6.fajrAngle, 18);
     assert.equal(p6.ishaAngle, 18);
     assert.equal(p6.ishaInterval, 0);
     assert.equal(p6.method, "MoonsightingCommittee");
 
-    var p7 = CalculationMethod.NorthAmerica;
+    var p7 = CalculationMethod.NorthAmerica();
     assert.equal(p7.fajrAngle, 15);
     assert.equal(p7.ishaAngle, 15);
     assert.equal(p7.ishaInterval, 0);
     assert.equal(p7.method, "NorthAmerica");
 
-    var p8 = CalculationMethod.Other;
+    var p8 = CalculationMethod.Other();
     assert.equal(p8.fajrAngle, 0);
     assert.equal(p8.ishaAngle, 0);
     assert.equal(p8.ishaInterval, 0);
@@ -67,7 +67,7 @@ QUnit.test("Calculation Method", function(assert) {
 
 QUnit.test("Prayer Times", function(assert) {
 	var date = new Date(2015, 6, 12);
-	var params = CalculationMethod.NorthAmerica;
+	var params = CalculationMethod.NorthAmerica();
 	params.madhab = Madhab.Hanafi;
 	var p = new PrayerTimes(new Coordinates(35.7750, -78.6336), date, params);
 
@@ -83,7 +83,7 @@ QUnit.test("Prayer Times", function(assert) {
 
 QUnit.test("Offset", function(assert) {
     var date = new Date(2015, 11, 1);
-    var params = CalculationMethod.MuslimWorldLeague;
+    var params = CalculationMethod.MuslimWorldLeague();
     params.madhab = Madhab.Shafi;
     var p = new PrayerTimes(new Coordinates(35.7750, -78.6336), date, params);
     assert.equal(p.fajr.formattedTime(-5), "5:35 AM");
@@ -109,13 +109,28 @@ QUnit.test("Offset", function(assert) {
     assert.equal(p2.isha.formattedTime(-5), "6:36 PM");
 });
 
-QUnit.test("MoonsightingCommittee", function(assert) {
+QUnit.test("Moonsighting Committee", function(assert) {
+    // Values from http://www.moonsighting.com/pray.php
     var date = new Date(2016, 0, 31);
-    var p = new PrayerTimes(new Coordinates(35.7750, -78.6336), date, CalculationMethod.MoonsightingCommittee);
+    var p = new PrayerTimes(new Coordinates(35.7750, -78.6336), date, CalculationMethod.MoonsightingCommittee());
     assert.equal(p.fajr.formattedTime(-5), "5:48 AM");
     assert.equal(p.sunrise.formattedTime(-5), "7:16 AM");
     assert.equal(p.dhuhr.formattedTime(-5), "12:33 PM");
     assert.equal(p.asr.formattedTime(-5), "3:20 PM");
     assert.equal(p.maghrib.formattedTime(-5), "5:43 PM");
     assert.equal(p.isha.formattedTime(-5), "7:05 PM");
+});
+
+QUnit.test("Moonsighting Committee High Latitude", function(assert) {
+    // Values from http://www.moonsighting.com/pray.php
+    var date = new Date(2016, 0, 1);
+    var params = CalculationMethod.MoonsightingCommittee();
+    params.madhab = Madhab.Hanafi;
+    var p = new PrayerTimes(new Coordinates(59.9094, 10.7349), date, params);
+    assert.equal(moment(p.fajr).tz("Europe/Oslo").format("h:mm A"), "7:34 AM");
+    assert.equal(moment(p.sunrise).tz("Europe/Oslo").format("h:mm A"), "9:19 AM");
+    assert.equal(moment(p.dhuhr).tz("Europe/Oslo").format("h:mm A"), "12:25 PM");
+    assert.equal(moment(p.asr).tz("Europe/Oslo").format("h:mm A"), "1:36 PM");
+    assert.equal(moment(p.maghrib).tz("Europe/Oslo").format("h:mm A"), "3:25 PM");
+    assert.equal(moment(p.isha).tz("Europe/Oslo").format("h:mm A"), "5:02 PM");
 });

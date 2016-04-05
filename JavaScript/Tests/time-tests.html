@@ -22,21 +22,21 @@
 
 			var method = data["method"];
 			if (method == "MuslimWorldLeague") {
-				params = CalculationMethod.MuslimWorldLeague;
+				params = CalculationMethod.MuslimWorldLeague();
 			} else if (method == "Egyptian") {
-				params = CalculationMethod.Egyptian;
+				params = CalculationMethod.Egyptian();
 			} else if (method == "Karachi") {
-				params = CalculationMethod.Karachi;
+				params = CalculationMethod.Karachi();
 			} else if (method == "UmmAlQura") {
-				params = CalculationMethod.UmmAlQura;
+				params = CalculationMethod.UmmAlQura();
 			} else if (method == "Gulf") {
 				params = CalculationMethod.Gulf;
 			} else if (method == "MoonsightingCommittee") {
-				params = CalculationMethod.MoonsightingCommittee;
+				params = CalculationMethod.MoonsightingCommittee();
 			} else if (method == "NorthAmerica") {
-				params = CalculationMethod.NorthAmerica;
+				params = CalculationMethod.NorthAmerica();
 			} else {
-				params = CalculationMethod.Other;
+				params = CalculationMethod.Other();
 			}
 
 			var madhab = data["madhab"];
