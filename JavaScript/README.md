@@ -42,7 +42,7 @@ instances in the `CalculationMethod` object. You can then further
 customize the calculation parameters if needed.
 
 ```js
-var params = CalculationMethod.MuslimWorldLeague;
+var params = CalculationMethod.MuslimWorldLeague();
 params.madhab = Madhab.Hanafi;
 params.adjustments.fajr = 2;
 ```
@@ -107,7 +107,7 @@ prayerTimes.fajr.formattedTime(-4, '24h');
 ```js
 var date = new Date();
 var coordinates = new Coordinates(35.78056, -78.6389);
-var params = CalculationMethod.MuslimWorldLeague;
+var params = CalculationMethod.MuslimWorldLeague();
 params.madhab = Madhab.Hanafi;
 var prayerTimes = new PrayerTimes(coordinates, date, params);
 document.write('Fajr: ' + prayerTimes.fajr.formattedTime(-4) + '\n');
