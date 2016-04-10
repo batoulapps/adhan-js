@@ -126,6 +126,9 @@ public enum CalculationMethod {
     // ISNA
     case NorthAmerica
     
+    // Kuwait
+    case Kuwait
+    
     // Other
     case Other
     
@@ -145,6 +148,8 @@ public enum CalculationMethod {
             return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
         case .NorthAmerica:
             return CalculationParameters(fajrAngle: 15, ishaAngle: 15, method: self)
+        case .Kuwait:
+            return CalculationParameters(fajrAngle: 18, ishaAngle: 17.5, method: self)
         case .Other:
             return CalculationParameters(fajrAngle: 0, ishaAngle: 0, method: self)
         }
