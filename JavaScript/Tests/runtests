@@ -11,7 +11,7 @@ do
 	then
 		echo "," >> $dir/times.js
 	fi
-	cat $f >> $dir/times.js
+	cat "$f" >> $dir/times.js
 	((count++))
 done
 echo "];" >> $dir/times.js

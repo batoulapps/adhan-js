@@ -71,6 +71,11 @@ var CalculationMethod = {
         return new CalculationParameters(15, 15, 0, "NorthAmerica");
     },
 
+    // Kuwait
+    Kuwait: function() {
+        return new CalculationParameters(18, 17.5, 0, "Kuwait");
+    },
+
 	// Other
 	Other: function() {
         return new CalculationParameters(0, 0, 0, "Other");
