@@ -8,3 +8,4 @@ before_script:
 script:
  - xctool -project Swift/Adhan.xcodeproj -scheme AdhanTests -sdk iphonesimulator build test
  - JavaScript/Tests/runtests
+ - mvn -f java/pom.xml clean test
