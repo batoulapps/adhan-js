@@ -105,6 +105,10 @@ public class TimingTest {
         method = CalculationMethod.KUWAIT;
         break;
       }
+      case "Qatar": {
+        method = CalculationMethod.QATAR;
+        break;
+      }
       default: {
         method = CalculationMethod.OTHER;
       }

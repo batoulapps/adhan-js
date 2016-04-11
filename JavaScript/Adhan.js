@@ -76,6 +76,11 @@ var CalculationMethod = {
         return new CalculationParameters(18, 17.5, 0, "Kuwait");
     },
 
+    // Qatar
+    Qatar: function() {
+        return new CalculationParameters(18, 0, 90, "Qatar");
+    },
+
 	// Other
 	Other: function() {
         return new CalculationParameters(0, 0, 0, "Other");
@@ -158,6 +163,12 @@ function PrayerTimes(coordinates, date, calculationParameters) {
             // Moonsighting Committee requires 5 minutes for
             // the sun to pass the zenith and dhuhr to enter
             return 5;
+        case "UmmAlQura":
+        case "Gulf":
+        case "Qatar":
+            // UmmAlQura and derivatives don't add
+            // anything to zenith for dhuhr
+            return 0;
         default:
             // Default behavior waits 1 minute for the
             // sun to pass the zenith and dhuhr to enter

@@ -76,7 +76,9 @@ params.adjustments.fajr = 2;
 | `EGYPTIAN` | Egyptian General Authority of Survey. Fajr angle: 19.5, Isha angle: 17.5 |
 | `KARACHI` | University of Islamic Sciences, Karachi. Fajr angle: 18, Isha angle: 18 |
 | `UMM_AL_QURA` | Umm al-Qura University, Makkah. Fajr angle: 18, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
-| `GULF` | The Gulf Region. Fajr angle: 19.5, Isha interval: 90. |
+| `GULF` | Modified version of Umm al-Qura used in UAE. Fajr angle: 19.5, Isha interval: 90. |
+| `QATAR` | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
+| `KUWAIT` | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
 | `MOONSIGHTING_COMMITTEE` | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
 | `NORTH_AMERICA` | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
 | `KUWAIT` | Kuwait. Fajr angle: 18, Isha angle: 17.5 |

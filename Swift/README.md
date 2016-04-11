@@ -64,8 +64,10 @@ params.adjustments.fajr = 2
 | MuslimWorldLeague | Muslim World League. Fajr angle: 18, Isha angle: 17 |
 | Egyptian | Egyptian General Authority of Survey. Fajr angle: 19.5, Isha angle: 17.5 |
 | Karachi | University of Islamic Sciences, Karachi. Fajr angle: 18, Isha angle: 18 |
-| UmmAlQura | Umm al-Qura University, Makkah. Fajr angle: 18, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
-| Gulf | The Gulf Region. Fajr angle: 19.5, Isha interval: 90. |
+| UmmAlQura | Umm al-Qura University, Makkah. Fajr angle: 18.5, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
+| Gulf | Modified version of Umm al-Qura used in UAE. Fajr angle: 19.5, Isha interval: 90. |
+| Qatar | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
+| Kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
 | MoonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
 | NorthAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
 | Other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` struct. |

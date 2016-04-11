@@ -116,6 +116,12 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p9.ishaAngle, 17.5)
         XCTAssertEqual(p9.ishaInterval, 0)
         XCTAssertEqual(p9.method, CalculationMethod.Kuwait)
+        
+        let p10 = CalculationMethod.Qatar.params
+        XCTAssertEqual(p10.fajrAngle, 18)
+        XCTAssertEqual(p10.ishaAngle, 0)
+        XCTAssertEqual(p10.ishaInterval, 90)
+        XCTAssertEqual(p10.method, CalculationMethod.Qatar)
     }
     
     func testPrayerTimes() {
