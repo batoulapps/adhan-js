@@ -129,6 +129,9 @@ public enum CalculationMethod {
     // Kuwait
     case Kuwait
     
+    // Qatar
+    case Qatar
+    
     // Other
     case Other
     
@@ -150,6 +153,8 @@ public enum CalculationMethod {
             return CalculationParameters(fajrAngle: 15, ishaAngle: 15, method: self)
         case .Kuwait:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 17.5, method: self)
+        case .Qatar:
+            return CalculationParameters(fajrAngle: 18, ishaInterval: 90, method: self)
         case .Other:
             return CalculationParameters(fajrAngle: 0, ishaAngle: 0, method: self)
         }
@@ -275,6 +280,10 @@ public struct PrayerTimes {
                 // Moonsighting Committee requires 5 minutes for
                 // the sun to pass the zenith and dhuhr to enter
                 return 5 * 60
+            case .UmmAlQura, .Gulf, .Qatar:
+                // UmmAlQura and derivatives don't add
+                // anything to zenith for dhuhr
+                return 0
             default:
                 // Default behavior waits 1 minute for the
                 // sun to pass the zenith and dhuhr to enter

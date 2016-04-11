@@ -68,7 +68,13 @@ QUnit.test("Calculation Method", function(assert) {
     assert.equal(p9.fajrAngle, 18);
     assert.equal(p9.ishaAngle, 17.5);
     assert.equal(p9.ishaInterval, 0);
-    assert.equal(p9.method, "Kuwait");    
+    assert.equal(p9.method, "Kuwait"); 
+
+    var p10 = CalculationMethod.Qatar();
+    assert.equal(p10.fajrAngle, 18);
+    assert.equal(p10.ishaAngle, 0);
+    assert.equal(p10.ishaInterval, 90);
+    assert.equal(p10.method, "Qatar"); 
 });
 
 QUnit.test("Prayer Times", function(assert) {

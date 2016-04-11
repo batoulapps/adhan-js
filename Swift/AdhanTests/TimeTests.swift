@@ -32,6 +32,8 @@ class TimeTests: XCTestCase {
             params = CalculationMethod.NorthAmerica.params
         } else if method == "Kuwait" {
             params = CalculationMethod.Kuwait.params
+        } else if method == "Qatar" {
+            params = CalculationMethod.Qatar.params
         } else {
             params = CalculationMethod.Other.params
         }

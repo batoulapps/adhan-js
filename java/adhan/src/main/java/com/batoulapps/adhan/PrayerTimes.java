@@ -135,6 +135,12 @@ public class PrayerTimes {
       // Moonsighting Committee requires 5 minutes for the sun to pass
       // the zenith and dhuhr to enter
       dhuhrOffsetInMinutes = 5;
+    } else if (parameters.method == CalculationMethod.UMM_AL_QURA ||
+               parameters.method == CalculationMethod.GULF ||
+               parameters.method == CalculationMethod.QATAR) {
+      // UmmAlQura and derivatives don't add
+      // anything to zenith for dhuhr
+      dhuhrOffsetInMinutes = 0;
     } else {
       dhuhrOffsetInMinutes = 1;
     }
