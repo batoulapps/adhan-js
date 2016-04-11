@@ -96,7 +96,7 @@ public enum CalculationMethod {
       case KUWAIT: {
         return new CalculationParameters(18.0, 17.5, this);
       }
-      case GULF: {
+      case QATAR: {
         return new CalculationParameters(18.0, 90, this);
       }
       case OTHER: {

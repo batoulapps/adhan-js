@@ -56,6 +56,12 @@ public class CalculationMethodTest {
     assertThat(params.ishaInterval).isEqualTo(0);
     assertThat(params.method).isEqualTo(CalculationMethod.KUWAIT);
 
+    params = CalculationMethod.QATAR.getParameters();
+    assertThat(params.fajrAngle).isWithin(0.000001).of(18);
+    assertThat(params.ishaAngle).isWithin(0.000001).of(0);
+    assertThat(params.ishaInterval).isEqualTo(90);
+    assertThat(params.method).isEqualTo(CalculationMethod.QATAR);    
+
     params = CalculationMethod.OTHER.getParameters();
     assertThat(params.fajrAngle).isWithin(0.000001).of(0);
     assertThat(params.ishaAngle).isWithin(0.000001).of(0);
