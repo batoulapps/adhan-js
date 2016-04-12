@@ -244,4 +244,22 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.stringFromDate(p.maghrib), "3:25 PM")
         XCTAssertEqual(dateFormatter.stringFromDate(p.isha), "5:02 PM")
     }
+    
+    func testTimeForPrayer() {
+        let comps = NSDateComponents()
+        comps.year = 2016
+        comps.month = 7
+        comps.day = 1
+        var params = CalculationMethod.MuslimWorldLeague.params
+        params.madhab = .Hanafi
+        params.highLatitudeRule = .TwilightAngle
+        let p = PrayerTimes(coordinates: Coordinates(latitude: 59.9094, longitude: 10.7349), date: comps, calculationParameters: params)!
+        XCTAssertEqual(p.fajr, p.timeForPrayer(.Fajr))
+        XCTAssertEqual(p.sunrise, p.timeForPrayer(.Sunrise))
+        XCTAssertEqual(p.dhuhr, p.timeForPrayer(.Dhuhr))
+        XCTAssertEqual(p.asr, p.timeForPrayer(.Asr))
+        XCTAssertEqual(p.maghrib, p.timeForPrayer(.Maghrib))
+        XCTAssertEqual(p.isha, p.timeForPrayer(.Isha))
+        XCTAssertNil(p.timeForPrayer(.None))
+    }
 }

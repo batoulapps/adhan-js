@@ -8,6 +8,16 @@
 
 import Foundation
 
+public enum Prayer {
+    case None
+    case Fajr
+    case Sunrise
+    case Dhuhr
+    case Asr
+    case Maghrib
+    case Isha
+}
+
 /* Madhab for determining how Asr is calculated */
 public enum Madhab {
     case Shafi
@@ -321,6 +331,33 @@ public struct PrayerTimes {
         self.asr = asr.dateByAddingTimeInterval(calculationParameters.adjustments.asr.timeInterval()).roundedMinute()
         self.maghrib = maghrib.dateByAddingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval()).dateByAddingTimeInterval(maghribOffset).roundedMinute()
         self.isha = isha.dateByAddingTimeInterval(calculationParameters.adjustments.isha.timeInterval()).roundedMinute()
+    }
+    
+    public func currentPrayer() -> Prayer {
+        return .None
+    }
+    
+    public func nextPrayer() -> Prayer {
+        return .None
+    }
+    
+    public func timeForPrayer(prayer: Prayer) -> NSDate? {
+        switch prayer {
+        case .None:
+            return nil
+        case .Fajr:
+            return fajr
+        case .Sunrise:
+            return sunrise
+        case .Dhuhr:
+            return dhuhr
+        case .Asr:
+            return asr
+        case .Maghrib:
+            return maghrib
+        case .Isha:
+            return isha
+        }
     }
 }
 
