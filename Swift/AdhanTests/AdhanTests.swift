@@ -260,6 +260,5 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.asr, p.timeForPrayer(.Asr))
         XCTAssertEqual(p.maghrib, p.timeForPrayer(.Maghrib))
         XCTAssertEqual(p.isha, p.timeForPrayer(.Isha))
-        XCTAssertNil(p.timeForPrayer(.None))
     }
 }
