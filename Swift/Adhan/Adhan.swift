@@ -9,7 +9,6 @@
 import Foundation
 
 public enum Prayer {
-    case None
     case Fajr
     case Sunrise
     case Dhuhr
@@ -334,17 +333,39 @@ public struct PrayerTimes {
     }
     
     public func currentPrayer() -> Prayer {
-        return .None
+        if isha.timeIntervalSinceNow < 0 {
+            return .Isha
+        } else if maghrib.timeIntervalSinceNow < 0 {
+            return .Maghrib
+        } else if asr.timeIntervalSinceNow < 0 {
+            return .Asr
+        } else if dhuhr.timeIntervalSinceNow < 0 {
+            return .Dhuhr
+        } else if sunrise.timeIntervalSinceNow < 0 {
+            return .Sunrise
+        } else {
+            return .Fajr
+        }
     }
     
     public func nextPrayer() -> Prayer {
-        return .None
+        if isha.timeIntervalSinceNow < 0 {
+            return .Fajr
+        } else if maghrib.timeIntervalSinceNow < 0 {
+            return .Isha
+        } else if asr.timeIntervalSinceNow < 0 {
+            return .Maghrib
+        } else if dhuhr.timeIntervalSinceNow < 0 {
+            return .Asr
+        } else if sunrise.timeIntervalSinceNow < 0 {
+            return .Dhuhr
+        } else {
+            return .Sunrise
+        }
     }
     
-    public func timeForPrayer(prayer: Prayer) -> NSDate? {
+    public func timeForPrayer(prayer: Prayer) -> NSDate {
         switch prayer {
-        case .None:
-            return nil
         case .Fajr:
             return fajr
         case .Sunrise:
