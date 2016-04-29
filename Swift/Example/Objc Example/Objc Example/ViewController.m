@@ -20,7 +20,11 @@
     [super viewDidLoad];
     NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDateComponents *date = [cal components:NSCalendarUnitDay|NSCalendarUnitMonth|NSCalendarUnitYear fromDate:[NSDate date]];
-    BAPrayerTimes *prayerTimes = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(35.78056, -78.6389) date:date];
+    
+    BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodMuslimWorldLeague];
+    params.madhab = BAMadhabHanafi;
+    
+    BAPrayerTimes *prayerTimes = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(35.78056, -78.6389) date:date calculationParameters:params];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.timeZone = [[NSTimeZone alloc] initWithName:@"America/New_York"];

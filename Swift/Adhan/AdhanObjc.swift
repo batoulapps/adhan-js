@@ -17,10 +17,9 @@ import CoreLocation
     public var maghrib: NSDate?
     public var isha: NSDate?
     
-    public init(coordinates: CLLocationCoordinate2D, date: NSDateComponents) {
+    public init(coordinates: CLLocationCoordinate2D, date: NSDateComponents, calculationParameters: BACalculationParameters) {
         super.init()
-        
-        if let prayers = PrayerTimes(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude), date: date, calculationParameters: CalculationMethod.MuslimWorldLeague.params) {
+        if let prayers = PrayerTimes(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude), date: date, calculationParameters: calculationParameters.calculationParameters()) {
             self.fajr = prayers.fajr
             self.sunrise = prayers.sunrise  
             self.dhuhr = prayers.dhuhr
