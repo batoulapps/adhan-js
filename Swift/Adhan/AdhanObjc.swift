@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreLocation
 
 @objc public enum BAPrayer: Int {
     case None
@@ -29,7 +28,7 @@ import CoreLocation
     
     private let prayerTimes: PrayerTimes?
     
-    public init(coordinates: CLLocationCoordinate2D, date: NSDateComponents, calculationParameters: BACalculationParameters) {
+    public init(coordinates: BACoordinates, date: NSDateComponents, calculationParameters: BACalculationParameters) {
         prayerTimes = PrayerTimes(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude), date: date, calculationParameters: calculationParameters.calculationParameters())
         if let prayerTimes = prayerTimes {
             self.fajr = prayerTimes.fajr
@@ -215,9 +214,21 @@ import CoreLocation
         self.asr = asr
         self.maghrib = maghrib
         self.isha = isha
+        super.init()
     }
     
     private func prayerAdjustments() -> PrayerAdjustments {
         return PrayerAdjustments(fajr: self.fajr, sunrise: self.sunrise, dhuhr: self.dhuhr, asr: self.asr, maghrib: self.maghrib, isha: self.isha)
+    }
+}
+
+@objc public class BACoordinates: NSObject {
+    public var latitude: Double
+    public var longitude: Double
+    
+    public init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+        super.init()
     }
 }
