@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import <CoreLocation/CoreLocation.h>
-#import <Adhan/Adhan-Swift.h>
+#import "Adhan/Adhan-Swift.h"
 
 @interface ViewController ()
 
@@ -24,7 +24,9 @@
     BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodMuslimWorldLeague];
     params.madhab = BAMadhabHanafi;
     
-    BAPrayerTimes *prayerTimes = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(35.78056, -78.6389) date:date calculationParameters:params];
+    BACoordinates *coordinates = [[BACoordinates alloc] initWithLatitude:35.78056 longitude:-78.6389];
+    
+    BAPrayerTimes *prayerTimes = [[BAPrayerTimes alloc] initWithCoordinates:coordinates date:date calculationParameters:params];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.timeZone = [[NSTimeZone alloc] initWithName:@"America/New_York"];

@@ -25,7 +25,7 @@
     BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodNorthAmerica];
     params.madhab = BAMadhabHanafi;
     
-    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(35.7750, -78.6389) date:date calculationParameters:params];
+    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:[[BACoordinates alloc] initWithLatitude:35.7750 longitude:-78.6389] date:date calculationParameters:params];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.timeZone = [[NSTimeZone alloc] initWithName:@"America/New_York"];
@@ -48,7 +48,7 @@
     BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodMuslimWorldLeague];
     params.madhab = BAMadhabHanafi;
     params.highLatitudeRule = BAHighLatitudeRuleTwilightAngle;
-    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(59.9094, 10.7349) date:date calculationParameters:params];
+    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:[[BACoordinates alloc] initWithLatitude:59.9094 longitude:10.7349] date:date calculationParameters:params];
     XCTAssertEqualObjects(p.fajr, [p timeForPrayer:BAPrayerFajr]);
     XCTAssertEqualObjects(p.sunrise, [p timeForPrayer:BAPrayerSunrise]);
     XCTAssertEqualObjects(p.dhuhr, [p timeForPrayer:BAPrayerDhuhr]);
@@ -67,7 +67,7 @@
     BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodKarachi];
     params.madhab = BAMadhabHanafi;
     params.highLatitudeRule = BAHighLatitudeRuleTwilightAngle;
-    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(33.720817, 73.090032) date:date calculationParameters:params];
+    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:[[BACoordinates alloc] initWithLatitude:33.720817 longitude:73.090032] date:date calculationParameters:params];
     XCTAssertEqual([p currentPrayer:[p.fajr dateByAddingTimeInterval:-1]], BAPrayerNone);
     XCTAssertEqual([p currentPrayer:[p.fajr dateByAddingTimeInterval:1]], BAPrayerFajr);
     XCTAssertEqual([p currentPrayer:[p.sunrise dateByAddingTimeInterval:1]], BAPrayerSunrise);
@@ -86,7 +86,7 @@
     BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodKarachi];
     params.madhab = BAMadhabHanafi;
     params.highLatitudeRule = BAHighLatitudeRuleTwilightAngle;
-    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(33.720817, 73.090032) date:date calculationParameters:params];
+    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:[[BACoordinates alloc] initWithLatitude:33.720817 longitude:73.090032] date:date calculationParameters:params];
     XCTAssertEqual([p nextPrayer:[p.fajr dateByAddingTimeInterval:-1]], BAPrayerFajr);
     XCTAssertEqual([p nextPrayer:[p.fajr dateByAddingTimeInterval:1]], BAPrayerSunrise);
     XCTAssertEqual([p nextPrayer:[p.sunrise dateByAddingTimeInterval:1]], BAPrayerDhuhr);
@@ -155,7 +155,7 @@
         NSString *zone = params[@"timezone"];
         NSTimeZone *timezone = [NSTimeZone timeZoneWithName:zone];
         
-        CLLocationCoordinate2D coordinates = CLLocationCoordinate2DMake(lat.doubleValue, lon.doubleValue);
+        BACoordinates *coordinates = [[BACoordinates alloc] initWithLatitude:lat.doubleValue longitude:lon.doubleValue];
         
         NSCalendar *cal = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
         cal.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
