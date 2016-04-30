@@ -39,6 +39,63 @@
     XCTAssertEqualObjects([formatter stringFromDate:p.isha], @"9:57 PM");
 }
 
+- (void)testTimeForPrayer {
+    NSDateComponents *date = [[NSDateComponents alloc] init];
+    date.year = 2016;
+    date.month = 7;
+    date.day = 1;
+    
+    BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodMuslimWorldLeague];
+    params.madhab = BAMadhabHanafi;
+    params.highLatitudeRule = BAHighLatitudeRuleTwilightAngle;
+    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(59.9094, 10.7349) date:date calculationParameters:params];
+    XCTAssertEqualObjects(p.fajr, [p timeForPrayer:BAPrayerFajr]);
+    XCTAssertEqualObjects(p.sunrise, [p timeForPrayer:BAPrayerSunrise]);
+    XCTAssertEqualObjects(p.dhuhr, [p timeForPrayer:BAPrayerDhuhr]);
+    XCTAssertEqualObjects(p.asr, [p timeForPrayer:BAPrayerAsr]);
+    XCTAssertEqualObjects(p.maghrib, [p timeForPrayer:BAPrayerMaghrib]);
+    XCTAssertEqualObjects(p.isha, [p timeForPrayer:BAPrayerIsha]);
+    XCTAssertNil([p timeForPrayer:BAPrayerNone]);
+}
+
+- (void)testCurrentPrayer {
+    NSDateComponents *date = [[NSDateComponents alloc] init];
+    date.year = 2015;
+    date.month = 9;
+    date.day = 1;
+    
+    BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodKarachi];
+    params.madhab = BAMadhabHanafi;
+    params.highLatitudeRule = BAHighLatitudeRuleTwilightAngle;
+    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(33.720817, 73.090032) date:date calculationParameters:params];
+    XCTAssertEqual([p currentPrayer:[p.fajr dateByAddingTimeInterval:-1]], BAPrayerNone);
+    XCTAssertEqual([p currentPrayer:[p.fajr dateByAddingTimeInterval:1]], BAPrayerFajr);
+    XCTAssertEqual([p currentPrayer:[p.sunrise dateByAddingTimeInterval:1]], BAPrayerSunrise);
+    XCTAssertEqual([p currentPrayer:[p.dhuhr dateByAddingTimeInterval:1]], BAPrayerDhuhr);
+    XCTAssertEqual([p currentPrayer:[p.asr dateByAddingTimeInterval:1]], BAPrayerAsr);
+    XCTAssertEqual([p currentPrayer:[p.maghrib dateByAddingTimeInterval:1]], BAPrayerMaghrib);
+    XCTAssertEqual([p currentPrayer:[p.isha dateByAddingTimeInterval:1]], BAPrayerIsha);
+}
+
+- (void)testNextPrayer {
+    NSDateComponents *date = [[NSDateComponents alloc] init];
+    date.year = 2015;
+    date.month = 9;
+    date.day = 1;
+    
+    BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodKarachi];
+    params.madhab = BAMadhabHanafi;
+    params.highLatitudeRule = BAHighLatitudeRuleTwilightAngle;
+    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:CLLocationCoordinate2DMake(33.720817, 73.090032) date:date calculationParameters:params];
+    XCTAssertEqual([p nextPrayer:[p.fajr dateByAddingTimeInterval:-1]], BAPrayerFajr);
+    XCTAssertEqual([p nextPrayer:[p.fajr dateByAddingTimeInterval:1]], BAPrayerSunrise);
+    XCTAssertEqual([p nextPrayer:[p.sunrise dateByAddingTimeInterval:1]], BAPrayerDhuhr);
+    XCTAssertEqual([p nextPrayer:[p.dhuhr dateByAddingTimeInterval:1]], BAPrayerAsr);
+    XCTAssertEqual([p nextPrayer:[p.asr dateByAddingTimeInterval:1]], BAPrayerMaghrib);
+    XCTAssertEqual([p nextPrayer:[p.maghrib dateByAddingTimeInterval:1]], BAPrayerIsha);
+    XCTAssertEqual([p nextPrayer:[p.isha dateByAddingTimeInterval:1]], BAPrayerNone);
+}
+
 - (BACalculationParameters *)parseParams:(NSDictionary *)dict {
     BACalculationParameters *params;
     

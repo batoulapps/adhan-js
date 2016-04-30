@@ -9,6 +9,7 @@
 import Foundation
 
 public enum Prayer {
+    case None
     case Fajr
     case Sunrise
     case Dhuhr
@@ -332,40 +333,46 @@ public struct PrayerTimes {
         self.isha = isha.dateByAddingTimeInterval(calculationParameters.adjustments.isha.timeInterval()).roundedMinute()
     }
     
-    public func currentPrayer() -> Prayer {
-        if isha.timeIntervalSinceNow < 0 {
+    public func currentPrayer(time: NSDate = NSDate()) -> Prayer {
+        if isha.timeIntervalSinceDate(time) < 0 {
             return .Isha
-        } else if maghrib.timeIntervalSinceNow < 0 {
+        } else if maghrib.timeIntervalSinceDate(time) < 0 {
             return .Maghrib
-        } else if asr.timeIntervalSinceNow < 0 {
+        } else if asr.timeIntervalSinceDate(time) < 0 {
             return .Asr
-        } else if dhuhr.timeIntervalSinceNow < 0 {
+        } else if dhuhr.timeIntervalSinceDate(time) < 0 {
             return .Dhuhr
-        } else if sunrise.timeIntervalSinceNow < 0 {
+        } else if sunrise.timeIntervalSinceDate(time) < 0 {
+            return .Sunrise
+        } else if fajr.timeIntervalSinceDate(time) < 0 {
+            return .Fajr
+        } else {
+            return .None
+        }
+    }
+    
+    public func nextPrayer(time: NSDate = NSDate()) -> Prayer {
+        if isha.timeIntervalSinceDate(time) < 0 {
+            return .None
+        } else if maghrib.timeIntervalSinceDate(time) < 0 {
+            return .Isha
+        } else if asr.timeIntervalSinceDate(time) < 0 {
+            return .Maghrib
+        } else if dhuhr.timeIntervalSinceDate(time) < 0 {
+            return .Asr
+        } else if sunrise.timeIntervalSinceDate(time) < 0 {
+            return .Dhuhr
+        } else if fajr.timeIntervalSinceDate(time) < 0 {
             return .Sunrise
         } else {
             return .Fajr
         }
     }
     
-    public func nextPrayer() -> Prayer {
-        if isha.timeIntervalSinceNow < 0 {
-            return .Fajr
-        } else if maghrib.timeIntervalSinceNow < 0 {
-            return .Isha
-        } else if asr.timeIntervalSinceNow < 0 {
-            return .Maghrib
-        } else if dhuhr.timeIntervalSinceNow < 0 {
-            return .Asr
-        } else if sunrise.timeIntervalSinceNow < 0 {
-            return .Dhuhr
-        } else {
-            return .Sunrise
-        }
-    }
-    
-    public func timeForPrayer(prayer: Prayer) -> NSDate {
+    public func timeForPrayer(prayer: Prayer) -> NSDate? {
         switch prayer {
+        case .None:
+            return nil
         case .Fajr:
             return fajr
         case .Sunrise:

@@ -9,6 +9,16 @@
 import Foundation
 import CoreLocation
 
+@objc public enum BAPrayer: Int {
+    case None
+    case Fajr
+    case Sunrise
+    case Dhuhr
+    case Asr
+    case Maghrib
+    case Isha
+}
+
 @objc public class BAPrayerTimes: NSObject {
     public var fajr: NSDate?
     public var sunrise: NSDate?
@@ -17,15 +27,78 @@ import CoreLocation
     public var maghrib: NSDate?
     public var isha: NSDate?
     
+    private let prayerTimes: PrayerTimes?
+    
     public init(coordinates: CLLocationCoordinate2D, date: NSDateComponents, calculationParameters: BACalculationParameters) {
+        prayerTimes = PrayerTimes(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude), date: date, calculationParameters: calculationParameters.calculationParameters())
+        if let prayerTimes = prayerTimes {
+            self.fajr = prayerTimes.fajr
+            self.sunrise = prayerTimes.sunrise
+            self.dhuhr = prayerTimes.dhuhr
+            self.asr = prayerTimes.asr
+            self.maghrib = prayerTimes.maghrib
+            self.isha = prayerTimes.isha
+        }
         super.init()
-        if let prayers = PrayerTimes(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude), date: date, calculationParameters: calculationParameters.calculationParameters()) {
-            self.fajr = prayers.fajr
-            self.sunrise = prayers.sunrise  
-            self.dhuhr = prayers.dhuhr
-            self.asr = prayers.asr
-            self.maghrib = prayers.maghrib
-            self.isha = prayers.isha
+    }
+    
+    public func currentPrayer(time: NSDate?) -> BAPrayer {
+        guard let prayerTimes = prayerTimes else {
+            return .None
+        }
+        
+        let _time = time ?? NSDate()
+        return BAPrayerForPrayer(prayerTimes.currentPrayer(_time))
+    }
+    
+    public func nextPrayer(time: NSDate?) -> BAPrayer {
+        guard let prayerTimes = prayerTimes else {
+            return .None
+        }
+        
+        let _time = time ?? NSDate()
+        return BAPrayerForPrayer(prayerTimes.nextPrayer(_time))
+    }
+    
+    public func timeForPrayer(prayer: BAPrayer) -> NSDate? {
+        return prayerTimes?.timeForPrayer(prayerForBAPrayer(prayer))
+    }
+    
+    private func prayerForBAPrayer(baPrayer: BAPrayer) -> Prayer {
+        switch baPrayer {
+        case BAPrayer.None:
+            return Prayer.None
+        case BAPrayer.Fajr:
+            return Prayer.Fajr
+        case BAPrayer.Sunrise:
+            return Prayer.Sunrise
+        case BAPrayer.Dhuhr:
+            return Prayer.Dhuhr
+        case BAPrayer.Asr:
+            return Prayer.Asr
+        case BAPrayer.Maghrib:
+            return Prayer.Maghrib
+        case BAPrayer.Isha:
+            return Prayer.Isha
+        }
+    }
+    
+    private func BAPrayerForPrayer(prayer: Prayer) -> BAPrayer {
+        switch prayer {
+        case Prayer.None:
+            return BAPrayer.None
+        case Prayer.Fajr:
+            return BAPrayer.Fajr
+        case Prayer.Sunrise:
+            return BAPrayer.Sunrise
+        case Prayer.Dhuhr:
+            return BAPrayer.Dhuhr
+        case Prayer.Asr:
+            return BAPrayer.Asr
+        case Prayer.Maghrib:
+            return BAPrayer.Maghrib
+        case Prayer.Isha:
+            return BAPrayer.Isha
         }
     }
 }

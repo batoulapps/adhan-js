@@ -260,5 +260,42 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.asr, p.timeForPrayer(.Asr))
         XCTAssertEqual(p.maghrib, p.timeForPrayer(.Maghrib))
         XCTAssertEqual(p.isha, p.timeForPrayer(.Isha))
+        XCTAssertNil(p.timeForPrayer(.None))
+    }
+    
+    func testCurrentPrayer() {
+        let comps = NSDateComponents()
+        comps.year = 2015
+        comps.month = 9
+        comps.day = 1
+        var params = CalculationMethod.Karachi.params
+        params.madhab = .Hanafi
+        params.highLatitudeRule = .TwilightAngle
+        let p = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps, calculationParameters: params)!
+        XCTAssertEqual(p.currentPrayer(p.fajr.dateByAddingTimeInterval(-1)), Prayer.None)
+        XCTAssertEqual(p.currentPrayer(p.fajr.dateByAddingTimeInterval(1)), Prayer.Fajr)
+        XCTAssertEqual(p.currentPrayer(p.sunrise.dateByAddingTimeInterval(1)), Prayer.Sunrise)
+        XCTAssertEqual(p.currentPrayer(p.dhuhr.dateByAddingTimeInterval(1)), Prayer.Dhuhr)
+        XCTAssertEqual(p.currentPrayer(p.asr.dateByAddingTimeInterval(1)), Prayer.Asr)
+        XCTAssertEqual(p.currentPrayer(p.maghrib.dateByAddingTimeInterval(1)), Prayer.Maghrib)
+        XCTAssertEqual(p.currentPrayer(p.isha.dateByAddingTimeInterval(1)), Prayer.Isha)
+    }
+    
+    func testNextPrayer() {
+        let comps = NSDateComponents()
+        comps.year = 2015
+        comps.month = 9
+        comps.day = 1
+        var params = CalculationMethod.Karachi.params
+        params.madhab = .Hanafi
+        params.highLatitudeRule = .TwilightAngle
+        let p = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps, calculationParameters: params)!
+        XCTAssertEqual(p.nextPrayer(p.fajr.dateByAddingTimeInterval(-1)), Prayer.Fajr)
+        XCTAssertEqual(p.nextPrayer(p.fajr.dateByAddingTimeInterval(1)), Prayer.Sunrise)
+        XCTAssertEqual(p.nextPrayer(p.sunrise.dateByAddingTimeInterval(1)), Prayer.Dhuhr)
+        XCTAssertEqual(p.nextPrayer(p.dhuhr.dateByAddingTimeInterval(1)), Prayer.Asr)
+        XCTAssertEqual(p.nextPrayer(p.asr.dateByAddingTimeInterval(1)), Prayer.Maghrib)
+        XCTAssertEqual(p.nextPrayer(p.maghrib.dateByAddingTimeInterval(1)), Prayer.Isha)
+        XCTAssertEqual(p.nextPrayer(p.isha.dateByAddingTimeInterval(1)), Prayer.None)
     }
 }
