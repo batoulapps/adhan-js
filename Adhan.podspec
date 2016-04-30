@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.homepage         = "https://github.com/batoulapps/Adhan"
   s.license          = 'MIT'
   s.author           = { 'Batoul Apps' => 'support@batoulapps.com' }
-  s.source           = { :git => "https://github.com/batoulapps/Adhan.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/batoulapps/Adhan.git", :tag => "swift-" + s.version.to_s }
 
   s.social_media_url = 'https://twitter.com/batoulapps'
 
