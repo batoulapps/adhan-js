@@ -9,13 +9,13 @@
 import Foundation
 
 @objc public enum BAPrayer: Int {
-    case None
-    case Fajr
-    case Sunrise
-    case Dhuhr
-    case Asr
-    case Maghrib
-    case Isha
+    case Fajr = 0
+    case Sunrise = 1
+    case Dhuhr = 2
+    case Asr = 3
+    case Maghrib = 4
+    case Isha = 5
+    case None = 6
 }
 
 @objc public class BAPrayerTimes: NSObject {

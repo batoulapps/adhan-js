@@ -9,13 +9,13 @@
 import Foundation
 
 public enum Prayer {
-    case None
     case Fajr
     case Sunrise
     case Dhuhr
     case Asr
     case Maghrib
     case Isha
+    case None
 }
 
 /* Madhab for determining how Asr is calculated */
