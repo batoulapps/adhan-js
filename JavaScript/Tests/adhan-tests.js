@@ -146,3 +146,50 @@ QUnit.test("Moonsighting Committee High Latitude", function(assert) {
     assert.equal(moment(p.maghrib).tz("Europe/Oslo").format("h:mm A"), "3:25 PM");
     assert.equal(moment(p.isha).tz("Europe/Oslo").format("h:mm A"), "5:02 PM");
 });
+
+QUnit.test("Time For Prayer", function(assert) {
+    var date = new Date(2016, 6, 1);
+    var params = CalculationMethod.MuslimWorldLeague();
+    params.madhab = Madhab.Hanafi;
+    params.highLatitudeRule = HighLatitudeRule.TwilightAngle;
+    var p = new PrayerTimes(new Coordinates(59.9094, 10.7349), date, params);
+    assert.equal(p.fajr, p.timeForPrayer(Prayer.Fajr));
+    assert.equal(p.sunrise, p.timeForPrayer(Prayer.Sunrise));
+    assert.equal(p.dhuhr, p.timeForPrayer(Prayer.Dhuhr));
+    assert.equal(p.asr, p.timeForPrayer(Prayer.Asr));
+    assert.equal(p.maghrib, p.timeForPrayer(Prayer.Maghrib));
+    assert.equal(p.isha, p.timeForPrayer(Prayer.Isha));
+    assert.equal(null, p.timeForPrayer(Prayer.None));
+});
+
+QUnit.test("Current Prayer", function(assert) {
+    var date = new Date(2015, 8, 1);
+    var params = CalculationMethod.Karachi();
+    params.madhab = Madhab.Hanafi;
+    params.highLatitudeRule = HighLatitudeRule.TwilightAngle;
+    var p = new PrayerTimes(new Coordinates(33.720817, 73.090032), date, params);
+    assert.equal(p.currentPrayer(p.fajr.dateByAddingSeconds(-1)), Prayer.None);
+    assert.equal(p.currentPrayer(p.fajr), Prayer.Fajr);
+    assert.equal(p.currentPrayer(p.fajr.dateByAddingSeconds(1)), Prayer.Fajr);
+    assert.equal(p.currentPrayer(p.sunrise.dateByAddingSeconds(1)), Prayer.Sunrise);
+    assert.equal(p.currentPrayer(p.dhuhr.dateByAddingSeconds(1)), Prayer.Dhuhr);
+    assert.equal(p.currentPrayer(p.asr.dateByAddingSeconds(1)), Prayer.Asr);
+    assert.equal(p.currentPrayer(p.maghrib.dateByAddingSeconds(1)), Prayer.Maghrib);
+    assert.equal(p.currentPrayer(p.isha.dateByAddingSeconds(1)), Prayer.Isha);
+});
+
+QUnit.test("Next Prayer", function(assert) {
+    var date = new Date(2015, 8, 1);
+    var params = CalculationMethod.Karachi();
+    params.madhab = Madhab.Hanafi;
+    params.highLatitudeRule = HighLatitudeRule.TwilightAngle;
+    var p = new PrayerTimes(new Coordinates(33.720817, 73.090032), date, params);
+    assert.equal(p.nextPrayer(p.fajr.dateByAddingSeconds(-1)), Prayer.Fajr);
+    assert.equal(p.nextPrayer(p.fajr), Prayer.Sunrise);
+    assert.equal(p.nextPrayer(p.fajr.dateByAddingSeconds(1)), Prayer.Sunrise);
+    assert.equal(p.nextPrayer(p.sunrise.dateByAddingSeconds(1)), Prayer.Dhuhr);
+    assert.equal(p.nextPrayer(p.dhuhr.dateByAddingSeconds(1)), Prayer.Asr);
+    assert.equal(p.nextPrayer(p.asr.dateByAddingSeconds(1)), Prayer.Maghrib);
+    assert.equal(p.nextPrayer(p.maghrib.dateByAddingSeconds(1)), Prayer.Isha);
+    assert.equal(p.nextPrayer(p.isha.dateByAddingSeconds(1)), Prayer.None);
+});

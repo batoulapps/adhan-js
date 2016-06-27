@@ -4,12 +4,34 @@
 </head>
 <body>
 	<pre><script type="text/javascript">
+
+
+    function prayerName(prayer) {
+    	if (prayer == Prayer.Fajr) {
+    		return "Fajr";
+    	} else if (prayer == Prayer.Sunrise) {
+    		return "Sunrise";
+    	} else if (prayer == Prayer.Dhuhr) {
+    		return "Dhuhr";
+    	} else if (prayer == Prayer.Asr) {
+    		return "Asr";
+    	} else if (prayer == Prayer.Maghrib) {
+    		return "Maghrib";
+    	} else if (prayer == Prayer.Isha) {
+    		return "Isha";
+    	} else if (prayer == Prayer.None) {
+    		return "None";
+    	}
+
+    }
+
 	var date = new Date();
     var coordinates = new Coordinates(35.78056, -78.6389);
     var params = CalculationMethod.MuslimWorldLeague();
     params.madhab = Madhab.Hanafi;
     var prayerTimes = new PrayerTimes(coordinates, date, params);
 
+    document.write('Raleigh, NC - Muslim World League\n');
     document.write('Prayer times for ' + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '\n');
     document.write('Fajr: ' + prayerTimes.fajr.formattedTime(-4) + '\n');
     document.write('Sunrise: ' + prayerTimes.sunrise.formattedTime(-4) + '\n');
@@ -17,6 +39,9 @@
     document.write('Asr: ' + prayerTimes.asr.formattedTime(-4) + '\n');
     document.write('Maghrib: ' + prayerTimes.maghrib.formattedTime(-4) + '\n');
     document.write('Isha: ' + prayerTimes.isha.formattedTime(-4) + '\n');
+
+    document.write('\nCurrent Prayer: ' + prayerName(prayerTimes.currentPrayer()) + '\n');
+
 	</script></pre>
 </body>
 </html>
