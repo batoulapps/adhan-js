@@ -334,17 +334,17 @@ public struct PrayerTimes {
     }
     
     public func currentPrayer(time: NSDate = NSDate()) -> Prayer {
-        if isha.timeIntervalSinceDate(time) < 0 {
+        if isha.timeIntervalSinceDate(time) <= 0 {
             return .Isha
-        } else if maghrib.timeIntervalSinceDate(time) < 0 {
+        } else if maghrib.timeIntervalSinceDate(time) <= 0 {
             return .Maghrib
-        } else if asr.timeIntervalSinceDate(time) < 0 {
+        } else if asr.timeIntervalSinceDate(time) <= 0 {
             return .Asr
-        } else if dhuhr.timeIntervalSinceDate(time) < 0 {
+        } else if dhuhr.timeIntervalSinceDate(time) <= 0 {
             return .Dhuhr
-        } else if sunrise.timeIntervalSinceDate(time) < 0 {
+        } else if sunrise.timeIntervalSinceDate(time) <= 0 {
             return .Sunrise
-        } else if fajr.timeIntervalSinceDate(time) < 0 {
+        } else if fajr.timeIntervalSinceDate(time) <= 0 {
             return .Fajr
         } else {
             return .None
@@ -352,17 +352,17 @@ public struct PrayerTimes {
     }
     
     public func nextPrayer(time: NSDate = NSDate()) -> Prayer {
-        if isha.timeIntervalSinceDate(time) < 0 {
+        if isha.timeIntervalSinceDate(time) <= 0 {
             return .None
-        } else if maghrib.timeIntervalSinceDate(time) < 0 {
+        } else if maghrib.timeIntervalSinceDate(time) <= 0 {
             return .Isha
-        } else if asr.timeIntervalSinceDate(time) < 0 {
+        } else if asr.timeIntervalSinceDate(time) <= 0 {
             return .Maghrib
-        } else if dhuhr.timeIntervalSinceDate(time) < 0 {
+        } else if dhuhr.timeIntervalSinceDate(time) <= 0 {
             return .Asr
-        } else if sunrise.timeIntervalSinceDate(time) < 0 {
+        } else if sunrise.timeIntervalSinceDate(time) <= 0 {
             return .Dhuhr
-        } else if fajr.timeIntervalSinceDate(time) < 0 {
+        } else if fajr.timeIntervalSinceDate(time) <= 0 {
             return .Sunrise
         } else {
             return .Fajr
