@@ -8,7 +8,7 @@ To get prayer times initialize a new `PrayerTimes` object passing in coordinates
 date, and calculation parameters.
 
 ```js
-var prayerTimes = new PrayerTimes(coordinates, date, params);
+var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
 ```
 
 ### Initialization parameters
@@ -19,7 +19,7 @@ Create a `Coordinates` object with the latitude and longitude for the location
 you want prayer times for.
 
 ```js
-var coordinates = new Coordinates(35.78056, -78.6389);
+var coordinates = new adhan.Coordinates(35.78056, -78.6389);
 ```
 
 #### Date
@@ -42,8 +42,8 @@ instances in the `CalculationMethod` object. You can then further
 customize the calculation parameters if needed.
 
 ```js
-var params = CalculationMethod.MuslimWorldLeague();
-params.madhab = Madhab.Hanafi;
+var params = adhan.CalculationMethod.MuslimWorldLeague();
+params.madhab = adhan.Madhab.Hanafi;
 params.adjustments.fajr = 2;
 ```
 
@@ -91,7 +91,7 @@ params.adjustments.fajr = 2;
 ### Prayer Times
 
 Once the `PrayerTimes` object has been initialized it will contain values
-for all five prayer times and the time for sunrise. The prayer times will be 
+for all five prayer times and the time for sunrise. The prayer times will be
 Date object instances initialized with UTC values. To display these
 times for the local timezone, a formatting and timezone conversion extension
 to the Date object has been provided. Call `formattedTime()` on the date
@@ -108,10 +108,10 @@ prayerTimes.fajr.formattedTime(-4, '24h');
 
 ```js
 var date = new Date();
-var coordinates = new Coordinates(35.78056, -78.6389);
-var params = CalculationMethod.MuslimWorldLeague();
-params.madhab = Madhab.Hanafi;
-var prayerTimes = new PrayerTimes(coordinates, date, params);
+var coordinates = new adhan.Coordinates(35.78056, -78.6389);
+var params = adhan.CalculationMethod.MuslimWorldLeague();
+params.madhab = adhan.Madhab.Hanafi;
+var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
 document.write('Fajr: ' + prayerTimes.fajr.formattedTime(-4) + '\n');
 document.write('Sunrise: ' + prayerTimes.sunrise.formattedTime(-4) + '\n');
 document.write('Dhuhr: ' + prayerTimes.dhuhr.formattedTime(-4) + '\n');

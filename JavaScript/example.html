@@ -1,35 +1,34 @@
 <html>
 <head>
-	<script src="Adhan.js"></script>
+    <script src="Adhan.js"></script>
 </head>
 <body>
-	<pre><script type="text/javascript">
+    <pre><script type="text/javascript">
 
 
     function prayerName(prayer) {
-    	if (prayer == Prayer.Fajr) {
-    		return "Fajr";
-    	} else if (prayer == Prayer.Sunrise) {
-    		return "Sunrise";
-    	} else if (prayer == Prayer.Dhuhr) {
-    		return "Dhuhr";
-    	} else if (prayer == Prayer.Asr) {
-    		return "Asr";
-    	} else if (prayer == Prayer.Maghrib) {
-    		return "Maghrib";
-    	} else if (prayer == Prayer.Isha) {
-    		return "Isha";
-    	} else if (prayer == Prayer.None) {
-    		return "None";
-    	}
-
+        if (prayer == adhan.Prayer.Fajr) {
+            return "Fajr";
+        } else if (prayer == adhan.Prayer.Sunrise) {
+            return "Sunrise";
+        } else if (prayer == adhan.Prayer.Dhuhr) {
+            return "Dhuhr";
+        } else if (prayer == adhan.Prayer.Asr) {
+            return "Asr";
+        } else if (prayer == adhan.Prayer.Maghrib) {
+            return "Maghrib";
+        } else if (prayer == adhan.Prayer.Isha) {
+            return "Isha";
+        } else if (prayer == adhan.Prayer.None) {
+            return "None";
+        }
     }
 
-	var date = new Date();
-    var coordinates = new Coordinates(35.78056, -78.6389);
-    var params = CalculationMethod.MuslimWorldLeague();
-    params.madhab = Madhab.Hanafi;
-    var prayerTimes = new PrayerTimes(coordinates, date, params);
+    var date = new Date();
+    var coordinates = new adhan.Coordinates(35.78056, -78.6389);
+    var params = adhan.CalculationMethod.MuslimWorldLeague();
+    params.madhab = adhan.Madhab.Hanafi;
+    var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
 
     document.write('Raleigh, NC - Muslim World League\n');
     document.write('Prayer times for ' + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '\n');
@@ -42,6 +41,6 @@
 
     document.write('\nCurrent Prayer: ' + prayerName(prayerTimes.currentPrayer()) + '\n');
 
-	</script></pre>
+    </script></pre>
 </body>
 </html>
