@@ -273,6 +273,7 @@ class AdhanTests: XCTestCase {
         params.highLatitudeRule = .TwilightAngle
         let p = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps, calculationParameters: params)!
         XCTAssertEqual(p.currentPrayer(p.fajr.dateByAddingTimeInterval(-1)), Prayer.None)
+        XCTAssertEqual(p.currentPrayer(p.fajr), Prayer.Fajr)
         XCTAssertEqual(p.currentPrayer(p.fajr.dateByAddingTimeInterval(1)), Prayer.Fajr)
         XCTAssertEqual(p.currentPrayer(p.sunrise.dateByAddingTimeInterval(1)), Prayer.Sunrise)
         XCTAssertEqual(p.currentPrayer(p.dhuhr.dateByAddingTimeInterval(1)), Prayer.Dhuhr)
@@ -291,6 +292,7 @@ class AdhanTests: XCTestCase {
         params.highLatitudeRule = .TwilightAngle
         let p = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps, calculationParameters: params)!
         XCTAssertEqual(p.nextPrayer(p.fajr.dateByAddingTimeInterval(-1)), Prayer.Fajr)
+        XCTAssertEqual(p.nextPrayer(p.fajr), Prayer.Sunrise)
         XCTAssertEqual(p.nextPrayer(p.fajr.dateByAddingTimeInterval(1)), Prayer.Sunrise)
         XCTAssertEqual(p.nextPrayer(p.sunrise.dateByAddingTimeInterval(1)), Prayer.Dhuhr)
         XCTAssertEqual(p.nextPrayer(p.dhuhr.dateByAddingTimeInterval(1)), Prayer.Asr)
