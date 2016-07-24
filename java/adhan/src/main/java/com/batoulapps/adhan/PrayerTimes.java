@@ -178,6 +178,64 @@ public class PrayerTimes {
     }
   }
 
+  public Prayer currentPrayer(Date time) {
+    long when = time.getTime();
+    if (this.isha.getTime() - when <= 0) {
+      return Prayer.ISHA;
+    } else if (this.maghrib.getTime() - when <= 0) {
+      return Prayer.MAGHRIB;
+    } else if (this.asr.getTime() - when <= 0) {
+      return Prayer.ASR;
+    } else if (this.dhuhr.getTime() - when <= 0) {
+      return Prayer.DHUHR;
+    } else if (this.sunrise.getTime() - when <= 0) {
+      return Prayer.SUNRISE;
+    } else if (this.fajr.getTime() - when <= 0) {
+      return Prayer.FAJR;
+    } else {
+      return Prayer.NONE;
+    }
+  }
+
+  public Prayer nextPrayer(Date time) {
+    long when = time.getTime();
+    if (this.isha.getTime() - when <= 0) {
+      return Prayer.NONE;
+    } else if (this.maghrib.getTime() - when <= 0) {
+      return Prayer.ISHA;
+    } else if (this.asr.getTime() - when <= 0) {
+      return Prayer.MAGHRIB;
+    } else if (this.dhuhr.getTime() - when <= 0) {
+      return Prayer.ASR;
+    } else if (this.sunrise.getTime() - when <= 0) {
+      return Prayer.DHUHR;
+    } else if (this.fajr.getTime() - when <= 0) {
+      return Prayer.SUNRISE;
+    } else {
+      return Prayer.FAJR;
+    }
+  }
+
+  public Date timeForPrayer(Prayer prayer) {
+    switch (prayer) {
+      case FAJR:
+        return this.fajr;
+      case SUNRISE:
+        return this.sunrise;
+      case DHUHR:
+        return this.dhuhr;
+      case ASR:
+        return this.asr;
+      case MAGHRIB:
+        return this.maghrib;
+      case ISHA:
+        return this.isha;
+      case NONE:
+      default:
+        return null;
+    }
+  }
+
   private static Date seasonAdjustedMorningTwilight(
       double latitude, int day, int year, Date sunrise) {
     final double a = 75 + ((28.65 / 55.0) * Math.abs(latitude));
