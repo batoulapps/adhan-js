@@ -1,5 +1,6 @@
 package com.batoulapps.adhan.internal;
 
+import com.batoulapps.adhan.data.CalendarUtil;
 import com.batoulapps.adhan.data.DateComponents;
 
 import java.util.Calendar;
@@ -36,6 +37,10 @@ public class TestUtils {
     int month = Integer.parseInt(pieces[1]);
     int day = Integer.parseInt(pieces[2]);
     return new DateComponents(year, month, day);
+  }
+
+  public static Date addSeconds(Date date, int seconds) {
+    return CalendarUtil.add(date, seconds, Calendar.SECOND);
   }
 
   static Date makeDateWithOffset(int year, int month, int day, int offset, int unit) {

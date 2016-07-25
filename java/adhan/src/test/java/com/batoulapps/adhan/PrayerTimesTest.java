@@ -141,4 +141,62 @@ public class PrayerTimesTest {
     assertThat(formatter.format(prayerTimes.maghrib)).isEqualTo("03:25 PM");
     assertThat(formatter.format(prayerTimes.isha)).isEqualTo("05:02 PM");
   }
+
+  @Test
+  public void testTimeForPrayer() {
+    DateComponents components = new DateComponents(2016, 7, 1);
+    CalculationParameters parameters = CalculationMethod.MUSLIM_WORLD_LEAGUE.getParameters();
+    parameters.madhab = Madhab.HANAFI;
+    parameters.highLatitudeRule = HighLatitudeRule.TWILIGHT_ANGLE;
+    Coordinates coordinates = new Coordinates(59.9094, 10.7349);
+
+    PrayerTimes p = new PrayerTimes(coordinates, components, parameters);
+    assertThat(p.fajr).isEqualTo(p.timeForPrayer(Prayer.FAJR));
+    assertThat(p.sunrise).isEqualTo(p.timeForPrayer(Prayer.SUNRISE));
+    assertThat(p.dhuhr).isEqualTo(p.timeForPrayer(Prayer.DHUHR));
+    assertThat(p.asr).isEqualTo(p.timeForPrayer(Prayer.ASR));
+    assertThat(p.maghrib).isEqualTo(p.timeForPrayer(Prayer.MAGHRIB));
+    assertThat(p.isha).isEqualTo(p.timeForPrayer(Prayer.ISHA));
+    assertThat(p.timeForPrayer(Prayer.NONE)).isNull();
+  }
+
+  @Test
+  public void testCurrentPrayer() {
+    DateComponents components = new DateComponents(2015, 9, 1);
+    CalculationParameters parameters = CalculationMethod.KARACHI.getParameters();
+    parameters.madhab = Madhab.HANAFI;
+    parameters.highLatitudeRule = HighLatitudeRule.TWILIGHT_ANGLE;
+    Coordinates coordinates = new Coordinates(33.720817, 73.090032);
+
+    PrayerTimes p = new PrayerTimes(coordinates, components, parameters);
+
+    assertThat(p.currentPrayer(TestUtils.addSeconds(p.fajr, -1))).isEqualTo(Prayer.NONE);
+    assertThat(p.currentPrayer(p.fajr)).isEqualTo(Prayer.FAJR);
+    assertThat(p.currentPrayer(TestUtils.addSeconds(p.fajr, 1))).isEqualTo(Prayer.FAJR);
+    assertThat(p.currentPrayer(TestUtils.addSeconds(p.sunrise, 1))).isEqualTo(Prayer.SUNRISE);
+    assertThat(p.currentPrayer(TestUtils.addSeconds(p.dhuhr, 1))).isEqualTo(Prayer.DHUHR);
+    assertThat(p.currentPrayer(TestUtils.addSeconds(p.asr, 1))).isEqualTo(Prayer.ASR);
+    assertThat(p.currentPrayer(TestUtils.addSeconds(p.maghrib, 1))).isEqualTo(Prayer.MAGHRIB);
+    assertThat(p.currentPrayer(TestUtils.addSeconds(p.isha, 1))).isEqualTo(Prayer.ISHA);
+  }
+
+  @Test
+  public void testNextPrayer() {
+    DateComponents components = new DateComponents(2015, 9, 1);
+    CalculationParameters parameters = CalculationMethod.KARACHI.getParameters();
+    parameters.madhab = Madhab.HANAFI;
+    parameters.highLatitudeRule = HighLatitudeRule.TWILIGHT_ANGLE;
+    Coordinates coordinates = new Coordinates(33.720817, 73.090032);
+
+    PrayerTimes p = new PrayerTimes(coordinates, components, parameters);
+
+    assertThat(p.nextPrayer(TestUtils.addSeconds(p.fajr, -1))).isEqualTo(Prayer.FAJR);
+    assertThat(p.nextPrayer(p.fajr)).isEqualTo(Prayer.SUNRISE);
+    assertThat(p.nextPrayer(TestUtils.addSeconds(p.fajr, 1))).isEqualTo(Prayer.SUNRISE);
+    assertThat(p.nextPrayer(TestUtils.addSeconds(p.sunrise, 1))).isEqualTo(Prayer.DHUHR);
+    assertThat(p.nextPrayer(TestUtils.addSeconds(p.dhuhr, 1))).isEqualTo(Prayer.ASR);
+    assertThat(p.nextPrayer(TestUtils.addSeconds(p.asr, 1))).isEqualTo(Prayer.MAGHRIB);
+    assertThat(p.nextPrayer(TestUtils.addSeconds(p.maghrib, 1))).isEqualTo(Prayer.ISHA);
+    assertThat(p.nextPrayer(TestUtils.addSeconds(p.isha, 1))).isEqualTo(Prayer.NONE);
+  }
 }
