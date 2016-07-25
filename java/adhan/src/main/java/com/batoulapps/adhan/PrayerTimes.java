@@ -178,6 +178,10 @@ public class PrayerTimes {
     }
   }
 
+  public Prayer currentPrayer() {
+    return currentPrayer(new Date());
+  }
+
   public Prayer currentPrayer(Date time) {
     long when = time.getTime();
     if (this.isha.getTime() - when <= 0) {
@@ -195,6 +199,10 @@ public class PrayerTimes {
     } else {
       return Prayer.NONE;
     }
+  }
+
+  public Prayer nextPrayer() {
+    return nextPrayer(new Date());
   }
 
   public Prayer nextPrayer(Date time) {
