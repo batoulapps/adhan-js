@@ -1,6 +1,6 @@
 # Adhan Swift
 
-The Adhan Swift implementation uses Swift 2
+The Adhan Swift implementation uses Swift 3
 
 ## Usage
 
@@ -30,8 +30,8 @@ components will be ignored. The year, month and day values should be for the loc
 that you want prayer times for. These date components are expected to be for the Gregorian calendar.
 
 ```swift
-let cal = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
-let date = cal.components([.Year, .Month, .Day], fromDate: NSDate())
+let cal = Calendar(identifier: Calendar.Identifier.gregorian)
+let date = cal.dateComponents([.year, .month, .day], from: Date())
 ```
 
 #### Calculation parameters
@@ -42,8 +42,8 @@ instances by calling the `params` var on the `CalculationMethod` enum. You can t
 customize the calculation parameters if needed.
 
 ```swift
-var params = CalculationMethod.MoonsightingCommittee.params
-params.madhab = .Hanafi
+var params = CalculationMethod.moonsightingCommittee.params
+params.madhab = .hanafi
 params.adjustments.fajr = 2
 ```
 
@@ -61,31 +61,31 @@ params.adjustments.fajr = 2
 
 | Value | Description |
 | ----- | ----------- |
-| MuslimWorldLeague | Muslim World League. Fajr angle: 18, Isha angle: 17 |
-| Egyptian | Egyptian General Authority of Survey. Fajr angle: 19.5, Isha angle: 17.5 |
-| Karachi | University of Islamic Sciences, Karachi. Fajr angle: 18, Isha angle: 18 |
-| UmmAlQura | Umm al-Qura University, Makkah. Fajr angle: 18.5, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
-| Gulf | Modified version of Umm al-Qura used in UAE. Fajr angle: 19.5, Isha interval: 90. |
-| Qatar | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
-| Kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
-| MoonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
-| NorthAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
-| Other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` struct. |
+| muslimWorldLeague | Muslim World League. Fajr angle: 18, Isha angle: 17 |
+| egyptian | Egyptian General Authority of Survey. Fajr angle: 19.5, Isha angle: 17.5 |
+| karachi | University of Islamic Sciences, Karachi. Fajr angle: 18, Isha angle: 18 |
+| ummAlQura | Umm al-Qura University, Makkah. Fajr angle: 18.5, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
+| gulf | Modified version of Umm al-Qura used in UAE. Fajr angle: 19.5, Isha interval: 90. |
+| qatar | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
+| kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
+| moonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
+| northAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
+| other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` struct. |
 
 **Madhab**
 
 | Value | Description |
 | ----- | ----------- |
-| Shafi | Earlier Asr time |
-| Hanafi | Later Asr time |
+| shafi | Earlier Asr time |
+| hanafi | Later Asr time |
 
 **HighLatitudeRule**
 
 | Value | Description |
 | ----- | ----------- |
-| MiddleOfTheNight | Fajr will never be earlier than the middle of the night and Isha will never be later than the middle of the night |
-| SeventhOfTheNight | Fajr will never be earlier than the beginning of the last seventh of the night and Isha will never be later than the end of the first seventh of the night |
-| TwilightAngle | Similar to SeventhOfTheNight, but instead of 1/7, the fraction of the night used is fajrAngle/60 and ishaAngle/60 |
+| middleOfTheNight | Fajr will never be earlier than the middle of the night and Isha will never be later than the middle of the night |
+| seventhOfTheNight | Fajr will never be earlier than the beginning of the last seventh of the night and Isha will never be later than the end of the first seventh of the night |
+| twilightAngle | Similar to SeventhOfTheNight, but instead of 1/7, the fraction of the night used is fajrAngle/60 and ishaAngle/60 |
 
 
 ### Prayer Times
@@ -97,31 +97,31 @@ times for the local timezone you will need to create a date formatter and set
 the appropriate timezone.
 
 ```swift
-let formatter = NSDateFormatter()
-formatter.timeStyle = .MediumStyle
-formatter.timeZone = NSTimeZone(name: "America/New_York")!
+let formatter = DateFormatter()
+formatter.timeStyle = .medium
+formatter.timeZone = TimeZone(identifier: "America/New_York")!
 
-NSLog("fajr %@", formatter.stringFromDate(prayers.fajr))
+NSLog("fajr %@", formatter.string(from: prayers.fajr))
 ```
 
 ## Full Example
 
 ```swift
-let cal = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
-let date = cal.components([.Year, .Month, .Day], fromDate: NSDate())
+let cal = Calendar(identifier: Calendar.Identifier.gregorian)
+let date = cal.dateComponents([.year, .month, .day], from: Date())
 let coordinates = Coordinates(latitude: 35.78056, longitude: -78.6389)
-var params = CalculationMethod.MoonsightingCommittee.params
-params.madhab = .Hanafi
+var params = CalculationMethod.moonsightingCommittee.params
+params.madhab = .hanafi
 if let prayers = PrayerTimes(coordinates: coordinates, date: date, calculationParameters: params) {
-    let formatter = NSDateFormatter()
-    formatter.timeStyle = .MediumStyle
-    formatter.timeZone = NSTimeZone(name: "America/New_York")!
+    let formatter = DateFormatter()
+    formatter.timeStyle = .medium
+    formatter.timeZone = TimeZone(identifier: "America/New_York")!
     
-    NSLog("fajr %@", formatter.stringFromDate(prayers.fajr))
-    NSLog("sunrise %@", formatter.stringFromDate(prayers.sunrise))
-    NSLog("dhuhr %@", formatter.stringFromDate(prayers.dhuhr))
-    NSLog("asr %@", formatter.stringFromDate(prayers.asr))
-    NSLog("maghrib %@", formatter.stringFromDate(prayers.maghrib))
-    NSLog("isha %@", formatter.stringFromDate(prayers.isha))
+    NSLog("fajr %@", formatter.string(from: prayers.fajr))
+    NSLog("sunrise %@", formatter.string(from: prayers.sunrise))
+    NSLog("dhuhr %@", formatter.string(from: prayers.dhuhr))
+    NSLog("asr %@", formatter.string(from: prayers.asr))
+    NSLog("maghrib %@", formatter.string(from: prayers.maghrib))
+    NSLog("isha %@", formatter.string(from: prayers.isha))
 }
 ```

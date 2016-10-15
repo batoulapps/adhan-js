@@ -9,107 +9,107 @@
 import Foundation
 
 @objc public enum BAPrayer: Int {
-    case Fajr = 0
-    case Sunrise = 1
-    case Dhuhr = 2
-    case Asr = 3
-    case Maghrib = 4
-    case Isha = 5
-    case None = 6
+    case fajr = 0
+    case sunrise = 1
+    case dhuhr = 2
+    case asr = 3
+    case maghrib = 4
+    case isha = 5
+    case none = 6
 }
 
-@objc public class BAPrayerTimes: NSObject {
-    public var fajr: NSDate?
-    public var sunrise: NSDate?
-    public var dhuhr: NSDate?
-    public var asr: NSDate?
-    public var maghrib: NSDate?
-    public var isha: NSDate?
+@objc open class BAPrayerTimes: NSObject {
+    open var fajr: Date?
+    open var sunrise: Date?
+    open var dhuhr: Date?
+    open var asr: Date?
+    open var maghrib: Date?
+    open var isha: Date?
     
     private let prayerTimes: PrayerTimes?
     
-    public init(coordinates: BACoordinates, date: NSDateComponents, calculationParameters: BACalculationParameters) {
+    public init(coordinates: BACoordinates, date: DateComponents, calculationParameters: BACalculationParameters) {
         prayerTimes = PrayerTimes(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude), date: date, calculationParameters: calculationParameters.calculationParameters())
         if let prayerTimes = prayerTimes {
-            self.fajr = prayerTimes.fajr
-            self.sunrise = prayerTimes.sunrise
-            self.dhuhr = prayerTimes.dhuhr
-            self.asr = prayerTimes.asr
-            self.maghrib = prayerTimes.maghrib
-            self.isha = prayerTimes.isha
+            self.fajr = prayerTimes.fajr as Date
+            self.sunrise = prayerTimes.sunrise as Date
+            self.dhuhr = prayerTimes.dhuhr as Date
+            self.asr = prayerTimes.asr as Date
+            self.maghrib = prayerTimes.maghrib as Date
+            self.isha = prayerTimes.isha as Date
         }
         super.init()
     }
     
-    public func currentPrayer(time: NSDate?) -> BAPrayer {
+    open func currentPrayer(_ time: Date?) -> BAPrayer {
         guard let prayerTimes = prayerTimes else {
-            return .None
+            return .none
         }
         
-        let _time = time ?? NSDate()
-        return BAPrayerForPrayer(prayerTimes.currentPrayer(_time))
+        let _time = time ?? Date()
+        return BAPrayerForPrayer(prayerTimes.currentPrayer(at: _time))
     }
     
-    public func nextPrayer(time: NSDate?) -> BAPrayer {
+    open func nextPrayer(_ time: Date?) -> BAPrayer {
         guard let prayerTimes = prayerTimes else {
-            return .None
+            return .none
         }
         
-        let _time = time ?? NSDate()
-        return BAPrayerForPrayer(prayerTimes.nextPrayer(_time))
+        let _time = time ?? Date()
+        return BAPrayerForPrayer(prayerTimes.nextPrayer(at: _time))
     }
     
-    public func timeForPrayer(prayer: BAPrayer) -> NSDate? {
-        return prayerTimes?.timeForPrayer(prayerForBAPrayer(prayer))
+    open func timeForPrayer(_ prayer: BAPrayer) -> Date? {
+        return prayerTimes?.time(for: prayerForBAPrayer(prayer))
     }
     
-    private func prayerForBAPrayer(baPrayer: BAPrayer) -> Prayer {
+    private func prayerForBAPrayer(_ baPrayer: BAPrayer) -> Prayer {
         switch baPrayer {
-        case BAPrayer.None:
-            return Prayer.None
-        case BAPrayer.Fajr:
-            return Prayer.Fajr
-        case BAPrayer.Sunrise:
-            return Prayer.Sunrise
-        case BAPrayer.Dhuhr:
-            return Prayer.Dhuhr
-        case BAPrayer.Asr:
-            return Prayer.Asr
-        case BAPrayer.Maghrib:
-            return Prayer.Maghrib
-        case BAPrayer.Isha:
-            return Prayer.Isha
+        case BAPrayer.none:
+            return Prayer.none
+        case BAPrayer.fajr:
+            return Prayer.fajr
+        case BAPrayer.sunrise:
+            return Prayer.sunrise
+        case BAPrayer.dhuhr:
+            return Prayer.dhuhr
+        case BAPrayer.asr:
+            return Prayer.asr
+        case BAPrayer.maghrib:
+            return Prayer.maghrib
+        case BAPrayer.isha:
+            return Prayer.isha
         }
     }
     
-    private func BAPrayerForPrayer(prayer: Prayer) -> BAPrayer {
+    private func BAPrayerForPrayer(_ prayer: Prayer) -> BAPrayer {
         switch prayer {
-        case Prayer.None:
-            return BAPrayer.None
-        case Prayer.Fajr:
-            return BAPrayer.Fajr
-        case Prayer.Sunrise:
-            return BAPrayer.Sunrise
-        case Prayer.Dhuhr:
-            return BAPrayer.Dhuhr
-        case Prayer.Asr:
-            return BAPrayer.Asr
-        case Prayer.Maghrib:
-            return BAPrayer.Maghrib
-        case Prayer.Isha:
-            return BAPrayer.Isha
+        case Prayer.none:
+            return BAPrayer.none
+        case Prayer.fajr:
+            return BAPrayer.fajr
+        case Prayer.sunrise:
+            return BAPrayer.sunrise
+        case Prayer.dhuhr:
+            return BAPrayer.dhuhr
+        case Prayer.asr:
+            return BAPrayer.asr
+        case Prayer.maghrib:
+            return BAPrayer.maghrib
+        case Prayer.isha:
+            return BAPrayer.isha
         }
     }
 }
 
-@objc public class BACalculationParameters: NSObject {
-    public var method: BACalculationMethod = .Other
-    public var fajrAngle: Double
-    public var ishaAngle: Double
-    public var ishaInterval: Int = 0
-    public var madhab: BAMadhab = .Shafi
-    public var highLatitudeRule: BAHighLatitudeRule = .MiddleOfTheNight
-    public var adjustments: BAPrayerAdjustments = BAPrayerAdjustments()
+@objc open class BACalculationParameters: NSObject {
+    open var method: BACalculationMethod = .other
+    open var fajrAngle: Double
+    open var ishaAngle: Double
+    open var ishaInterval: Int = 0
+    open var madhab: BAMadhab = .shafi
+    open var highLatitudeRule: BAHighLatitudeRule = .middleOfTheNight
+    open var adjustments: BAPrayerAdjustments = BAPrayerAdjustments()
     
     public init(fajrAngle: Double, ishaAngle: Double, ishaInterval: Int) {
         self.fajrAngle = fajrAngle
@@ -124,88 +124,88 @@ import Foundation
         self.method = method
     }
     
-    private func calculationParameters() -> CalculationParameters {
+    internal func calculationParameters() -> CalculationParameters {
         var params = CalculationParameters(fajrAngle: self.fajrAngle, ishaAngle: self.ishaAngle)
         params.method = BACalculationParameters.calculationMethodForBACalculationMethod(self.method)
         params.ishaInterval = self.ishaInterval
         params.adjustments = self.adjustments.prayerAdjustments()
         
         switch self.madhab {
-        case BAMadhab.Shafi:
-            params.madhab = Madhab.Shafi
-        case BAMadhab.Hanafi:
-            params.madhab = Madhab.Hanafi
+        case BAMadhab.shafi:
+            params.madhab = Madhab.shafi
+        case BAMadhab.hanafi:
+            params.madhab = Madhab.hanafi
         }
         
         switch self.highLatitudeRule {
-        case BAHighLatitudeRule.MiddleOfTheNight:
-            params.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight
-        case BAHighLatitudeRule.SeventhOfTheNight:
-            params.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight
-        case BAHighLatitudeRule.TwilightAngle:
-            params.highLatitudeRule = HighLatitudeRule.TwilightAngle
+        case BAHighLatitudeRule.middleOfTheNight:
+            params.highLatitudeRule = HighLatitudeRule.middleOfTheNight
+        case BAHighLatitudeRule.seventhOfTheNight:
+            params.highLatitudeRule = HighLatitudeRule.seventhOfTheNight
+        case BAHighLatitudeRule.twilightAngle:
+            params.highLatitudeRule = HighLatitudeRule.twilightAngle
         }
         
         return params
     }
     
-    private static func calculationMethodForBACalculationMethod(baMethod: BACalculationMethod) -> CalculationMethod {
+    private static func calculationMethodForBACalculationMethod(_ baMethod: BACalculationMethod) -> CalculationMethod {
         switch baMethod {
-        case .MuslimWorldLeague:
-            return CalculationMethod.MuslimWorldLeague
-        case .Egyptian:
-            return CalculationMethod.Egyptian
-        case .Karachi:
-            return CalculationMethod.Karachi
-        case .UmmAlQura:
-            return CalculationMethod.UmmAlQura
-        case .Gulf:
-            return CalculationMethod.Gulf
-        case .MoonsightingCommittee:
-            return CalculationMethod.MoonsightingCommittee
-        case .NorthAmerica:
-            return CalculationMethod.NorthAmerica
-        case .Kuwait:
-            return CalculationMethod.Kuwait
-        case .Qatar:
-            return CalculationMethod.Qatar
-        case .Other:
-            return CalculationMethod.Other
+        case .muslimWorldLeague:
+            return CalculationMethod.muslimWorldLeague
+        case .egyptian:
+            return CalculationMethod.egyptian
+        case .karachi:
+            return CalculationMethod.karachi
+        case .ummAlQura:
+            return CalculationMethod.ummAlQura
+        case .gulf:
+            return CalculationMethod.gulf
+        case .moonsightingCommittee:
+            return CalculationMethod.moonsightingCommittee
+        case .northAmerica:
+            return CalculationMethod.northAmerica
+        case .kuwait:
+            return CalculationMethod.kuwait
+        case .qatar:
+            return CalculationMethod.qatar
+        case .other:
+            return CalculationMethod.other
         }
     }
 }
 
 @objc public enum BACalculationMethod: Int {
-    case MuslimWorldLeague
-    case Egyptian
-    case Karachi
-    case UmmAlQura
-    case Gulf
-    case MoonsightingCommittee
-    case NorthAmerica
-    case Kuwait
-    case Qatar
-    case Other
+    case muslimWorldLeague
+    case egyptian
+    case karachi
+    case ummAlQura
+    case gulf
+    case moonsightingCommittee
+    case northAmerica
+    case kuwait
+    case qatar
+    case other
 }
 
 @objc public enum BAMadhab: Int {
-    case Shafi
-    case Hanafi
+    case shafi
+    case hanafi
 }
 
 @objc public enum BAHighLatitudeRule: Int {
-    case MiddleOfTheNight
-    case SeventhOfTheNight
-    case TwilightAngle
+    case middleOfTheNight
+    case seventhOfTheNight
+    case twilightAngle
 }
 
-@objc public class BAPrayerAdjustments: NSObject {
-    public var fajr: Int = 0
-    public var sunrise: Int = 0
-    public var dhuhr: Int = 0
-    public var asr: Int = 0
-    public var maghrib: Int = 0
-    public var isha: Int = 0
+@objc open class BAPrayerAdjustments: NSObject {
+    open var fajr: Int = 0
+    open var sunrise: Int = 0
+    open var dhuhr: Int = 0
+    open var asr: Int = 0
+    open var maghrib: Int = 0
+    open var isha: Int = 0
     
     public init(fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, maghrib: Int = 0, isha: Int = 0) {
         self.fajr = fajr
@@ -217,14 +217,14 @@ import Foundation
         super.init()
     }
     
-    private func prayerAdjustments() -> PrayerAdjustments {
+    internal func prayerAdjustments() -> PrayerAdjustments {
         return PrayerAdjustments(fajr: self.fajr, sunrise: self.sunrise, dhuhr: self.dhuhr, asr: self.asr, maghrib: self.maghrib, isha: self.isha)
     }
 }
 
-@objc public class BACoordinates: NSObject {
-    public var latitude: Double
-    public var longitude: Double
+@objc open class BACoordinates: NSObject {
+    open var latitude: Double
+    open var longitude: Double
     
     public init(latitude: Double, longitude: Double) {
         self.latitude = latitude
