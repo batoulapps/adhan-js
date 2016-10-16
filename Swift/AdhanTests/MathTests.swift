@@ -11,17 +11,6 @@ import XCTest
 
 class MathTests: XCTestCase {
     
-    func components(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int) -> NSDateComponents {
-        let dateComponents = NSDateComponents()
-        dateComponents.year = year
-        dateComponents.month = month
-        dateComponents.day = day
-        dateComponents.hour = hour
-        dateComponents.minute = minute
-        dateComponents.second = second
-        return dateComponents
-    }
-    
     func testAngleConversion() {
         XCTAssertEqual(M_PI.radiansToDegrees(), 180.0)
         XCTAssertEqual(180.0.degreesToRadians(), M_PI)
@@ -30,18 +19,18 @@ class MathTests: XCTestCase {
     }
     
     func testNormalizing() {
-        XCTAssertEqual(2.0.normalizeWithBound(-5), -3)
-        XCTAssertEqual((-4.0).normalizeWithBound(-5), -4)
-        XCTAssertEqual((-6.0).normalizeWithBound(-5), -1)
+        XCTAssertEqual(2.0.normalizeWithBound(max: -5), -3)
+        XCTAssertEqual((-4.0).normalizeWithBound(max: -5), -4)
+        XCTAssertEqual((-6.0).normalizeWithBound(max: -5), -1)
         
-        XCTAssertEqual((-1.0).normalizeWithBound(24), 23)
-        XCTAssertEqual(1.0.normalizeWithBound(24), 1)
-        XCTAssertEqual(49.0.normalizeWithBound(24), 1)
+        XCTAssertEqual((-1.0).normalizeWithBound(max: 24), 23)
+        XCTAssertEqual(1.0.normalizeWithBound(max: 24), 1)
+        XCTAssertEqual(49.0.normalizeWithBound(max: 24), 1)
         
-        XCTAssertEqual(361.0.normalizeWithBound(360), 1)
-        XCTAssertEqual(360.0.normalizeWithBound(360), 0)
-        XCTAssertEqual(259.0.normalizeWithBound(360), 259)
-        XCTAssertEqual(2592.0.normalizeWithBound(360), 72)
+        XCTAssertEqual(361.0.normalizeWithBound(max: 360), 1)
+        XCTAssertEqual(360.0.normalizeWithBound(max: 360), 0)
+        XCTAssertEqual(259.0.normalizeWithBound(max: 360), 259)
+        XCTAssertEqual(2592.0.normalizeWithBound(max: 360), 72)
         
         XCTAssertEqual((-45.0).unwindAngle(), 315)
         XCTAssertEqual(361.0.unwindAngle(), 1)
@@ -49,7 +38,7 @@ class MathTests: XCTestCase {
         XCTAssertEqual(259.0.unwindAngle(), 259)
         XCTAssertEqual(2592.0.unwindAngle(), 72)
         
-        XCTAssertEqualWithAccuracy(360.1.normalizeWithBound(360), 0.1, accuracy: 0.01)
+        XCTAssertEqualWithAccuracy(360.1.normalizeWithBound(max: 360), 0.1, accuracy: 0.01)
     }
     
     func testClosestAngle() {
@@ -90,16 +79,16 @@ class MathTests: XCTestCase {
     }
     
     func testMinuteRounding() {
-        let cal = NSCalendar(identifier: NSCalendarIdentifierGregorian)!
+        let cal = Calendar(identifier: Calendar.Identifier.gregorian)
         
-        let comps1 = components(2015, month: 1, day: 1, hour: 10, minute: 2, second: 29)
-        let date1 = cal.dateFromComponents(comps1)!.roundedMinute()
-        XCTAssertEqual(cal.component(.Minute, fromDate: date1), 2)
-        XCTAssertEqual(cal.component(.Second, fromDate: date1), 0)
+        let comps1 = DateComponents(year: 2015, month: 1, day: 1, hour: 10, minute: 2, second: 29)
+        let date1 = cal.date(from: comps1)!.roundedMinute()
+        XCTAssertEqual(cal.component(.minute, from: date1), 2)
+        XCTAssertEqual(cal.component(.second, from: date1), 0)
         
-        let comps2 = components(2015, month: 1, day: 1, hour: 10, minute: 2, second: 31)
-        let date2 = cal.dateFromComponents(comps2)!.roundedMinute()
-        XCTAssertEqual(cal.component(.Minute, fromDate: date2), 3)
-        XCTAssertEqual(cal.component(.Second, fromDate: date2), 0)
+        let comps2 = DateComponents(year: 2015, month: 1, day: 1, hour: 10, minute: 2, second: 31)
+        let date2 = cal.date(from: comps2)!.roundedMinute()
+        XCTAssertEqual(cal.component(.minute, from: date2), 3)
+        XCTAssertEqual(cal.component(.second, from: date2), 0)
     }
 }

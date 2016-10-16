@@ -9,35 +9,35 @@
 import Foundation
 
 public enum Prayer {
-    case Fajr
-    case Sunrise
-    case Dhuhr
-    case Asr
-    case Maghrib
-    case Isha
-    case None
+    case fajr
+    case sunrise
+    case dhuhr
+    case asr
+    case maghrib
+    case isha
+    case none
 }
 
 /* Madhab for determining how Asr is calculated */
 public enum Madhab {
-    case Shafi
-    case Hanafi
+    case shafi
+    case hanafi
     
     var shadowLength: ShadowLength {
         switch(self) {
-        case .Shafi:
-            return .Single
-        case .Hanafi:
-            return .Double
+        case .shafi:
+            return .single
+        case .hanafi:
+            return .double
         }
     }
 }
 
 /* Rule for approximating Fajr and Isha at high latitudes */
 public enum HighLatitudeRule {
-    case MiddleOfTheNight
-    case SeventhOfTheNight
-    case TwilightAngle
+    case middleOfTheNight
+    case seventhOfTheNight
+    case twilightAngle
 }
 
 /* Latitude and longitude */
@@ -72,12 +72,12 @@ public struct PrayerAdjustments {
 
 /* All customizable parameters for calculating prayer times */
 public struct CalculationParameters {
-    public var method: CalculationMethod = .Other
+    public var method: CalculationMethod = .other
     public var fajrAngle: Double
     public var ishaAngle: Double
     public var ishaInterval: Int = 0
-    public var madhab: Madhab = .Shafi
-    public var highLatitudeRule: HighLatitudeRule = .MiddleOfTheNight
+    public var madhab: Madhab = .shafi
+    public var highLatitudeRule: HighLatitudeRule = .middleOfTheNight
     public var adjustments: PrayerAdjustments = PrayerAdjustments()
     
     init(fajrAngle: Double, ishaAngle: Double) {
@@ -102,11 +102,11 @@ public struct CalculationParameters {
     
     func nightPortions() -> (fajr: Double, isha: Double) {
         switch self.highLatitudeRule {
-        case .MiddleOfTheNight:
+        case .middleOfTheNight:
             return (1/2, 1/2)
-        case .SeventhOfTheNight:
+        case .seventhOfTheNight:
             return (1/7, 1/7)
-        case .TwilightAngle:
+        case .twilightAngle:
             return (self.fajrAngle / 60, self.ishaAngle / 60)
         }
     }
@@ -116,56 +116,56 @@ public struct CalculationParameters {
 public enum CalculationMethod {
     
     // Muslim World League
-    case MuslimWorldLeague
+    case muslimWorldLeague
     
     //Egyptian General Authority of Survey
-    case Egyptian
+    case egyptian
     
     // University of Islamic Sciences, Karachi
-    case Karachi
+    case karachi
     
     // Umm al-Qura University, Makkah
-    case UmmAlQura
+    case ummAlQura
     
     // The Gulf Region
-    case Gulf
+    case gulf
     
     // Moonsighting Committee
-    case MoonsightingCommittee
+    case moonsightingCommittee
     
     // ISNA
-    case NorthAmerica
+    case northAmerica
     
     // Kuwait
-    case Kuwait
+    case kuwait
     
     // Qatar
-    case Qatar
+    case qatar
     
     // Other
-    case Other
+    case other
     
     public var params: CalculationParameters {
         switch(self) {
-        case .MuslimWorldLeague:
+        case .muslimWorldLeague:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 17, method: self)
-        case .Egyptian:
+        case .egyptian:
             return CalculationParameters(fajrAngle: 19.5, ishaAngle: 17.5, method: self)
-        case .Karachi:
+        case .karachi:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
-        case .UmmAlQura:
+        case .ummAlQura:
             return CalculationParameters(fajrAngle: 18.5, ishaInterval: 90, method: self)
-        case .Gulf:
+        case .gulf:
             return CalculationParameters(fajrAngle: 19.5, ishaInterval: 90, method: self)
-        case .MoonsightingCommittee:
+        case .moonsightingCommittee:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
-        case .NorthAmerica:
+        case .northAmerica:
             return CalculationParameters(fajrAngle: 15, ishaAngle: 15, method: self)
-        case .Kuwait:
+        case .kuwait:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 17.5, method: self)
-        case .Qatar:
+        case .qatar:
             return CalculationParameters(fajrAngle: 18, ishaInterval: 90, method: self)
-        case .Other:
+        case .other:
             return CalculationParameters(fajrAngle: 0, ishaAngle: 0, method: self)
         }
     }
@@ -175,27 +175,27 @@ public enum CalculationMethod {
 All prayer times are in UTC and should be display using an NSDateFormatter that
 has the correct timezone set. */
 public struct PrayerTimes {
-    public let fajr: NSDate
-    public let sunrise: NSDate
-    public let dhuhr: NSDate
-    public let asr: NSDate
-    public let maghrib: NSDate
-    public let isha: NSDate
+    public let fajr: Date
+    public let sunrise: Date
+    public let dhuhr: Date
+    public let asr: Date
+    public let maghrib: Date
+    public let isha: Date
     
-    public init?(coordinates: Coordinates, date: NSDateComponents, calculationParameters: CalculationParameters) {
+    public init?(coordinates: Coordinates, date: DateComponents, calculationParameters: CalculationParameters) {
         
-        var tempFajr: NSDate? = nil
-        var tempSunrise: NSDate? = nil
-        var tempDhuhr: NSDate? = nil
-        var tempAsr: NSDate? = nil
-        var tempMaghrib: NSDate? = nil
-        var tempIsha: NSDate? = nil
+        var tempFajr: Date? = nil
+        var tempSunrise: Date? = nil
+        var tempDhuhr: Date? = nil
+        var tempAsr: Date? = nil
+        var tempMaghrib: Date? = nil
+        var tempIsha: Date? = nil
         
         // all calculations are done using a gregorian calendar with the UTC timezone
-        let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-        cal.timeZone = NSTimeZone(name: "UTC")!
+        var cal = Calendar(identifier: Calendar.Identifier.gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
         
-        guard let prayerDate = cal.dateFromComponents(date) else {
+        guard let prayerDate = cal.date(from: date) else {
             return nil
         }
         
@@ -204,93 +204,93 @@ public struct PrayerTimes {
         guard let transit = solarTime.transit.timeComponents()?.dateComponents(date),
             let sunriseComponents = solarTime.sunrise.timeComponents()?.dateComponents(date),
             let sunsetComponents = solarTime.sunset.timeComponents()?.dateComponents(date),
-            let sunriseDate = cal.dateFromComponents(sunriseComponents),
-            let sunsetDate = cal.dateFromComponents(sunsetComponents) else {
+            let sunriseDate = cal.date(from: sunriseComponents),
+            let sunsetDate = cal.date(from: sunsetComponents) else {
                 // unable to determine transit, sunrise and sunset aborting calculations
                 return nil
         }
         
-        tempDhuhr = cal.dateFromComponents(transit)
-        tempSunrise = cal.dateFromComponents(sunriseComponents)
-        tempMaghrib = cal.dateFromComponents(sunsetComponents)
+        tempDhuhr = cal.date(from: transit)
+        tempSunrise = cal.date(from: sunriseComponents)
+        tempMaghrib = cal.date(from: sunsetComponents)
         
-        if let asrComponents = solarTime.afternoon(calculationParameters.madhab.shadowLength).timeComponents()?.dateComponents(date) {
-            tempAsr = cal.dateFromComponents(asrComponents)
+        if let asrComponents = solarTime.afternoon(shadowLength: calculationParameters.madhab.shadowLength).timeComponents()?.dateComponents(date) {
+            tempAsr = cal.date(from: asrComponents)
         }
         
         // get night length
-        let tomorrowSunrise = cal.dateByAddingUnit(.Day, value: 1, toDate: sunriseDate, options: [])
-        guard let night = tomorrowSunrise?.timeIntervalSinceDate(sunsetDate) else {
+        let tomorrowSunrise = (cal as NSCalendar).date(byAdding: .day, value: 1, to: sunriseDate, options: [])
+        guard let night = tomorrowSunrise?.timeIntervalSince(sunsetDate) else {
             return nil
         }
         
-        if let fajrComponents = solarTime.hourAngle(-calculationParameters.fajrAngle, afterTransit: false).timeComponents()?.dateComponents(date) {
-            tempFajr = cal.dateFromComponents(fajrComponents)
+        if let fajrComponents = solarTime.hourAngle(angle: -calculationParameters.fajrAngle, afterTransit: false).timeComponents()?.dateComponents(date) {
+            tempFajr = cal.date(from: fajrComponents)
         }
         
         // special case for moonsighting committee above latitude 55
-        if calculationParameters.method == .MoonsightingCommittee && coordinates.latitude >= 55 {
+        if calculationParameters.method == .moonsightingCommittee && coordinates.latitude >= 55 {
             let nightFraction = night / 7
-            tempFajr = sunriseDate.dateByAddingTimeInterval(-nightFraction)
+            tempFajr = sunriseDate.addingTimeInterval(-nightFraction)
         }
         
-        let safeFajr: NSDate = {
-            if calculationParameters.method == .MoonsightingCommittee {
-                let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunrise: sunriseDate)
+        let safeFajr: Date = {
+            if calculationParameters.method == .moonsightingCommittee {
+                let dayOfYear = (cal as NSCalendar).ordinality(of: .day, in: .year, for: prayerDate)
+                return Astronomical.seasonAdjustedMorningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: date.year!, sunrise: sunriseDate)
             } else {
                 let portion = calculationParameters.nightPortions().fajr
                 let nightFraction = portion * night
                 
-                return sunriseDate.dateByAddingTimeInterval(-nightFraction)
+                return sunriseDate.addingTimeInterval(-nightFraction)
             }
         }()
         
-        if tempFajr == nil || tempFajr?.compare(safeFajr) == .OrderedAscending {
+        if tempFajr == nil || tempFajr?.compare(safeFajr) == .orderedAscending {
             tempFajr = safeFajr
         }
         
         
         // Isha calculation with check against safe value
         if calculationParameters.ishaInterval > 0 {
-            tempIsha = tempMaghrib?.dateByAddingTimeInterval(calculationParameters.ishaInterval.timeInterval())
+            tempIsha = tempMaghrib?.addingTimeInterval(calculationParameters.ishaInterval.timeInterval())
         } else {
-            if let ishaComponents = solarTime.hourAngle(-calculationParameters.ishaAngle, afterTransit: true).timeComponents()?.dateComponents(date) {
-                tempIsha = cal.dateFromComponents(ishaComponents)
+            if let ishaComponents = solarTime.hourAngle(angle: -calculationParameters.ishaAngle, afterTransit: true).timeComponents()?.dateComponents(date) {
+                tempIsha = cal.date(from: ishaComponents)
             }
             
             // special case for moonsighting committee above latitude 55
-            if calculationParameters.method == .MoonsightingCommittee && coordinates.latitude >= 55 {
+            if calculationParameters.method == .moonsightingCommittee && coordinates.latitude >= 55 {
                 let nightFraction = night / 7
-                tempIsha = sunsetDate.dateByAddingTimeInterval(nightFraction)
+                tempIsha = sunsetDate.addingTimeInterval(nightFraction)
             }
             
-            let safeIsha: NSDate = {
-                if calculationParameters.method == .MoonsightingCommittee {
-                    let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: prayerDate)
-                    return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, day: dayOfYear, year: date.year, sunset: sunsetDate)
+            let safeIsha: Date = {
+                if calculationParameters.method == .moonsightingCommittee {
+                    let dayOfYear = (cal as NSCalendar).ordinality(of: .day, in: .year, for: prayerDate)
+                    return Astronomical.seasonAdjustedEveningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: date.year!, sunset: sunsetDate)
                 } else {
                     let portion = calculationParameters.nightPortions().isha
                     let nightFraction = portion * night
                     
-                    return sunsetDate.dateByAddingTimeInterval(nightFraction)
+                    return sunsetDate.addingTimeInterval(nightFraction)
                 }
             }()
             
-            if tempIsha == nil || tempIsha?.compare(safeIsha) == .OrderedDescending {
+            if tempIsha == nil || tempIsha?.compare(safeIsha) == .orderedDescending {
                 tempIsha = safeIsha
             }
         }
         
         
         // method based offsets
-        let dhuhrOffset: NSTimeInterval = {
+        let dhuhrOffset: TimeInterval = {
             switch(calculationParameters.method) {
-            case .MoonsightingCommittee:
+            case .moonsightingCommittee:
                 // Moonsighting Committee requires 5 minutes for
                 // the sun to pass the zenith and dhuhr to enter
                 return 5 * 60
-            case .UmmAlQura, .Gulf, .Qatar:
+            case .ummAlQura, .gulf, .qatar:
                 // UmmAlQura and derivatives don't add
                 // anything to zenith for dhuhr
                 return 0
@@ -301,9 +301,9 @@ public struct PrayerTimes {
             }
         }()
         
-        let maghribOffset: NSTimeInterval = {
+        let maghribOffset: TimeInterval = {
             switch(calculationParameters.method) {
-            case .MoonsightingCommittee:
+            case .moonsightingCommittee:
                 // Moonsighting Committee adds 3 minutes to
                 // sunset time to account for light refraction
                 return 3 * 60
@@ -325,65 +325,65 @@ public struct PrayerTimes {
         
         
         // Assign final times to public struct members with all offsets
-        self.fajr = fajr.dateByAddingTimeInterval(calculationParameters.adjustments.fajr.timeInterval()).roundedMinute()
-        self.sunrise = sunrise.dateByAddingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval()).roundedMinute()
-        self.dhuhr = dhuhr.dateByAddingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval()).dateByAddingTimeInterval(dhuhrOffset).roundedMinute()
-        self.asr = asr.dateByAddingTimeInterval(calculationParameters.adjustments.asr.timeInterval()).roundedMinute()
-        self.maghrib = maghrib.dateByAddingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval()).dateByAddingTimeInterval(maghribOffset).roundedMinute()
-        self.isha = isha.dateByAddingTimeInterval(calculationParameters.adjustments.isha.timeInterval()).roundedMinute()
+        self.fajr = fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval()).roundedMinute()
+        self.sunrise = sunrise.addingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval()).roundedMinute()
+        self.dhuhr = dhuhr.addingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval()).addingTimeInterval(dhuhrOffset).roundedMinute()
+        self.asr = asr.addingTimeInterval(calculationParameters.adjustments.asr.timeInterval()).roundedMinute()
+        self.maghrib = maghrib.addingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval()).addingTimeInterval(maghribOffset).roundedMinute()
+        self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval()).roundedMinute()
     }
     
-    public func currentPrayer(time: NSDate = NSDate()) -> Prayer {
-        if isha.timeIntervalSinceDate(time) <= 0 {
-            return .Isha
-        } else if maghrib.timeIntervalSinceDate(time) <= 0 {
-            return .Maghrib
-        } else if asr.timeIntervalSinceDate(time) <= 0 {
-            return .Asr
-        } else if dhuhr.timeIntervalSinceDate(time) <= 0 {
-            return .Dhuhr
-        } else if sunrise.timeIntervalSinceDate(time) <= 0 {
-            return .Sunrise
-        } else if fajr.timeIntervalSinceDate(time) <= 0 {
-            return .Fajr
+    public func currentPrayer(at time: Date = Date()) -> Prayer {
+        if isha.timeIntervalSince(time) <= 0 {
+            return .isha
+        } else if maghrib.timeIntervalSince(time) <= 0 {
+            return .maghrib
+        } else if asr.timeIntervalSince(time) <= 0 {
+            return .asr
+        } else if dhuhr.timeIntervalSince(time) <= 0 {
+            return .dhuhr
+        } else if sunrise.timeIntervalSince(time) <= 0 {
+            return .sunrise
+        } else if fajr.timeIntervalSince(time) <= 0 {
+            return .fajr
         } else {
-            return .None
+            return .none
         }
     }
     
-    public func nextPrayer(time: NSDate = NSDate()) -> Prayer {
-        if isha.timeIntervalSinceDate(time) <= 0 {
-            return .None
-        } else if maghrib.timeIntervalSinceDate(time) <= 0 {
-            return .Isha
-        } else if asr.timeIntervalSinceDate(time) <= 0 {
-            return .Maghrib
-        } else if dhuhr.timeIntervalSinceDate(time) <= 0 {
-            return .Asr
-        } else if sunrise.timeIntervalSinceDate(time) <= 0 {
-            return .Dhuhr
-        } else if fajr.timeIntervalSinceDate(time) <= 0 {
-            return .Sunrise
+    public func nextPrayer(at time: Date = Date()) -> Prayer {
+        if isha.timeIntervalSince(time) <= 0 {
+            return .none
+        } else if maghrib.timeIntervalSince(time) <= 0 {
+            return .isha
+        } else if asr.timeIntervalSince(time) <= 0 {
+            return .maghrib
+        } else if dhuhr.timeIntervalSince(time) <= 0 {
+            return .asr
+        } else if sunrise.timeIntervalSince(time) <= 0 {
+            return .dhuhr
+        } else if fajr.timeIntervalSince(time) <= 0 {
+            return .sunrise
         } else {
-            return .Fajr
+            return .fajr
         }
     }
     
-    public func timeForPrayer(prayer: Prayer) -> NSDate? {
+    public func time(for prayer: Prayer) -> Date? {
         switch prayer {
-        case .None:
+        case .none:
             return nil
-        case .Fajr:
+        case .fajr:
             return fajr
-        case .Sunrise:
+        case .sunrise:
             return sunrise
-        case .Dhuhr:
+        case .dhuhr:
             return dhuhr
-        case .Asr:
+        case .asr:
             return asr
-        case .Maghrib:
+        case .maghrib:
             return maghrib
-        case .Isha:
+        case .isha:
             return isha
         }
     }
@@ -395,7 +395,7 @@ public struct PrayerTimes {
 
 struct SolarTime {
     
-    let date: NSDateComponents
+    let date: DateComponents
     let observer: Coordinates
     let solar: SolarCoordinates
     let transit: Double
@@ -406,19 +406,20 @@ struct SolarTime {
     private let nextSolar: SolarCoordinates
     private let approxTransit: Double
     
-    init(date: NSDateComponents, coordinates: Coordinates) {
+    init(date: DateComponents, coordinates: Coordinates) {
         // calculations need to occur at 0h0m UTC
-        date.hour = 0
-        date.minute = 0
+        var midnightDate = date
+        midnightDate.hour = 0
+        midnightDate.minute = 0
         
-        let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-        let today = cal.dateFromComponents(date)!
+        let cal = Calendar(identifier: Calendar.Identifier.gregorian)
+        let today = cal.date(from: date)!
         
-        let tomorrow = cal.dateByAddingUnit(.Day, value: 1, toDate: today, options: [])!
-        let next = cal.components([.Year, .Month, .Day], fromDate: tomorrow)
+        let tomorrow = (cal as NSCalendar).date(byAdding: .day, value: 1, to: today, options: [])!
+        let next = (cal as NSCalendar).components([.year, .month, .day], from: tomorrow)
         
-        let yesterday = cal.dateByAddingUnit(.Day, value: -1, toDate: today, options: [])!
-        let previous = cal.components([.Year, .Month, .Day], fromDate: yesterday)
+        let yesterday = (cal as NSCalendar).date(byAdding: .day, value: -1, to: today, options: [])!
+        let previous = (cal as NSCalendar).components([.year, .month, .day], from: yesterday)
         
         let prevSolar = SolarCoordinates(julianDay: previous.julianDate())
         let solar = SolarCoordinates(julianDay: date.julianDate())
@@ -426,7 +427,7 @@ struct SolarTime {
         let m0 = Astronomical.approximateTransit(longitude: coordinates.longitude, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
         let solarAltitude = -50.0 / 60.0
         
-        self.date = date
+        self.date = midnightDate
         self.observer = coordinates
         self.solar = solar
         self.prevSolar = prevSolar
@@ -455,7 +456,7 @@ struct SolarTime {
         let inverse = shadowLength.rawValue + tan(tangent.degreesToRadians())
         let angle = atan(1.0 / inverse).radiansToDegrees()
         
-        return hourAngle(angle, afterTransit: true)
+        return hourAngle(angle: angle, afterTransit: true)
     }
 }
 
@@ -622,7 +623,7 @@ struct Astronomical {
     static func approximateTransit(longitude L: Double, siderealTime Θ0: Double, rightAscension α2: Double) -> Double {
         /* Equation from page Astronomical Algorithms 102 */
         let Lw = L * -1
-        return ((α2 + Lw - Θ0) / 360).normalizeWithBound(1)
+        return ((α2 + Lw - Θ0) / 360).normalizeWithBound(max: 1)
     }
     
     /* The time at which the sun is at its highest point in the sky (in universal time) */
@@ -680,7 +681,7 @@ struct Astronomical {
     }
     
     /* The Julian Day for a given Gregorian date. */
-    static func julianDay(year year: Int, month: Int, day: Int, hours: Double = 0) -> Double {
+    static func julianDay(year: Int, month: Int, day: Int, hours: Double = 0) -> Double {
         
         /* Equation from Astronomical Algorithms page 60 */
         
@@ -705,7 +706,7 @@ struct Astronomical {
     }
     
     /* Whether or not a year is a leap year (has 366 days). */
-    static func isLeapYear(year: Int) -> Bool {
+    static func isLeap(year: Int) -> Bool {
         if year % 4 != 0 {
             return false
         }
@@ -717,14 +718,14 @@ struct Astronomical {
         return true
     }
     
-    static func seasonAdjustedMorningTwilight(latitude: Double, day: Int, year: Int, sunrise: NSDate) -> NSDate {
+    static func seasonAdjustedMorningTwilight(latitude: Double, day: Int, year: Int, sunrise: Date) -> Date {
         let a: Double = 75 + ((28.65 / 55.0) * fabs(latitude))
         let b: Double = 75 + ((19.44 / 55.0) * fabs(latitude))
         let c: Double = 75 + ((32.74 / 55.0) * fabs(latitude))
         let d: Double = 75 + ((48.10 / 55.0) * fabs(latitude))
         
         let adjustment: Double = {
-            let dyy = Double(Astronomical.daysSinceSolstice(day, year: year, latitude: latitude))
+            let dyy = Double(Astronomical.daysSinceSolstice(dayOfYear: day, year: year, latitude: latitude))
             if ( dyy < 91) {
                 return a + ( b - a ) / 91.0 * dyy
             } else if ( dyy < 137) {
@@ -740,17 +741,17 @@ struct Astronomical {
             }
         }()
         
-        return sunrise.dateByAddingTimeInterval(round(adjustment * -60.0))
+        return sunrise.addingTimeInterval(round(adjustment * -60.0))
     }
     
-    static func seasonAdjustedEveningTwilight(latitude: Double, day: Int, year: Int, sunset: NSDate) -> NSDate {
+    static func seasonAdjustedEveningTwilight(latitude: Double, day: Int, year: Int, sunset: Date) -> Date {
         let a: Double = 75 + ((25.60 / 55.0) * fabs(latitude))
         let b: Double = 75 + ((2.050 / 55.0) * fabs(latitude))
         let c: Double = 75 - ((9.210 / 55.0) * fabs(latitude))
         let d: Double = 75 + ((6.140 / 55.0) * fabs(latitude))
         
         let adjustment: Double = {
-            let dyy = Double(Astronomical.daysSinceSolstice(day, year: year, latitude: latitude))
+            let dyy = Double(Astronomical.daysSinceSolstice(dayOfYear: day, year: year, latitude: latitude))
             if ( dyy < 91) {
                 return a + ( b - a ) / 91.0 * dyy
             } else if ( dyy < 137) {
@@ -766,14 +767,14 @@ struct Astronomical {
             }
         }()
         
-        return sunset.dateByAddingTimeInterval(round(adjustment * 60.0))
+        return sunset.addingTimeInterval(round(adjustment * 60.0))
     }
     
     static func daysSinceSolstice(dayOfYear: Int, year: Int, latitude: Double) -> Int {
         var daysSinceSolstice = 0
         let northernOffset = 10
-        let southernOffset = Astronomical.isLeapYear(year) ? 173 : 172
-        let daysInYear = Astronomical.isLeapYear(year) ? 366 : 365
+        let southernOffset = Astronomical.isLeap(year: year) ? 173 : 172
+        let daysInYear = Astronomical.isLeap(year: year) ? 366 : 365
         
         if (latitude >= 0) {
             daysSinceSolstice = dayOfYear + northernOffset
@@ -792,8 +793,8 @@ struct Astronomical {
 }
 
 enum ShadowLength: Double {
-    case Single = 1.0
-    case Double = 2.0
+    case single = 1.0
+    case double = 2.0
 }
 
 //
@@ -805,8 +806,8 @@ struct TimeComponents {
     let minutes: Int
     let seconds: Int
     
-    func dateComponents(date: NSDateComponents) -> NSDateComponents {
-        let comps = NSDateComponents()
+    func dateComponents(_ date: DateComponents) -> DateComponents {
+        var comps = DateComponents()
         comps.year = date.year
         comps.month = date.month
         comps.day = date.day
@@ -818,37 +819,37 @@ struct TimeComponents {
     }
 }
 
-extension NSDate {
+extension Date {
     
-    func roundedMinute() -> NSDate {
-        let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-        let components = cal.components([.Year, .Month, .Day, .Hour, .Minute, .Second], fromDate: self)
+    func roundedMinute() -> Date {
+        let cal = Calendar(identifier: Calendar.Identifier.gregorian)
+        var components = (cal as NSCalendar).components([.year, .month, .day, .hour, .minute, .second], from: self)
         
-        let minute: Double = components.minute != NSDateComponentUndefined ? Double(components.minute) : 0
-        let second: Double = components.second != NSDateComponentUndefined ? Double(components.second) : 0
+        let minute: Double = components.minute! != NSDateComponentUndefined ? Double(components.minute!) : 0
+        let second: Double = components.second! != NSDateComponentUndefined ? Double(components.second!) : 0
         
         components.minute = Int(minute + round(second/60))
         components.second = 0
         
-        return cal.dateFromComponents(components)!
+        return cal.date(from: components)!
     }
 }
 
-extension NSDateComponents {
+extension DateComponents {
     
     func julianDate() -> Double {
-        let year = self.year != NSDateComponentUndefined ? self.year : 0
-        let month = self.month != NSDateComponentUndefined ? self.month : 0
-        let day = self.day != NSDateComponentUndefined ? self.day : 0
-        let hour: Double = self.hour != NSDateComponentUndefined ? Double(self.hour) : 0
-        let minute: Double = self.minute != NSDateComponentUndefined ? Double(self.minute) : 0
+        let year = self.year ?? 0
+        let month = self.month ?? 0
+        let day = self.day ?? 0
+        let hour: Double = Double(self.hour ?? 0)
+        let minute: Double = Double(self.minute ?? 0)
         
         return Astronomical.julianDay(year: year, month: month, day: day, hours: hour + (minute / 60))
     }
 }
 
 extension Int {
-    func timeInterval() -> NSTimeInterval {
+    func timeInterval() -> TimeInterval {
         return Double(self) * 60
     }
 }
@@ -868,7 +869,7 @@ extension Double {
     }
     
     func unwindAngle() -> Double {
-        return self.normalizeWithBound(360)
+        return self.normalizeWithBound(max: 360)
     }
     
     func closestAngle() -> Double {
@@ -876,7 +877,7 @@ extension Double {
             return self
         }
         
-        return self - (360 * round(self/360))
+        return self - (360 * (self/360).rounded())
     }
     
     func timeComponents() -> TimeComponents? {

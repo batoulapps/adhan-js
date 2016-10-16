@@ -143,9 +143,9 @@ class AstronomicalTests: XCTestCase {
         let transit = solar.transit
         let sunrise = solar.sunrise
         let sunset = solar.sunset
-        let twilightStart = solar.hourAngle(-6, afterTransit: false)
-        let twilightEnd = solar.hourAngle(-6, afterTransit: true)
-        let invalid = solar.hourAngle(-36, afterTransit: true)
+        let twilightStart = solar.hourAngle(angle: -6, afterTransit: false)
+        let twilightEnd = solar.hourAngle(angle: -6, afterTransit: true)
+        let invalid = solar.hourAngle(angle: -36, afterTransit: true)
         XCTAssertEqual(twilightStart.timeString(), "9:38")
         XCTAssertEqual(sunrise.timeString(), "10:08")
         XCTAssertEqual(transit.timeString(), "17:20")
@@ -157,7 +157,7 @@ class AstronomicalTests: XCTestCase {
     func testRightAscensionEdgeCase() {
         let coordinates = Coordinates(latitude: 35 + 47/60, longitude: -78 - 39/60)
         let solar = [Int](0...365).map { SolarTime(date: date(year: 2016, month: 0, day: $0, hours: 0), coordinates: coordinates) }
-        for (index, time) in solar.enumerate() {
+        for (index, time) in solar.enumerated() {
             if index > 0 {
                 let previousTime = solar[index-1]
                 // transit from one day to another should not differ more than one minute
@@ -224,7 +224,7 @@ class AstronomicalTests: XCTestCase {
         let jdVal = 2457215.67708333
         XCTAssertEqualWithAccuracy(Astronomical.julianDay(year: 2015, month: 7, day: 12, hours: 4.25), jdVal, accuracy: 0.000001)
         
-        let components = NSDateComponents()
+        var components = DateComponents()
         components.year = 2015
         components.month = 7
         components.day = 12
@@ -243,31 +243,31 @@ class AstronomicalTests: XCTestCase {
     }
     
     func testLeapYear() {
-        XCTAssertFalse(Astronomical.isLeapYear(2015))
-        XCTAssertTrue(Astronomical.isLeapYear(2016))
-        XCTAssertTrue(Astronomical.isLeapYear(1600))
-        XCTAssertTrue(Astronomical.isLeapYear(2000))
-        XCTAssertTrue(Astronomical.isLeapYear(2400))
-        XCTAssertFalse(Astronomical.isLeapYear(1700))
-        XCTAssertFalse(Astronomical.isLeapYear(1800))
-        XCTAssertFalse(Astronomical.isLeapYear(1900))
-        XCTAssertFalse(Astronomical.isLeapYear(2100))
-        XCTAssertFalse(Astronomical.isLeapYear(2200))
-        XCTAssertFalse(Astronomical.isLeapYear(2300))
-        XCTAssertFalse(Astronomical.isLeapYear(2500))
-        XCTAssertFalse(Astronomical.isLeapYear(2600))
+        XCTAssertFalse(Astronomical.isLeap(year: 2015))
+        XCTAssertTrue(Astronomical.isLeap(year: 2016))
+        XCTAssertTrue(Astronomical.isLeap(year: 1600))
+        XCTAssertTrue(Astronomical.isLeap(year: 2000))
+        XCTAssertTrue(Astronomical.isLeap(year: 2400))
+        XCTAssertFalse(Astronomical.isLeap(year: 1700))
+        XCTAssertFalse(Astronomical.isLeap(year: 1800))
+        XCTAssertFalse(Astronomical.isLeap(year: 1900))
+        XCTAssertFalse(Astronomical.isLeap(year: 2100))
+        XCTAssertFalse(Astronomical.isLeap(year: 2200))
+        XCTAssertFalse(Astronomical.isLeap(year: 2300))
+        XCTAssertFalse(Astronomical.isLeap(year: 2500))
+        XCTAssertFalse(Astronomical.isLeap(year: 2600))
     }
     
-    func daysSinceSolsticeTest(value: Int, year: Int, month: Int, day: Int, latitude: Double) {
+    func daysSinceSolsticeTest(_ value: Int, year: Int, month: Int, day: Int, latitude: Double) {
         // For Northern Hemisphere start from December 21
         // (DYY=0 for December 21, and counting forward, DYY=11 for January 1 and so on).
         // For Southern Hemisphere start from June 21
         // (DYY=0 for June 21, and counting forward)
         
-        let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+        let cal = Calendar(identifier: Calendar.Identifier.gregorian)
         let dateComponents = date(year: year, month: month, day: day)
-        let dayOfYear = cal.ordinalityOfUnit(.Day, inUnit: .Year, forDate: cal.dateFromComponents(dateComponents)!)
-        XCTAssertEqual(Astronomical.daysSinceSolstice(dayOfYear, year: dateComponents.year, latitude: latitude), value)
+        let dayOfYear = (cal as NSCalendar).ordinality(of: .day, in: .year, for: cal.date(from: dateComponents as DateComponents)!)
+        XCTAssertEqual(Astronomical.daysSinceSolstice(dayOfYear: dayOfYear, year: dateComponents.year!, latitude: latitude), value)
     }
     
     func testDaysSinceSolstice() {
