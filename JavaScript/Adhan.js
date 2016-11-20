@@ -586,15 +586,15 @@
                 hours = 0;
             }
 
-            var Y = Math.trunc(month > 2 ? year : year - 1);
-            var M = Math.trunc(month > 2 ? month : month + 12);
+            var Y = trunc(month > 2 ? year : year - 1);
+            var M = trunc(month > 2 ? month : month + 12);
             var D = day + (hours / 24);
 
-            var A = Math.trunc(Y/100);
-            var B = Math.trunc(2 - A + Math.trunc(A/4));
+            var A = trunc(Y/100);
+            var B = trunc(2 - A + trunc(A/4));
 
-            var i0 = Math.trunc(365.25 * (Y + 4716));
-            var i1 = Math.trunc(30.6001 * (M + 1));
+            var i0 = trunc(365.25 * (Y + 4716));
+            var i1 = trunc(30.6001 * (M + 1));
 
             return i0 + i1 + D + B - 1524.5;
         },
@@ -812,9 +812,7 @@
     // Polyfill
     //
 
-    Math.trunc = Math.trunc || function(x) {
-      return x < 0 ? Math.ceil(x) : Math.floor(x);
-    };
+    var trunc = trunc || function (x) { return x < 0 ? Math.ceil(x) : Math.floor(x); };
 
 
     var adhan = root.adhan = {
