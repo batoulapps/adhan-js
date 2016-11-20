@@ -1,6 +1,14 @@
 "use strict";
 
-(function() {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([], factory.bind(root));
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory.call(root);
+    } else {
+        root.adhan = factory.call(root);
+    }
+}(this, function() {
     var root = this;
     var previous_adhan = root.adhan;
 
@@ -177,31 +185,31 @@
         // method based offsets
         var dhuhrOffset = (function(){
             switch(calculationParameters.method) {
-            case "MoonsightingCommittee":
-                // Moonsighting Committee requires 5 minutes for
-                // the sun to pass the zenith and dhuhr to enter
-                return 5;
-            case "UmmAlQura":
-            case "Gulf":
-            case "Qatar":
-                // UmmAlQura and derivatives don't add
-                // anything to zenith for dhuhr
-                return 0;
-            default:
-                // Default behavior waits 1 minute for the
-                // sun to pass the zenith and dhuhr to enter
-                return 1;
+                case "MoonsightingCommittee":
+                    // Moonsighting Committee requires 5 minutes for
+                    // the sun to pass the zenith and dhuhr to enter
+                    return 5;
+                case "UmmAlQura":
+                case "Gulf":
+                case "Qatar":
+                    // UmmAlQura and derivatives don't add
+                    // anything to zenith for dhuhr
+                    return 0;
+                default:
+                    // Default behavior waits 1 minute for the
+                    // sun to pass the zenith and dhuhr to enter
+                    return 1;
             }
         })();
 
         var maghribOffset = (function(){
             switch(calculationParameters.method) {
-            case "MoonsightingCommittee":
-                // Moonsighting Committee adds 3 minutes to
-                // sunset time to account for light refraction
-                return 3;
-            default:
-                return 0;
+                case "MoonsightingCommittee":
+                    // Moonsighting Committee adds 3 minutes to
+                    // sunset time to account for light refraction
+                    return 3;
+                default:
+                    return 0;
             }
         })();
 
@@ -331,15 +339,15 @@
     function SolarCoordinates(julianDay) {
 
         /* declination: The declination of the sun, the angle between
-        the rays of the Sun and the plane of the Earth's
-        equator, in degrees. */
+         the rays of the Sun and the plane of the Earth's
+         equator, in degrees. */
 
         /* rightAscension: Right ascension of the Sun, the angular distance on the
-        celestial equator from the vernal equinox to the hour circle,
-        in degrees. */
+         celestial equator from the vernal equinox to the hour circle,
+         in degrees. */
 
         /* apparentSiderealTime: Apparent sidereal time, the hour angle of the vernal
-        equinox, in degrees. */
+         equinox, in degrees. */
 
         var T = Astronomical.julianCentury(julianDay);
         var L0 = Astronomical.meanSolarLongitude(T);
@@ -421,7 +429,7 @@
         },
 
         /* The apparent longitude of the Sun, referred to the
-        true equinox of the date. */
+         true equinox of the date. */
         apparentSolarLongitude: function(julianCentury, meanLongitude) {
             var T = julianCentury;
             var L0 = meanLongitude;
@@ -433,8 +441,8 @@
         },
 
         /* The mean obliquity of the ecliptic, formula
-        adopted by the International Astronomical Union.
-        Represented in degrees. */
+         adopted by the International Astronomical Union.
+         Represented in degrees. */
         meanObliquityOfTheEcliptic: function(julianCentury) {
             var T = julianCentury;
             /* Equation from Astronomical Algorithms page 147 */
@@ -446,7 +454,7 @@
         },
 
         /* The mean obliquity of the ecliptic, corrected for
-        calculating the apparent position of the sun, in degrees. */
+         calculating the apparent position of the sun, in degrees. */
         apparentObliquityOfTheEcliptic: function(julianCentury, meanObliquityOfTheEcliptic) {
             var T = julianCentury;
             var Epsilon0 = meanObliquityOfTheEcliptic;
@@ -529,7 +537,7 @@
         },
 
         correctedHourAngle: function(approximateTransit, angle, coordinates, afterTransit, siderealTime,
-            rightAscension, previousRightAscension, nextRightAscension, declination, previousDeclination, nextDeclination) {
+                                     rightAscension, previousRightAscension, nextRightAscension, declination, previousDeclination, nextDeclination) {
             var m0 = approximateTransit;
             var h0 = angle;
             var Theta0 = siderealTime;
@@ -558,9 +566,9 @@
         },
 
         /* Interpolation of a value given equidistant
-        previous and next values and a factor
-        equal to the fraction of the interpolated
-        point's time over the time between values. */
+         previous and next values and a factor
+         equal to the fraction of the interpolated
+         point's time over the time between values. */
         interpolate: function(y2, y1, y3, n) {
             /* Equation from Astronomical Algorithms page 24 */
             var a = y2 - y1;
@@ -851,13 +859,5 @@
         return adhan;
     };
 
-    if( typeof exports !== 'undefined' ) {
-        if( typeof module !== 'undefined' && module.exports ) {
-            exports = module.exports = adhan;
-        }
-        exports.adhan = adhan;
-    }
-    else {
-        root.adhan = adhan;
-    }
-}).call(this);
+    return adhan;
+}));
