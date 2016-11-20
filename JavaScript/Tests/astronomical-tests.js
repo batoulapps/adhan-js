@@ -31,7 +31,7 @@ QUnit.test("Solar Coordinates", function(assert) {
     var C = adhan.Astronomical.solarEquationOfTheCenter(T, M);
     var Lambda = adhan.Astronomical.apparentSolarLongitude(T, L0);
     var Delta = solar.declination;
-    var Alpha = solar.rightAscension.unwindAngle();
+    var Alpha = unwindAngle(solar.rightAscension);
 
 	QUnit.close(T, -0.072183436, 0.00000000001);
 	QUnit.close(L0, 201.80720, 0.00001);

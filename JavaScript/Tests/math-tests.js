@@ -24,11 +24,11 @@ QUnit.test("Normalizing", function(assert) {
 	assert.equal(normalizeWithBound(259, 360), 259);
 	assert.equal(normalizeWithBound(2592.0, 360), 72);
 
-	assert.equal((-45).unwindAngle(), 315);
-	assert.equal((361.0).unwindAngle(), 1);
-	assert.equal((360).unwindAngle(), 0);
-	assert.equal((259.0).unwindAngle(), 259);
-	assert.equal((2592).unwindAngle(), 72);
+	assert.equal(unwindAngle(-45), 315);
+	assert.equal(unwindAngle(361.0), 1);
+	assert.equal(unwindAngle(360), 0);
+	assert.equal(unwindAngle(259.0), 259);
+	assert.equal(unwindAngle(2592), 72);
 
 	QUnit.close(normalizeWithBound(360.1, 360), 0.1, 0.01);
 });

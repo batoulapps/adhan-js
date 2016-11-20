@@ -358,7 +358,7 @@
         this.declination = radiansToDegrees(Math.asin(Math.sin(EpsilonApparent) * Math.sin(Lambda)));
 
         /* Equation from Astronomical Algorithms page 165 */
-        this.rightAscension = radiansToDegrees(Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda))).unwindAngle();
+        this.rightAscension = unwindAngle(radiansToDegrees(Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda))));
 
         /* Equation from Astronomical Algorithms page 88 */
         this.apparentSiderealTime = Theta0 + (((dPsi * 3600) * Math.cos(degreesToRadians(Epsilon0 + dEpsilon))) / 3600);
@@ -374,7 +374,7 @@
             var term2 = 36000.76983 * T;
             var term3 = 0.0003032 * Math.pow(T, 2);
             var L0 = term1 + term2 + term3;
-            return L0.unwindAngle();
+            return unwindAngle(L0);
         },
 
         /* The geometric mean longitude of the moon in degrees. */
@@ -384,7 +384,7 @@
             var term1 = 218.3165;
             var term2 = 481267.8813 * T;
             var Lp = term1 + term2;
-            return Lp.unwindAngle();
+            return unwindAngle(Lp);
         },
 
         ascendingLunarNodeLongitude: function(julianCentury) {
@@ -395,7 +395,7 @@
             var term3 = 0.0020708 * Math.pow(T, 2);
             var term4 = Math.pow(T, 3) / 450000;
             var Omega = term1 - term2 + term3 + term4;
-            return Omega.unwindAngle();
+            return unwindAngle(Omega);
         },
 
         /* The mean anomaly of the sun. */
@@ -406,7 +406,7 @@
             var term2 = 35999.05029 * T;
             var term3 = 0.0001537 * Math.pow(T, 2);
             var M = term1 + term2 - term3;
-            return M.unwindAngle();
+            return unwindAngle(M);
         },
 
         /* The Sun's equation of the center in degrees. */
@@ -429,7 +429,7 @@
             var longitude = L0 + Astronomical.solarEquationOfTheCenter(T, Astronomical.meanSolarAnomaly(T));
             var Omega = 125.04 - (1934.136 * T);
             var Lambda = longitude - 0.00569 - (0.00478 * Math.sin(degreesToRadians(Omega)));
-            return Lambda.unwindAngle();
+            return unwindAngle(Lambda);
         },
 
         /* The mean obliquity of the ecliptic, formula
@@ -465,7 +465,7 @@
             var term3 = 0.000387933 * Math.pow(T, 2);
             var term4 = Math.pow(T, 3) / 38710000;
             var Theta = term1 + term2 + term3 - term4;
-            return Theta.unwindAngle()
+            return unwindAngle(Theta)
         },
 
         nutationInLongitude: function(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
@@ -521,8 +521,8 @@
             var a3 = nextRightAscension;
             /* Equation from page Astronomical Algorithms 102 */
             var Lw = L * -1;
-            var Theta = (Theta0 + (360.985647 * m0)).unwindAngle();
-            var a = Astronomical.interpolateAngles(a2, a1, a3, m0).unwindAngle();
+            var Theta = unwindAngle((Theta0 + (360.985647 * m0)));
+            var a = unwindAngle(Astronomical.interpolateAngles(a2, a1, a3, m0));
             var H = (Theta - Lw - a).closestAngle();
             var dm = H / -360;
             return (m0 + dm) * 24;
@@ -546,8 +546,8 @@
             var term2 = Math.cos(degreesToRadians(coordinates.latitude)) * Math.cos(degreesToRadians(d2));
             var H0 = radiansToDegrees(Math.acos(term1 / term2));
             var m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360);
-            var Theta = (Theta0 + (360.985647 * m)).unwindAngle();
-            var a = Astronomical.interpolateAngles(a2, a1, a3, m).unwindAngle();
+            var Theta = unwindAngle((Theta0 + (360.985647 * m)));
+            var a = unwindAngle(Astronomical.interpolateAngles(a2, a1, a3, m));
             var delta = Astronomical.interpolate(d2, d1, d3, m);
             var H = (Theta - Lw - a);
             var h = Astronomical.altitudeOfCelestialBody(coordinates.latitude, delta, H);
@@ -573,8 +573,8 @@
          angle unwinding. */
         interpolateAngles: function(y2, y1, y3, n) {
             /* Equation from Astronomical Algorithms page 24 */
-            var a = (y2 - y1).unwindAngle();
-            var b = (y3 - y2).unwindAngle();
+            var a = unwindAngle(y2 - y1);
+            var b = unwindAngle(y3 - y2);
             var c = b - a;
             return y2 + ((n/2) * (a + b + (n * c)));
         },
@@ -719,9 +719,9 @@
         return number - (max * (Math.floor(number / max)))
     }
 
-    Number.prototype.unwindAngle = function() {
-        return normalizeWithBound(this, 360.0);
-    };
+    function unwindAngle(angle) {
+        return normalizeWithBound(angle, 360.0);
+    }
 
     Number.prototype.closestAngle = function() {
         if (this >= -180 && this <= 180) {
