@@ -737,7 +737,7 @@
     }
 
     function formattedTime(date, UTCOffset, style) {
-        var offset = date.dateByAddingHours(UTCOffset);
+        var offset = dateByAddingHours(date, UTCOffset);
         var hours, minutes;
         if (style == '24h') {
             hours = offset.getUTCHours().toString();
@@ -773,9 +773,9 @@
         return new Date(Date.UTC(year, month, day, hours, minutes, seconds));
     }
 
-    Date.prototype.dateByAddingHours = function(hours) {
-        return this.dateByAddingMinutes(hours * 60);
-    };
+    function dateByAddingHours(date, hours) {
+        return date.dateByAddingMinutes(hours * 60);
+    }
 
     Date.prototype.dateByAddingMinutes = function(minutes) {
         return this.dateByAddingSeconds(minutes * 60);
@@ -838,7 +838,8 @@
         },
         Date: {
             formattedTime: formattedTime,
-            dateByAddingDays: dateByAddingDays
+            dateByAddingDays: dateByAddingDays,
+            dateByAddingHours: dateByAddingHours
         }
     };
 
