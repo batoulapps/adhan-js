@@ -148,7 +148,7 @@
         }
 
         if (calculationParameters.ishaInterval > 0) {
-            ishaTime = maghribTime.dateByAddingMinutes(calculationParameters.ishaInterval);
+            ishaTime = dateByAddingMinutes(maghribTime, calculationParameters.ishaInterval);
         } else {
             ishaTime = timeComponents(solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true)).UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
 
@@ -205,12 +205,12 @@
             }
         })();
 
-        this.fajr = fajrTime.dateByAddingMinutes(calculationParameters.adjustments.fajr).roundedMinute();
-        this.sunrise = sunriseTime.dateByAddingMinutes(calculationParameters.adjustments.sunrise).roundedMinute();
-        this.dhuhr = dhuhrTime.dateByAddingMinutes(calculationParameters.adjustments.dhuhr).dateByAddingMinutes(dhuhrOffset).roundedMinute();
-        this.asr = asrTime.dateByAddingMinutes(calculationParameters.adjustments.asr).roundedMinute();
-        this.maghrib = maghribTime.dateByAddingMinutes(calculationParameters.adjustments.maghrib).dateByAddingMinutes(maghribOffset).roundedMinute();
-        this.isha = ishaTime.dateByAddingMinutes(calculationParameters.adjustments.isha).roundedMinute();
+        this.fajr = dateByAddingMinutes(fajrTime, calculationParameters.adjustments.fajr).roundedMinute();
+        this.sunrise = dateByAddingMinutes(sunriseTime, calculationParameters.adjustments.sunrise).roundedMinute();
+        this.dhuhr = dateByAddingMinutes(dateByAddingMinutes(dhuhrTime, calculationParameters.adjustments.dhuhr), dhuhrOffset).roundedMinute();
+        this.asr = dateByAddingMinutes(asrTime, calculationParameters.adjustments.asr).roundedMinute();
+        this.maghrib = dateByAddingMinutes(dateByAddingMinutes(maghribTime, calculationParameters.adjustments.maghrib), maghribOffset).roundedMinute();
+        this.isha = dateByAddingMinutes(ishaTime, calculationParameters.adjustments.isha).roundedMinute();
 
         this.timeForPrayer = function(prayer) {
             if (prayer == Prayer.Fajr) {
@@ -774,12 +774,12 @@
     }
 
     function dateByAddingHours(date, hours) {
-        return date.dateByAddingMinutes(hours * 60);
+        return dateByAddingMinutes(date, hours * 60);
     }
 
-    Date.prototype.dateByAddingMinutes = function(minutes) {
-        return this.dateByAddingSeconds(minutes * 60);
-    };
+    function dateByAddingMinutes(date, minutes) {
+        return date.dateByAddingSeconds(minutes * 60);
+    }
 
     Date.prototype.dateByAddingSeconds = function(seconds) {
         return new Date(this.getTime() + (seconds * 1000));
