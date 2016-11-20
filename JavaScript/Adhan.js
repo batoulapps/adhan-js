@@ -285,13 +285,13 @@
         date.setMinutes(0);
         this.date = date;
         this.observer = coordinates;
-        this.solar = new SolarCoordinates(date.julianDate());
+        this.solar = new SolarCoordinates(julianDate(date));
 
         var previous = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
         var next = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
 
-        this.prevSolar = new SolarCoordinates(previous.julianDate());
-        this.nextSolar = new SolarCoordinates(next.julianDate());
+        this.prevSolar = new SolarCoordinates(julianDate(previous));
+        this.nextSolar = new SolarCoordinates(julianDate(next));
 
         var m0 = Astronomical.approximateTransit(coordinates.longitude, this.solar.apparentSiderealTime, this.solar.rightAscension);
         var solarAltitude = -50.0 / 60.0;
@@ -804,9 +804,9 @@
         return returnedDayOfYear;
     }
 
-    Date.prototype.julianDate = function() {
-        return Astronomical.julianDay(this.getFullYear(), this.getMonth() + 1, this.getDate(), this.getHours() + (this.getMinutes() / 60));
-    };
+    function julianDate(date) {
+        return Astronomical.julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours() + (date.getMinutes() / 60));
+    }
 
     //
     // Polyfill
@@ -843,7 +843,8 @@
             dateByAddingMinutes: dateByAddingMinutes,
             dateByAddingSeconds: dateByAddingSeconds,
             roundedMinute: roundedMinute,
-            dayOfYear: dayOfYear
+            dayOfYear: dayOfYear,
+            julianDate: julianDate
         }
     };
 

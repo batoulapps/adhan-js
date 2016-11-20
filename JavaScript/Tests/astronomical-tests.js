@@ -1,6 +1,7 @@
 var unwindAngle = adhan.Math.unwindAngle;
 var timeComponents = adhan.Math.timeComponents;
 var dayOfYear = adhan.Date.dayOfYear;
+var julianDate = adhan.Date.julianDate;
 //
 // Astronomical Tests
 //
@@ -193,7 +194,7 @@ QUnit.test("Julian Day", function(assert) {
 	QUnit.close(adhan.Astronomical.julianDay(2015, 7, 12, 4.25), jdVal, 0.000001);
 
     var date = new Date(2015, 6, 12, 4, 15);
-    QUnit.close(date.julianDate(), jdVal, 0.000001);
+    QUnit.close(julianDate(date), jdVal, 0.000001);
 
 	QUnit.close(adhan.Astronomical.julianDay(2015, 7, 12, 8.0), 2457215.833333, 0.000001);
 	QUnit.close(adhan.Astronomical.julianDay(1992, 10, 13, 0.0), 2448908.5, 0.000001);
