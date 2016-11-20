@@ -12,18 +12,18 @@
         Maghrib: 4,
         Isha: 5,
         None: 6
-    }
+    };
 
     var Madhab = {
         Shafi: 1,
         Hanafi: 2
-    }
+    };
 
     var HighLatitudeRule = {
         MiddleOfTheNight: 1,
         SeventhOfTheNight: 2,
         TwilightAngle: 3
-    }
+    };
 
     function Coordinates(latitude, longitude) {
         this.latitude = latitude;
@@ -101,7 +101,7 @@
         Other: function() {
             return new CalculationParameters(0, 0, 0, "Other");
         }
-    }
+    };
 
     function PrayerTimes(coordinates, date, calculationParameters) {
         var solarTime = new SolarTime(date, coordinates);
@@ -226,7 +226,7 @@
             } else {
                 return null;
             }
-        }
+        };
 
         this.currentPrayer = function(date) {
             if (typeof date === 'undefined') {
@@ -248,7 +248,7 @@
             } else {
                 return Prayer.None;
             }
-        }
+        };
 
         this.nextPrayer = function(date) {
             if (typeof date === 'undefined') {
@@ -314,7 +314,7 @@
             return Astronomical.correctedHourAngle(this.approxTransit, angle, this.observer, afterTransit, this.solar.apparentSiderealTime,
                 this.solar.rightAscension, this.prevSolar.rightAscension, this.nextSolar.rightAscension,
                 this.solar.declination, this.prevSolar.declination, this.nextSolar.declination);
-        }
+        };
 
         this.afternoon = function(shadowLength) {
             // TODO source shadow angle calculation
@@ -709,19 +709,19 @@
 
     Number.prototype.degreesToRadians = function() {
         return (this * Math.PI) / 180.0;
-    }
+    };
 
     Number.prototype.radiansToDegrees = function() {
         return (this * 180.0) / Math.PI;
-    }
+    };
 
     Number.prototype.normalizeWithBound = function(max) {
         return this - (max * (Math.floor(this / max)))
-    }
+    };
 
     Number.prototype.unwindAngle = function() {
         return this.normalizeWithBound(360.0);
-    }
+    };
 
     Number.prototype.closestAngle = function() {
         if (this >= -180 && this <= 180) {
@@ -729,7 +729,7 @@
         }
 
         return this - (360 * Math.round(this/360));
-    }
+    };
 
     Number.prototype.timeComponents = function() {
         if (isNaN(this)) {
@@ -738,10 +738,10 @@
 
         var hours = Math.floor(this);
         var minutes = Math.floor((this - hours) * 60);
-        var seconds = Math.floor((this - (hours + minutes/60)) * 60 * 60)
+        var seconds = Math.floor((this - (hours + minutes/60)) * 60 * 60);
 
         return new TimeComponents(hours, minutes, seconds);
-    }
+    };
 
     Date.prototype.formattedTime = function(UTCOffset, style) {
         var offset = this.dateByAddingHours(UTCOffset);
@@ -767,7 +767,7 @@
 
             return hours + ':' + minutes + ' ' + ampm;
         }
-    }
+    };
 
     Date.prototype.dateByAddingDays = function(days) {
         var year = this.getUTCFullYear();
@@ -777,25 +777,25 @@
         var minutes = this.getUTCMinutes();
         var seconds = this.getUTCSeconds();
         return new Date(Date.UTC(year, month, day, hours, minutes, seconds));
-    }
+    };
 
     Date.prototype.dateByAddingHours = function(hours) {
         return this.dateByAddingMinutes(hours * 60);
-    }
+    };
 
     Date.prototype.dateByAddingMinutes = function(minutes) {
         return this.dateByAddingSeconds(minutes * 60);
-    }
+    };
 
     Date.prototype.dateByAddingSeconds = function(seconds) {
         return new Date(this.getTime() + (seconds * 1000));
-    }
+    };
 
     Date.prototype.roundedMinute = function() {
         var seconds = this.getUTCSeconds();
         var offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
         return this.dateByAddingSeconds(offset);
-    }
+    };
 
     Date.prototype.dayOfYear = function() {
         var dayOfYear = 0;
@@ -808,11 +808,11 @@
         dayOfYear += this.getDate();
 
         return dayOfYear;
-    }
+    };
 
     Date.prototype.julianDate = function() {
         return Astronomical.julianDay(this.getFullYear(), this.getMonth() + 1, this.getDate(), this.getHours() + (this.getMinutes() / 60));
-    }
+    };
 
     //
     // Polyfill
@@ -820,7 +820,7 @@
 
     Math.trunc = Math.trunc || function(x) {
       return x < 0 ? Math.ceil(x) : Math.floor(x);
-    }
+    };
 
 
     var adhan = root.adhan = {
@@ -834,12 +834,12 @@
         SolarTime: SolarTime,
         SolarCoordinates: SolarCoordinates,
         Astronomical: Astronomical
-    }
+    };
 
     adhan.noConflict = function() {
         root.adhan = previous_adhan;
         return adhan;
-    }
+    };
 
     if( typeof exports !== 'undefined' ) {
         if( typeof module !== 'undefined' && module.exports ) {
