@@ -839,7 +839,8 @@
         Date: {
             formattedTime: formattedTime,
             dateByAddingDays: dateByAddingDays,
-            dateByAddingHours: dateByAddingHours
+            dateByAddingHours: dateByAddingHours,
+            dateByAddingMinutes: dateByAddingMinutes
         }
     };
 
