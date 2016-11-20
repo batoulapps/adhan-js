@@ -115,16 +115,16 @@
 
         var nightFraction;
 
-        dhuhrTime = solarTime.transit.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
-        sunriseTime = solarTime.sunrise.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
-        maghribTime = solarTime.sunset.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+        dhuhrTime = timeComponents(solarTime.transit).UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+        sunriseTime = timeComponents(solarTime.sunrise).UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+        maghribTime = timeComponents(solarTime.sunset).UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
 
-        asrTime = solarTime.afternoon(calculationParameters.madhab).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+        asrTime = timeComponents(solarTime.afternoon(calculationParameters.madhab)).UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
 
         var tomorrowSunrise = sunriseTime.dateByAddingDays(1);
         var night = (tomorrowSunrise - maghribTime) / 1000;
 
-        fajrTime = solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+        fajrTime = timeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
 
         // special case for moonsighting committee above latitude 55
         if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
@@ -150,7 +150,7 @@
         if (calculationParameters.ishaInterval > 0) {
             ishaTime = maghribTime.dateByAddingMinutes(calculationParameters.ishaInterval);
         } else {
-            ishaTime = solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true).timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
+            ishaTime = timeComponents(solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true)).UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
 
             // special case for moonsighting committee above latitude 55
             if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
@@ -697,15 +697,20 @@
     // Math convenience extensions
     //
 
-    function TimeComponents(hours, minutes, seconds) {
-        this.hours = hours;
-        this.minutes = minutes;
-        this.seconds = seconds;
-
-        this.UTCDate = function(year, month, date) {
-            return new Date(Date.UTC(year, month, date, this.hours, this.minutes, this.seconds));
-        }
+    function timeComponents(number) {
+        return new TimeComponents(number);
     }
+
+    function TimeComponents(number) {
+        this.hours = Math.floor(number);
+        this.minutes = Math.floor((number - this.hours) * 60);
+        this.seconds = Math.floor((number - (this.hours + this.minutes/60)) * 60 * 60);
+        return this;
+    }
+
+    TimeComponents.prototype.UTCDate = function (year, month, date) {
+        return new Date(Date.UTC(year, month, date, this.hours, this.minutes, this.seconds));
+    };
 
     function degreesToRadians(degrees) {
         return (degrees * Math.PI) / 180.0;
@@ -730,18 +735,6 @@
 
         return angle - (360 * Math.round(angle/360));
     }
-
-    Number.prototype.timeComponents = function() {
-        if (isNaN(this)) {
-            return new TimeComponents(NaN, NaN, NaN);
-        }
-
-        var hours = Math.floor(this);
-        var minutes = Math.floor((this - hours) * 60);
-        var seconds = Math.floor((this - (hours + minutes/60)) * 60 * 60);
-
-        return new TimeComponents(hours, minutes, seconds);
-    };
 
     Date.prototype.formattedTime = function(UTCOffset, style) {
         var offset = this.dateByAddingHours(UTCOffset);
@@ -834,7 +827,15 @@
         PrayerTimes: PrayerTimes,
         SolarTime: SolarTime,
         SolarCoordinates: SolarCoordinates,
-        Astronomical: Astronomical
+        Astronomical: Astronomical,
+        Math: {
+            degreesToRadians: degreesToRadians,
+            radiansToDegrees: radiansToDegrees,
+            normalizeWithBound: normalizeWithBound,
+            unwindAngle: unwindAngle,
+            closestAngle: closestAngle,
+            timeComponents: timeComponents
+        }
     };
 
     adhan.noConflict = function() {

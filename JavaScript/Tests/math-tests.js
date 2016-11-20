@@ -1,3 +1,9 @@
+var degreesToRadians = adhan.Math.degreesToRadians;
+var radiansToDegrees = adhan.Math.radiansToDegrees;
+var normalizeWithBound = adhan.Math.normalizeWithBound;
+var unwindAngle = adhan.Math.unwindAngle;
+var closestAngle = adhan.Math.closestAngle;
+var timeComponents = adhan.Math.timeComponents;
 
 //
 // Math tests
@@ -47,25 +53,25 @@ QUnit.test("Closest Angle", function(assert) {
 });
 
 QUnit.test("Time Components", function(assert) {
-    var comps1 = (15.199).timeComponents()
+    var comps1 = timeComponents(15.199)
     assert.equal(comps1.hours, 15);
     assert.equal(comps1.minutes, 11);
     assert.equal(comps1.seconds, 56);
 
-    var comps2 = (1.0084).timeComponents();
+    var comps2 = timeComponents(1.0084);
     assert.equal(comps2.hours, 1);
     assert.equal(comps2.minutes, 0);
     assert.equal(comps2.seconds, 30);
 
-    var comps3 = (1.0083).timeComponents();
+    var comps3 = timeComponents(1.0083);
     assert.equal(comps3.hours, 1);
     assert.equal(comps3.minutes, 0);
 
-    var comps4 = (2.1).timeComponents();
+    var comps4 = timeComponents(2.1);
     assert.equal(comps4.hours, 2);
     assert.equal(comps4.minutes, 6);
 
-    var comps5 = (3.5).timeComponents();
+    var comps5 = timeComponents(3.5);
     assert.equal(comps5.hours, 3);
     assert.equal(comps5.minutes, 30);
 });

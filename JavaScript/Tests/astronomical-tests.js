@@ -1,10 +1,11 @@
-
+var unwindAngle = adhan.Math.unwindAngle;
+var timeComponents = adhan.Math.timeComponents;
 //
 // Astronomical Tests
 //
 
 function timeString(hours) {
-	var comps = hours.timeComponents();
+	var comps = timeComponents(hours);
     if (isNaN(comps.hours) || isNaN(comps.minutes) || isNaN(comps.seconds)) {
         return "";
     }
