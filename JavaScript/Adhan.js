@@ -121,7 +121,7 @@
 
         asrTime = timeComponents(solarTime.afternoon(calculationParameters.madhab)).UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
 
-        var tomorrowSunrise = sunriseTime.dateByAddingDays(1);
+        var tomorrowSunrise = dateByAddingDays(sunriseTime, 1);
         var night = (tomorrowSunrise - maghribTime) / 1000;
 
         fajrTime = timeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
@@ -763,15 +763,15 @@
         }
     }
 
-    Date.prototype.dateByAddingDays = function(days) {
-        var year = this.getUTCFullYear();
-        var month = this.getUTCMonth();
-        var day = this.getUTCDate() + days;
-        var hours = this.getUTCHours();
-        var minutes = this.getUTCMinutes();
-        var seconds = this.getUTCSeconds();
+    function dateByAddingDays(date, days) {
+        var year = date.getUTCFullYear();
+        var month = date.getUTCMonth();
+        var day = date.getUTCDate() + days;
+        var hours = date.getUTCHours();
+        var minutes = date.getUTCMinutes();
+        var seconds = date.getUTCSeconds();
         return new Date(Date.UTC(year, month, day, hours, minutes, seconds));
-    };
+    }
 
     Date.prototype.dateByAddingHours = function(hours) {
         return this.dateByAddingMinutes(hours * 60);
@@ -837,7 +837,8 @@
             timeComponents: timeComponents
         },
         Date: {
-            formattedTime: formattedTime
+            formattedTime: formattedTime,
+            dateByAddingDays: dateByAddingDays
         }
     };
 
