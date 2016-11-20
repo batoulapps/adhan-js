@@ -4,7 +4,7 @@ var normalizeWithBound = adhan.Math.normalizeWithBound;
 var unwindAngle = adhan.Math.unwindAngle;
 var closestAngle = adhan.Math.closestAngle;
 var timeComponents = adhan.Math.timeComponents;
-
+var roundedMinute = adhan.Date.roundedMinute;
 //
 // Math tests
 //
@@ -77,11 +77,11 @@ QUnit.test("Time Components", function(assert) {
 });
 
 QUnit.test("Minute Rounding", function(assert) {
-	var date1 = new Date(2015, 0, 1, 10, 2, 29).roundedMinute();
+	var date1 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29));
 	assert.equal(date1.getMinutes(), 2);
 	assert.equal(date1.getSeconds(), 0);
 
-	var date2 = new Date(2015, 0, 1, 10, 2, 31).roundedMinute();
+	var date2 = roundedMinute(new Date(2015, 0, 1, 10, 2, 31));
 	assert.equal(date2.getMinutes(), 3);
 	assert.equal(date2.getSeconds(), 0);
 });

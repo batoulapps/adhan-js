@@ -205,12 +205,12 @@
             }
         })();
 
-        this.fajr = dateByAddingMinutes(fajrTime, calculationParameters.adjustments.fajr).roundedMinute();
-        this.sunrise = dateByAddingMinutes(sunriseTime, calculationParameters.adjustments.sunrise).roundedMinute();
-        this.dhuhr = dateByAddingMinutes(dateByAddingMinutes(dhuhrTime, calculationParameters.adjustments.dhuhr), dhuhrOffset).roundedMinute();
-        this.asr = dateByAddingMinutes(asrTime, calculationParameters.adjustments.asr).roundedMinute();
-        this.maghrib = dateByAddingMinutes(dateByAddingMinutes(maghribTime, calculationParameters.adjustments.maghrib), maghribOffset).roundedMinute();
-        this.isha = dateByAddingMinutes(ishaTime, calculationParameters.adjustments.isha).roundedMinute();
+        this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, calculationParameters.adjustments.fajr));
+        this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, calculationParameters.adjustments.sunrise));
+        this.dhuhr = roundedMinute(dateByAddingMinutes(dateByAddingMinutes(dhuhrTime, calculationParameters.adjustments.dhuhr), dhuhrOffset));
+        this.asr = roundedMinute(dateByAddingMinutes(asrTime, calculationParameters.adjustments.asr));
+        this.maghrib = roundedMinute(dateByAddingMinutes(dateByAddingMinutes(maghribTime, calculationParameters.adjustments.maghrib), maghribOffset));
+        this.isha = roundedMinute(dateByAddingMinutes(ishaTime, calculationParameters.adjustments.isha));
 
         this.timeForPrayer = function(prayer) {
             if (prayer == Prayer.Fajr) {
@@ -785,11 +785,11 @@
         return new Date(date.getTime() + (seconds * 1000));
     }
 
-    Date.prototype.roundedMinute = function() {
-        var seconds = this.getUTCSeconds();
+    function roundedMinute(date) {
+        var seconds = date.getUTCSeconds();
         var offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
-        return dateByAddingSeconds(this, offset);
-    };
+        return dateByAddingSeconds(date, offset);
+    }
 
     Date.prototype.dayOfYear = function() {
         var dayOfYear = 0;
@@ -841,7 +841,8 @@
             dateByAddingDays: dateByAddingDays,
             dateByAddingHours: dateByAddingHours,
             dateByAddingMinutes: dateByAddingMinutes,
-            dateByAddingSeconds: dateByAddingSeconds
+            dateByAddingSeconds: dateByAddingSeconds,
+            roundedMinute: roundedMinute
         }
     };
 
