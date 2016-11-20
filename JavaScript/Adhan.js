@@ -1,6 +1,6 @@
 "use strict";
 
-;(function() {
+(function() {
     var root = this;
     var previous_adhan = root.adhan;
 
@@ -469,7 +469,6 @@
         },
 
         nutationInLongitude: function(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
-            var T = julianCentury;
             var L0 = solarLongitude;
             var Lp = lunarLongitude;
             var Omega = ascendingNode;
@@ -482,7 +481,6 @@
         },
 
         nutationInObliquity: function(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
-            var T = julianCentury;
             var L0 = solarLongitude;
             var Lp = lunarLongitude;
             var Omega = ascendingNode;
@@ -747,21 +745,22 @@
 
     Date.prototype.formattedTime = function(UTCOffset, style) {
         var offset = this.dateByAddingHours(UTCOffset);
+        var hours, minutes;
         if (style == '24h') {
-            var hours = offset.getUTCHours().toString();
+            hours = offset.getUTCHours().toString();
             if (hours.length < 2) {
                 hours = '0' + hours;
             }
 
-            var minutes = offset.getUTCMinutes().toString();
+            minutes = offset.getUTCMinutes().toString();
             if (minutes.length < 2) {
                 minutes = '0' + minutes;
             }
 
             return hours + ':' + minutes;
         } else {
-            var hours = offset.getUTCHours() > 12 ? (offset.getUTCHours() - 12).toString() : offset.getUTCHours().toString();
-            var minutes = offset.getUTCMinutes().toString();
+            hours = offset.getUTCHours() > 12 ? (offset.getUTCHours() - 12).toString() : offset.getUTCHours().toString();
+            minutes = offset.getUTCMinutes().toString();
             if (minutes.length < 2) {
                 minutes = '0' + minutes;
             }
