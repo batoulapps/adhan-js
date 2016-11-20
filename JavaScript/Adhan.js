@@ -523,7 +523,7 @@
             var Lw = L * -1;
             var Theta = unwindAngle((Theta0 + (360.985647 * m0)));
             var a = unwindAngle(Astronomical.interpolateAngles(a2, a1, a3, m0));
-            var H = (Theta - Lw - a).closestAngle();
+            var H = closestAngle(Theta - Lw - a);
             var dm = H / -360;
             return (m0 + dm) * 24;
         },
@@ -723,13 +723,13 @@
         return normalizeWithBound(angle, 360.0);
     }
 
-    Number.prototype.closestAngle = function() {
-        if (this >= -180 && this <= 180) {
-            return this;
+    function closestAngle(angle) {
+        if (angle >= -180 && angle <= 180) {
+            return angle;
         }
 
-        return this - (360 * Math.round(this/360));
-    };
+        return angle - (360 * Math.round(angle/360));
+    }
 
     Number.prototype.timeComponents = function() {
         if (isNaN(this)) {
