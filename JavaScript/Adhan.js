@@ -129,7 +129,7 @@
         // special case for moonsighting committee above latitude 55
         if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
             nightFraction = night / 7;
-            fajrTime = sunriseTime.dateByAddingSeconds(-nightFraction);
+            fajrTime = dateByAddingSeconds(sunriseTime, -nightFraction);
         }
 
         var safeFajr = (function(){
@@ -139,7 +139,7 @@
                 var portion = calculationParameters.nightPortions().fajr;
                 nightFraction = portion * night;
 
-                return sunriseTime.dateByAddingSeconds(-nightFraction);
+                return dateByAddingSeconds(sunriseTime, -nightFraction);
             }
         })();
 
@@ -155,7 +155,7 @@
             // special case for moonsighting committee above latitude 55
             if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
                 nightFraction = night / 7;
-                ishaTime = maghribTime.dateByAddingSeconds(nightFraction);
+                ishaTime = dateByAddingSeconds(maghribTime, nightFraction);
             }
 
             var safeIsha = (function(){
@@ -165,7 +165,7 @@
                     var portion = calculationParameters.nightPortions().isha;
                     nightFraction = portion * night;
 
-                    return maghribTime.dateByAddingSeconds(nightFraction);
+                    return dateByAddingSeconds(maghribTime, nightFraction);
                 }
             })();
 
@@ -641,7 +641,7 @@
                 }
             })();
 
-            return sunrise.dateByAddingSeconds(Math.round(adjustment * -60.0));
+            return dateByAddingSeconds(sunrise, Math.round(adjustment * -60.0));
         },
 
         seasonAdjustedEveningTwilight: function(latitude, dayOfYear, year, sunset) {
@@ -667,7 +667,7 @@
                 }
             })();
 
-            return sunset.dateByAddingSeconds(Math.round(adjustment * 60.0));
+            return dateByAddingSeconds(sunset, Math.round(adjustment * 60.0));
         },
 
         daysSinceSolstice: function(dayOfYear, year, latitude) {
@@ -778,17 +778,17 @@
     }
 
     function dateByAddingMinutes(date, minutes) {
-        return date.dateByAddingSeconds(minutes * 60);
+        return dateByAddingSeconds(date, minutes * 60);
     }
 
-    Date.prototype.dateByAddingSeconds = function(seconds) {
-        return new Date(this.getTime() + (seconds * 1000));
-    };
+    function dateByAddingSeconds(date, seconds) {
+        return new Date(date.getTime() + (seconds * 1000));
+    }
 
     Date.prototype.roundedMinute = function() {
         var seconds = this.getUTCSeconds();
         var offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
-        return this.dateByAddingSeconds(offset);
+        return dateByAddingSeconds(this, offset);
     };
 
     Date.prototype.dayOfYear = function() {
@@ -840,7 +840,8 @@
             formattedTime: formattedTime,
             dateByAddingDays: dateByAddingDays,
             dateByAddingHours: dateByAddingHours,
-            dateByAddingMinutes: dateByAddingMinutes
+            dateByAddingMinutes: dateByAddingMinutes,
+            dateByAddingSeconds: dateByAddingSeconds
         }
     };
 

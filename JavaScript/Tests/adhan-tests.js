@@ -1,4 +1,5 @@
 var formattedTime = adhan.Date.formattedTime;
+var dateByAddingSeconds = adhan.Date.dateByAddingSeconds;
 
 QUnit.test("Night Portion", function(assert) {
     var p1 = new adhan.CalculationParameters(18, 18);
@@ -170,14 +171,14 @@ QUnit.test("Current Prayer", function(assert) {
     params.madhab = adhan.Madhab.Hanafi;
     params.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
     var p = new adhan.PrayerTimes(new adhan.Coordinates(33.720817, 73.090032), date, params);
-    assert.equal(p.currentPrayer(p.fajr.dateByAddingSeconds(-1)), adhan.Prayer.None);
+    assert.equal(p.currentPrayer(dateByAddingSeconds(p.fajr, -1)), adhan.Prayer.None);
     assert.equal(p.currentPrayer(p.fajr), adhan.Prayer.Fajr);
-    assert.equal(p.currentPrayer(p.fajr.dateByAddingSeconds(1)), adhan.Prayer.Fajr);
-    assert.equal(p.currentPrayer(p.sunrise.dateByAddingSeconds(1)), adhan.Prayer.Sunrise);
-    assert.equal(p.currentPrayer(p.dhuhr.dateByAddingSeconds(1)), adhan.Prayer.Dhuhr);
-    assert.equal(p.currentPrayer(p.asr.dateByAddingSeconds(1)), adhan.Prayer.Asr);
-    assert.equal(p.currentPrayer(p.maghrib.dateByAddingSeconds(1)), adhan.Prayer.Maghrib);
-    assert.equal(p.currentPrayer(p.isha.dateByAddingSeconds(1)), adhan.Prayer.Isha);
+    assert.equal(p.currentPrayer(dateByAddingSeconds(p.fajr, 1)), adhan.Prayer.Fajr);
+    assert.equal(p.currentPrayer(dateByAddingSeconds(p.sunrise, 1)), adhan.Prayer.Sunrise);
+    assert.equal(p.currentPrayer(dateByAddingSeconds(p.dhuhr, 1)), adhan.Prayer.Dhuhr);
+    assert.equal(p.currentPrayer(dateByAddingSeconds(p.asr, 1)), adhan.Prayer.Asr);
+    assert.equal(p.currentPrayer(dateByAddingSeconds(p.maghrib, 1)), adhan.Prayer.Maghrib);
+    assert.equal(p.currentPrayer(dateByAddingSeconds(p.isha, 1)), adhan.Prayer.Isha);
 });
 
 QUnit.test("Next Prayer", function(assert) {
@@ -186,12 +187,12 @@ QUnit.test("Next Prayer", function(assert) {
     params.madhab = adhan.Madhab.Hanafi;
     params.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
     var p = new adhan.PrayerTimes(new adhan.Coordinates(33.720817, 73.090032), date, params);
-    assert.equal(p.nextPrayer(p.fajr.dateByAddingSeconds(-1)), adhan.Prayer.Fajr);
+    assert.equal(p.nextPrayer(dateByAddingSeconds(p.fajr, -1)), adhan.Prayer.Fajr);
     assert.equal(p.nextPrayer(p.fajr), adhan.Prayer.Sunrise);
-    assert.equal(p.nextPrayer(p.fajr.dateByAddingSeconds(1)), adhan.Prayer.Sunrise);
-    assert.equal(p.nextPrayer(p.sunrise.dateByAddingSeconds(1)), adhan.Prayer.Dhuhr);
-    assert.equal(p.nextPrayer(p.dhuhr.dateByAddingSeconds(1)), adhan.Prayer.Asr);
-    assert.equal(p.nextPrayer(p.asr.dateByAddingSeconds(1)), adhan.Prayer.Maghrib);
-    assert.equal(p.nextPrayer(p.maghrib.dateByAddingSeconds(1)), adhan.Prayer.Isha);
-    assert.equal(p.nextPrayer(p.isha.dateByAddingSeconds(1)), adhan.Prayer.None);
+    assert.equal(p.nextPrayer(dateByAddingSeconds(p.fajr, 1)), adhan.Prayer.Sunrise);
+    assert.equal(p.nextPrayer(dateByAddingSeconds(p.sunrise, 1)), adhan.Prayer.Dhuhr);
+    assert.equal(p.nextPrayer(dateByAddingSeconds(p.dhuhr, 1)), adhan.Prayer.Asr);
+    assert.equal(p.nextPrayer(dateByAddingSeconds(p.asr, 1)), adhan.Prayer.Maghrib);
+    assert.equal(p.nextPrayer(dateByAddingSeconds(p.maghrib, 1)), adhan.Prayer.Isha);
+    assert.equal(p.nextPrayer(dateByAddingSeconds(p.isha, 1)), adhan.Prayer.None);
 });
