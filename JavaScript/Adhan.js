@@ -736,8 +736,8 @@
         return angle - (360 * Math.round(angle/360));
     }
 
-    Date.prototype.formattedTime = function(UTCOffset, style) {
-        var offset = this.dateByAddingHours(UTCOffset);
+    function formattedTime(date, UTCOffset, style) {
+        var offset = date.dateByAddingHours(UTCOffset);
         var hours, minutes;
         if (style == '24h') {
             hours = offset.getUTCHours().toString();
@@ -761,7 +761,7 @@
 
             return hours + ':' + minutes + ' ' + ampm;
         }
-    };
+    }
 
     Date.prototype.dateByAddingDays = function(days) {
         var year = this.getUTCFullYear();
@@ -835,6 +835,9 @@
             unwindAngle: unwindAngle,
             closestAngle: closestAngle,
             timeComponents: timeComponents
+        },
+        Date: {
+            formattedTime: formattedTime
         }
     };
 

@@ -94,14 +94,14 @@ Once the `PrayerTimes` object has been initialized it will contain values
 for all five prayer times and the time for sunrise. The prayer times will be
 Date object instances initialized with UTC values. To display these
 times for the local timezone, a formatting and timezone conversion extension
-to the Date object has been provided. Call `formattedTime()` on the date
-instances and pass in the UTC offset in hours for the appropriate timezone.
+to the Date object has been provided. Call `formattedTime(date)` and pass in 
+the date instance and the  UTC offset in hours for the appropriate timezone.
 There is also a second optional parameter of style, if you pass in '24h' the
 times will be formatted in 24 hour mode.
 
 ```js
-prayerTimes.fajr.formattedTime(-4);
-prayerTimes.fajr.formattedTime(-4, '24h');
+adhan.Date.formattedTime(prayerTimes.fajr, -4);
+adhan.Date.formattedTime(prayerTimes.fajr, -4, '24h');
 ```
 
 ## Full Example
@@ -112,10 +112,11 @@ var coordinates = new adhan.Coordinates(35.78056, -78.6389);
 var params = adhan.CalculationMethod.MuslimWorldLeague();
 params.madhab = adhan.Madhab.Hanafi;
 var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
-document.write('Fajr: ' + prayerTimes.fajr.formattedTime(-4) + '\n');
-document.write('Sunrise: ' + prayerTimes.sunrise.formattedTime(-4) + '\n');
-document.write('Dhuhr: ' + prayerTimes.dhuhr.formattedTime(-4) + '\n');
-document.write('Asr: ' + prayerTimes.asr.formattedTime(-4) + '\n');
-document.write('Maghrib: ' + prayerTimes.maghrib.formattedTime(-4) + '\n');
-document.write('Isha: ' + prayerTimes.isha.formattedTime(-4) + '\n');
+var formattedTime = adhan.Date.formattedTime;
+document.write('Fajr: ' + formattedTime(prayerTimes.fajr, -4) + '\n');
+document.write('Sunrise: ' + formattedTime(prayerTimes.sunrise, -4) + '\n');
+document.write('Dhuhr: ' + formattedTime(prayerTimes.dhuhr, -4) + '\n');
+document.write('Asr: ' + formattedTime(prayerTimes.asr, -4) + '\n');
+document.write('Maghrib: ' + formattedTime(prayerTimes.maghrib, -4) + '\n');
+document.write('Isha: ' + formattedTime(prayerTimes.isha, -4) + '\n');
 ```

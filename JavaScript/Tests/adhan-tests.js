@@ -1,3 +1,5 @@
+var formattedTime = adhan.Date.formattedTime;
+
 QUnit.test("Night Portion", function(assert) {
     var p1 = new adhan.CalculationParameters(18, 18);
     p1.highLatitudeRule = adhan.HighLatitudeRule.MiddleOfTheNight;
@@ -83,13 +85,13 @@ QUnit.test("Prayer Times", function(assert) {
 	params.madhab = adhan.Madhab.Hanafi;
 	var p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
 
-	assert.equal(p.fajr.formattedTime(-4), "4:42 AM");
-    assert.equal(p.sunrise.formattedTime(-4), "6:08 AM");
-    assert.equal(p.dhuhr.formattedTime(-4), "1:21 PM");
-    assert.equal(p.asr.formattedTime(-4), "6:22 PM");
-    assert.equal(p.maghrib.formattedTime(-4), "8:32 PM");
-    assert.equal(p.isha.formattedTime(-4), "9:57 PM");
-    assert.equal(p.isha.formattedTime(-4, '24h'), "21:57");
+	assert.equal(formattedTime(p.fajr, -4), "4:42 AM");
+    assert.equal(formattedTime(p.sunrise, -4), "6:08 AM");
+    assert.equal(formattedTime(p.dhuhr, -4), "1:21 PM");
+    assert.equal(formattedTime(p.asr, -4), "6:22 PM");
+    assert.equal(formattedTime(p.maghrib, -4), "8:32 PM");
+    assert.equal(formattedTime(p.isha, -4), "9:57 PM");
+    assert.equal(formattedTime(p.isha, -4, '24h'), "21:57");
     assert.equal(moment(p.isha).tz("America/New_York").format("h:mm A"), "9:57 PM");
 });
 
@@ -98,12 +100,12 @@ QUnit.test("Offset", function(assert) {
     var params = adhan.CalculationMethod.MuslimWorldLeague();
     params.madhab = adhan.Madhab.Shafi;
     var p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
-    assert.equal(p.fajr.formattedTime(-5), "5:35 AM");
-    assert.equal(p.sunrise.formattedTime(-5), "7:06 AM");
-    assert.equal(p.dhuhr.formattedTime(-5), "12:05 PM");
-    assert.equal(p.asr.formattedTime(-5), "2:42 PM");
-    assert.equal(p.maghrib.formattedTime(-5), "5:01 PM");
-    assert.equal(p.isha.formattedTime(-5), "6:26 PM");
+    assert.equal(formattedTime(p.fajr, -5), "5:35 AM");
+    assert.equal(formattedTime(p.sunrise, -5), "7:06 AM");
+    assert.equal(formattedTime(p.dhuhr, -5), "12:05 PM");
+    assert.equal(formattedTime(p.asr, -5), "2:42 PM");
+    assert.equal(formattedTime(p.maghrib, -5), "5:01 PM");
+    assert.equal(formattedTime(p.isha, -5), "6:26 PM");
 
     params.adjustments.fajr = 10;
     params.adjustments.sunrise = 10;
@@ -113,24 +115,24 @@ QUnit.test("Offset", function(assert) {
     params.adjustments.isha = 10;
 
     var p2 = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
-    assert.equal(p2.fajr.formattedTime(-5), "5:45 AM");
-    assert.equal(p2.sunrise.formattedTime(-5), "7:16 AM");
-    assert.equal(p2.dhuhr.formattedTime(-5), "12:15 PM");
-    assert.equal(p2.asr.formattedTime(-5), "2:52 PM");
-    assert.equal(p2.maghrib.formattedTime(-5), "5:11 PM");
-    assert.equal(p2.isha.formattedTime(-5), "6:36 PM");
+    assert.equal(formattedTime(p2.fajr, -5), "5:45 AM");
+    assert.equal(formattedTime(p2.sunrise, -5), "7:16 AM");
+    assert.equal(formattedTime(p2.dhuhr, -5), "12:15 PM");
+    assert.equal(formattedTime(p2.asr, -5), "2:52 PM");
+    assert.equal(formattedTime(p2.maghrib, -5), "5:11 PM");
+    assert.equal(formattedTime(p2.isha, -5), "6:36 PM");
 });
 
 QUnit.test("Moonsighting Committee", function(assert) {
     // Values from http://www.moonsighting.com/pray.php
     var date = new Date(2016, 0, 31);
     var p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, adhan.CalculationMethod.MoonsightingCommittee());
-    assert.equal(p.fajr.formattedTime(-5), "5:48 AM");
-    assert.equal(p.sunrise.formattedTime(-5), "7:16 AM");
-    assert.equal(p.dhuhr.formattedTime(-5), "12:33 PM");
-    assert.equal(p.asr.formattedTime(-5), "3:20 PM");
-    assert.equal(p.maghrib.formattedTime(-5), "5:43 PM");
-    assert.equal(p.isha.formattedTime(-5), "7:05 PM");
+    assert.equal(formattedTime(p.fajr, -5), "5:48 AM");
+    assert.equal(formattedTime(p.sunrise, -5), "7:16 AM");
+    assert.equal(formattedTime(p.dhuhr, -5), "12:33 PM");
+    assert.equal(formattedTime(p.asr, -5), "3:20 PM");
+    assert.equal(formattedTime(p.maghrib, -5), "5:43 PM");
+    assert.equal(formattedTime(p.isha, -5), "7:05 PM");
 });
 
 QUnit.test("Moonsighting Committee High Latitude", function(assert) {
