@@ -11,18 +11,18 @@ QUnit.test("Angle Conversion", function(assert) {
 });
 
 QUnit.test("Normalizing", function(assert) {
-	assert.equal((2.0).normalizeWithBound(-5), -3);
-	assert.equal((-4).normalizeWithBound(-5), -4);
-	assert.equal((-6).normalizeWithBound(-5), -1);
+	assert.equal(normalizeWithBound(2.0, -5), -3);
+	assert.equal(normalizeWithBound(-4, -5), -4);
+	assert.equal(normalizeWithBound(-6, -5), -1);
 
-	assert.equal((-1).normalizeWithBound(24), 23);
-	assert.equal((1).normalizeWithBound(24), 1);
-	assert.equal((49.0).normalizeWithBound(24), 1);
+	assert.equal(normalizeWithBound(-1, 24), 23);
+	assert.equal(normalizeWithBound(1, 24), 1);
+	assert.equal(normalizeWithBound(49.0, 24), 1);
 
-	assert.equal((361).normalizeWithBound(360), 1);
-	assert.equal((360).normalizeWithBound(360), 0);
-	assert.equal((259).normalizeWithBound(360), 259);
-	assert.equal((2592.0).normalizeWithBound(360), 72);
+	assert.equal(normalizeWithBound(361, 360), 1);
+	assert.equal(normalizeWithBound(360, 360), 0);
+	assert.equal(normalizeWithBound(259, 360), 259);
+	assert.equal(normalizeWithBound(2592.0, 360), 72);
 
 	assert.equal((-45).unwindAngle(), 315);
 	assert.equal((361.0).unwindAngle(), 1);
@@ -30,7 +30,7 @@ QUnit.test("Normalizing", function(assert) {
 	assert.equal((259.0).unwindAngle(), 259);
 	assert.equal((2592).unwindAngle(), 72);
 
-	QUnit.close((360.1).normalizeWithBound(360), 0.1, 0.01);
+	QUnit.close(normalizeWithBound(360.1, 360), 0.1, 0.01);
 });
 
 QUnit.test("Closest Angle", function(assert) {

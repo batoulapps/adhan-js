@@ -5,3 +5,8 @@ function degreesToRadians(degrees) {
 function radiansToDegrees(radians) {
     return (radians * 180.0) / Math.PI;
 }
+
+
+function normalizeWithBound(number, max) {
+    return number - (max * (Math.floor(number / max)))
+}

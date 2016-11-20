@@ -508,7 +508,7 @@
             var a2 = rightAscension;
             /* Equation from page Astronomical Algorithms 102 */
             var Lw = L * -1;
-            return ((a2 + Lw - Theta0) / 360).normalizeWithBound(1);
+            return normalizeWithBound((a2 + Lw - Theta0) / 360, 1);
         },
 
         /* The time at which the sun is at its highest point in the sky (in universal time) */
@@ -715,12 +715,12 @@
         return (radians * 180.0) / Math.PI;
     }
 
-    Number.prototype.normalizeWithBound = function(max) {
-        return this - (max * (Math.floor(this / max)))
-    };
+    function normalizeWithBound(number, max) {
+        return number - (max * (Math.floor(number / max)))
+    }
 
     Number.prototype.unwindAngle = function() {
-        return this.normalizeWithBound(360.0);
+        return normalizeWithBound(this, 360.0);
     };
 
     Number.prototype.closestAngle = function() {
