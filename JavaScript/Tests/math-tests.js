@@ -4,9 +4,9 @@
 //
 
 QUnit.test("Angle Conversion", function(assert) {
-	assert.equal(Math.PI.radiansToDegrees(), 180);
+	assert.equal(radiansToDegrees(Math.PI), 180);
 	assert.equal(degreesToRadians(180), Math.PI);
-	assert.equal((Math.PI/2).radiansToDegrees(), 90);
+	assert.equal(radiansToDegrees(Math.PI/2), 90);
 	assert.equal(degreesToRadians(90), Math.PI/2);
 });
 

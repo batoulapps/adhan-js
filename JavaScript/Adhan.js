@@ -322,7 +322,7 @@
             // TODO source shadow angle calculation
             var tangent = Math.abs(this.observer.latitude - this.solar.declination);
             var inverse = shadowLength + Math.tan(degreesToRadians(tangent));
-            var angle = Math.atan(1.0 / inverse).radiansToDegrees();
+            var angle = radiansToDegrees(Math.atan(1.0 / inverse));
 
             return this.hourAngle(angle, true);
         }
@@ -355,10 +355,10 @@
         var EpsilonApparent = degreesToRadians(Astronomical.apparentObliquityOfTheEcliptic(T, Epsilon0));
 
         /* Equation from Astronomical Algorithms page 165 */
-        this.declination = Math.asin(Math.sin(EpsilonApparent) * Math.sin(Lambda)).radiansToDegrees();
+        this.declination = radiansToDegrees(Math.asin(Math.sin(EpsilonApparent) * Math.sin(Lambda)));
 
         /* Equation from Astronomical Algorithms page 165 */
-        this.rightAscension = Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda)).radiansToDegrees().unwindAngle();
+        this.rightAscension = radiansToDegrees(Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda))).unwindAngle();
 
         /* Equation from Astronomical Algorithms page 88 */
         this.apparentSiderealTime = Theta0 + (((dPsi * 3600) * Math.cos(degreesToRadians(Epsilon0 + dEpsilon))) / 3600);
@@ -499,7 +499,7 @@
             /* Equation from Astronomical Algorithms page 93 */
             var term1 = Math.sin(degreesToRadians(Phi)) * Math.sin(degreesToRadians(delta));
             var term2 = Math.cos(degreesToRadians(Phi)) * Math.cos(degreesToRadians(delta)) * Math.cos(degreesToRadians(H));
-            return Math.asin(term1 + term2).radiansToDegrees();
+            return radiansToDegrees(Math.asin(term1 + term2));
         },
 
         approximateTransit: function(longitude, siderealTime, rightAscension) {
@@ -544,7 +544,7 @@
             var Lw = coordinates.longitude * -1;
             var term1 = Math.sin(degreesToRadians(h0)) - (Math.sin(degreesToRadians(coordinates.latitude)) * Math.sin(degreesToRadians(d2)));
             var term2 = Math.cos(degreesToRadians(coordinates.latitude)) * Math.cos(degreesToRadians(d2));
-            var H0 = Math.acos(term1 / term2).radiansToDegrees();
+            var H0 = radiansToDegrees(Math.acos(term1 / term2));
             var m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360);
             var Theta = (Theta0 + (360.985647 * m)).unwindAngle();
             var a = Astronomical.interpolateAngles(a2, a1, a3, m).unwindAngle();
@@ -711,9 +711,9 @@
         return (degrees * Math.PI) / 180.0;
     }
 
-    Number.prototype.radiansToDegrees = function() {
-        return (this * 180.0) / Math.PI;
-    };
+    function radiansToDegrees(radians) {
+        return (radians * 180.0) / Math.PI;
+    }
 
     Number.prototype.normalizeWithBound = function(max) {
         return this - (max * (Math.floor(this / max)))
