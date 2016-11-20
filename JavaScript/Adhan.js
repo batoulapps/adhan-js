@@ -106,12 +106,14 @@
     function PrayerTimes(coordinates, date, calculationParameters) {
         var solarTime = new SolarTime(date, coordinates);
 
-        var fajrTime = null;
-        var sunriseTime = null;
-        var dhuhrTime = null;
-        var asrTime = null;
-        var maghribTime = null;
-        var ishaTime = null;
+        var fajrTime;
+        var sunriseTime;
+        var dhuhrTime;
+        var asrTime;
+        var maghribTime;
+        var ishaTime;
+
+        var nightFraction;
 
         dhuhrTime = solarTime.transit.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
         sunriseTime = solarTime.sunrise.timeComponents().UTCDate(date.getFullYear(), date.getMonth(), date.getDate());
@@ -126,7 +128,7 @@
 
         // special case for moonsighting committee above latitude 55
         if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
-            var nightFraction = night / 7;
+            nightFraction = night / 7;
             fajrTime = sunriseTime.dateByAddingSeconds(-nightFraction);
         }
 
@@ -135,7 +137,7 @@
                 return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, date.dayOfYear(), date.getFullYear(), sunriseTime);
             } else {
                 var portion = calculationParameters.nightPortions().fajr;
-                var nightFraction = portion * night;
+                nightFraction = portion * night;
 
                 return sunriseTime.dateByAddingSeconds(-nightFraction);
             }
@@ -152,7 +154,7 @@
 
             // special case for moonsighting committee above latitude 55
             if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
-                var nightFraction = night / 7;
+                nightFraction = night / 7;
                 ishaTime = maghribTime.dateByAddingSeconds(nightFraction);
             }
 
@@ -161,7 +163,7 @@
                     return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, date.dayOfYear(), date.getFullYear(), maghribTime);
                 } else {
                     var portion = calculationParameters.nightPortions().isha;
-                    var nightFraction = portion * night;
+                    nightFraction = portion * night;
 
                     return maghribTime.dateByAddingSeconds(nightFraction);
                 }
