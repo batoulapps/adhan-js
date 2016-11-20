@@ -1,5 +1,6 @@
 var unwindAngle = adhan.Math.unwindAngle;
 var timeComponents = adhan.Math.timeComponents;
+var dayOfYear = adhan.Date.dayOfYear;
 //
 // Astronomical Tests
 //
@@ -221,25 +222,25 @@ QUnit.test("Leap Year", function(assert) {
 });
 
 QUnit.test("Day of Year", function(assert) {
-	assert.equal(1, new Date(2015, 0, 1).dayOfYear());
-	assert.equal(365, new Date(2015, 11, 31).dayOfYear());
-	assert.equal(366, new Date(2016, 11, 31).dayOfYear());
-	assert.equal(32, new Date(2015, 1, 1).dayOfYear());
+	assert.equal(1, dayOfYear(new Date(2015, 0, 1)));
+	assert.equal(365, dayOfYear(new Date(2015, 11, 31)));
+	assert.equal(366, dayOfYear(new Date(2016, 11, 31)));
+	assert.equal(32, dayOfYear(new Date(2015, 1, 1)));
 });
 
 QUnit.test("Days since solstice", function(assert) {
-	assert.equal(11, adhan.Astronomical.daysSinceSolstice(new Date(2016, 0, 1).dayOfYear(), 2016, 1));
-	assert.equal(10, adhan.Astronomical.daysSinceSolstice(new Date(2015, 11, 31).dayOfYear(), 2015, 1));
-	assert.equal(10, adhan.Astronomical.daysSinceSolstice(new Date(2016, 11, 31).dayOfYear(), 2016, 1));
-	assert.equal(0, adhan.Astronomical.daysSinceSolstice(new Date(2016, 11, 21).dayOfYear(), 2016, 1));
-	assert.equal(1, adhan.Astronomical.daysSinceSolstice(new Date(2016, 11, 22).dayOfYear(), 2016, 1));
-	assert.equal(71, adhan.Astronomical.daysSinceSolstice(new Date(2016, 2, 1).dayOfYear(), 2016, 1));
-	assert.equal(70, adhan.Astronomical.daysSinceSolstice(new Date(2015, 2, 1).dayOfYear(), 2015, 1));
-	assert.equal(365, adhan.Astronomical.daysSinceSolstice(new Date(2016, 11, 20).dayOfYear(), 2016, 1));
-	assert.equal(364, adhan.Astronomical.daysSinceSolstice(new Date(2015, 11, 20).dayOfYear(), 2015, 1));
+	assert.equal(11, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 0, 1)), 2016, 1));
+	assert.equal(10, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2015, 11, 31)), 2015, 1));
+	assert.equal(10, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 11, 31)), 2016, 1));
+	assert.equal(0, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 11, 21)), 2016, 1));
+	assert.equal(1, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 11, 22)), 2016, 1));
+	assert.equal(71, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 2, 1)), 2016, 1));
+	assert.equal(70, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2015, 2, 1)), 2015, 1));
+	assert.equal(365, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 11, 20)), 2016, 1));
+	assert.equal(364, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2015, 11, 20)), 2015, 1));
 
-	assert.equal(0, adhan.Astronomical.daysSinceSolstice(new Date(2015, 5, 21).dayOfYear(), 2015, -1));
-	assert.equal(0, adhan.Astronomical.daysSinceSolstice(new Date(2016, 5, 21).dayOfYear(), 2016, -1));
-	assert.equal(364, adhan.Astronomical.daysSinceSolstice(new Date(2015, 5, 20).dayOfYear(), 2015, -1));
-	assert.equal(365, adhan.Astronomical.daysSinceSolstice(new Date(2016, 5, 20).dayOfYear(), 2016, -1));
+	assert.equal(0, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2015, 5, 21)), 2015, -1));
+	assert.equal(0, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 5, 21)), 2016, -1));
+	assert.equal(364, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2015, 5, 20)), 2015, -1));
+	assert.equal(365, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 5, 20)), 2016, -1));
 });

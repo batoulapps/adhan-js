@@ -134,7 +134,7 @@
 
         var safeFajr = (function(){
             if (calculationParameters.method == "MoonsightingCommittee") {
-                return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, date.dayOfYear(), date.getFullYear(), sunriseTime);
+                return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), sunriseTime);
             } else {
                 var portion = calculationParameters.nightPortions().fajr;
                 nightFraction = portion * night;
@@ -160,7 +160,7 @@
 
             var safeIsha = (function(){
                 if (calculationParameters.method == "MoonsightingCommittee") {
-                    return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, date.dayOfYear(), date.getFullYear(), maghribTime);
+                    return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), maghribTime);
                 } else {
                     var portion = calculationParameters.nightPortions().isha;
                     nightFraction = portion * night;
@@ -791,18 +791,18 @@
         return dateByAddingSeconds(date, offset);
     }
 
-    Date.prototype.dayOfYear = function() {
-        var dayOfYear = 0;
-        var feb = Astronomical.isLeapYear(this.getFullYear()) ? 29 : 28;
+    function dayOfYear(date) {
+        var returnedDayOfYear = 0;
+        var feb = Astronomical.isLeapYear(date.getFullYear()) ? 29 : 28;
         var months = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        for (var i = 0; i < this.getMonth(); i++) {
-            dayOfYear += months[i];
+        for (var i = 0; i < date.getMonth(); i++) {
+            returnedDayOfYear += months[i];
         }
 
-        dayOfYear += this.getDate();
+        returnedDayOfYear += date.getDate();
 
-        return dayOfYear;
-    };
+        return returnedDayOfYear;
+    }
 
     Date.prototype.julianDate = function() {
         return Astronomical.julianDay(this.getFullYear(), this.getMonth() + 1, this.getDate(), this.getHours() + (this.getMinutes() / 60));
@@ -842,7 +842,8 @@
             dateByAddingHours: dateByAddingHours,
             dateByAddingMinutes: dateByAddingMinutes,
             dateByAddingSeconds: dateByAddingSeconds,
-            roundedMinute: roundedMinute
+            roundedMinute: roundedMinute,
+            dayOfYear: dayOfYear
         }
     };
 
