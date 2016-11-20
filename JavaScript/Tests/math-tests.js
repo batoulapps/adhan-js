@@ -5,9 +5,9 @@
 
 QUnit.test("Angle Conversion", function(assert) {
 	assert.equal(Math.PI.radiansToDegrees(), 180);
-	assert.equal((180).degreesToRadians(), Math.PI);
+	assert.equal(degreesToRadians(180), Math.PI);
 	assert.equal((Math.PI/2).radiansToDegrees(), 90);
-	assert.equal((90).degreesToRadians(), Math.PI/2);
+	assert.equal(degreesToRadians(90), Math.PI/2);
 });
 
 QUnit.test("Normalizing", function(assert) {
@@ -51,20 +51,20 @@ QUnit.test("Time Components", function(assert) {
     assert.equal(comps1.hours, 15);
     assert.equal(comps1.minutes, 11);
     assert.equal(comps1.seconds, 56);
-    
+
     var comps2 = (1.0084).timeComponents();
     assert.equal(comps2.hours, 1);
     assert.equal(comps2.minutes, 0);
     assert.equal(comps2.seconds, 30);
-    
+
     var comps3 = (1.0083).timeComponents();
     assert.equal(comps3.hours, 1);
     assert.equal(comps3.minutes, 0);
-    
+
     var comps4 = (2.1).timeComponents();
     assert.equal(comps4.hours, 2);
     assert.equal(comps4.minutes, 6);
-    
+
     var comps5 = (3.5).timeComponents();
     assert.equal(comps5.hours, 3);
     assert.equal(comps5.minutes, 30);

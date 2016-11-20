@@ -321,7 +321,7 @@
         this.afternoon = function(shadowLength) {
             // TODO source shadow angle calculation
             var tangent = Math.abs(this.observer.latitude - this.solar.declination);
-            var inverse = shadowLength + Math.tan(tangent.degreesToRadians());
+            var inverse = shadowLength + Math.tan(degreesToRadians(tangent));
             var angle = Math.atan(1.0 / inverse).radiansToDegrees();
 
             return this.hourAngle(angle, true);
@@ -345,14 +345,14 @@
         var L0 = Astronomical.meanSolarLongitude(T);
         var Lp = Astronomical.meanLunarLongitude(T);
         var Omega = Astronomical.ascendingLunarNodeLongitude(T);
-        var Lambda = Astronomical.apparentSolarLongitude(T, L0).degreesToRadians();
+        var Lambda = degreesToRadians(Astronomical.apparentSolarLongitude(T, L0));
 
         var Theta0 = Astronomical.meanSiderealTime(T);
         var dPsi = Astronomical.nutationInLongitude(T, L0, Lp, Omega);
         var dEpsilon = Astronomical.nutationInObliquity(T, L0, Lp, Omega);
 
         var Epsilon0 = Astronomical.meanObliquityOfTheEcliptic(T);
-        var EpsilonApparent = Astronomical.apparentObliquityOfTheEcliptic(T, Epsilon0).degreesToRadians();
+        var EpsilonApparent = degreesToRadians(Astronomical.apparentObliquityOfTheEcliptic(T, Epsilon0));
 
         /* Equation from Astronomical Algorithms page 165 */
         this.declination = Math.asin(Math.sin(EpsilonApparent) * Math.sin(Lambda)).radiansToDegrees();
@@ -361,7 +361,7 @@
         this.rightAscension = Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda)).radiansToDegrees().unwindAngle();
 
         /* Equation from Astronomical Algorithms page 88 */
-        this.apparentSiderealTime = Theta0 + (((dPsi * 3600) * Math.cos((Epsilon0 + dEpsilon).degreesToRadians())) / 3600);
+        this.apparentSiderealTime = Theta0 + (((dPsi * 3600) * Math.cos(degreesToRadians(Epsilon0 + dEpsilon))) / 3600);
     }
 
     var Astronomical = {
@@ -413,7 +413,7 @@
         solarEquationOfTheCenter: function(julianCentury, meanAnomaly) {
             var T = julianCentury;
             /* Equation from Astronomical Algorithms page 164 */
-            var Mrad = meanAnomaly.degreesToRadians();
+            var Mrad = degreesToRadians(meanAnomaly);
             var term1 = (1.914602 - (0.004817 * T) - (0.000014 * Math.pow(T, 2))) * Math.sin(Mrad);
             var term2 = (0.019993 - (0.000101 * T)) * Math.sin(2 * Mrad);
             var term3 = 0.000289 * Math.sin(3 * Mrad);
@@ -428,7 +428,7 @@
             /* Equation from Astronomical Algorithms page 164 */
             var longitude = L0 + Astronomical.solarEquationOfTheCenter(T, Astronomical.meanSolarAnomaly(T));
             var Omega = 125.04 - (1934.136 * T);
-            var Lambda = longitude - 0.00569 - (0.00478 * Math.sin(Omega.degreesToRadians()));
+            var Lambda = longitude - 0.00569 - (0.00478 * Math.sin(degreesToRadians(Omega)));
             return Lambda.unwindAngle();
         },
 
@@ -452,7 +452,7 @@
             var Epsilon0 = meanObliquityOfTheEcliptic;
             /* Equation from Astronomical Algorithms page 165 */
             var O = 125.04 - (1934.136 * T);
-            return Epsilon0 + (0.00256 * Math.cos(O.degreesToRadians()));
+            return Epsilon0 + (0.00256 * Math.cos(degreesToRadians(O)));
         },
 
         /* Mean sidereal time, the hour angle of the vernal equinox, in degrees. */
@@ -473,10 +473,10 @@
             var Lp = lunarLongitude;
             var Omega = ascendingNode;
             /* Equation from Astronomical Algorithms page 144 */
-            var term1 = (-17.2/3600) * Math.sin(Omega.degreesToRadians());
-            var term2 =  (1.32/3600) * Math.sin(2 * L0.degreesToRadians());
-            var term3 =  (0.23/3600) * Math.sin(2 * Lp.degreesToRadians());
-            var term4 =  (0.21/3600) * Math.sin(2 * Omega.degreesToRadians());
+            var term1 = (-17.2/3600) * Math.sin(degreesToRadians(Omega));
+            var term2 =  (1.32/3600) * Math.sin(2 * degreesToRadians(L0));
+            var term3 =  (0.23/3600) * Math.sin(2 * degreesToRadians(Lp));
+            var term4 =  (0.21/3600) * Math.sin(2 * degreesToRadians(Omega));
             return term1 - term2 - term3 + term4;
         },
 
@@ -485,10 +485,10 @@
             var Lp = lunarLongitude;
             var Omega = ascendingNode;
             /* Equation from Astronomical Algorithms page 144 */
-            var term1 =  (9.2/3600) * Math.cos(Omega.degreesToRadians());
-            var term2 = (0.57/3600) * Math.cos(2 * L0.degreesToRadians());
-            var term3 = (0.10/3600) * Math.cos(2 * Lp.degreesToRadians());
-            var term4 = (0.09/3600) * Math.cos(2 * Omega.degreesToRadians());
+            var term1 =  (9.2/3600) * Math.cos(degreesToRadians(Omega));
+            var term2 = (0.57/3600) * Math.cos(2 * degreesToRadians(L0));
+            var term3 = (0.10/3600) * Math.cos(2 * degreesToRadians(Lp));
+            var term4 = (0.09/3600) * Math.cos(2 * degreesToRadians(Omega));
             return term1 + term2 + term3 - term4;
         },
 
@@ -497,8 +497,8 @@
             var delta = declination;
             var H = localHourAngle;
             /* Equation from Astronomical Algorithms page 93 */
-            var term1 = Math.sin(Phi.degreesToRadians()) * Math.sin(delta.degreesToRadians());
-            var term2 = Math.cos(Phi.degreesToRadians()) * Math.cos(delta.degreesToRadians()) * Math.cos(H.degreesToRadians());
+            var term1 = Math.sin(degreesToRadians(Phi)) * Math.sin(degreesToRadians(delta));
+            var term2 = Math.cos(degreesToRadians(Phi)) * Math.cos(degreesToRadians(delta)) * Math.cos(degreesToRadians(H));
             return Math.asin(term1 + term2).radiansToDegrees();
         },
 
@@ -542,8 +542,8 @@
 
             /* Equation from page Astronomical Algorithms 102 */
             var Lw = coordinates.longitude * -1;
-            var term1 = Math.sin(h0.degreesToRadians()) - (Math.sin(coordinates.latitude.degreesToRadians()) * Math.sin(d2.degreesToRadians()));
-            var term2 = Math.cos(coordinates.latitude.degreesToRadians()) * Math.cos(d2.degreesToRadians());
+            var term1 = Math.sin(degreesToRadians(h0)) - (Math.sin(degreesToRadians(coordinates.latitude)) * Math.sin(degreesToRadians(d2)));
+            var term2 = Math.cos(degreesToRadians(coordinates.latitude)) * Math.cos(degreesToRadians(d2));
             var H0 = Math.acos(term1 / term2).radiansToDegrees();
             var m = afterTransit ? m0 + (H0 / 360) : m0 - (H0 / 360);
             var Theta = (Theta0 + (360.985647 * m)).unwindAngle();
@@ -552,7 +552,7 @@
             var H = (Theta - Lw - a);
             var h = Astronomical.altitudeOfCelestialBody(coordinates.latitude, delta, H);
             var term3 = h - h0;
-            var term4 = 360 * Math.cos(delta.degreesToRadians()) * Math.cos(coordinates.latitude.degreesToRadians()) * Math.sin(H.degreesToRadians());
+            var term4 = 360 * Math.cos(degreesToRadians(delta)) * Math.cos(degreesToRadians(coordinates.latitude)) * Math.sin(degreesToRadians(H));
             var dm = term3 / term4;
             return (m + dm) * 24;
         },
@@ -707,9 +707,9 @@
         }
     }
 
-    Number.prototype.degreesToRadians = function() {
-        return (this * Math.PI) / 180.0;
-    };
+    function degreesToRadians(degrees) {
+        return (degrees * Math.PI) / 180.0;
+    }
 
     Number.prototype.radiansToDegrees = function() {
         return (this * 180.0) / Math.PI;
