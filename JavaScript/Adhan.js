@@ -820,7 +820,7 @@
     // Polyfill
     //
 
-    var trunc = trunc || function (x) { return x < 0 ? Math.ceil(x) : Math.floor(x); };
+    var trunc = Math.trunc || function (x) { return x < 0 ? Math.ceil(x) : Math.floor(x); };
 
 
     var adhan = root.adhan = {
