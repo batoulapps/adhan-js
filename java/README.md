@@ -4,21 +4,19 @@ Adhan Java is written to be compatible with Java and Android devices of all api 
 
 ## Usage
 
-_Note - we intend to push this to jCenter in the near future insha'Allah, which should make this process much easier_.
-
-To use this in your project, get the repository, then run `mvn install`. You can then use this in any gradle project by adding `mavenLocal()` under `repositories` and then using:
+### Gradle
 
 ```
-compile 'com.batoulapps.adhan:adhan:1.0-SNAPSHOT'
+compile 'com.batoulapps.adhan:adhan:1.0.0'
 ```
 
-or in any maven project using:
+### Maven
 
 ```
 <dependency>
    <groupId>com.batoulapps.adhan</groupId>
    <artifactId>adhan</artifactId>
-   <version>1.0-SNAPSHOT</version>
+   <version>1.0.0</version>
 </dependency>
 ```
 
