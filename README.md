@@ -13,7 +13,7 @@ of the National Oceanic and Atmospheric Administration.
 
 Adhan is available for the following languages:
 
-- Swift [(Usage and examples)](Swift/)
+- Swift & Objective-C [(Usage and examples)](Swift/)
 - JavaScript [(Usage and examples)](JavaScript/)
 - Java [(Usage and examples)](java/)
 
@@ -25,7 +25,7 @@ This is an initial release of the library. The following items are planned:
 - Comprehensive unit tests for various locations and settings
 - Full explanation of the equations used and prayer time calculation
 - Suggested method for a country/city
-- Convenience methods for determining current prayer/next prayer
+- ~~Convenience methods for determining current prayer/next prayer~~
 
 ## Contributing
 
