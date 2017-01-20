@@ -6,11 +6,21 @@ The Adhan Swift implementation uses Swift 3 and has an Objective-C compatible wr
 
 ### CocoaPods
 
-[CocoaPods](https://cocoapods.org/) is fully supported. Simply add the following line to your [Podfile](https://guides.cocoapods.org/syntax/podfile.html):
+Adhan supports [CocoaPods](https://cocoapods.org/). Simply add the following line to your [Podfile](https://guides.cocoapods.org/syntax/podfile.html):
 
 ```ruby
 pod 'Adhan'
 ```
+
+### Carthage
+
+Adhan supports [Carthage](https://github.com/Carthage/Carthage). Simply add the following line to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
+
+```ruby
+github "batoulapps/Adhan" "master"
+```
+
+
 
 ### Manual
 
