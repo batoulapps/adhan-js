@@ -1,6 +1,25 @@
 # Adhan Swift
 
-The Adhan Swift implementation uses Swift 3
+The Adhan Swift implementation uses Swift 3 and has an Objective-C compatible wrapper.
+
+## Installation
+
+### CocoaPods
+
+[CocoaPods](https://cocoapods.org/) is fully supported. Simply add the following line to your [Podfile](https://guides.cocoapods.org/syntax/podfile.html):
+
+```ruby
+pod 'Adhan'
+```
+
+### Manual
+
+You can also manually add Adhan.
+
+- Download the source.
+- Add Adhan.xcodeproj as a subproject in your app's project.
+- Drag Adhan.framework to "Linked Frameworks and Libraries" in your app's target.
+
 
 ## Usage
 
