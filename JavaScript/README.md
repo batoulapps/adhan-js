@@ -2,6 +2,30 @@
 
 The Adhan JavaScript implementation is written to be compatible with the latest version of all major browsers.
 
+## Installation
+
+### Browser
+
+Simply include Adhan.js in your HTML page
+
+```
+<script src="Adhan.js"></script>
+```
+
+### Node
+
+Adhan is available in npm
+
+```
+npm install adhan
+```
+
+and then require the module
+
+```
+var adhan = require('adhan')
+```
+
 ## Upgrading from 1.0.1 to 2.0.0
 Upgrading to 2.0.0 introduces breaking API changes. 
 

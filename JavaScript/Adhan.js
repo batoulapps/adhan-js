@@ -1,17 +1,20 @@
 "use strict";
 
+// UMD pattern from https://github.com/umdjs/umd
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define([], factory.bind(root));
+        // AMD. Register as an anonymous module.
+        define([], factory);
     } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory.call(root);
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory();
     } else {
-        root.adhan = factory.call(root);
-    }
-}(this, function() {
-    var root = this;
-    var previous_adhan = root.adhan;
-
+        // Browser globals (root is window)
+        root.adhan = factory();
+  }
+}(this, function () {
     var Prayer = {
         Fajr: 0,
         Sunrise: 1,
@@ -823,7 +826,7 @@
     var trunc = Math.trunc || function (x) { return x < 0 ? Math.ceil(x) : Math.floor(x); };
 
 
-    var adhan = root.adhan = {
+    var adhan = {
         Prayer: Prayer,
         Madhab: Madhab,
         HighLatitudeRule: HighLatitudeRule,
@@ -852,11 +855,6 @@
             dayOfYear: dayOfYear,
             julianDate: julianDate
         }
-    };
-
-    adhan.noConflict = function() {
-        root.adhan = previous_adhan;
-        return adhan;
     };
 
     return adhan;
