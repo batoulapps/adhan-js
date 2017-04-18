@@ -112,7 +112,12 @@ class TimeTests: XCTestCase {
                 let asrDiff = prayerTimes.asr.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["asr"]!)")!)/60
                 let maghribDiff = prayerTimes.maghrib.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["maghrib"]!)")!)/60
                 let ishaDiff = prayerTimes.isha.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["isha"]!)")!)/60
-                totalDiff += fabs(fajrDiff) + fabs(sunriseDiff) + fabs(dhuhrDiff) + fabs(asrDiff) + fabs(maghribDiff) + fabs(ishaDiff)
+                totalDiff += fabs(fajrDiff)
+                totalDiff += fabs(sunriseDiff)
+                totalDiff += fabs(dhuhrDiff)
+                totalDiff += fabs(asrDiff)
+                totalDiff += fabs(maghribDiff)
+                totalDiff += fabs(ishaDiff)
                 maxDiff = max(fabs(fajrDiff), fabs(sunriseDiff), fabs(dhuhrDiff), fabs(asrDiff), fabs(maghribDiff), fabs(ishaDiff), maxDiff)
                 
                 output += "\(String(describing: components.year))-\(String(describing: components.month))-\(String(describing: components.day))\n"
