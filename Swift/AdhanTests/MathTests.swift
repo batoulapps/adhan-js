@@ -12,10 +12,10 @@ import XCTest
 class MathTests: XCTestCase {
     
     func testAngleConversion() {
-        XCTAssertEqual(M_PI.radiansToDegrees(), 180.0)
-        XCTAssertEqual(180.0.degreesToRadians(), M_PI)
-        XCTAssertEqual(M_PI_2.radiansToDegrees(), 90.0)
-        XCTAssertEqual(90.0.degreesToRadians(), M_PI_2)
+        XCTAssertEqual(Double.pi.radiansToDegrees(), 180.0)
+        XCTAssertEqual(180.0.degreesToRadians(), Double.pi)
+        XCTAssertEqual((Double.pi / 2).radiansToDegrees(), 90.0)
+        XCTAssertEqual(90.0.degreesToRadians(), (Double.pi / 2))
     }
     
     func testNormalizing() {
