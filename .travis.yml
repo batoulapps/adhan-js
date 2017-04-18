@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode8.2
+osx_image: xcode8.3
 xcode_project: Swift/Adhan.xcodeproj
 xcode_scheme: AdhanTests
 xcode_sdk: iphonesimulator
