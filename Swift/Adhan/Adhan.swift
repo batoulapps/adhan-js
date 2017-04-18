@@ -857,11 +857,11 @@ extension Int {
 extension Double {
     
     func degreesToRadians() -> Double {
-        return (self * M_PI) / 180.0
+        return (self * .pi) / 180.0
     }
     
     func radiansToDegrees() -> Double {
-        return (self * 180.0) / M_PI
+        return (self * 180.0) / .pi
     }
     
     func normalizeWithBound(max: Double) -> Double {

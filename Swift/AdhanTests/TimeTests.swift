@@ -99,12 +99,12 @@ class TimeTests: XCTestCase {
                 let date = dateFormatter.date(from: time["date"] as! String)!
                 let components = (cal as NSCalendar).components([.year, .month, .day], from: date)
                 let prayerTimes = PrayerTimes(coordinates: coordinates, date: components, calculationParameters: calculationParameters)!
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.fajr), time["fajr"] as? String, "Incorrect Fajr on \(time["date"])")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.sunrise), time["sunrise"] as? String, "Incorrect Sunrise on \(time["date"])")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.dhuhr), time["dhuhr"] as? String, "Incorrect Dhuhr on \(time["date"])")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.asr), time["asr"] as? String, "Incorrect Asr on \(time["date"])")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.maghrib), time["maghrib"] as? String, "Incorrect Maghrib on \(time["date"])")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.isha), time["isha"] as? String, "Incorrect Isha on \(time["date"])")
+                XCTAssertEqual(timeFormatter.string(from: prayerTimes.fajr), time["fajr"] as? String, "Incorrect Fajr on \(String(describing: time["date"]))")
+                XCTAssertEqual(timeFormatter.string(from: prayerTimes.sunrise), time["sunrise"] as? String, "Incorrect Sunrise on \(String(describing: time["date"]))")
+                XCTAssertEqual(timeFormatter.string(from: prayerTimes.dhuhr), time["dhuhr"] as? String, "Incorrect Dhuhr on \(String(describing: time["date"]))")
+                XCTAssertEqual(timeFormatter.string(from: prayerTimes.asr), time["asr"] as? String, "Incorrect Asr on \(String(describing: time["date"]))")
+                XCTAssertEqual(timeFormatter.string(from: prayerTimes.maghrib), time["maghrib"] as? String, "Incorrect Maghrib on \(String(describing: time["date"]))")
+                XCTAssertEqual(timeFormatter.string(from: prayerTimes.isha), time["isha"] as? String, "Incorrect Isha on \(String(describing: time["date"]))")
                 
                 let fajrDiff = prayerTimes.fajr.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["fajr"]!)")!)/60
                 let sunriseDiff = prayerTimes.sunrise.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["sunrise"]!)")!)/60
@@ -115,7 +115,7 @@ class TimeTests: XCTestCase {
                 totalDiff += fabs(fajrDiff) + fabs(sunriseDiff) + fabs(dhuhrDiff) + fabs(asrDiff) + fabs(maghribDiff) + fabs(ishaDiff)
                 maxDiff = max(fabs(fajrDiff), fabs(sunriseDiff), fabs(dhuhrDiff), fabs(asrDiff), fabs(maghribDiff), fabs(ishaDiff), maxDiff)
                 
-                output += "\(components.year)-\(components.month)-\(components.day)\n"
+                output += "\(String(describing: components.year))-\(String(describing: components.month))-\(String(describing: components.day))\n"
                 output += "F: \(timeFormatter.string(from: prayerTimes.fajr))  \t\(time["fajr"]!)  \tDiff: \(fajrDiff)\n"
                 output += "S: \(timeFormatter.string(from: prayerTimes.sunrise))  \t\(time["sunrise"]!)  \tDiff: \(sunriseDiff)\n"
                 output += "D: \(timeFormatter.string(from: prayerTimes.dhuhr))  \t\(time["dhuhr"]!)  \tDiff: \(dhuhrDiff)\n"
