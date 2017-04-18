@@ -44,6 +44,11 @@ public enum HighLatitudeRule {
 public struct Coordinates {
     let latitude: Double
     let longitude: Double
+        
+    public init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+    }
 }
 
 /* Adjustment value for prayer times, in minutes */
