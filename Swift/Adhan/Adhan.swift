@@ -44,11 +44,6 @@ public enum HighLatitudeRule {
 public struct Coordinates {
     let latitude: Double
     let longitude: Double
-    
-    public init(latitude: Double, longitude: Double) {
-        self.latitude = latitude
-        self.longitude = longitude
-    }
 }
 
 /* Adjustment value for prayer times, in minutes */
@@ -192,7 +187,7 @@ public struct PrayerTimes {
         var tempIsha: Date? = nil
         
         // all calculations are done using a gregorian calendar with the UTC timezone
-        var cal = Calendar(identifier: Calendar.Identifier.gregorian)
+        var cal = Calendar(identifier: .gregorian)
         cal.timeZone = TimeZone(identifier: "UTC")!
         
         guard let prayerDate = cal.date(from: date) else {
@@ -219,7 +214,7 @@ public struct PrayerTimes {
         }
         
         // get night length
-        let tomorrowSunrise = (cal as NSCalendar).date(byAdding: .day, value: 1, to: sunriseDate, options: [])
+        let tomorrowSunrise = cal.date(byAdding: .day, value: 1, to: sunriseDate)
         guard let night = tomorrowSunrise?.timeIntervalSince(sunsetDate) else {
             return nil
         }
@@ -229,27 +224,26 @@ public struct PrayerTimes {
         }
         
         // special case for moonsighting committee above latitude 55
-        if calculationParameters.method == .moonsightingCommittee && coordinates.latitude >= 55 {
+        if calculationParameters.method == .moonsightingCommittee, coordinates.latitude >= 55 {
             let nightFraction = night / 7
             tempFajr = sunriseDate.addingTimeInterval(-nightFraction)
         }
         
         let safeFajr: Date = {
-            if calculationParameters.method == .moonsightingCommittee {
-                let dayOfYear = (cal as NSCalendar).ordinality(of: .day, in: .year, for: prayerDate)
-                return Astronomical.seasonAdjustedMorningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: date.year!, sunrise: sunriseDate)
-            } else {
-                let portion = calculationParameters.nightPortions().fajr
-                let nightFraction = portion * night
-                
-                return sunriseDate.addingTimeInterval(-nightFraction)
+            guard calculationParameters.method != .moonsightingCommittee else {
+                let dayOfYear = cal.ordinality(of: .day, in: .year, for: prayerDate)
+                return Astronomical.seasonAdjustedMorningTwilight(latitude: coordinates.latitude, day: dayOfYear!, year: date.year!, sunrise: sunriseDate)
             }
+            
+            let portion = calculationParameters.nightPortions().fajr
+            let nightFraction = portion * night
+            
+            return sunriseDate.addingTimeInterval(-nightFraction)
         }()
         
         if tempFajr == nil || tempFajr?.compare(safeFajr) == .orderedAscending {
             tempFajr = safeFajr
         }
-        
         
         // Isha calculation with check against safe value
         if calculationParameters.ishaInterval > 0 {
@@ -260,21 +254,21 @@ public struct PrayerTimes {
             }
             
             // special case for moonsighting committee above latitude 55
-            if calculationParameters.method == .moonsightingCommittee && coordinates.latitude >= 55 {
+            if calculationParameters.method == .moonsightingCommittee, coordinates.latitude >= 55 {
                 let nightFraction = night / 7
                 tempIsha = sunsetDate.addingTimeInterval(nightFraction)
             }
             
             let safeIsha: Date = {
-                if calculationParameters.method == .moonsightingCommittee {
-                    let dayOfYear = (cal as NSCalendar).ordinality(of: .day, in: .year, for: prayerDate)
-                    return Astronomical.seasonAdjustedEveningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: date.year!, sunset: sunsetDate)
-                } else {
-                    let portion = calculationParameters.nightPortions().isha
-                    let nightFraction = portion * night
-                    
-                    return sunsetDate.addingTimeInterval(nightFraction)
+                guard calculationParameters.method != .moonsightingCommittee else {
+                    let dayOfYear = cal.ordinality(of: .day, in: .year, for: prayerDate)
+                    return Astronomical.seasonAdjustedEveningTwilight(latitude: coordinates.latitude, day: dayOfYear!, year: date.year!, sunset: sunsetDate)
                 }
+            
+                let portion = calculationParameters.nightPortions().isha
+                let nightFraction = portion * night
+                
+                return sunsetDate.addingTimeInterval(nightFraction)
             }()
             
             if tempIsha == nil || tempIsha?.compare(safeIsha) == .orderedDescending {
@@ -312,7 +306,6 @@ public struct PrayerTimes {
             }
         }()
         
-        
         // if we don't have all prayer times then initialization failed
         guard let fajr = tempFajr,
             let sunrise = tempSunrise,
@@ -322,7 +315,6 @@ public struct PrayerTimes {
             let isha = tempIsha else {
                 return nil
         }
-        
         
         // Assign final times to public struct members with all offsets
         self.fajr = fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval()).roundedMinute()
@@ -412,14 +404,14 @@ struct SolarTime {
         midnightDate.hour = 0
         midnightDate.minute = 0
         
-        let cal = Calendar(identifier: Calendar.Identifier.gregorian)
+        let cal = Calendar(identifier: .gregorian)
         let today = cal.date(from: date)!
         
-        let tomorrow = (cal as NSCalendar).date(byAdding: .day, value: 1, to: today, options: [])!
-        let next = (cal as NSCalendar).components([.year, .month, .day], from: tomorrow)
+        let tomorrow = cal.date(byAdding: .day, value: 1, to: today)!
+        let next = cal.dateComponents([.year, .month, .day], from: tomorrow)
         
-        let yesterday = (cal as NSCalendar).date(byAdding: .day, value: -1, to: today, options: [])!
-        let previous = (cal as NSCalendar).components([.year, .month, .day], from: yesterday)
+        let yesterday = cal.date(byAdding: .day, value: -1, to: today)!
+        let previous = cal.dateComponents([.year, .month, .day], from: yesterday)
         
         let prevSolar = SolarCoordinates(julianDay: previous.julianDate())
         let solar = SolarCoordinates(julianDay: date.julianDate())
@@ -823,10 +815,10 @@ extension Date {
     
     func roundedMinute() -> Date {
         let cal = Calendar(identifier: Calendar.Identifier.gregorian)
-        var components = (cal as NSCalendar).components([.year, .month, .day, .hour, .minute, .second], from: self)
+        var components = cal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)
         
-        let minute: Double = components.minute! != NSDateComponentUndefined ? Double(components.minute!) : 0
-        let second: Double = components.second! != NSDateComponentUndefined ? Double(components.second!) : 0
+        let minute: Double = Double(components.minute ?? 0)
+        let second: Double = Double(components.second ?? 0)
         
         components.minute = Int(minute + round(second/60))
         components.second = 0
