@@ -224,7 +224,7 @@ public struct PrayerTimes {
         }
         
         // special case for moonsighting committee above latitude 55
-        if calculationParameters.method == .moonsightingCommittee, coordinates.latitude >= 55 {
+        if calculationParameters.method == .moonsightingCommittee && coordinates.latitude >= 55 {
             let nightFraction = night / 7
             tempFajr = sunriseDate.addingTimeInterval(-nightFraction)
         }
@@ -254,7 +254,7 @@ public struct PrayerTimes {
             }
             
             // special case for moonsighting committee above latitude 55
-            if calculationParameters.method == .moonsightingCommittee, coordinates.latitude >= 55 {
+            if calculationParameters.method == .moonsightingCommittee && coordinates.latitude >= 55 {
                 let nightFraction = night / 7
                 tempIsha = sunsetDate.addingTimeInterval(nightFraction)
             }
