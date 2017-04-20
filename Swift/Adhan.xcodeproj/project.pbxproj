@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		84369EA01CD03D8700C34812 /* AdhanObjc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84369E9F1CD03D8700C34812 /* AdhanObjc.swift */; };
+		84482DBB1EA70A160074E53C /* QiblaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84482DBA1EA70A160074E53C /* QiblaTests.swift */; };
 		8480CCD91CD2DE0F00BD380B /* ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8480CCD81CD2DE0F00BD380B /* ObjcTests.m */; };
 		84BCD1AE1CB09A5900614D12 /* Times in Resources */ = {isa = PBXBuildFile; fileRef = 84BCD1AD1CB09A5900614D12 /* Times */; };
 		84BCD1B01CB09A7700614D12 /* TimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BCD1AF1CB09A7700614D12 /* TimeTests.swift */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		84369E9F1CD03D8700C34812 /* AdhanObjc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdhanObjc.swift; sourceTree = "<group>"; };
+		84482DBA1EA70A160074E53C /* QiblaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiblaTests.swift; sourceTree = "<group>"; };
 		8480CCD81CD2DE0F00BD380B /* ObjcTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjcTests.m; sourceTree = "<group>"; };
 		84BCD1AD1CB09A5900614D12 /* Times */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Times; path = ../../Times; sourceTree = "<group>"; };
 		84BCD1AF1CB09A7700614D12 /* TimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTests.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				84F8E12E1C7AB542004C48D7 /* AdhanTests.swift */,
 				84F8E13B1C7AB5DE004C48D7 /* AstronomicalTests.swift */,
 				84F8E13D1C7AB635004C48D7 /* MathTests.swift */,
+				84482DBA1EA70A160074E53C /* QiblaTests.swift */,
 				8480CCD81CD2DE0F00BD380B /* ObjcTests.m */,
 				84F8E1301C7AB542004C48D7 /* Info.plist */,
 			);
@@ -233,6 +236,7 @@
 				84F8E12F1C7AB542004C48D7 /* AdhanTests.swift in Sources */,
 				8480CCD91CD2DE0F00BD380B /* ObjcTests.m in Sources */,
 				84F8E13C1C7AB5DE004C48D7 /* AstronomicalTests.swift in Sources */,
+				84482DBB1EA70A160074E53C /* QiblaTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
