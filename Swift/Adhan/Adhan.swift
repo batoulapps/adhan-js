@@ -187,11 +187,7 @@ public struct PrayerTimes {
         let nextFajr = calendar.date(byAdding: .day, value: 1, to: fajr)!
         let minutes = calendar.dateComponents([.minute], from: maghrib, to: nextFajr).minute!
         let twoThirds = Double(minutes) * (2.0 / 3.0)
-        return calendar.date(
-            byAdding: .minute,
-            value: Int(twoThirds),
-            to: maghrib
-        )!
+        return calendar.date(byAdding: .minute, value: Int(twoThirds), to: maghrib)!
     }
 
     // All calculations are done using a gregorian calendar with the UTC timezone
