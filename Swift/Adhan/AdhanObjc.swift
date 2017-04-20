@@ -232,3 +232,12 @@ import Foundation
         super.init()
     }
 }
+
+@objc open class BAQibla: NSObject {
+    open var direction: Double = 0
+    
+    public init(coordinates: BACoordinates) {
+        let qibla = Qibla(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude))
+        self.direction = qibla.direction
+    }
+}

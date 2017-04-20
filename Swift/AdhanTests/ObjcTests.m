@@ -144,6 +144,12 @@
     return params;
 }
 
+- (void)testQibla {
+    BACoordinates *washingtonDC = [[BACoordinates alloc] initWithLatitude:38.9072 longitude:-77.0369];
+    BAQibla *qibla = [[BAQibla alloc] initWithCoordinates:washingtonDC];
+    XCTAssertEqualWithAccuracy(qibla.direction, 56.560, 0.001);
+}
+
 - (void)testTimes {
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     for (NSString *path in [bundle pathsForResourcesOfType:@"json" inDirectory:@"Times"]) {
