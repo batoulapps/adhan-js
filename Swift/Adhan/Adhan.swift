@@ -172,7 +172,7 @@ public enum CalculationMethod {
 }
 
 /* Prayer times for a location and date using the given calculation parameters.
-All prayer times are in UTC and should be display using an DateFormatter that
+All prayer times are in UTC and should be display using a DateFormatter that
 has the correct timezone set. */
 public struct PrayerTimes {
     public let fajr: Date
@@ -409,11 +409,11 @@ public struct Qibla {
 }
 
 /* Sunnah times for a location and date using the given prayer times.
-All prayer times are in UTC and should be display using an DateFormatter that
+All prayer times are in UTC and should be display using a DateFormatter that
 has the correct timezone set. */
 public struct SunnahTimes {
-    public let midnight: Date
-    public let lastThird: Date
+    public let middleOfTheNight: Date
+    public let lastThirdOfTheNight: Date
 
     public init?(from prayerTimes: PrayerTimes) {
         let cal: Calendar = .gregorianUTC
@@ -430,10 +430,10 @@ public struct SunnahTimes {
         let minutes = cal.dateComponents([.minute], from: prayerTimes.maghrib, to: nextDayPrayers.fajr).minute!
         
         let half = Double(minutes) / 2.0
-        self.midnight = cal.date(byAdding: .minute, value: Int(half), to: prayerTimes.maghrib)!
+        self.middleOfTheNight = cal.date(byAdding: .minute, value: Int(half), to: prayerTimes.maghrib)!
         
         let twoThirds = Double(minutes) * (2.0 / 3.0)
-        self.lastThird = cal.date(byAdding: .minute, value: Int(twoThirds), to: prayerTimes.maghrib)!
+        self.lastThirdOfTheNight = cal.date(byAdding: .minute, value: Int(twoThirds), to: prayerTimes.maghrib)!
     }
 }
 
