@@ -37,7 +37,7 @@ class SunnahTests: XCTestCase {
         let tomorrowPrayers = PrayerTimes(coordinates: coordinates, date: comps2, calculationParameters: params)!
         XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.fajr), "4:43 AM")
         
-        let sunnahTimes = SunnahTimes(prayerTimes: todayPrayers)!
+        let sunnahTimes = SunnahTimes(from: todayPrayers)!
         XCTAssertEqual(dateFormatter.string(from: sunnahTimes.midnight), "12:37 AM")
         XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThird), "1:59 AM")
     }

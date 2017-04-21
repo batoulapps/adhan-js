@@ -415,7 +415,7 @@ public struct SunnahTimes {
     public let midnight: Date
     public let lastThird: Date
 
-    public init?(prayerTimes: PrayerTimes) {
+    public init?(from prayerTimes: PrayerTimes) {
         let cal: Calendar = .utcGregorian
         let tomorrow = cal.date(byAdding: .day, value: 1, to: prayerTimes.fajr)!
         
