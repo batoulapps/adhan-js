@@ -194,7 +194,7 @@ public struct PrayerTimes {
         var tempAsr: Date? = nil
         var tempMaghrib: Date? = nil
         var tempIsha: Date? = nil
-        let cal: Calendar = .utcGregorian
+        let cal: Calendar = .gregorianUTC
         
         guard let prayerDate = cal.date(from: date) else {
             return nil
@@ -416,7 +416,7 @@ public struct SunnahTimes {
     public let lastThird: Date
 
     public init?(from prayerTimes: PrayerTimes) {
-        let cal: Calendar = .utcGregorian
+        let cal: Calendar = .gregorianUTC
         let tomorrow = cal.date(byAdding: .day, value: 1, to: prayerTimes.fajr)!
         
         guard let nextDayPrayers = PrayerTimes(
@@ -459,7 +459,7 @@ struct SolarTime {
         midnightDate.hour = 0
         midnightDate.minute = 0
         
-        let cal: Calendar = .utcGregorian
+        let cal: Calendar = .gregorianUTC
         let today = cal.date(from: date)!
         
         let tomorrow = cal.date(byAdding: .day, value: 1, to: today)!
@@ -868,7 +868,7 @@ struct TimeComponents {
 extension Calendar {
     
     /// All calculations are done using a gregorian calendar with the UTC timezone
-    static let utcGregorian: Calendar = {
+    static let gregorianUTC: Calendar = {
         var cal = Calendar(identifier: .gregorian)
         cal.timeZone = TimeZone(identifier: "UTC")!
         return cal
@@ -878,7 +878,7 @@ extension Calendar {
 extension Date {
     
     func roundedMinute() -> Date {
-        let cal: Calendar = .utcGregorian
+        let cal: Calendar = .gregorianUTC
         var components = cal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)
         
         let minute: Double = Double(components.minute ?? 0)
