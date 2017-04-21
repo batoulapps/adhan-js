@@ -427,13 +427,13 @@ public struct SunnahTimes {
                 return nil
         }
         
-        let minutes = cal.dateComponents([.minute], from: prayerTimes.maghrib, to: nextDayPrayers.fajr).minute!
+        let seconds = cal.dateComponents([.second], from: prayerTimes.maghrib, to: nextDayPrayers.fajr).second!
         
-        let half = Double(minutes) / 2.0
-        self.middleOfTheNight = cal.date(byAdding: .minute, value: Int(half), to: prayerTimes.maghrib)!
+        let half = Double(seconds) / 2.0
+        self.middleOfTheNight = cal.date(byAdding: .second, value: Int(half), to: prayerTimes.maghrib)!
         
-        let twoThirds = Double(minutes) * (2.0 / 3.0)
-        self.lastThirdOfTheNight = cal.date(byAdding: .minute, value: Int(twoThirds), to: prayerTimes.maghrib)!
+        let twoThirds = Double(seconds) * (2.0 / 3.0)
+        self.lastThirdOfTheNight = cal.date(byAdding: .second, value: Int(twoThirds), to: prayerTimes.maghrib)!
     }
 }
 
