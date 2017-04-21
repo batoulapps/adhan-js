@@ -427,13 +427,9 @@ public struct SunnahTimes {
                 return nil
         }
         
-        let seconds = nextDayPrayers.fajr.timeIntervalSince1970 - prayerTimes.maghrib.timeIntervalSince1970
-        
-        let half = seconds / 2.0
-        self.middleOfTheNight = Date(timeIntervalSince1970: prayerTimes.maghrib.timeIntervalSince1970 + half)
-        
-        let twoThirds = seconds * (2.0 / 3.0)
-        self.lastThirdOfTheNight = Date(timeIntervalSince1970: prayerTimes.maghrib.timeIntervalSince1970 + twoThirds)
+        let seconds = nextDayPrayers.fajr.timeIntervalSince(prayerTimes.maghrib)
+        self.middleOfTheNight = prayerTimes.maghrib.addingTimeInterval(seconds / 2)
+        self.lastThirdOfTheNight = prayerTimes.maghrib.addingTimeInterval(seconds * (2 / 3))
     }
 }
 
