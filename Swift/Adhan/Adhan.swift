@@ -430,10 +430,10 @@ public struct SunnahTimes {
         let seconds = nextDayPrayers.fajr.timeIntervalSince1970 - prayerTimes.maghrib.timeIntervalSince1970
         
         let half = seconds / 2.0
-        self.middleOfTheNight = cal.date(byAdding: .second, value: Int(half), to: prayerTimes.maghrib)!
+        self.middleOfTheNight = Date(timeIntervalSince1970: prayerTimes.maghrib.timeIntervalSince1970 + half)
         
         let twoThirds = seconds * (2.0 / 3.0)
-        self.lastThirdOfTheNight = cal.date(byAdding: .second, value: Int(twoThirds), to: prayerTimes.maghrib)!
+        self.lastThirdOfTheNight = Date(timeIntervalSince1970: prayerTimes.maghrib.timeIntervalSince1970 + twoThirds)
     }
 }
 
