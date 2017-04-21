@@ -144,7 +144,6 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.asr), "6:22 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "8:32 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "9:57 PM")
-        XCTAssertEqual(dateFormatter.string(from: p.qiyam), "1:58 AM")
     }
     
     func testOffsets() {
