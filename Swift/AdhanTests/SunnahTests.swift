@@ -14,11 +14,12 @@ class SunnahTests: XCTestCase {
     func testSunnahTimesNY() {
         var params = CalculationMethod.northAmerica.params
         params.madhab = .hanafi
+        params.highLatitudeRule = .middleOfTheNight
         let coordinates = Coordinates(latitude: 35.7750, longitude: -78.6336)
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
-        dateFormatter.dateStyle = .none
+        dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
         
         var comps1 = DateComponents()
@@ -27,7 +28,7 @@ class SunnahTests: XCTestCase {
         comps1.day = 12
         
         let todayPrayers = PrayerTimes(coordinates: coordinates, date: comps1, calculationParameters: params)!
-        XCTAssertEqual(dateFormatter.string(from: todayPrayers.maghrib), "8:32 PM")
+        XCTAssertEqual(dateFormatter.string(from: todayPrayers.maghrib), "7/12/15, 8:32 PM")
         
         var comps2 = DateComponents()
         comps2.year = 2015
@@ -35,22 +36,22 @@ class SunnahTests: XCTestCase {
         comps2.day = 13
         
         let tomorrowPrayers = PrayerTimes(coordinates: coordinates, date: comps2, calculationParameters: params)!
-        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.fajr), "4:43 AM")
+        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.fajr), "7/13/15, 4:43 AM")
         
         let sunnahTimes = SunnahTimes(from: todayPrayers)!
-        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.middleOfTheNight), "12:37 AM")
-        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight), "1:59 AM")
+        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.middleOfTheNight), "7/13/15, 12:37 AM")
+        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight), "7/13/15, 1:59 AM")
     }
     
     func testSunnahTimesLondon() {
         var params = CalculationMethod.muslimWorldLeague.params
-        params.madhab = .hanafi
+        params.madhab = .shafi
         params.highLatitudeRule = .twilightAngle
         let coordinates = Coordinates(latitude: 51.5074, longitude: -0.1278)
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Europe/London")!
-        dateFormatter.dateStyle = .none
+        dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
         
         var comps1 = DateComponents()
@@ -59,7 +60,7 @@ class SunnahTests: XCTestCase {
         comps1.day = 31
         
         let todayPrayers = PrayerTimes(coordinates: coordinates, date: comps1, calculationParameters: params)!
-        XCTAssertEqual(dateFormatter.string(from: todayPrayers.maghrib), "4:01 PM")
+        XCTAssertEqual(dateFormatter.string(from: todayPrayers.maghrib), "12/31/16, 4:01 PM")
         
         var comps2 = DateComponents()
         comps2.year = 2017
@@ -67,24 +68,21 @@ class SunnahTests: XCTestCase {
         comps2.day = 1
         
         let tomorrowPrayers = PrayerTimes(coordinates: coordinates, date: comps2, calculationParameters: params)!
-        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.fajr), "6:03 AM")
+        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.fajr), "1/1/17, 6:03 AM")
         
         let sunnahTimes = SunnahTimes(from: todayPrayers)!
-        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.middleOfTheNight), "11:02 PM")
-        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight), "1:22 AM")
-        
-        // TODO: Verify above tests are correct
-        XCTFail()
+        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.middleOfTheNight), "12/31/16, 11:02 PM")
+        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight), "1/1/17, 1:22 AM")
     }
     
     func testSunnahTimesDST1() {
         var params = CalculationMethod.northAmerica.params
-        params.madhab = .shafi
+        params.madhab = .hanafi
         let coordinates = Coordinates(latitude: 37.7749, longitude: -122.4194)
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/Los_Angeles")!
-        dateFormatter.dateStyle = .none
+        dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
         
         var comps1 = DateComponents()
@@ -93,7 +91,8 @@ class SunnahTests: XCTestCase {
         comps1.day = 11
         
         let todayPrayers = PrayerTimes(coordinates: coordinates, date: comps1, calculationParameters: params)!
-        XCTAssertEqual(dateFormatter.string(from: todayPrayers.maghrib), "6:13 PM")
+        XCTAssertEqual(dateFormatter.string(from: todayPrayers.fajr), "3/11/17, 5:14 AM")
+        XCTAssertEqual(dateFormatter.string(from: todayPrayers.maghrib), "3/11/17, 6:13 PM")
         
         var comps2 = DateComponents()
         comps2.year = 2017
@@ -101,24 +100,23 @@ class SunnahTests: XCTestCase {
         comps2.day = 12
         
         let tomorrowPrayers = PrayerTimes(coordinates: coordinates, date: comps2, calculationParameters: params)!
-        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.fajr), "6:13 AM")
+        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.fajr), "3/12/17, 6:13 AM")
+        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.maghrib), "3/12/17, 7:14 PM")
         
         let sunnahTimes = SunnahTimes(from: todayPrayers)!
-        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.middleOfTheNight), "11:43 PM")
-        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight), "1:33 AM")
-        
-        // TODO: Verify above tests are correct
-        XCTFail()
+        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.middleOfTheNight), "3/11/17, 11:43 PM")
+        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight), "3/12/17, 1:33 AM")
     }
     
     func testSunnahTimesDST2() {
-        var params = CalculationMethod.northAmerica.params
+        var params = CalculationMethod.muslimWorldLeague.params
         params.madhab = .shafi
+        params.highLatitudeRule = .seventhOfTheNight
         let coordinates = Coordinates(latitude: 48.8566, longitude: 2.3522)
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Europe/Paris")!
-        dateFormatter.dateStyle = .none
+        dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .short
         
         var comps1 = DateComponents()
@@ -127,7 +125,8 @@ class SunnahTests: XCTestCase {
         comps1.day = 24
         
         let todayPrayers = PrayerTimes(coordinates: coordinates, date: comps1, calculationParameters: params)!
-        XCTAssertEqual(dateFormatter.string(from: todayPrayers.maghrib), "6:45 PM")
+        XCTAssertEqual(dateFormatter.string(from: todayPrayers.fajr), "10/24/15, 6:38 AM")
+        XCTAssertEqual(dateFormatter.string(from: todayPrayers.maghrib), "10/24/15, 6:45 PM")
         
         var comps2 = DateComponents()
         comps2.year = 2015
@@ -135,13 +134,11 @@ class SunnahTests: XCTestCase {
         comps2.day = 25
         
         let tomorrowPrayers = PrayerTimes(coordinates: coordinates, date: comps2, calculationParameters: params)!
-        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.fajr), "5:58 AM")
+        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.fajr), "10/25/15, 5:40 AM")
+        XCTAssertEqual(dateFormatter.string(from: tomorrowPrayers.maghrib), "10/25/15, 5:43 PM")
         
         let sunnahTimes = SunnahTimes(from: todayPrayers)!
-        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.middleOfTheNight), "12:51 AM")
-        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight), "2:53 AM")
-        
-        // TODO: Verify above tests are correct
-        XCTFail()
+        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.middleOfTheNight), "10/25/15, 12:42 AM")
+        XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight), "10/25/15, 2:41 AM")
     }
 }
