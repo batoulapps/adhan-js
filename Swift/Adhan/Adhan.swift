@@ -172,7 +172,7 @@ public enum CalculationMethod {
 }
 
 /* Prayer times for a location and date using the given calculation parameters.
-All prayer times are in UTC and should be display using an NSDateFormatter that
+All prayer times are in UTC and should be display using a DateFormatter that
 has the correct timezone set. */
 public struct PrayerTimes {
     public let fajr: Date
@@ -182,6 +182,10 @@ public struct PrayerTimes {
     public let maghrib: Date
     public let isha: Date
     
+    public let coordinates: Coordinates
+    public let date: DateComponents
+    public let calculationParameters: CalculationParameters
+
     public init?(coordinates: Coordinates, date: DateComponents, calculationParameters: CalculationParameters) {
         
         var tempFajr: Date? = nil
@@ -190,14 +194,15 @@ public struct PrayerTimes {
         var tempAsr: Date? = nil
         var tempMaghrib: Date? = nil
         var tempIsha: Date? = nil
-        
-        // all calculations are done using a gregorian calendar with the UTC timezone
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = TimeZone(identifier: "UTC")!
+        let cal: Calendar = .gregorianUTC
         
         guard let prayerDate = cal.date(from: date) else {
             return nil
         }
+        
+        self.coordinates = coordinates
+        self.date = date
+        self.calculationParameters = calculationParameters
         
         let solarTime = SolarTime(date: date, coordinates: coordinates)
         
@@ -403,6 +408,31 @@ public struct Qibla {
     }
 }
 
+/* Sunnah times for a location and date using the given prayer times.
+All prayer times are in UTC and should be display using a DateFormatter that
+has the correct timezone set. */
+public struct SunnahTimes {
+    public let middleOfTheNight: Date
+    public let lastThirdOfTheNight: Date
+
+    public init?(from prayerTimes: PrayerTimes) {
+        let cal: Calendar = .gregorianUTC
+        let tomorrow = cal.date(byAdding: .day, value: 1, to: prayerTimes.fajr)!
+        
+        guard let nextDayPrayers = PrayerTimes(
+            coordinates: prayerTimes.coordinates,
+            date: cal.dateComponents([.year, .month, .day], from: tomorrow),
+            calculationParameters: prayerTimes.calculationParameters) else {
+                // unable to determine tomorrow prayer times
+                return nil
+        }
+        
+        let seconds = nextDayPrayers.fajr.timeIntervalSince(prayerTimes.maghrib)
+        self.middleOfTheNight = prayerTimes.maghrib.addingTimeInterval(seconds / 2)
+        self.lastThirdOfTheNight = prayerTimes.maghrib.addingTimeInterval(seconds * (2 / 3))
+    }
+}
+
 //
 // MARK: Astronomical equations
 //
@@ -425,7 +455,7 @@ struct SolarTime {
         midnightDate.hour = 0
         midnightDate.minute = 0
         
-        let cal = Calendar(identifier: .gregorian)
+        let cal: Calendar = .gregorianUTC
         let today = cal.date(from: date)!
         
         let tomorrow = cal.date(byAdding: .day, value: 1, to: today)!
@@ -831,10 +861,20 @@ struct TimeComponents {
     }
 }
 
+extension Calendar {
+    
+    /// All calculations are done using a gregorian calendar with the UTC timezone
+    static let gregorianUTC: Calendar = {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        return cal
+    }()
+}
+
 extension Date {
     
     func roundedMinute() -> Date {
-        let cal = Calendar(identifier: Calendar.Identifier.gregorian)
+        let cal: Calendar = .gregorianUTC
         var components = cal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)
         
         let minute: Double = Double(components.minute ?? 0)
