@@ -196,21 +196,26 @@ public struct PrayerTimes {
         var tempIsha: Date? = nil
         let cal: Calendar = .gregorianUTC
         
-        guard let prayerDate = cal.date(from: date) else {
+        guard let prayerDate = cal.date(from: date), let tomorrowDate = cal.date(byAdding: .day, value: 1, to: prayerDate) else {
             return nil
         }
+        
+        let tomorrow = cal.dateComponents([.year, .month, .day], from: tomorrowDate)
         
         self.coordinates = coordinates
         self.date = date
         self.calculationParameters = calculationParameters
         
         let solarTime = SolarTime(date: date, coordinates: coordinates)
+        let tomorrowSolarTime = SolarTime(date: tomorrow, coordinates: coordinates)
         
         guard let transit = solarTime.transit.timeComponents()?.dateComponents(date),
             let sunriseComponents = solarTime.sunrise.timeComponents()?.dateComponents(date),
             let sunsetComponents = solarTime.sunset.timeComponents()?.dateComponents(date),
             let sunriseDate = cal.date(from: sunriseComponents),
-            let sunsetDate = cal.date(from: sunsetComponents) else {
+            let sunsetDate = cal.date(from: sunsetComponents),
+            let tomorrowSunriseComponents = tomorrowSolarTime.sunrise.timeComponents()?.dateComponents(tomorrow),
+            let tomorrowSunrise = cal.date(from: tomorrowSunriseComponents) else {
                 // unable to determine transit, sunrise and sunset aborting calculations
                 return nil
         }
@@ -224,10 +229,7 @@ public struct PrayerTimes {
         }
         
         // get night length
-        let tomorrowSunrise = cal.date(byAdding: .day, value: 1, to: sunriseDate)
-        guard let night = tomorrowSunrise?.timeIntervalSince(sunsetDate) else {
-            return nil
-        }
+        let night = tomorrowSunrise.timeIntervalSince(sunsetDate)
         
         if let fajrComponents = solarTime.hourAngle(angle: -calculationParameters.fajrAngle, afterTransit: false).timeComponents()?.dateComponents(date) {
             tempFajr = cal.date(from: fajrComponents)
@@ -412,24 +414,29 @@ public struct Qibla {
 All prayer times are in UTC and should be display using a DateFormatter that
 has the correct timezone set. */
 public struct SunnahTimes {
+    
+    /* The midpoint between Maghrib and Fajr */
     public let middleOfTheNight: Date
+    
+    /* The beginning of the last third of the period between Maghrib and Fajr,
+     a recommended time to perform Qiyam */
     public let lastThirdOfTheNight: Date
 
     public init?(from prayerTimes: PrayerTimes) {
-        let cal: Calendar = .gregorianUTC
-        let tomorrow = cal.date(byAdding: .day, value: 1, to: prayerTimes.fajr)!
+        let date = Calendar.gregorianUTC.date(from: prayerTimes.date)!
+        let tomorrow = Calendar.gregorianUTC.date(byAdding: .day, value: 1, to: date)!
         
         guard let nextDayPrayers = PrayerTimes(
             coordinates: prayerTimes.coordinates,
-            date: cal.dateComponents([.year, .month, .day], from: tomorrow),
+            date: Calendar.gregorianUTC.dateComponents([.year, .month, .day], from: tomorrow),
             calculationParameters: prayerTimes.calculationParameters) else {
                 // unable to determine tomorrow prayer times
                 return nil
         }
         
-        let seconds = nextDayPrayers.fajr.timeIntervalSince(prayerTimes.maghrib)
-        self.middleOfTheNight = prayerTimes.maghrib.addingTimeInterval(seconds / 2)
-        self.lastThirdOfTheNight = prayerTimes.maghrib.addingTimeInterval(seconds * (2 / 3))
+        let nightDuration = nextDayPrayers.fajr.timeIntervalSince(prayerTimes.maghrib)
+        self.middleOfTheNight = prayerTimes.maghrib.addingTimeInterval(nightDuration / 2).roundedMinute()
+        self.lastThirdOfTheNight = prayerTimes.maghrib.addingTimeInterval(nightDuration * (2 / 3)).roundedMinute()
     }
 }
 
@@ -451,9 +458,9 @@ struct SolarTime {
     
     init(date: DateComponents, coordinates: Coordinates) {
         // calculations need to occur at 0h0m UTC
-        var midnightDate = date
-        midnightDate.hour = 0
-        midnightDate.minute = 0
+        var date = date
+        date.hour = 0
+        date.minute = 0
         
         let cal: Calendar = .gregorianUTC
         let today = cal.date(from: date)!
@@ -470,7 +477,7 @@ struct SolarTime {
         let m0 = Astronomical.approximateTransit(longitude: coordinates.longitude, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
         let solarAltitude = -50.0 / 60.0
         
-        self.date = midnightDate
+        self.date = date
         self.observer = coordinates
         self.solar = solar
         self.prevSolar = prevSolar
