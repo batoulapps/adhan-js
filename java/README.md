@@ -100,16 +100,22 @@ params.adjustments.fajr = 2;
 
 ### Prayer Times
 
-Once the `PrayerTimes` object has been initialized it will contain values
-for all five prayer times and the time for sunrise. The prayer times will be 
-Date object instances initialized with UTC values. To display these
-times for the local timezone, a formatting and timezone conversion formatter
-should be used, for example `java.text.SimpleDateFormat`.
+Once the `PrayerTimes` object has been initialized it will contain values for all five prayer times and the time for sunrise. The prayer times will be  Date object instances initialized with UTC values. To display these times for the local timezone, a formatting and timezone conversion formatter should be used, for example `java.text.SimpleDateFormat`.
 
 ```java
 SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
 formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 formatter.format(prayerTimes.fajr);
+```
+
+### Qibla
+
+As of version 1.0.1, this library provides a `Qibla` class for getting the qibla for a given location.
+
+```java
+Coordinates coordinates = new Coordinates(latitude, longitude);
+Qibla qibla = new Qibla(coordinates);
+// qibla.direction is the qibla direction
 ```
 
 ## Full Example
