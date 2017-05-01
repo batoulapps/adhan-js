@@ -58,4 +58,16 @@ public class QiblaTest {
     assertThat(new Qibla(tokyo).direction).isWithin(0.001).of(293.021);
 
   }
+
+  @Test
+  public void testAfrica() {
+    final Coordinates capeTown = new Coordinates(33.9249, 18.4241);
+    assertThat(new Qibla(capeTown).direction).isWithin(0.001).of(118.004);
+
+    
+    final Coordinates cairo = new Coordinates(30.0444, 31.2357);
+    assertThat(new Qibla(cairo).direction).isWithin(0.001).of(136.137);
+
+  }
+
 }
