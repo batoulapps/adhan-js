@@ -18,6 +18,7 @@
 		84F8E13A1C7AB563004C48D7 /* Adhan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E1391C7AB563004C48D7 /* Adhan.swift */; };
 		84F8E13C1C7AB5DE004C48D7 /* AstronomicalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E13B1C7AB5DE004C48D7 /* AstronomicalTests.swift */; };
 		84F8E13E1C7AB635004C48D7 /* MathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E13D1C7AB635004C48D7 /* MathTests.swift */; };
+		8B9180A71EA9BF83004C9E52 /* SunnahTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9180A61EA9BF83004C9E52 /* SunnahTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		84F8E1391C7AB563004C48D7 /* Adhan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Adhan.swift; sourceTree = "<group>"; };
 		84F8E13B1C7AB5DE004C48D7 /* AstronomicalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AstronomicalTests.swift; sourceTree = "<group>"; };
 		84F8E13D1C7AB635004C48D7 /* MathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTests.swift; sourceTree = "<group>"; };
+		8B9180A61EA9BF83004C9E52 /* SunnahTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SunnahTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				84F8E13B1C7AB5DE004C48D7 /* AstronomicalTests.swift */,
 				84F8E13D1C7AB635004C48D7 /* MathTests.swift */,
 				84482DBA1EA70A160074E53C /* QiblaTests.swift */,
+				8B9180A61EA9BF83004C9E52 /* SunnahTests.swift */,
 				8480CCD81CD2DE0F00BD380B /* ObjcTests.m */,
 				84F8E1301C7AB542004C48D7 /* Info.plist */,
 			);
@@ -235,6 +238,7 @@
 				84F8E13E1C7AB635004C48D7 /* MathTests.swift in Sources */,
 				84F8E12F1C7AB542004C48D7 /* AdhanTests.swift in Sources */,
 				8480CCD91CD2DE0F00BD380B /* ObjcTests.m in Sources */,
+				8B9180A71EA9BF83004C9E52 /* SunnahTests.swift in Sources */,
 				84F8E13C1C7AB5DE004C48D7 /* AstronomicalTests.swift in Sources */,
 				84482DBB1EA70A160074E53C /* QiblaTests.swift in Sources */,
 			);
