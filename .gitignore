@@ -69,3 +69,4 @@ Carthage/Build
 
 fastlane/report.xml
 fastlane/screenshots
+Swift/Example/Carthage Example/Carthage/Checkouts

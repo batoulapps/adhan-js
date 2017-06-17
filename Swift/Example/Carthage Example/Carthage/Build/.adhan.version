@@ -1,0 +1,27 @@
+{
+  "iOS" : [
+    {
+      "hash" : "b0540126e1132853a1647b48088d49c85e2c606f29e038c1c8ab9e3db0fa419f",
+      "name" : "Adhan"
+    }
+  ],
+  "commitish" : "7a87b1b5011f1d90f96337b2e6ecd02cc827dbe3",
+  "watchOS" : [
+    {
+      "hash" : "4347a3a34a0fd63fdc304b7b09911a7bb42eb448e9ae5130f63837f1a2e5544e",
+      "name" : "Adhan"
+    }
+  ],
+  "tvOS" : [
+    {
+      "hash" : "80b37090e8e29c1a1d7e0b89f23c3e23bd4caa00cb973b760bd88a1664d35989",
+      "name" : "Adhan"
+    }
+  ],
+  "Mac" : [
+    {
+      "hash" : "57dbd4de03164bf9e97845b76a7bf9cf6cd513948254f9e6b32e8e23d96ea996",
+      "name" : "Adhan"
+    }
+  ]
+}
