@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "84F8E1281C7AB542004C48D7"
-               BuildableName = "AdhanTests.xctest"
-               BlueprintName = "AdhanTests"
+               BuildableName = "Adhan iOSTests.xctest"
+               BlueprintName = "Adhan iOSTests"
                ReferencedContainer = "container:Adhan.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,8 +34,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "84F8E1281C7AB542004C48D7"
-               BuildableName = "AdhanTests.xctest"
-               BlueprintName = "AdhanTests"
+               BuildableName = "Adhan iOSTests.xctest"
+               BlueprintName = "Adhan iOSTests"
                ReferencedContainer = "container:Adhan.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -57,8 +57,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "84F8E1281C7AB542004C48D7"
-            BuildableName = "AdhanTests.xctest"
-            BlueprintName = "AdhanTests"
+            BuildableName = "Adhan iOSTests.xctest"
+            BlueprintName = "Adhan iOSTests"
             ReferencedContainer = "container:Adhan.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -75,8 +75,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "84F8E1281C7AB542004C48D7"
-            BuildableName = "AdhanTests.xctest"
-            BlueprintName = "AdhanTests"
+            BuildableName = "Adhan iOSTests.xctest"
+            BlueprintName = "Adhan iOSTests"
             ReferencedContainer = "container:Adhan.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

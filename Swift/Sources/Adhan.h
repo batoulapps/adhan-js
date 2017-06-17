@@ -6,7 +6,7 @@
 //  Copyright © 2016 Batoul Apps. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for Adhan.
 FOUNDATION_EXPORT double AdhanVersionNumber;
