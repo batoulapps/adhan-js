@@ -395,7 +395,7 @@ public struct PrayerTimes {
 
 public struct Qibla {
     /* The heading to the Qibla from True North */
-    let direction: Double
+    public let direction: Double
     
     public init(coordinates: Coordinates) {
         let makkah = Coordinates(latitude: 21.4225241, longitude: 39.8261818)
