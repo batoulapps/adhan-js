@@ -178,7 +178,9 @@
 			isa = PBXGroup;
 			children = (
 				84F8E1391C7AB563004C48D7 /* Adhan.swift */,
-				8B74F4501EF552DB006A51EE /* Supporting Files */,
+				84369E9F1CD03D8700C34812 /* AdhanObjc.swift */,
+				84F8E1221C7AB542004C48D7 /* Adhan.h */,
+				8B74F44C1EF550E9006A51EE /* Info.plist */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -197,16 +199,6 @@
 				84F8E1301C7AB542004C48D7 /* Info.plist */,
 			);
 			path = AdhanTests;
-			sourceTree = "<group>";
-		};
-		8B74F4501EF552DB006A51EE /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				84F8E1221C7AB542004C48D7 /* Adhan.h */,
-				84369E9F1CD03D8700C34812 /* AdhanObjc.swift */,
-				8B74F44C1EF550E9006A51EE /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -406,7 +398,7 @@
 					};
 					8B74F4561EF553E8006A51EE = {
 						CreatedOnToolsVersion = 8.3.3;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					8B74F4651EF553F4006A51EE = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -923,10 +915,12 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = AdhanTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 3.0;
@@ -941,10 +935,12 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = AdhanTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 10.2;
@@ -1027,6 +1023,7 @@
 				8B74F42E1EF54FCB006A51EE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B74F4391EF55023006A51EE /* Build configuration list for PBXNativeTarget "Adhan tvOS" */ = {
 			isa = XCConfigurationList;
@@ -1035,6 +1032,7 @@
 				8B74F43B1EF55023006A51EE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B74F4461EF55030006A51EE /* Build configuration list for PBXNativeTarget "Adhan macOS" */ = {
 			isa = XCConfigurationList;
@@ -1043,6 +1041,7 @@
 				8B74F4481EF55030006A51EE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B74F45F1EF553E8006A51EE /* Build configuration list for PBXNativeTarget "Adhan tvOSTests" */ = {
 			isa = XCConfigurationList;
@@ -1051,6 +1050,7 @@
 				8B74F4611EF553E8006A51EE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B74F46E1EF553F5006A51EE /* Build configuration list for PBXNativeTarget "Adhan macOSTests" */ = {
 			isa = XCConfigurationList;
@@ -1059,6 +1059,7 @@
 				8B74F4701EF553F5006A51EE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
