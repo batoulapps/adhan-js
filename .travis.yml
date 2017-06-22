@@ -6,6 +6,6 @@ xcode_sdk: iphonesimulator
 before_script:
  - npm install -g node-qunit-phantomjs
 script:
- - xcodebuild -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.3' -project Swift/Adhan.xcodeproj -scheme AdhanTests -sdk iphonesimulator test
+ - xcodebuild -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.3.1' -project Swift/Adhan.xcodeproj -scheme AdhanTests -sdk iphonesimulator test
  - JavaScript/Tests/runtests
  - mvn -f java/pom.xml clean test
