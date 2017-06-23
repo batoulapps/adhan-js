@@ -1,11 +1,11 @@
 language: objective-c
 osx_image: xcode8.3
-xcode_project: Swift/Adhan.xcodeproj
-xcode_scheme: AdhanTests
-xcode_sdk: iphonesimulator
 before_script:
  - npm install -g node-qunit-phantomjs
 script:
- - xcodebuild -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.3.1' -project Swift/Adhan.xcodeproj -scheme AdhanTests -sdk iphonesimulator test
+ - xcodebuild clean test -scheme 'Adhan iOS' -project Swift/Adhan.xcodeproj -destination "platform=iOS Simulator,name=iPhone 7,OS=10.3.1" -sdk iphonesimulator CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+ - xcodebuild clean test -scheme 'Adhan macOS' -project Swift/Adhan.xcodeproj -destination "platform=OS X" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+ - xcodebuild clean test -scheme 'Adhan tvOS' -project Swift/Adhan.xcodeproj -destination "platform=tvOS Simulator,name=Apple TV 1080p" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+ - xcodebuild clean build -scheme 'Adhan watchOS' -project Swift/Adhan.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
  - JavaScript/Tests/runtests
  - mvn -f java/pom.xml clean test
