@@ -451,12 +451,12 @@ public struct SunnahTimes {
 
 struct SolarTime {
     let date: DateComponents
-    let location: Coordinates
+    let observer: Coordinates
+    let solar: SolarCoordinates
     let transit: Double
     let sunrise: Double
     let sunset: Double
     
-    private let solar: SolarCoordinates
     private let prevSolar: SolarCoordinates
     private let nextSolar: SolarCoordinates
     private let approxTransit: Double
@@ -483,7 +483,7 @@ struct SolarTime {
         let solarAltitude = -50.0 / 60.0
         
         self.date = date
-        self.location = coordinates
+        self.observer = coordinates
         self.solar = solar
         self.prevSolar = prevSolar
         self.nextSolar = nextSolar
@@ -499,7 +499,7 @@ struct SolarTime {
     }
     
     func hourAngle(angle: Double, afterTransit: Bool) -> Double {
-        return Astronomical.correctedHourAngle(approximateTransit: approxTransit, angle: angle, coordinates: location, afterTransit: afterTransit, siderealTime: solar.apparentSiderealTime,
+        return Astronomical.correctedHourAngle(approximateTransit: approxTransit, angle: angle, coordinates: observer, afterTransit: afterTransit, siderealTime: solar.apparentSiderealTime,
             rightAscension: solar.rightAscension, previousRightAscension: prevSolar.rightAscension, nextRightAscension: nextSolar.rightAscension,
             declination: solar.declination, previousDeclination: prevSolar.declination, nextDeclination: nextSolar.declination)
     }
@@ -507,7 +507,7 @@ struct SolarTime {
     // hours from transit
     func afternoon(shadowLength: ShadowLength) -> Double {
         // TODO source shadow angle calculation
-        let tangent = fabs(location.latitude - solar.declination)
+        let tangent = fabs(observer.latitude - solar.declination)
         let inverse = shadowLength.rawValue + tan(tangent.degreesToRadians())
         let angle = atan(1.0 / inverse).radiansToDegrees()
         
