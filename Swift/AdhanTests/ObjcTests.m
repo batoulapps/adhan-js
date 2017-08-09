@@ -119,6 +119,8 @@
         params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodKuwait];
     } else if ([method isEqualToString:@"Qatar"]) {
         params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodQatar];
+    } else if ([method isEqualToString:@"Singapore"]) {
+        params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodSingapore];
     } else {
         params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodOther];
     }

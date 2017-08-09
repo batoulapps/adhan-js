@@ -109,6 +109,10 @@ public class TimingTest {
         method = CalculationMethod.QATAR;
         break;
       }
+      case "Singapore": {
+        method = CalculationMethod.SINGAPORE;
+        break;
+      }
       default: {
         method = CalculationMethod.OTHER;
       }
