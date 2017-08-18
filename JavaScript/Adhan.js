@@ -108,6 +108,11 @@
             return new CalculationParameters(18, 0, 90, "Qatar");
         },
 
+        // Singapore
+        Singapore: function() {
+            return new CalculationParameters(20, 18, 0, "Singapore");
+        },
+
         // Other
         Other: function() {
             return new CalculationParameters(0, 0, 0, "Other");

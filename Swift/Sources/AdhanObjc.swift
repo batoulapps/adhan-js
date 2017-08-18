@@ -171,6 +171,8 @@ import Foundation
             return CalculationMethod.qatar
         case .other:
             return CalculationMethod.other
+        case .singapore:
+            return CalculationMethod.singapore
         }
     }
 }
@@ -186,6 +188,7 @@ import Foundation
     case kuwait
     case qatar
     case other
+    case singapore
 }
 
 @objc public enum BAMadhab: Int {

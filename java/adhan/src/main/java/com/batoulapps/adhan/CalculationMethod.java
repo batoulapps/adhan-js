@@ -60,6 +60,12 @@ public enum CalculationMethod {
    */
   QATAR,
 
+    /**
+   * Singapore
+   * Uses a Fajr angle of 20 and an Isha angle of 18
+   */
+  SINGAPORE,
+
   /**
    * The default value for {@link CalculationParameters#method} when initializing a
    * {@link CalculationParameters} object. Sets a Fajr angle of 0 and an Isha angle of 0.
@@ -98,6 +104,9 @@ public enum CalculationMethod {
       }
       case QATAR: {
         return new CalculationParameters(18.0, 90, this);
+      }
+      case SINGAPORE: {
+        return new CalculationParameters(20.0, 18.0, this);
       }
       case OTHER: {
         return new CalculationParameters(0.0, 0.0, this);

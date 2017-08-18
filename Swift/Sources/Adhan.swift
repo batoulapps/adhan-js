@@ -142,6 +142,9 @@ public enum CalculationMethod {
     // Qatar
     case qatar
     
+    // Singapore
+    case singapore
+    
     // Other
     case other
     
@@ -165,6 +168,8 @@ public enum CalculationMethod {
             return CalculationParameters(fajrAngle: 18, ishaAngle: 17.5, method: self)
         case .qatar:
             return CalculationParameters(fajrAngle: 18, ishaInterval: 90, method: self)
+        case .singapore:
+            return CalculationParameters(fajrAngle: 20, ishaAngle: 18, method: self)
         case .other:
             return CalculationParameters(fajrAngle: 0, ishaAngle: 0, method: self)
         }
