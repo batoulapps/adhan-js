@@ -18,17 +18,17 @@ import Foundation
     case none = 6
 }
 
-@objc open class BAPrayerTimes: NSObject {
-    @objc open var fajr: Date?
-    @objc open var sunrise: Date?
-    @objc open var dhuhr: Date?
-    @objc open var asr: Date?
-    @objc open var maghrib: Date?
-    @objc open var isha: Date?
+@objcMembers open class BAPrayerTimes: NSObject {
+    open var fajr: Date?
+    open var sunrise: Date?
+    open var dhuhr: Date?
+    open var asr: Date?
+    open var maghrib: Date?
+    open var isha: Date?
     
     private let prayerTimes: PrayerTimes?
     
-    @objc public init(coordinates: BACoordinates, date: DateComponents, calculationParameters: BACalculationParameters) {
+    public init(coordinates: BACoordinates, date: DateComponents, calculationParameters: BACalculationParameters) {
         prayerTimes = PrayerTimes(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude), date: date, calculationParameters: calculationParameters.calculationParameters())
         if let prayerTimes = prayerTimes {
             self.fajr = prayerTimes.fajr as Date
@@ -41,7 +41,7 @@ import Foundation
         super.init()
     }
     
-    @objc open func currentPrayer(_ time: Date?) -> BAPrayer {
+    open func currentPrayer(_ time: Date?) -> BAPrayer {
         guard let prayerTimes = prayerTimes else {
             return .none
         }
@@ -50,7 +50,7 @@ import Foundation
         return BAPrayerForPrayer(prayerTimes.currentPrayer(at: _time))
     }
     
-    @objc open func nextPrayer(_ time: Date?) -> BAPrayer {
+    open func nextPrayer(_ time: Date?) -> BAPrayer {
         guard let prayerTimes = prayerTimes else {
             return .none
         }
@@ -59,7 +59,7 @@ import Foundation
         return BAPrayerForPrayer(prayerTimes.nextPrayer(at: _time))
     }
     
-    @objc open func timeForPrayer(_ prayer: BAPrayer) -> Date? {
+    open func timeForPrayer(_ prayer: BAPrayer) -> Date? {
         return prayerTimes?.time(for: prayerForBAPrayer(prayer))
     }
     
@@ -102,23 +102,23 @@ import Foundation
     }
 }
 
-@objc open class BACalculationParameters: NSObject {
-    @objc open var method: BACalculationMethod = .other
-    @objc open var fajrAngle: Double
-    @objc open var ishaAngle: Double
-    @objc open var ishaInterval: Int = 0
-    @objc open var madhab: BAMadhab = .shafi
-    @objc open var highLatitudeRule: BAHighLatitudeRule = .middleOfTheNight
-    @objc open var adjustments: BAPrayerAdjustments = BAPrayerAdjustments()
+@objcMembers open class BACalculationParameters: NSObject {
+    open var method: BACalculationMethod = .other
+    open var fajrAngle: Double
+    open var ishaAngle: Double
+    open var ishaInterval: Int = 0
+    open var madhab: BAMadhab = .shafi
+    open var highLatitudeRule: BAHighLatitudeRule = .middleOfTheNight
+    open var adjustments: BAPrayerAdjustments = BAPrayerAdjustments()
     
-    @objc public init(fajrAngle: Double, ishaAngle: Double, ishaInterval: Int) {
+    public init(fajrAngle: Double, ishaAngle: Double, ishaInterval: Int) {
         self.fajrAngle = fajrAngle
         self.ishaAngle = ishaAngle
         self.ishaInterval = ishaInterval
         super.init()
     }
     
-    @objc public convenience init(method: BACalculationMethod) {
+    public convenience init(method: BACalculationMethod) {
         let params = BACalculationParameters.calculationMethodForBACalculationMethod(method).params
         self.init(fajrAngle: params.fajrAngle, ishaAngle: params.ishaAngle, ishaInterval: params.ishaInterval)
         self.method = method
@@ -202,15 +202,15 @@ import Foundation
     case twilightAngle
 }
 
-@objc open class BAPrayerAdjustments: NSObject {
-    @objc open var fajr: Int = 0
-    @objc open var sunrise: Int = 0
-    @objc open var dhuhr: Int = 0
-    @objc open var asr: Int = 0
-    @objc open var maghrib: Int = 0
-    @objc open var isha: Int = 0
+@objcMembers open class BAPrayerAdjustments: NSObject {
+    open var fajr: Int = 0
+    open var sunrise: Int = 0
+    open var dhuhr: Int = 0
+    open var asr: Int = 0
+    open var maghrib: Int = 0
+    open var isha: Int = 0
     
-    @objc public init(fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, maghrib: Int = 0, isha: Int = 0) {
+    public init(fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, maghrib: Int = 0, isha: Int = 0) {
         self.fajr = fajr
         self.sunrise = sunrise
         self.dhuhr = dhuhr
@@ -225,21 +225,21 @@ import Foundation
     }
 }
 
-@objc open class BACoordinates: NSObject {
-    @objc open var latitude: Double
-    @objc open var longitude: Double
+@objcMembers open class BACoordinates: NSObject {
+    open var latitude: Double
+    open var longitude: Double
     
-    @objc public init(latitude: Double, longitude: Double) {
+    public init(latitude: Double, longitude: Double) {
         self.latitude = latitude
         self.longitude = longitude
         super.init()
     }
 }
 
-@objc open class BAQibla: NSObject {
-    @objc open var direction: Double = 0
+@objcMembers open class BAQibla: NSObject {
+    open var direction: Double = 0
     
-    @objc public init(coordinates: BACoordinates) {
+    public init(coordinates: BACoordinates) {
         let qibla = Qibla(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude))
         self.direction = qibla.direction
     }
