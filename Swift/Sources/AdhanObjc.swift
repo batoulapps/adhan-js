@@ -18,7 +18,7 @@ import Foundation
     case none = 6
 }
 
-@objc open class BAPrayerTimes: NSObject {
+@objcMembers open class BAPrayerTimes: NSObject {
     open var fajr: Date?
     open var sunrise: Date?
     open var dhuhr: Date?
@@ -102,7 +102,7 @@ import Foundation
     }
 }
 
-@objc open class BACalculationParameters: NSObject {
+@objcMembers open class BACalculationParameters: NSObject {
     open var method: BACalculationMethod = .other
     open var fajrAngle: Double
     open var ishaAngle: Double
@@ -202,7 +202,7 @@ import Foundation
     case twilightAngle
 }
 
-@objc open class BAPrayerAdjustments: NSObject {
+@objcMembers open class BAPrayerAdjustments: NSObject {
     open var fajr: Int = 0
     open var sunrise: Int = 0
     open var dhuhr: Int = 0
@@ -225,7 +225,7 @@ import Foundation
     }
 }
 
-@objc open class BACoordinates: NSObject {
+@objcMembers open class BACoordinates: NSObject {
     open var latitude: Double
     open var longitude: Double
     
@@ -236,7 +236,7 @@ import Foundation
     }
 }
 
-@objc open class BAQibla: NSObject {
+@objcMembers open class BAQibla: NSObject {
     open var direction: Double = 0
     
     public init(coordinates: BACoordinates) {

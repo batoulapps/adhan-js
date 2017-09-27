@@ -38,7 +38,7 @@ class MathTests: XCTestCase {
         XCTAssertEqual(259.0.unwindAngle(), 259)
         XCTAssertEqual(2592.0.unwindAngle(), 72)
         
-        XCTAssertEqualWithAccuracy(360.1.normalizeWithBound(max: 360), 0.1, accuracy: 0.01)
+        XCTAssertEqual(360.1.normalizeWithBound(max: 360), 0.1, accuracy: 0.01)
     }
     
     func testClosestAngle() {
@@ -51,7 +51,7 @@ class MathTests: XCTestCase {
         XCTAssertEqual(359.0.closestAngle(), -1)
         XCTAssertEqual((-359.0).closestAngle(), 1)
         XCTAssertEqual(1261.0.closestAngle(), -179)
-        XCTAssertEqualWithAccuracy((-360.1).closestAngle(), -0.1, accuracy: 0.01)
+        XCTAssertEqual((-360.1).closestAngle(), -0.1, accuracy: 0.01)
     }
     
     func testTimeComponents() {

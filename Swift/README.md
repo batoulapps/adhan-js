@@ -1,6 +1,6 @@
 # Adhan Swift
 
-The Adhan Swift implementation uses Swift 3 and has an Objective-C compatible wrapper.
+The Adhan Swift implementation uses Swift 4 and has an Objective-C compatible wrapper.
 
 ## Installation
 

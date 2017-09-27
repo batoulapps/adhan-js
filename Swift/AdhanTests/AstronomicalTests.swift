@@ -28,32 +28,32 @@ class AstronomicalTests: XCTestCase {
         let δ = solar.declination
         let α = solar.rightAscension.unwindAngle()
         
-        XCTAssertEqualWithAccuracy(T, -0.072183436,
+        XCTAssertEqual(T, -0.072183436,
             accuracy: 0.00000000001)
         
-        XCTAssertEqualWithAccuracy(L0, 201.80720,
+        XCTAssertEqual(L0, 201.80720,
             accuracy: 0.00001)
         
-        XCTAssertEqualWithAccuracy(ε0, 23.44023,
+        XCTAssertEqual(ε0, 23.44023,
             accuracy: 0.00001)
         
-        XCTAssertEqualWithAccuracy(εapp, 23.43999,
+        XCTAssertEqual(εapp, 23.43999,
             accuracy: 0.00001)
         
-        XCTAssertEqualWithAccuracy(M, 278.99397,
+        XCTAssertEqual(M, 278.99397,
             accuracy: 0.00001)
         
-        XCTAssertEqualWithAccuracy(C, -1.89732,
+        XCTAssertEqual(C, -1.89732,
             accuracy: 0.00001)
         
         // lower accuracy than desired
-        XCTAssertEqualWithAccuracy(λ, 199.90895,
+        XCTAssertEqual(λ, 199.90895,
             accuracy: 0.00002)
         
-        XCTAssertEqualWithAccuracy(δ, -7.78507,
+        XCTAssertEqual(δ, -7.78507,
             accuracy: 0.00001)
         
-        XCTAssertEqualWithAccuracy(α, 198.38083,
+        XCTAssertEqual(α, 198.38083,
             accuracy: 0.00001)
         
         // values from Astronomical Algorithms page 88
@@ -72,27 +72,27 @@ class AstronomicalTests: XCTestCase {
         let Δε = Astronomical.nutationInObliquity(solarLongitude: L0, lunarLongitude: Lp, ascendingNode: Ω)
         let ε = ε0 + Δε
         
-        XCTAssertEqualWithAccuracy(θ0, 197.693195,
+        XCTAssertEqual(θ0, 197.693195,
             accuracy: 0.000001)
         
-        XCTAssertEqualWithAccuracy(θapp, 197.6922295833,
+        XCTAssertEqual(θapp, 197.6922295833,
             accuracy: 0.0001)
         
         // values from Astronomical Algorithms page 148
         
-        XCTAssertEqualWithAccuracy(Ω, 11.2531,
+        XCTAssertEqual(Ω, 11.2531,
             accuracy: 0.0001)
         
-        XCTAssertEqualWithAccuracy(ΔΨ, -0.0010522,
+        XCTAssertEqual(ΔΨ, -0.0010522,
             accuracy:  0.0001)
         
-        XCTAssertEqualWithAccuracy(Δε, 0.0026230556,
+        XCTAssertEqual(Δε, 0.0026230556,
             accuracy: 0.00001)
         
-        XCTAssertEqualWithAccuracy(ε0, 23.4409463889,
+        XCTAssertEqual(ε0, 23.4409463889,
             accuracy: 0.000001)
         
-        XCTAssertEqualWithAccuracy(ε, 23.4435694444,
+        XCTAssertEqual(ε, 23.4435694444,
             accuracy: 0.00001)
     }
     
@@ -101,7 +101,7 @@ class AstronomicalTests: XCTestCase {
         let δ = -6 - (43 / 60) - (11.61 / 3600)
         let H = 64.352133
         let h = Astronomical.altitudeOfCelestialBody(observerLatitude: φ, declination: δ, localHourAngle: H)
-        XCTAssertEqualWithAccuracy(h, 15.1249,
+        XCTAssertEqual(h, 15.1249,
             accuracy: 0.0001)
     }
     
@@ -114,12 +114,12 @@ class AstronomicalTests: XCTestCase {
         let α3 = 42.78204
         let m0 = Astronomical.approximateTransit(longitude: longitude, siderealTime: Θ, rightAscension: α2)
         
-        XCTAssertEqualWithAccuracy(m0, 0.81965,
+        XCTAssertEqual(m0, 0.81965,
             accuracy: 0.00001)
         
         let transit = Astronomical.correctedTransit(approximateTransit: m0, longitude: longitude, siderealTime: Θ, rightAscension: α2, previousRightAscension: α1, nextRightAscension: α3) / 24
         
-        XCTAssertEqualWithAccuracy(transit, 0.81980,
+        XCTAssertEqual(transit, 0.81980,
             accuracy: 0.00001)
         
         let δ1 = 18.04761
@@ -128,7 +128,7 @@ class AstronomicalTests: XCTestCase {
         
         let rise = Astronomical.correctedHourAngle(approximateTransit: m0, angle: -0.5667, coordinates: Coordinates(latitude: 42.3333, longitude: longitude), afterTransit: false, siderealTime: Θ,
             rightAscension: α2, previousRightAscension: α1, nextRightAscension: α3, declination: δ2, previousDeclination: δ1, nextDeclination: δ3) / 24
-        XCTAssertEqualWithAccuracy(rise, 0.51766,
+        XCTAssertEqual(rise, 0.51766,
             accuracy: 0.00001)
     }
     
@@ -188,19 +188,19 @@ class AstronomicalTests: XCTestCase {
         // values from Astronomical Algorithms page 25
         
         let interpolatedValue = Astronomical.interpolate(value: 0.877366, previousValue: 0.884226, nextValue: 0.870531, factor: 4.35/24)
-        XCTAssertEqualWithAccuracy(interpolatedValue, 0.876125,
+        XCTAssertEqual(interpolatedValue, 0.876125,
                                             accuracy: 0.000001)
         
         let i1 = Astronomical.interpolate(value: 1, previousValue: -1, nextValue: 3, factor: 0.6)
-        XCTAssertEqualWithAccuracy(i1, 2.2, accuracy: 0.000001)
+        XCTAssertEqual(i1, 2.2, accuracy: 0.000001)
     }
     
     func testAngleInterpolation() {
         let i1 = Astronomical.interpolateAngles(value: 1, previousValue: -1, nextValue: 3, factor: 0.6)
-        XCTAssertEqualWithAccuracy(i1, 2.2, accuracy: 0.000001)
+        XCTAssertEqual(i1, 2.2, accuracy: 0.000001)
         
         let i2 = Astronomical.interpolateAngles(value: 1, previousValue: 359, nextValue: 3, factor: 0.6)
-        XCTAssertEqualWithAccuracy(i2, 2.2, accuracy: 0.000001)
+        XCTAssertEqual(i2, 2.2, accuracy: 0.000001)
     }
     
     func testJulianDay() {
@@ -222,7 +222,7 @@ class AstronomicalTests: XCTestCase {
         XCTAssertEqual(Astronomical.julianDay(year: 2021, month: 12, day: 24), 2459572.500000)
         
         let jdVal = 2457215.67708333
-        XCTAssertEqualWithAccuracy(Astronomical.julianDay(year: 2015, month: 7, day: 12, hours: 4.25), jdVal, accuracy: 0.000001)
+        XCTAssertEqual(Astronomical.julianDay(year: 2015, month: 7, day: 12, hours: 4.25), jdVal, accuracy: 0.000001)
         
         var components = DateComponents()
         components.year = 2015
@@ -230,10 +230,10 @@ class AstronomicalTests: XCTestCase {
         components.day = 12
         components.hour = 4
         components.minute = 15
-        XCTAssertEqualWithAccuracy(components.julianDate(), jdVal, accuracy: 0.000001)
+        XCTAssertEqual(components.julianDate(), jdVal, accuracy: 0.000001)
         
-        XCTAssertEqualWithAccuracy(Astronomical.julianDay(year: 2015, month: 7, day: 12, hours: 8.0), 2457215.833333, accuracy: 0.000001)
-        XCTAssertEqualWithAccuracy(Astronomical.julianDay(year: 1992, month: 10, day: 13, hours: 0.0), 2448908.5, accuracy: 0.000001)
+        XCTAssertEqual(Astronomical.julianDay(year: 2015, month: 7, day: 12, hours: 8.0), 2457215.833333, accuracy: 0.000001)
+        XCTAssertEqual(Astronomical.julianDay(year: 1992, month: 10, day: 13, hours: 0.0), 2448908.5, accuracy: 0.000001)
     }
     
     func testJulianHours() {
