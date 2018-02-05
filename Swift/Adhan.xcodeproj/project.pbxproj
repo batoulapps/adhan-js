@@ -249,10 +249,14 @@
 			isa = PBXGroup;
 			children = (
 				083EFC50202815EE003F6218 /* CalculationMethod.swift */,
+				0880886A2026EE420059C738 /* CalculationParameters.swift */,
+				083EFC54202815EE003F6218 /* Coordinates.swift */,
 				083EFC51202815EE003F6218 /* HighAltitudeRule.swift */,
 				083EFC52202815EE003F6218 /* Madhab.swift */,
 				083EFC53202815EE003F6218 /* Prayer.swift */,
-				083EFC54202815EE003F6218 /* Coordinates.swift */,
+				088088652026EDF90059C738 /* PrayerAdjustment.swift */,
+				088088982026EFE60059C738 /* TimeComponents.swift */,
+				088088932026EFAC0059C738 /* ShadowLength.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -273,7 +277,6 @@
 			isa = PBXGroup;
 			children = (
 				0880888E2026EF910059C738 /* Astronomical.swift */,
-				088088932026EFAC0059C738 /* ShadowLength.swift */,
 				088088892026EF680059C738 /* SolarCoordinates.swift */,
 				088088842026EF4A0059C738 /* SolarTime.swift */,
 			);
@@ -310,12 +313,9 @@
 				088088832026EF270059C738 /* Astronomy */,
 				083EFC4F202815EE003F6218 /* Configuration */,
 				088088502026ECCD0059C738 /* Extensions */,
-				0880886A2026EE420059C738 /* CalculationParameters.swift */,
-				088088652026EDF90059C738 /* PrayerAdjustment.swift */,
 				088088742026EE9E0059C738 /* PrayerTimes.swift */,
 				088088792026EEBD0059C738 /* Qibla.swift */,
 				0880887E2026EEE00059C738 /* SunnahTimes.swift */,
-				088088982026EFE60059C738 /* TimeComponents.swift */,
 				84369E9F1CD03D8700C34812 /* AdhanObjc.swift */,
 				84F8E1221C7AB542004C48D7 /* Adhan.h */,
 				8B74F44C1EF550E9006A51EE /* Info.plist */,
