@@ -1,5 +1,5 @@
 //
-//  TimeComponents.swift
+//  Coordinates.swift
 //  Adhan
 //
 //  Copyright © 2018 Batoul Apps. All rights reserved.
@@ -25,20 +25,13 @@
 
 import Foundation
 
-struct TimeComponents {
-    let hours: Int
-    let minutes: Int
-    let seconds: Int
+/* Latitude and longitude */
+public struct Coordinates {
+    let latitude: Double
+    let longitude: Double
 
-    func dateComponents(_ date: DateComponents) -> DateComponents {
-        var comps = DateComponents()
-        comps.year = date.year
-        comps.month = date.month
-        comps.day = date.day
-        comps.hour = self.hours
-        comps.minute = self.minutes
-        comps.second = self.seconds
-
-        return comps
+    public init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
     }
 }

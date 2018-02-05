@@ -7,22 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		088088522026ED240059C738 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088512026ED240059C738 /* Prayer.swift */; };
-		088088532026ED240059C738 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088512026ED240059C738 /* Prayer.swift */; };
-		088088542026ED240059C738 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088512026ED240059C738 /* Prayer.swift */; };
-		088088552026ED240059C738 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088512026ED240059C738 /* Prayer.swift */; };
-		088088572026ED600059C738 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088562026ED600059C738 /* Madhab.swift */; };
-		088088582026ED600059C738 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088562026ED600059C738 /* Madhab.swift */; };
-		088088592026ED600059C738 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088562026ED600059C738 /* Madhab.swift */; };
-		0880885A2026ED600059C738 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088562026ED600059C738 /* Madhab.swift */; };
-		0880885C2026ED980059C738 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880885B2026ED980059C738 /* HighAltitudeRule.swift */; };
-		0880885D2026ED980059C738 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880885B2026ED980059C738 /* HighAltitudeRule.swift */; };
-		0880885E2026ED980059C738 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880885B2026ED980059C738 /* HighAltitudeRule.swift */; };
-		0880885F2026ED980059C738 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880885B2026ED980059C738 /* HighAltitudeRule.swift */; };
-		088088612026EDB90059C738 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088602026EDB90059C738 /* Coordinates.swift */; };
-		088088622026EDB90059C738 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088602026EDB90059C738 /* Coordinates.swift */; };
-		088088632026EDB90059C738 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088602026EDB90059C738 /* Coordinates.swift */; };
-		088088642026EDB90059C738 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088602026EDB90059C738 /* Coordinates.swift */; };
+		083EFC55202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
+		083EFC56202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
+		083EFC57202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
+		083EFC58202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
+		083EFC59202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
+		083EFC5A202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
+		083EFC5B202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
+		083EFC5C202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
+		083EFC5D202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
+		083EFC5E202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
+		083EFC5F202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
+		083EFC60202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
+		083EFC61202815EE003F6218 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC53202815EE003F6218 /* Prayer.swift */; };
+		083EFC62202815EE003F6218 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC53202815EE003F6218 /* Prayer.swift */; };
+		083EFC63202815EE003F6218 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC53202815EE003F6218 /* Prayer.swift */; };
+		083EFC64202815EE003F6218 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC53202815EE003F6218 /* Prayer.swift */; };
+		083EFC65202815EE003F6218 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC54202815EE003F6218 /* Coordinates.swift */; };
+		083EFC66202815EE003F6218 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC54202815EE003F6218 /* Coordinates.swift */; };
+		083EFC67202815EE003F6218 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC54202815EE003F6218 /* Coordinates.swift */; };
+		083EFC68202815EE003F6218 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC54202815EE003F6218 /* Coordinates.swift */; };
 		088088662026EDF90059C738 /* PrayerAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088652026EDF90059C738 /* PrayerAdjustment.swift */; };
 		088088672026EDF90059C738 /* PrayerAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088652026EDF90059C738 /* PrayerAdjustment.swift */; };
 		088088682026EDF90059C738 /* PrayerAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088652026EDF90059C738 /* PrayerAdjustment.swift */; };
@@ -31,10 +35,6 @@
 		0880886C2026EE420059C738 /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886A2026EE420059C738 /* CalculationParameters.swift */; };
 		0880886D2026EE420059C738 /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886A2026EE420059C738 /* CalculationParameters.swift */; };
 		0880886E2026EE420059C738 /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886A2026EE420059C738 /* CalculationParameters.swift */; };
-		088088702026EE6C0059C738 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886F2026EE6C0059C738 /* CalculationMethod.swift */; };
-		088088712026EE6C0059C738 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886F2026EE6C0059C738 /* CalculationMethod.swift */; };
-		088088722026EE6C0059C738 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886F2026EE6C0059C738 /* CalculationMethod.swift */; };
-		088088732026EE6C0059C738 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886F2026EE6C0059C738 /* CalculationMethod.swift */; };
 		088088752026EE9E0059C738 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088742026EE9E0059C738 /* PrayerTimes.swift */; };
 		088088762026EE9E0059C738 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088742026EE9E0059C738 /* PrayerTimes.swift */; };
 		088088772026EE9E0059C738 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088742026EE9E0059C738 /* PrayerTimes.swift */; };
@@ -147,13 +147,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		088088512026ED240059C738 /* Prayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prayer.swift; sourceTree = "<group>"; };
-		088088562026ED600059C738 /* Madhab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Madhab.swift; sourceTree = "<group>"; };
-		0880885B2026ED980059C738 /* HighAltitudeRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighAltitudeRule.swift; sourceTree = "<group>"; };
-		088088602026EDB90059C738 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
+		083EFC50202815EE003F6218 /* CalculationMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculationMethod.swift; sourceTree = "<group>"; };
+		083EFC51202815EE003F6218 /* HighAltitudeRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighAltitudeRule.swift; sourceTree = "<group>"; };
+		083EFC52202815EE003F6218 /* Madhab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Madhab.swift; sourceTree = "<group>"; };
+		083EFC53202815EE003F6218 /* Prayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prayer.swift; sourceTree = "<group>"; };
+		083EFC54202815EE003F6218 /* Coordinates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		088088652026EDF90059C738 /* PrayerAdjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerAdjustment.swift; sourceTree = "<group>"; };
 		0880886A2026EE420059C738 /* CalculationParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationParameters.swift; sourceTree = "<group>"; };
-		0880886F2026EE6C0059C738 /* CalculationMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationMethod.swift; sourceTree = "<group>"; };
 		088088742026EE9E0059C738 /* PrayerTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimes.swift; sourceTree = "<group>"; };
 		088088792026EEBD0059C738 /* Qibla.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qibla.swift; sourceTree = "<group>"; };
 		0880887E2026EEE00059C738 /* SunnahTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunnahTimes.swift; sourceTree = "<group>"; };
@@ -245,16 +245,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0880884F2026ECCD0059C738 /* Enums */ = {
+		083EFC4F202815EE003F6218 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				0880886F2026EE6C0059C738 /* CalculationMethod.swift */,
-				088088602026EDB90059C738 /* Coordinates.swift */,
-				0880885B2026ED980059C738 /* HighAltitudeRule.swift */,
-				088088512026ED240059C738 /* Prayer.swift */,
-				088088562026ED600059C738 /* Madhab.swift */,
+				083EFC50202815EE003F6218 /* CalculationMethod.swift */,
+				083EFC51202815EE003F6218 /* HighAltitudeRule.swift */,
+				083EFC52202815EE003F6218 /* Madhab.swift */,
+				083EFC53202815EE003F6218 /* Prayer.swift */,
+				083EFC54202815EE003F6218 /* Coordinates.swift */,
 			);
-			path = Enums;
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		088088502026ECCD0059C738 /* Extensions */ = {
@@ -308,7 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				088088832026EF270059C738 /* Astronomy */,
-				0880884F2026ECCD0059C738 /* Enums */,
+				083EFC4F202815EE003F6218 /* Configuration */,
 				088088502026ECCD0059C738 /* Extensions */,
 				0880886A2026EE420059C738 /* CalculationParameters.swift */,
 				088088652026EDF90059C738 /* PrayerAdjustment.swift */,
@@ -636,18 +636,18 @@
 				0880889E2026F0140059C738 /* Calendar+Extension.swift in Sources */,
 				0880888F2026EF910059C738 /* Astronomical.swift in Sources */,
 				088088662026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
-				088088702026EE6C0059C738 /* CalculationMethod.swift in Sources */,
 				0880886B2026EE420059C738 /* CalculationParameters.swift in Sources */,
+				083EFC61202815EE003F6218 /* Prayer.swift in Sources */,
+				083EFC55202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				083EFC5D202815EE003F6218 /* Madhab.swift in Sources */,
+				083EFC65202815EE003F6218 /* Coordinates.swift in Sources */,
+				083EFC59202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
 				088088752026EE9E0059C738 /* PrayerTimes.swift in Sources */,
 				088088942026EFAC0059C738 /* ShadowLength.swift in Sources */,
 				0880887A2026EEBD0059C738 /* Qibla.swift in Sources */,
-				088088572026ED600059C738 /* Madhab.swift in Sources */,
 				088088852026EF4A0059C738 /* SolarTime.swift in Sources */,
-				088088522026ED240059C738 /* Prayer.swift in Sources */,
 				84369EA01CD03D8700C34812 /* AdhanObjc.swift in Sources */,
-				088088612026EDB90059C738 /* Coordinates.swift in Sources */,
 				088088B22026F0B30059C738 /* Double+Extension.swift in Sources */,
-				0880885C2026ED980059C738 /* HighAltitudeRule.swift in Sources */,
 				0880887F2026EEE00059C738 /* SunnahTimes.swift in Sources */,
 				088088A32026F0390059C738 /* Date+Extension.swift in Sources */,
 				0880888A2026EF680059C738 /* SolarCoordinates.swift in Sources */,
@@ -678,18 +678,18 @@
 				0880889F2026F0140059C738 /* Calendar+Extension.swift in Sources */,
 				088088902026EF910059C738 /* Astronomical.swift in Sources */,
 				088088672026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
-				088088712026EE6C0059C738 /* CalculationMethod.swift in Sources */,
 				0880886C2026EE420059C738 /* CalculationParameters.swift in Sources */,
+				083EFC62202815EE003F6218 /* Prayer.swift in Sources */,
+				083EFC56202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				083EFC5E202815EE003F6218 /* Madhab.swift in Sources */,
+				083EFC66202815EE003F6218 /* Coordinates.swift in Sources */,
+				083EFC5A202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
 				088088762026EE9E0059C738 /* PrayerTimes.swift in Sources */,
 				088088952026EFAC0059C738 /* ShadowLength.swift in Sources */,
 				0880887B2026EEBD0059C738 /* Qibla.swift in Sources */,
-				088088582026ED600059C738 /* Madhab.swift in Sources */,
 				088088862026EF4A0059C738 /* SolarTime.swift in Sources */,
-				088088532026ED240059C738 /* Prayer.swift in Sources */,
 				8B74F4821EF554F5006A51EE /* AdhanObjc.swift in Sources */,
-				088088622026EDB90059C738 /* Coordinates.swift in Sources */,
 				088088B32026F0B30059C738 /* Double+Extension.swift in Sources */,
-				0880885D2026ED980059C738 /* HighAltitudeRule.swift in Sources */,
 				088088802026EEE00059C738 /* SunnahTimes.swift in Sources */,
 				088088A42026F0390059C738 /* Date+Extension.swift in Sources */,
 				0880888B2026EF680059C738 /* SolarCoordinates.swift in Sources */,
@@ -706,18 +706,18 @@
 				088088A02026F0140059C738 /* Calendar+Extension.swift in Sources */,
 				088088912026EF910059C738 /* Astronomical.swift in Sources */,
 				088088682026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
-				088088722026EE6C0059C738 /* CalculationMethod.swift in Sources */,
 				0880886D2026EE420059C738 /* CalculationParameters.swift in Sources */,
+				083EFC63202815EE003F6218 /* Prayer.swift in Sources */,
+				083EFC57202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				083EFC5F202815EE003F6218 /* Madhab.swift in Sources */,
+				083EFC67202815EE003F6218 /* Coordinates.swift in Sources */,
+				083EFC5B202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
 				088088772026EE9E0059C738 /* PrayerTimes.swift in Sources */,
 				088088962026EFAC0059C738 /* ShadowLength.swift in Sources */,
 				0880887C2026EEBD0059C738 /* Qibla.swift in Sources */,
-				088088592026ED600059C738 /* Madhab.swift in Sources */,
 				088088872026EF4A0059C738 /* SolarTime.swift in Sources */,
-				088088542026ED240059C738 /* Prayer.swift in Sources */,
 				8B74F4831EF554F5006A51EE /* AdhanObjc.swift in Sources */,
-				088088632026EDB90059C738 /* Coordinates.swift in Sources */,
 				088088B42026F0B30059C738 /* Double+Extension.swift in Sources */,
-				0880885E2026ED980059C738 /* HighAltitudeRule.swift in Sources */,
 				088088812026EEE00059C738 /* SunnahTimes.swift in Sources */,
 				088088A52026F0390059C738 /* Date+Extension.swift in Sources */,
 				0880888C2026EF680059C738 /* SolarCoordinates.swift in Sources */,
@@ -734,18 +734,18 @@
 				088088A12026F0140059C738 /* Calendar+Extension.swift in Sources */,
 				088088922026EF910059C738 /* Astronomical.swift in Sources */,
 				088088692026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
-				088088732026EE6C0059C738 /* CalculationMethod.swift in Sources */,
 				0880886E2026EE420059C738 /* CalculationParameters.swift in Sources */,
+				083EFC64202815EE003F6218 /* Prayer.swift in Sources */,
+				083EFC58202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				083EFC60202815EE003F6218 /* Madhab.swift in Sources */,
+				083EFC68202815EE003F6218 /* Coordinates.swift in Sources */,
+				083EFC5C202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
 				088088782026EE9E0059C738 /* PrayerTimes.swift in Sources */,
 				088088972026EFAC0059C738 /* ShadowLength.swift in Sources */,
 				0880887D2026EEBD0059C738 /* Qibla.swift in Sources */,
-				0880885A2026ED600059C738 /* Madhab.swift in Sources */,
 				088088882026EF4A0059C738 /* SolarTime.swift in Sources */,
-				088088552026ED240059C738 /* Prayer.swift in Sources */,
 				8B74F4841EF554F6006A51EE /* AdhanObjc.swift in Sources */,
-				088088642026EDB90059C738 /* Coordinates.swift in Sources */,
 				088088B52026F0B30059C738 /* Double+Extension.swift in Sources */,
-				0880885F2026ED980059C738 /* HighAltitudeRule.swift in Sources */,
 				088088822026EEE00059C738 /* SunnahTimes.swift in Sources */,
 				088088A62026F0390059C738 /* Date+Extension.swift in Sources */,
 				0880888D2026EF680059C738 /* SolarCoordinates.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  TimeComponents.swift
+//  Madhab.swift
 //  Adhan
 //
 //  Copyright © 2018 Batoul Apps. All rights reserved.
@@ -25,20 +25,17 @@
 
 import Foundation
 
-struct TimeComponents {
-    let hours: Int
-    let minutes: Int
-    let seconds: Int
+/* Madhab for determining how Asr is calculated */
+public enum Madhab {
+    case shafi
+    case hanafi
 
-    func dateComponents(_ date: DateComponents) -> DateComponents {
-        var comps = DateComponents()
-        comps.year = date.year
-        comps.month = date.month
-        comps.day = date.day
-        comps.hour = self.hours
-        comps.minute = self.minutes
-        comps.second = self.seconds
-
-        return comps
+    var shadowLength: ShadowLength {
+        switch(self) {
+        case .shafi:
+            return .single
+        case .hanafi:
+            return .double
+        }
     }
 }
