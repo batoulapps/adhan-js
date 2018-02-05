@@ -7,6 +7,86 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		083EFC55202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
+		083EFC56202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
+		083EFC57202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
+		083EFC58202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
+		083EFC59202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
+		083EFC5A202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
+		083EFC5B202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
+		083EFC5C202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
+		083EFC5D202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
+		083EFC5E202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
+		083EFC5F202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
+		083EFC60202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
+		083EFC61202815EE003F6218 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC53202815EE003F6218 /* Prayer.swift */; };
+		083EFC62202815EE003F6218 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC53202815EE003F6218 /* Prayer.swift */; };
+		083EFC63202815EE003F6218 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC53202815EE003F6218 /* Prayer.swift */; };
+		083EFC64202815EE003F6218 /* Prayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC53202815EE003F6218 /* Prayer.swift */; };
+		083EFC65202815EE003F6218 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC54202815EE003F6218 /* Coordinates.swift */; };
+		083EFC66202815EE003F6218 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC54202815EE003F6218 /* Coordinates.swift */; };
+		083EFC67202815EE003F6218 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC54202815EE003F6218 /* Coordinates.swift */; };
+		083EFC68202815EE003F6218 /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC54202815EE003F6218 /* Coordinates.swift */; };
+		088088662026EDF90059C738 /* PrayerAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088652026EDF90059C738 /* PrayerAdjustment.swift */; };
+		088088672026EDF90059C738 /* PrayerAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088652026EDF90059C738 /* PrayerAdjustment.swift */; };
+		088088682026EDF90059C738 /* PrayerAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088652026EDF90059C738 /* PrayerAdjustment.swift */; };
+		088088692026EDF90059C738 /* PrayerAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088652026EDF90059C738 /* PrayerAdjustment.swift */; };
+		0880886B2026EE420059C738 /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886A2026EE420059C738 /* CalculationParameters.swift */; };
+		0880886C2026EE420059C738 /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886A2026EE420059C738 /* CalculationParameters.swift */; };
+		0880886D2026EE420059C738 /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886A2026EE420059C738 /* CalculationParameters.swift */; };
+		0880886E2026EE420059C738 /* CalculationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880886A2026EE420059C738 /* CalculationParameters.swift */; };
+		088088752026EE9E0059C738 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088742026EE9E0059C738 /* PrayerTimes.swift */; };
+		088088762026EE9E0059C738 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088742026EE9E0059C738 /* PrayerTimes.swift */; };
+		088088772026EE9E0059C738 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088742026EE9E0059C738 /* PrayerTimes.swift */; };
+		088088782026EE9E0059C738 /* PrayerTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088742026EE9E0059C738 /* PrayerTimes.swift */; };
+		0880887A2026EEBD0059C738 /* Qibla.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088792026EEBD0059C738 /* Qibla.swift */; };
+		0880887B2026EEBD0059C738 /* Qibla.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088792026EEBD0059C738 /* Qibla.swift */; };
+		0880887C2026EEBD0059C738 /* Qibla.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088792026EEBD0059C738 /* Qibla.swift */; };
+		0880887D2026EEBD0059C738 /* Qibla.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088792026EEBD0059C738 /* Qibla.swift */; };
+		0880887F2026EEE00059C738 /* SunnahTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880887E2026EEE00059C738 /* SunnahTimes.swift */; };
+		088088802026EEE00059C738 /* SunnahTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880887E2026EEE00059C738 /* SunnahTimes.swift */; };
+		088088812026EEE00059C738 /* SunnahTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880887E2026EEE00059C738 /* SunnahTimes.swift */; };
+		088088822026EEE00059C738 /* SunnahTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880887E2026EEE00059C738 /* SunnahTimes.swift */; };
+		088088852026EF4A0059C738 /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088842026EF4A0059C738 /* SolarTime.swift */; };
+		088088862026EF4A0059C738 /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088842026EF4A0059C738 /* SolarTime.swift */; };
+		088088872026EF4A0059C738 /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088842026EF4A0059C738 /* SolarTime.swift */; };
+		088088882026EF4A0059C738 /* SolarTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088842026EF4A0059C738 /* SolarTime.swift */; };
+		0880888A2026EF680059C738 /* SolarCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088892026EF680059C738 /* SolarCoordinates.swift */; };
+		0880888B2026EF680059C738 /* SolarCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088892026EF680059C738 /* SolarCoordinates.swift */; };
+		0880888C2026EF680059C738 /* SolarCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088892026EF680059C738 /* SolarCoordinates.swift */; };
+		0880888D2026EF680059C738 /* SolarCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088892026EF680059C738 /* SolarCoordinates.swift */; };
+		0880888F2026EF910059C738 /* Astronomical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880888E2026EF910059C738 /* Astronomical.swift */; };
+		088088902026EF910059C738 /* Astronomical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880888E2026EF910059C738 /* Astronomical.swift */; };
+		088088912026EF910059C738 /* Astronomical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880888E2026EF910059C738 /* Astronomical.swift */; };
+		088088922026EF910059C738 /* Astronomical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880888E2026EF910059C738 /* Astronomical.swift */; };
+		088088942026EFAC0059C738 /* ShadowLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088932026EFAC0059C738 /* ShadowLength.swift */; };
+		088088952026EFAC0059C738 /* ShadowLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088932026EFAC0059C738 /* ShadowLength.swift */; };
+		088088962026EFAC0059C738 /* ShadowLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088932026EFAC0059C738 /* ShadowLength.swift */; };
+		088088972026EFAC0059C738 /* ShadowLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088932026EFAC0059C738 /* ShadowLength.swift */; };
+		088088992026EFE60059C738 /* TimeComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088982026EFE60059C738 /* TimeComponents.swift */; };
+		0880889A2026EFE60059C738 /* TimeComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088982026EFE60059C738 /* TimeComponents.swift */; };
+		0880889B2026EFE60059C738 /* TimeComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088982026EFE60059C738 /* TimeComponents.swift */; };
+		0880889C2026EFE60059C738 /* TimeComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088982026EFE60059C738 /* TimeComponents.swift */; };
+		0880889E2026F0140059C738 /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880889D2026F0140059C738 /* Calendar+Extension.swift */; };
+		0880889F2026F0140059C738 /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880889D2026F0140059C738 /* Calendar+Extension.swift */; };
+		088088A02026F0140059C738 /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880889D2026F0140059C738 /* Calendar+Extension.swift */; };
+		088088A12026F0140059C738 /* Calendar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0880889D2026F0140059C738 /* Calendar+Extension.swift */; };
+		088088A32026F0390059C738 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088A22026F0390059C738 /* Date+Extension.swift */; };
+		088088A42026F0390059C738 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088A22026F0390059C738 /* Date+Extension.swift */; };
+		088088A52026F0390059C738 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088A22026F0390059C738 /* Date+Extension.swift */; };
+		088088A62026F0390059C738 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088A22026F0390059C738 /* Date+Extension.swift */; };
+		088088A82026F0560059C738 /* DateComponents+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088A72026F0560059C738 /* DateComponents+Extension.swift */; };
+		088088A92026F0560059C738 /* DateComponents+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088A72026F0560059C738 /* DateComponents+Extension.swift */; };
+		088088AA2026F0560059C738 /* DateComponents+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088A72026F0560059C738 /* DateComponents+Extension.swift */; };
+		088088AB2026F0560059C738 /* DateComponents+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088A72026F0560059C738 /* DateComponents+Extension.swift */; };
+		088088AD2026F0850059C738 /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088AC2026F0850059C738 /* TimeInterval+Extension.swift */; };
+		088088AE2026F0850059C738 /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088AC2026F0850059C738 /* TimeInterval+Extension.swift */; };
+		088088AF2026F0850059C738 /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088AC2026F0850059C738 /* TimeInterval+Extension.swift */; };
+		088088B02026F0850059C738 /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088AC2026F0850059C738 /* TimeInterval+Extension.swift */; };
+		088088B22026F0B30059C738 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088B12026F0B30059C738 /* Double+Extension.swift */; };
+		088088B32026F0B30059C738 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088B12026F0B30059C738 /* Double+Extension.swift */; };
+		088088B42026F0B30059C738 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088B12026F0B30059C738 /* Double+Extension.swift */; };
+		088088B52026F0B30059C738 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088B12026F0B30059C738 /* Double+Extension.swift */; };
 		84369EA01CD03D8700C34812 /* AdhanObjc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84369E9F1CD03D8700C34812 /* AdhanObjc.swift */; };
 		84482DBB1EA70A160074E53C /* QiblaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84482DBA1EA70A160074E53C /* QiblaTests.swift */; };
 		8480CCD91CD2DE0F00BD380B /* ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8480CCD81CD2DE0F00BD380B /* ObjcTests.m */; };
@@ -15,7 +95,6 @@
 		84F8E1231C7AB542004C48D7 /* Adhan.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F8E1221C7AB542004C48D7 /* Adhan.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84F8E12A1C7AB542004C48D7 /* Adhan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F8E11F1C7AB542004C48D7 /* Adhan.framework */; };
 		84F8E12F1C7AB542004C48D7 /* AdhanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E12E1C7AB542004C48D7 /* AdhanTests.swift */; };
-		84F8E13A1C7AB563004C48D7 /* Adhan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E1391C7AB563004C48D7 /* Adhan.swift */; };
 		84F8E13C1C7AB5DE004C48D7 /* AstronomicalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E13B1C7AB5DE004C48D7 /* AstronomicalTests.swift */; };
 		84F8E13E1C7AB635004C48D7 /* MathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E13D1C7AB635004C48D7 /* MathTests.swift */; };
 		8B74F44D1EF5515A006A51EE /* Adhan.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F8E1221C7AB542004C48D7 /* Adhan.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,9 +116,6 @@
 		8B74F47C1EF55405006A51EE /* QiblaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84482DBA1EA70A160074E53C /* QiblaTests.swift */; };
 		8B74F47D1EF55405006A51EE /* SunnahTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9180A61EA9BF83004C9E52 /* SunnahTests.swift */; };
 		8B74F47E1EF55405006A51EE /* ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8480CCD81CD2DE0F00BD380B /* ObjcTests.m */; };
-		8B74F47F1EF554ED006A51EE /* Adhan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E1391C7AB563004C48D7 /* Adhan.swift */; };
-		8B74F4801EF554EE006A51EE /* Adhan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E1391C7AB563004C48D7 /* Adhan.swift */; };
-		8B74F4811EF554EE006A51EE /* Adhan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E1391C7AB563004C48D7 /* Adhan.swift */; };
 		8B74F4821EF554F5006A51EE /* AdhanObjc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84369E9F1CD03D8700C34812 /* AdhanObjc.swift */; };
 		8B74F4831EF554F5006A51EE /* AdhanObjc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84369E9F1CD03D8700C34812 /* AdhanObjc.swift */; };
 		8B74F4841EF554F6006A51EE /* AdhanObjc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84369E9F1CD03D8700C34812 /* AdhanObjc.swift */; };
@@ -71,6 +147,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		083EFC50202815EE003F6218 /* CalculationMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculationMethod.swift; sourceTree = "<group>"; };
+		083EFC51202815EE003F6218 /* HighAltitudeRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighAltitudeRule.swift; sourceTree = "<group>"; };
+		083EFC52202815EE003F6218 /* Madhab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Madhab.swift; sourceTree = "<group>"; };
+		083EFC53202815EE003F6218 /* Prayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prayer.swift; sourceTree = "<group>"; };
+		083EFC54202815EE003F6218 /* Coordinates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
+		088088652026EDF90059C738 /* PrayerAdjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerAdjustment.swift; sourceTree = "<group>"; };
+		0880886A2026EE420059C738 /* CalculationParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationParameters.swift; sourceTree = "<group>"; };
+		088088742026EE9E0059C738 /* PrayerTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimes.swift; sourceTree = "<group>"; };
+		088088792026EEBD0059C738 /* Qibla.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Qibla.swift; sourceTree = "<group>"; };
+		0880887E2026EEE00059C738 /* SunnahTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunnahTimes.swift; sourceTree = "<group>"; };
+		088088842026EF4A0059C738 /* SolarTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarTime.swift; sourceTree = "<group>"; };
+		088088892026EF680059C738 /* SolarCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarCoordinates.swift; sourceTree = "<group>"; };
+		0880888E2026EF910059C738 /* Astronomical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Astronomical.swift; sourceTree = "<group>"; };
+		088088932026EFAC0059C738 /* ShadowLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowLength.swift; sourceTree = "<group>"; };
+		088088982026EFE60059C738 /* TimeComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeComponents.swift; sourceTree = "<group>"; };
+		0880889D2026F0140059C738 /* Calendar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Extension.swift"; sourceTree = "<group>"; };
+		088088A22026F0390059C738 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		088088A72026F0560059C738 /* DateComponents+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateComponents+Extension.swift"; sourceTree = "<group>"; };
+		088088AC2026F0850059C738 /* TimeInterval+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Extension.swift"; sourceTree = "<group>"; };
+		088088B12026F0B30059C738 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		84369E9F1CD03D8700C34812 /* AdhanObjc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdhanObjc.swift; sourceTree = "<group>"; };
 		84482DBA1EA70A160074E53C /* QiblaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiblaTests.swift; sourceTree = "<group>"; };
 		8480CCD81CD2DE0F00BD380B /* ObjcTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjcTests.m; sourceTree = "<group>"; };
@@ -81,7 +177,6 @@
 		84F8E1291C7AB542004C48D7 /* Adhan iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Adhan iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8E12E1C7AB542004C48D7 /* AdhanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdhanTests.swift; sourceTree = "<group>"; };
 		84F8E1301C7AB542004C48D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84F8E1391C7AB563004C48D7 /* Adhan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Adhan.swift; sourceTree = "<group>"; };
 		84F8E13B1C7AB5DE004C48D7 /* AstronomicalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AstronomicalTests.swift; sourceTree = "<group>"; };
 		84F8E13D1C7AB635004C48D7 /* MathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTests.swift; sourceTree = "<group>"; };
 		8B74F4271EF54FCB006A51EE /* Adhan.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Adhan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,6 +245,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		083EFC4F202815EE003F6218 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				083EFC50202815EE003F6218 /* CalculationMethod.swift */,
+				0880886A2026EE420059C738 /* CalculationParameters.swift */,
+				083EFC54202815EE003F6218 /* Coordinates.swift */,
+				083EFC51202815EE003F6218 /* HighAltitudeRule.swift */,
+				083EFC52202815EE003F6218 /* Madhab.swift */,
+				083EFC53202815EE003F6218 /* Prayer.swift */,
+				088088652026EDF90059C738 /* PrayerAdjustment.swift */,
+				088088982026EFE60059C738 /* TimeComponents.swift */,
+				088088932026EFAC0059C738 /* ShadowLength.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		088088502026ECCD0059C738 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0880889D2026F0140059C738 /* Calendar+Extension.swift */,
+				088088A22026F0390059C738 /* Date+Extension.swift */,
+				088088A72026F0560059C738 /* DateComponents+Extension.swift */,
+				088088B12026F0B30059C738 /* Double+Extension.swift */,
+				088088AC2026F0850059C738 /* TimeInterval+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		088088832026EF270059C738 /* Astronomy */ = {
+			isa = PBXGroup;
+			children = (
+				0880888E2026EF910059C738 /* Astronomical.swift */,
+				088088892026EF680059C738 /* SolarCoordinates.swift */,
+				088088842026EF4A0059C738 /* SolarTime.swift */,
+			);
+			path = Astronomy;
+			sourceTree = "<group>";
+		};
 		84F8E1151C7AB541004C48D7 = {
 			isa = PBXGroup;
 			children = (
@@ -177,7 +310,12 @@
 		84F8E1211C7AB542004C48D7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				84F8E1391C7AB563004C48D7 /* Adhan.swift */,
+				088088832026EF270059C738 /* Astronomy */,
+				083EFC4F202815EE003F6218 /* Configuration */,
+				088088502026ECCD0059C738 /* Extensions */,
+				088088742026EE9E0059C738 /* PrayerTimes.swift */,
+				088088792026EEBD0059C738 /* Qibla.swift */,
+				0880887E2026EEE00059C738 /* SunnahTimes.swift */,
 				84369E9F1CD03D8700C34812 /* AdhanObjc.swift */,
 				84F8E1221C7AB542004C48D7 /* Adhan.h */,
 				8B74F44C1EF550E9006A51EE /* Info.plist */,
@@ -493,8 +631,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				088088992026EFE60059C738 /* TimeComponents.swift in Sources */,
+				088088A82026F0560059C738 /* DateComponents+Extension.swift in Sources */,
+				0880889E2026F0140059C738 /* Calendar+Extension.swift in Sources */,
+				0880888F2026EF910059C738 /* Astronomical.swift in Sources */,
+				088088662026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
+				0880886B2026EE420059C738 /* CalculationParameters.swift in Sources */,
+				083EFC61202815EE003F6218 /* Prayer.swift in Sources */,
+				083EFC55202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				083EFC5D202815EE003F6218 /* Madhab.swift in Sources */,
+				083EFC65202815EE003F6218 /* Coordinates.swift in Sources */,
+				083EFC59202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
+				088088752026EE9E0059C738 /* PrayerTimes.swift in Sources */,
+				088088942026EFAC0059C738 /* ShadowLength.swift in Sources */,
+				0880887A2026EEBD0059C738 /* Qibla.swift in Sources */,
+				088088852026EF4A0059C738 /* SolarTime.swift in Sources */,
 				84369EA01CD03D8700C34812 /* AdhanObjc.swift in Sources */,
-				84F8E13A1C7AB563004C48D7 /* Adhan.swift in Sources */,
+				088088B22026F0B30059C738 /* Double+Extension.swift in Sources */,
+				0880887F2026EEE00059C738 /* SunnahTimes.swift in Sources */,
+				088088A32026F0390059C738 /* Date+Extension.swift in Sources */,
+				0880888A2026EF680059C738 /* SolarCoordinates.swift in Sources */,
+				088088AD2026F0850059C738 /* TimeInterval+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,8 +673,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0880889A2026EFE60059C738 /* TimeComponents.swift in Sources */,
+				088088A92026F0560059C738 /* DateComponents+Extension.swift in Sources */,
+				0880889F2026F0140059C738 /* Calendar+Extension.swift in Sources */,
+				088088902026EF910059C738 /* Astronomical.swift in Sources */,
+				088088672026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
+				0880886C2026EE420059C738 /* CalculationParameters.swift in Sources */,
+				083EFC62202815EE003F6218 /* Prayer.swift in Sources */,
+				083EFC56202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				083EFC5E202815EE003F6218 /* Madhab.swift in Sources */,
+				083EFC66202815EE003F6218 /* Coordinates.swift in Sources */,
+				083EFC5A202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
+				088088762026EE9E0059C738 /* PrayerTimes.swift in Sources */,
+				088088952026EFAC0059C738 /* ShadowLength.swift in Sources */,
+				0880887B2026EEBD0059C738 /* Qibla.swift in Sources */,
+				088088862026EF4A0059C738 /* SolarTime.swift in Sources */,
 				8B74F4821EF554F5006A51EE /* AdhanObjc.swift in Sources */,
-				8B74F47F1EF554ED006A51EE /* Adhan.swift in Sources */,
+				088088B32026F0B30059C738 /* Double+Extension.swift in Sources */,
+				088088802026EEE00059C738 /* SunnahTimes.swift in Sources */,
+				088088A42026F0390059C738 /* Date+Extension.swift in Sources */,
+				0880888B2026EF680059C738 /* SolarCoordinates.swift in Sources */,
+				088088AE2026F0850059C738 /* TimeInterval+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,8 +701,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0880889B2026EFE60059C738 /* TimeComponents.swift in Sources */,
+				088088AA2026F0560059C738 /* DateComponents+Extension.swift in Sources */,
+				088088A02026F0140059C738 /* Calendar+Extension.swift in Sources */,
+				088088912026EF910059C738 /* Astronomical.swift in Sources */,
+				088088682026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
+				0880886D2026EE420059C738 /* CalculationParameters.swift in Sources */,
+				083EFC63202815EE003F6218 /* Prayer.swift in Sources */,
+				083EFC57202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				083EFC5F202815EE003F6218 /* Madhab.swift in Sources */,
+				083EFC67202815EE003F6218 /* Coordinates.swift in Sources */,
+				083EFC5B202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
+				088088772026EE9E0059C738 /* PrayerTimes.swift in Sources */,
+				088088962026EFAC0059C738 /* ShadowLength.swift in Sources */,
+				0880887C2026EEBD0059C738 /* Qibla.swift in Sources */,
+				088088872026EF4A0059C738 /* SolarTime.swift in Sources */,
 				8B74F4831EF554F5006A51EE /* AdhanObjc.swift in Sources */,
-				8B74F4801EF554EE006A51EE /* Adhan.swift in Sources */,
+				088088B42026F0B30059C738 /* Double+Extension.swift in Sources */,
+				088088812026EEE00059C738 /* SunnahTimes.swift in Sources */,
+				088088A52026F0390059C738 /* Date+Extension.swift in Sources */,
+				0880888C2026EF680059C738 /* SolarCoordinates.swift in Sources */,
+				088088AF2026F0850059C738 /* TimeInterval+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,8 +729,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0880889C2026EFE60059C738 /* TimeComponents.swift in Sources */,
+				088088AB2026F0560059C738 /* DateComponents+Extension.swift in Sources */,
+				088088A12026F0140059C738 /* Calendar+Extension.swift in Sources */,
+				088088922026EF910059C738 /* Astronomical.swift in Sources */,
+				088088692026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
+				0880886E2026EE420059C738 /* CalculationParameters.swift in Sources */,
+				083EFC64202815EE003F6218 /* Prayer.swift in Sources */,
+				083EFC58202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				083EFC60202815EE003F6218 /* Madhab.swift in Sources */,
+				083EFC68202815EE003F6218 /* Coordinates.swift in Sources */,
+				083EFC5C202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
+				088088782026EE9E0059C738 /* PrayerTimes.swift in Sources */,
+				088088972026EFAC0059C738 /* ShadowLength.swift in Sources */,
+				0880887D2026EEBD0059C738 /* Qibla.swift in Sources */,
+				088088882026EF4A0059C738 /* SolarTime.swift in Sources */,
 				8B74F4841EF554F6006A51EE /* AdhanObjc.swift in Sources */,
-				8B74F4811EF554EE006A51EE /* Adhan.swift in Sources */,
+				088088B52026F0B30059C738 /* Double+Extension.swift in Sources */,
+				088088822026EEE00059C738 /* SunnahTimes.swift in Sources */,
+				088088A62026F0390059C738 /* Date+Extension.swift in Sources */,
+				0880888D2026EF680059C738 /* SolarCoordinates.swift in Sources */,
+				088088B02026F0850059C738 /* TimeInterval+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
