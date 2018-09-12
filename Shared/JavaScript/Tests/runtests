@@ -1,0 +1,22 @@
+#! /bin/bash
+dir="$(dirname $0)"
+jsondir="$dir/../../Times/*"
+
+cat /dev/null > $dir/times.js
+echo "var times = [" >> $dir/times.js
+count=0
+for f in $jsondir
+do
+	if [ $count -gt 0 ]
+	then
+		echo "," >> $dir/times.js
+	fi
+	cat "$f" >> $dir/times.js
+	((count++))
+done
+echo "];" >> $dir/times.js
+
+node-qunit-phantomjs $dir/tests.html
+node-qunit-phantomjs $dir/time-tests.html
+
+cat /dev/null > $dir/times.js

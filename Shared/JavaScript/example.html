@@ -1,0 +1,47 @@
+<html>
+<head>
+    <script src="Adhan.js"></script>
+</head>
+<body>
+    <pre><script type="text/javascript">
+
+
+    function prayerName(prayer) {
+        if (prayer == adhan.Prayer.Fajr) {
+            return "Fajr";
+        } else if (prayer == adhan.Prayer.Sunrise) {
+            return "Sunrise";
+        } else if (prayer == adhan.Prayer.Dhuhr) {
+            return "Dhuhr";
+        } else if (prayer == adhan.Prayer.Asr) {
+            return "Asr";
+        } else if (prayer == adhan.Prayer.Maghrib) {
+            return "Maghrib";
+        } else if (prayer == adhan.Prayer.Isha) {
+            return "Isha";
+        } else if (prayer == adhan.Prayer.None) {
+            return "None";
+        }
+    }
+
+    var date = new Date();
+    var coordinates = new adhan.Coordinates(35.78056, -78.6389);
+    var params = adhan.CalculationMethod.MuslimWorldLeague();
+    params.madhab = adhan.Madhab.Hanafi;
+    var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+    var formattedTime = adhan.Date.formattedTime;
+
+    document.write('Raleigh, NC - Muslim World League\n');
+    document.write('Prayer times for ' + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '\n');
+    document.write('Fajr: ' + formattedTime(prayerTimes.fajr, -4) + '\n');
+    document.write('Sunrise: ' + formattedTime(prayerTimes.sunrise, -4) + '\n');
+    document.write('Dhuhr: ' + formattedTime(prayerTimes.dhuhr, -4) + '\n');
+    document.write('Asr: ' + formattedTime(prayerTimes.asr, -4) + '\n');
+    document.write('Maghrib: ' + formattedTime(prayerTimes.maghrib, -4) + '\n');
+    document.write('Isha: ' + formattedTime(prayerTimes.isha, -4) + '\n');
+
+    document.write('\nCurrent Prayer: ' + prayerName(prayerTimes.currentPrayer()) + '\n');
+
+    </script></pre>
+</body>
+</html>

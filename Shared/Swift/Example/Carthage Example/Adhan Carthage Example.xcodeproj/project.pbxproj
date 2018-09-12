@@ -1,0 +1,657 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8B74F4E71EF56C91006A51EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74F4E61EF56C91006A51EE /* AppDelegate.swift */; };
+		8B74F4E91EF56C91006A51EE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74F4E81EF56C91006A51EE /* ViewController.swift */; };
+		8B74F4EC1EF56C91006A51EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B74F4EA1EF56C91006A51EE /* Main.storyboard */; };
+		8B74F4EE1EF56C91006A51EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B74F4ED1EF56C91006A51EE /* Assets.xcassets */; };
+		8B74F4F11EF56C91006A51EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B74F4EF1EF56C91006A51EE /* LaunchScreen.storyboard */; };
+		8B74F4FE1EF56CFD006A51EE /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B74F4FC1EF56CFD006A51EE /* Interface.storyboard */; };
+		8B74F5001EF56CFD006A51EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B74F4FF1EF56CFD006A51EE /* Assets.xcassets */; };
+		8B74F5071EF56CFD006A51EE /* Adhan Carthage Watch Example Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8B74F5061EF56CFD006A51EE /* Adhan Carthage Watch Example Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8B74F50C1EF56CFD006A51EE /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74F50B1EF56CFD006A51EE /* InterfaceController.swift */; };
+		8B74F50E1EF56CFD006A51EE /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74F50D1EF56CFD006A51EE /* ExtensionDelegate.swift */; };
+		8B74F5101EF56CFD006A51EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B74F50F1EF56CFD006A51EE /* Assets.xcassets */; };
+		8B74F5141EF56CFD006A51EE /* Adhan Carthage Watch Example.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 8B74F4FA1EF56CFD006A51EE /* Adhan Carthage Watch Example.app */; };
+		8B74F51F1EF56D9A006A51EE /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 8B74F51E1EF56D9A006A51EE /* README.md */; };
+		8B74F5221EF56DAC006A51EE /* Adhan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B74F5211EF56DAC006A51EE /* Adhan.framework */; };
+		8B74F5241EF56DBB006A51EE /* Adhan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B74F5231EF56DBB006A51EE /* Adhan.framework */; };
+		8B74F5281EF56E3C006A51EE /* PrayersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74F5271EF56E3C006A51EE /* PrayersViewModel.swift */; };
+		8B74F5291EF56E3C006A51EE /* PrayersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74F5271EF56E3C006A51EE /* PrayersViewModel.swift */; };
+		8B74F52B1EF56E46006A51EE /* TableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B74F52A1EF56E46006A51EE /* TableRowView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8B74F5081EF56CFD006A51EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B74F4DB1EF56C91006A51EE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B74F5051EF56CFD006A51EE;
+			remoteInfo = "Adhan Carthage Watch Example Extension";
+		};
+		8B74F5121EF56CFD006A51EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B74F4DB1EF56C91006A51EE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B74F4F91EF56CFD006A51EE;
+			remoteInfo = "Adhan Carthage Watch Example";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8B74F51A1EF56CFD006A51EE /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8B74F5071EF56CFD006A51EE /* Adhan Carthage Watch Example Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B74F51C1EF56CFD006A51EE /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				8B74F5141EF56CFD006A51EE /* Adhan Carthage Watch Example.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8B74F4E31EF56C91006A51EE /* Adhan Carthage Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Adhan Carthage Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B74F4E61EF56C91006A51EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8B74F4E81EF56C91006A51EE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8B74F4EB1EF56C91006A51EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8B74F4ED1EF56C91006A51EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8B74F4F01EF56C91006A51EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8B74F4F21EF56C91006A51EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B74F4FA1EF56CFD006A51EE /* Adhan Carthage Watch Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Adhan Carthage Watch Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B74F4FD1EF56CFD006A51EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		8B74F4FF1EF56CFD006A51EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8B74F5011EF56CFD006A51EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B74F5061EF56CFD006A51EE /* Adhan Carthage Watch Example Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Adhan Carthage Watch Example Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B74F50B1EF56CFD006A51EE /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		8B74F50D1EF56CFD006A51EE /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		8B74F50F1EF56CFD006A51EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8B74F5111EF56CFD006A51EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B74F51D1EF56D7B006A51EE /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		8B74F51E1EF56D9A006A51EE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8B74F5211EF56DAC006A51EE /* Adhan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Adhan.framework; path = Carthage/Build/iOS/Adhan.framework; sourceTree = "<group>"; };
+		8B74F5231EF56DBB006A51EE /* Adhan.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Adhan.framework; path = Carthage/Build/watchOS/Adhan.framework; sourceTree = "<group>"; };
+		8B74F5271EF56E3C006A51EE /* PrayersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrayersViewModel.swift; sourceTree = "<group>"; };
+		8B74F52A1EF56E46006A51EE /* TableRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableRowView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8B74F4E01EF56C91006A51EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B74F5221EF56DAC006A51EE /* Adhan.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B74F5031EF56CFD006A51EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B74F5241EF56DBB006A51EE /* Adhan.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8B74F4DA1EF56C91006A51EE = {
+			isa = PBXGroup;
+			children = (
+				8B74F51E1EF56D9A006A51EE /* README.md */,
+				8B74F51D1EF56D7B006A51EE /* Cartfile */,
+				8B74F4E51EF56C91006A51EE /* Adhan Carthage Example */,
+				8B74F4FB1EF56CFD006A51EE /* Adhan Carthage Watch Example */,
+				8B74F50A1EF56CFD006A51EE /* Adhan Carthage Watch Example Extension */,
+				8B74F4E41EF56C91006A51EE /* Products */,
+				8B74F5201EF56DAC006A51EE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8B74F4E41EF56C91006A51EE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B74F4E31EF56C91006A51EE /* Adhan Carthage Example.app */,
+				8B74F4FA1EF56CFD006A51EE /* Adhan Carthage Watch Example.app */,
+				8B74F5061EF56CFD006A51EE /* Adhan Carthage Watch Example Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B74F4E51EF56C91006A51EE /* Adhan Carthage Example */ = {
+			isa = PBXGroup;
+			children = (
+				8B74F5271EF56E3C006A51EE /* PrayersViewModel.swift */,
+				8B74F4E61EF56C91006A51EE /* AppDelegate.swift */,
+				8B74F4E81EF56C91006A51EE /* ViewController.swift */,
+				8B74F4EA1EF56C91006A51EE /* Main.storyboard */,
+				8B74F4EF1EF56C91006A51EE /* LaunchScreen.storyboard */,
+				8B74F4ED1EF56C91006A51EE /* Assets.xcassets */,
+				8B74F4F21EF56C91006A51EE /* Info.plist */,
+			);
+			path = "Adhan Carthage Example";
+			sourceTree = "<group>";
+		};
+		8B74F4FB1EF56CFD006A51EE /* Adhan Carthage Watch Example */ = {
+			isa = PBXGroup;
+			children = (
+				8B74F4FC1EF56CFD006A51EE /* Interface.storyboard */,
+				8B74F4FF1EF56CFD006A51EE /* Assets.xcassets */,
+				8B74F5011EF56CFD006A51EE /* Info.plist */,
+			);
+			path = "Adhan Carthage Watch Example";
+			sourceTree = "<group>";
+		};
+		8B74F50A1EF56CFD006A51EE /* Adhan Carthage Watch Example Extension */ = {
+			isa = PBXGroup;
+			children = (
+				8B74F50B1EF56CFD006A51EE /* InterfaceController.swift */,
+				8B74F52A1EF56E46006A51EE /* TableRowView.swift */,
+				8B74F50D1EF56CFD006A51EE /* ExtensionDelegate.swift */,
+				8B74F50F1EF56CFD006A51EE /* Assets.xcassets */,
+				8B74F5111EF56CFD006A51EE /* Info.plist */,
+			);
+			path = "Adhan Carthage Watch Example Extension";
+			sourceTree = "<group>";
+		};
+		8B74F5201EF56DAC006A51EE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8B74F5231EF56DBB006A51EE /* Adhan.framework */,
+				8B74F5211EF56DAC006A51EE /* Adhan.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8B74F4E21EF56C91006A51EE /* Adhan Carthage Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B74F4F51EF56C91006A51EE /* Build configuration list for PBXNativeTarget "Adhan Carthage Example" */;
+			buildPhases = (
+				8B74F4DF1EF56C91006A51EE /* Sources */,
+				8B74F4E01EF56C91006A51EE /* Frameworks */,
+				8B74F4E11EF56C91006A51EE /* Resources */,
+				8B74F51C1EF56CFD006A51EE /* Embed Watch Content */,
+				8B74F5251EF56DC2006A51EE /* Run Carthage Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8B74F5131EF56CFD006A51EE /* PBXTargetDependency */,
+			);
+			name = "Adhan Carthage Example";
+			productName = "Adhan Carthage Example";
+			productReference = 8B74F4E31EF56C91006A51EE /* Adhan Carthage Example.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8B74F4F91EF56CFD006A51EE /* Adhan Carthage Watch Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B74F51B1EF56CFD006A51EE /* Build configuration list for PBXNativeTarget "Adhan Carthage Watch Example" */;
+			buildPhases = (
+				8B74F4F81EF56CFD006A51EE /* Resources */,
+				8B74F51A1EF56CFD006A51EE /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8B74F5091EF56CFD006A51EE /* PBXTargetDependency */,
+			);
+			name = "Adhan Carthage Watch Example";
+			productName = "Adhan Carthage Watch Example";
+			productReference = 8B74F4FA1EF56CFD006A51EE /* Adhan Carthage Watch Example.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		8B74F5051EF56CFD006A51EE /* Adhan Carthage Watch Example Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B74F5191EF56CFD006A51EE /* Build configuration list for PBXNativeTarget "Adhan Carthage Watch Example Extension" */;
+			buildPhases = (
+				8B74F5021EF56CFD006A51EE /* Sources */,
+				8B74F5031EF56CFD006A51EE /* Frameworks */,
+				8B74F5041EF56CFD006A51EE /* Resources */,
+				8B74F5261EF56DFC006A51EE /* Run Carthage Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Adhan Carthage Watch Example Extension";
+			productName = "Adhan Carthage Watch Example Extension";
+			productReference = 8B74F5061EF56CFD006A51EE /* Adhan Carthage Watch Example Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8B74F4DB1EF56C91006A51EE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Batoul Apps";
+				TargetAttributes = {
+					8B74F4E21EF56C91006A51EE = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
+					8B74F4F91EF56CFD006A51EE = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
+					8B74F5051EF56CFD006A51EE = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 8B74F4DE1EF56C91006A51EE /* Build configuration list for PBXProject "Adhan Carthage Example" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8B74F4DA1EF56C91006A51EE;
+			productRefGroup = 8B74F4E41EF56C91006A51EE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8B74F4E21EF56C91006A51EE /* Adhan Carthage Example */,
+				8B74F4F91EF56CFD006A51EE /* Adhan Carthage Watch Example */,
+				8B74F5051EF56CFD006A51EE /* Adhan Carthage Watch Example Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8B74F4E11EF56C91006A51EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B74F4F11EF56C91006A51EE /* LaunchScreen.storyboard in Resources */,
+				8B74F4EE1EF56C91006A51EE /* Assets.xcassets in Resources */,
+				8B74F4EC1EF56C91006A51EE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B74F4F81EF56CFD006A51EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B74F5001EF56CFD006A51EE /* Assets.xcassets in Resources */,
+				8B74F4FE1EF56CFD006A51EE /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B74F5041EF56CFD006A51EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B74F5101EF56CFD006A51EE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8B74F5251EF56DC2006A51EE /* Run Carthage Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Adhan.framework",
+			);
+			name = "Run Carthage Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+		8B74F5261EF56DFC006A51EE /* Run Carthage Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/watchOS/Adhan.framework",
+			);
+			name = "Run Carthage Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8B74F4DF1EF56C91006A51EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B74F51F1EF56D9A006A51EE /* README.md in Sources */,
+				8B74F4E91EF56C91006A51EE /* ViewController.swift in Sources */,
+				8B74F4E71EF56C91006A51EE /* AppDelegate.swift in Sources */,
+				8B74F5281EF56E3C006A51EE /* PrayersViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B74F5021EF56CFD006A51EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B74F52B1EF56E46006A51EE /* TableRowView.swift in Sources */,
+				8B74F5291EF56E3C006A51EE /* PrayersViewModel.swift in Sources */,
+				8B74F50E1EF56CFD006A51EE /* ExtensionDelegate.swift in Sources */,
+				8B74F50C1EF56CFD006A51EE /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8B74F5091EF56CFD006A51EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B74F5051EF56CFD006A51EE /* Adhan Carthage Watch Example Extension */;
+			targetProxy = 8B74F5081EF56CFD006A51EE /* PBXContainerItemProxy */;
+		};
+		8B74F5131EF56CFD006A51EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B74F4F91EF56CFD006A51EE /* Adhan Carthage Watch Example */;
+			targetProxy = 8B74F5121EF56CFD006A51EE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8B74F4EA1EF56C91006A51EE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B74F4EB1EF56C91006A51EE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8B74F4EF1EF56C91006A51EE /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B74F4F01EF56C91006A51EE /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		8B74F4FC1EF56CFD006A51EE /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B74F4FD1EF56CFD006A51EE /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8B74F4F31EF56C91006A51EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8B74F4F41EF56C91006A51EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8B74F4F61EF56C91006A51EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = "Adhan Carthage Example/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-Carthage-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		8B74F4F71EF56C91006A51EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = "Adhan Carthage Example/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-Carthage-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		8B74F5151EF56CFD006A51EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IBSC_MODULE = Adhan_Carthage_Watch_Example_Extension;
+				INFOPLIST_FILE = "Adhan Carthage Watch Example/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-Carthage-Example.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
+			};
+			name = Debug;
+		};
+		8B74F5161EF56CFD006A51EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IBSC_MODULE = Adhan_Carthage_Watch_Example_Extension;
+				INFOPLIST_FILE = "Adhan Carthage Watch Example/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-Carthage-Example.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
+			};
+			name = Release;
+		};
+		8B74F5171EF56CFD006A51EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
+				INFOPLIST_FILE = "Adhan Carthage Watch Example Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-Carthage-Example.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
+			};
+			name = Debug;
+		};
+		8B74F5181EF56CFD006A51EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
+				INFOPLIST_FILE = "Adhan Carthage Watch Example Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-Carthage-Example.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8B74F4DE1EF56C91006A51EE /* Build configuration list for PBXProject "Adhan Carthage Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B74F4F31EF56C91006A51EE /* Debug */,
+				8B74F4F41EF56C91006A51EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8B74F4F51EF56C91006A51EE /* Build configuration list for PBXNativeTarget "Adhan Carthage Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B74F4F61EF56C91006A51EE /* Debug */,
+				8B74F4F71EF56C91006A51EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8B74F5191EF56CFD006A51EE /* Build configuration list for PBXNativeTarget "Adhan Carthage Watch Example Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B74F5171EF56CFD006A51EE /* Debug */,
+				8B74F5181EF56CFD006A51EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8B74F51B1EF56CFD006A51EE /* Build configuration list for PBXNativeTarget "Adhan Carthage Watch Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B74F5151EF56CFD006A51EE /* Debug */,
+				8B74F5161EF56CFD006A51EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8B74F4DB1EF56C91006A51EE /* Project object */;
+}
