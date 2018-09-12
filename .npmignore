@@ -1,7 +1,4 @@
-java/
-JavaScript/Tests/
-JavaScript/example.html
-Swift/
-Times/
-Adhan.podspec
+Tests/
+example.html
+Shared/
 .travis.yml
