@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch38" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="12029"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Adhan_Carthage_Watch_Example" customModuleProvider="target">
+                    <items>
+                        <table alignment="left" id="n1b-2h-vy4">
+                            <items>
+                                <tableRow identifier="tableRowView" selectable="NO" id="aN8-Um-5pz" customClass="TableRowView" customModule="Adhan_Carthage_Watch_Example_Extension">
+                                    <group key="rootItem" width="1" height="25" alignment="left" id="PnR-1T-CjB">
+                                        <items>
+                                            <label width="0.5" alignment="left" verticalAlignment="center" text="Label" textAlignment="left" id="2Ag-gG-Tlg">
+                                                <fontDescription key="font" type="system" pointSize="14"/>
+                                            </label>
+                                            <label width="0.5" alignment="left" verticalAlignment="center" text="Label" textAlignment="right" id="7uO-aZ-Zlu">
+                                                <fontDescription key="font" type="system" pointSize="14"/>
+                                            </label>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="itemLabel" destination="2Ag-gG-Tlg" id="OiU-xk-WfT"/>
+                                        <outlet property="timeLabel" destination="7uO-aZ-Zlu" id="CHE-Yr-skX"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="tableView" destination="n1b-2h-vy4" id="t6u-ha-5zn"/>
+                    </connections>
+                </controller>
+            </objects>
+        </scene>
+    </scenes>
+</document>

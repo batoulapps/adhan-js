@@ -1,0 +1,136 @@
+{
+	"params": {
+		"latitude": 51.507194,
+		"longitude": -0.116711,
+		"timezone": "Europe/London",
+		"method": "MoonsightingCommittee",
+		"madhab": "Hanafi",
+		"highLatitudeRule": "MiddleOfTheNight"
+	},
+	"source": [
+		"http://www.moonsighting.com/pray.php",
+		"adjusted +/- 1 minute",
+		"Jan 01 (Fri)   06:25 am    08:06 am   12:09 pm    02:15 pm    04:05 pm    05:38 pm",
+		"Feb 01 (Mon)   06:02 am    07:40 am   12:19 pm    03:00 pm+1  04:52 pm    06:18 pm",
+		"Mar 01 (Tue)   05:10 am    06:45 am   12:18 pm    03:48 pm+1  05:44 pm    07:03 pm",
+		"Apr 01 (Fri)   04:59 am    06:35 am   01:09 pm    05:31 pm+1  07:37 pm    08:49 pm",
+		"May 01 (Sun)   03:47 am    05:32 am   01:02 pm+1  06:05 pm    08:27 pm    09:32 pm",
+		"Jun 01 (Wed)   02:55 am    04:49 am   01:03 pm    06:31 pm    09:12 pm    10:23 pm",
+		"Jul 01 (Fri)   02:51 am    04:48 am   01:09 pm    06:41 pm-1  09:24 pm    10:38 pm",
+		"Aug 01 (Mon)   03:38 am-1  05:25 am   01:12 pm    06:23 pm    08:51 pm    09:56 pm",
+		"Sep 01 (Thu)   04:35 am    06:14 am   01:05 pm    05:40 pm-1  07:49 pm    08:58 pm",
+		"Oct 01 (Sat)   05:28 am    07:02 am   12:55 pm    04:43 pm-1  06:40 pm    07:57 pm",
+		"Nov 01 (Tue)   05:17 am+1  06:55 am   11:49 am    02:44 pm-1  04:36 pm    05:59 pm+1",
+		"Dec 01 (Thu)   06:04 am    07:44 am   11:55 am    02:08 pm-1  03:58 pm    05:29 pm"
+	],
+	"times": [
+		{
+			"date": "2016-01-01",
+			"fajr": "6:25 AM",
+			"sunrise": "8:06 AM",
+			"dhuhr": "12:09 PM",
+			"asr": "2:15 PM",
+			"maghrib": "4:05 PM",
+			"isha": "5:38 PM"
+		},		
+		{
+			"date": "2016-02-01",
+			"fajr": "6:02 AM",
+			"sunrise": "7:40 AM",
+			"dhuhr": "12:19 PM",
+			"asr": "3:01 PM",
+			"maghrib": "4:52 PM",
+			"isha": "6:18 PM"
+		},	
+		{
+			"date": "2016-03-01",
+			"fajr": "5:10 AM",
+			"sunrise": "6:45 AM",
+			"dhuhr": "12:18 PM",
+			"asr": "3:49 PM",
+			"maghrib": "5:44 PM",
+			"isha": "7:03 PM"
+		},	
+		{
+			"date": "2016-04-01",
+			"fajr": "4:59 AM",
+			"sunrise": "6:35 AM",
+			"dhuhr": "1:09 PM",
+			"asr": "5:32 PM",
+			"maghrib": "7:37 PM",
+			"isha": "8:49 PM"
+		},
+		{
+			"date": "2016-05-01",
+			"fajr": "3:47 AM",
+			"sunrise": "5:32 AM",
+			"dhuhr": "1:03 PM",
+			"asr": "6:05 PM",
+			"maghrib": "8:27 PM",
+			"isha": "9:32 PM"
+		},
+		{
+			"date": "2016-06-01",
+			"fajr": "2:55 AM",
+			"sunrise": "4:49 AM",
+			"dhuhr": "1:03 PM",
+			"asr": "6:31 PM",
+			"maghrib": "9:12 PM",
+			"isha": "10:23 PM"
+		},
+		{
+			"date": "2016-07-01",
+			"fajr": "2:51 AM",
+			"sunrise": "4:48 AM",
+			"dhuhr": "1:09 PM",
+			"asr": "6:40 PM",
+			"maghrib": "9:24 PM",
+			"isha": "10:38 PM"
+		},
+		{
+			"date": "2016-08-01",
+			"fajr": "3:37 AM",
+			"sunrise": "5:25 AM",
+			"dhuhr": "1:12 PM",
+			"asr": "6:23 PM",
+			"maghrib": "8:51 PM",
+			"isha": "9:56 PM"
+		},
+		{
+			"date": "2016-09-01",
+			"fajr": "4:35 AM",
+			"sunrise": "6:14 AM",
+			"dhuhr": "1:05 PM",
+			"asr": "5:39 PM",
+			"maghrib": "7:49 PM",
+			"isha": "8:58 PM"
+		},
+		{
+			"date": "2016-10-01",
+			"fajr": "5:28 AM",
+			"sunrise": "7:02 AM",
+			"dhuhr": "12:55 PM",
+			"asr": "4:42 PM",
+			"maghrib": "6:40 PM",
+			"isha": "7:57 PM"
+		},
+		{
+			"date": "2016-11-01",
+			"fajr": "5:18 AM",
+			"sunrise": "6:55 AM",
+			"dhuhr": "11:49 AM",
+			"asr": "2:43 PM",
+			"maghrib": "4:36 PM",
+			"isha": "6:00 PM"
+		},
+		{
+			"date": "2016-12-01",
+			"fajr": "6:04 AM",
+			"sunrise": "7:44 AM",
+			"dhuhr": "11:55 AM",
+			"asr": "2:07 PM",
+			"maghrib": "3:58 PM",
+			"isha": "5:29 PM"
+		}
+	]
+}
