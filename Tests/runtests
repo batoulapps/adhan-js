@@ -1,6 +1,6 @@
 #! /bin/bash
 dir="$(dirname $0)"
-jsondir="$dir/../../Times/*"
+jsondir="$dir/../Shared/Times/*"
 
 cat /dev/null > $dir/times.js
 echo "var times = [" >> $dir/times.js
