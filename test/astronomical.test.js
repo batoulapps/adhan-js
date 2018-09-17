@@ -1,10 +1,9 @@
+var expect = require("chai").expect;
+var adhan = require("../Adhan.js");
 var unwindAngle = adhan.Math.unwindAngle;
 var timeComponents = adhan.Math.timeComponents;
 var dayOfYear = adhan.Date.dayOfYear;
 var julianDate = adhan.Date.julianDate;
-//
-// Astronomical Tests
-//
 
 function timeString(hours) {
 	var comps = timeComponents(hours);
@@ -20,97 +19,101 @@ function timeString(hours) {
     return comps.hours + ":" + minutes;
 }
 
-QUnit.test("Solar Coordinates", function(assert) {
-	// values from Astronomical Algorithms page 165
+describe("Astronomical Equations", function() {
+    it("Calculates solar coordinate values", function() {
+		// values from Astronomical Algorithms page 165
 
-	var jd = adhan.Astronomical.julianDay(1992, 10, 13);
-	var solar = new adhan.SolarCoordinates(jd);
+		var jd = adhan.Astronomical.julianDay(1992, 10, 13);
+		var solar = new adhan.SolarCoordinates(jd);
 
-	var T = adhan.Astronomical.julianCentury(jd);
-	var L0 = adhan.Astronomical.meanSolarLongitude(T);
-	var E0 = adhan.Astronomical.meanObliquityOfTheEcliptic(T);
-	var Eapp = adhan.Astronomical.apparentObliquityOfTheEcliptic(T, E0);
-	var M = adhan.Astronomical.meanSolarAnomaly(T);
-    var C = adhan.Astronomical.solarEquationOfTheCenter(T, M);
-    var Lambda = adhan.Astronomical.apparentSolarLongitude(T, L0);
-    var Delta = solar.declination;
-    var Alpha = unwindAngle(solar.rightAscension);
+		var T = adhan.Astronomical.julianCentury(jd);
+		var L0 = adhan.Astronomical.meanSolarLongitude(T);
+		var E0 = adhan.Astronomical.meanObliquityOfTheEcliptic(T);
+		var Eapp = adhan.Astronomical.apparentObliquityOfTheEcliptic(T, E0);
+		var M = adhan.Astronomical.meanSolarAnomaly(T);
+	    var C = adhan.Astronomical.solarEquationOfTheCenter(T, M);
+	    var Lambda = adhan.Astronomical.apparentSolarLongitude(T, L0);
+	    var Delta = solar.declination;
+	    var Alpha = unwindAngle(solar.rightAscension);
 
-	QUnit.close(T, -0.072183436, 0.00000000001);
-	QUnit.close(L0, 201.80720, 0.00001);
-	QUnit.close(E0, 23.44023, 0.00001);
-	QUnit.close(Eapp, 23.43999, 0.00001);
-	QUnit.close(M, 278.99397, 0.00001);
-	QUnit.close(C, -1.89732, 0.00001);
-	QUnit.close(Lambda, 199.90895, 0.00002);
-    QUnit.close(Delta, -7.78507, 0.00001);
-    QUnit.close(Alpha, 198.38083, 0.00001);
+		expect(T).to.be.closeTo(-0.072183436, 0.00000000001);
+		expect(L0).to.be.closeTo(201.80720, 0.00001);
+		expect(E0).to.be.closeTo(23.44023, 0.00001);
+		expect(Eapp).to.be.closeTo(23.43999, 0.00001);
+		expect(M).to.be.closeTo(278.99397, 0.00001);
+		expect(C).to.be.closeTo(-1.89732, 0.00001);
+		expect(Lambda).to.be.closeTo(199.90895, 0.00002);
+	    expect(Delta).to.be.closeTo(-7.78507, 0.00001);
+	    expect(Alpha).to.be.closeTo(198.38083, 0.00001);
 
-    // values from Astronomical Algorithms page 88
+	    // values from Astronomical Algorithms page 88
 
-    jd = adhan.Astronomical.julianDay(1987, 4, 10);
-    solar = new adhan.SolarCoordinates(jd);
-    T = adhan.Astronomical.julianCentury(jd);
+	    jd = adhan.Astronomical.julianDay(1987, 4, 10);
+	    solar = new adhan.SolarCoordinates(jd);
+	    T = adhan.Astronomical.julianCentury(jd);
 
-    var Theta0 = adhan.Astronomical.meanSiderealTime(T);
-    var Thetaapp = solar.apparentSiderealTime;
-    var Omega = adhan.Astronomical.ascendingLunarNodeLongitude(T);
-    E0 = adhan.Astronomical.meanObliquityOfTheEcliptic(T);
-    L0 = adhan.Astronomical.meanSolarLongitude(T);
-    var Lp = adhan.Astronomical.meanLunarLongitude(T);
-    var dPsi = adhan.Astronomical.nutationInLongitude(T, L0, Lp, Omega);
-    var dE = adhan.Astronomical.nutationInObliquity(T, L0, Lp, Omega);
-    var E = E0 + dE;
+	    var Theta0 = adhan.Astronomical.meanSiderealTime(T);
+	    var Thetaapp = solar.apparentSiderealTime;
+	    var Omega = adhan.Astronomical.ascendingLunarNodeLongitude(T);
+	    E0 = adhan.Astronomical.meanObliquityOfTheEcliptic(T);
+	    L0 = adhan.Astronomical.meanSolarLongitude(T);
+	    var Lp = adhan.Astronomical.meanLunarLongitude(T);
+	    var dPsi = adhan.Astronomical.nutationInLongitude(T, L0, Lp, Omega);
+	    var dE = adhan.Astronomical.nutationInObliquity(T, L0, Lp, Omega);
+	    var E = E0 + dE;
 
-	QUnit.close(Theta0, 197.693195, 0.000001);
-    QUnit.close(Thetaapp, 197.6922295833, 0.0001);
+		expect(Theta0).to.be.closeTo(197.693195, 0.000001);
+	    expect(Thetaapp).to.be.closeTo(197.6922295833, 0.0001);
 
-    // values from Astronomical Algorithms page 148
+	    // values from Astronomical Algorithms page 148
 
-    QUnit.close(Omega, 11.2531, 0.0001);
-    QUnit.close(dPsi, -0.0010522,  0.0001);
-    QUnit.close(dE, 0.0026230556, 0.00001);
-    QUnit.close(E0, 23.4409463889, 0.000001);
-    QUnit.close(E, 23.4435694444, 0.00001);
+	    expect(Omega).to.be.closeTo(11.2531, 0.0001);
+	    expect(dPsi).to.be.closeTo(-0.0010522,  0.0001);
+	    expect(dE).to.be.closeTo(0.0026230556, 0.00001);
+	    expect(E0).to.be.closeTo(23.4409463889, 0.000001);
+	    expect(E).to.be.closeTo(23.4435694444, 0.00001);
+	});
+
+	it("Calculates the Altitude Of Celestial Body", function() {
+		var Phi = 38 + (55 / 60) + (17.0 / 3600);
+    	var Delta = -6 - (43 / 60) - (11.61 / 3600);
+    	var H = 64.352133;
+    	var altitude = adhan.Astronomical.altitudeOfCelestialBody(Phi, Delta, H);
+		expect(altitude).to.be.closeTo(15.1249, 0.0001);
+	});
+
+	it("Calculates the Transit and Hour Angle", function() {
+		// values from Astronomical Algorithms page 103
+		var longitude = -71.0833;
+		var Theta = 177.74208;
+		var Alpha1 = 40.68021;
+		var Alpha2 = 41.73129;
+		var Alpha3 = 42.78204;
+		var m0 = adhan.Astronomical.approximateTransit(longitude, Theta, Alpha2);
+
+		expect(m0).to.be.closeTo(0.81965, 0.00001);
+
+	    var transit = adhan.Astronomical.correctedTransit(m0, longitude, Theta, Alpha2, Alpha1, Alpha3) / 24;
+
+	    expect(transit).to.be.closeTo(0.81980, 0.00001);
+
+	    var Delta1 = 18.04761;
+	    var Delta2 = 18.44092;
+	    var Delta3 = 18.82742;
+	    var coordinates = new adhan.Coordinates(42.3333, longitude);
+
+	    var rise = adhan.Astronomical.correctedHourAngle(m0, -0.5667, coordinates, false, Theta, Alpha2, Alpha1, Alpha3, Delta2, Delta1, Delta3) / 24;
+	    expect(rise).to.be.closeTo(0.51766, 0.00001);
+	});
 });
 
-QUnit.test("Altitude Of Celestial Body", function(assert) {
-	var Phi = 38 + (55 / 60) + (17.0 / 3600);
-    var Delta = -6 - (43 / 60) - (11.61 / 3600);
-    var H = 64.352133;
-    var altitude = adhan.Astronomical.altitudeOfCelestialBody(Phi, Delta, H);
-	QUnit.close(altitude, 15.1249, 0.0001);
-});
 
-QUnit.test("Transit and Hour Angle", function(assert) {
-	// values from Astronomical Algorithms page 103
-	var longitude = -71.0833;
-	var Theta = 177.74208;
-	var Alpha1 = 40.68021;
-	var Alpha2 = 41.73129;
-	var Alpha3 = 42.78204;
-	var m0 = adhan.Astronomical.approximateTransit(longitude, Theta, Alpha2);
 
-	QUnit.close(m0, 0.81965, 0.00001);
+/*
 
-    var transit = adhan.Astronomical.correctedTransit(m0, longitude, Theta, Alpha2, Alpha1, Alpha3) / 24;
-
-    QUnit.close(transit, 0.81980, 0.00001);
-
-    var Delta1 = 18.04761;
-    var Delta2 = 18.44092;
-    var Delta3 = 18.82742;
-    var coordinates = new adhan.Coordinates(42.3333, longitude);
-
-    var rise = adhan.Astronomical.correctedHourAngle(m0, -0.5667, coordinates, false, Theta, Alpha2, Alpha1, Alpha3, Delta2, Delta1, Delta3) / 24;
-    QUnit.close(rise, 0.51766, 0.00001);
-
-});
 
 QUnit.test("Solar Time", function(assert) {
-    /*
-    Comparison values generated from http://aa.usno.navy.mil/rstt/onedaytable?form=1&ID=AA&year=2015&month=7&day=12&state=NC&place=raleigh
-    */
+    // Comparison values generated from http://aa.usno.navy.mil/rstt/onedaytable?form=1&ID=AA&year=2015&month=7&day=12&state=NC&place=raleigh
     var coordinates = new adhan.Coordinates(35 + 47/60, -78 - 39/60);
     var solar = new adhan.SolarTime(new Date(2015, 6, 12), coordinates);
 
@@ -159,24 +162,22 @@ QUnit.test("Calendrical Date", function(assert) {
 
 QUnit.test("Interpolation", function(assert) {
 	var interpolatedValue = adhan.Astronomical.interpolate(0.877366, 0.884226, 0.870531, 4.35/24)
-	QUnit.close(interpolatedValue, 0.876125, 0.000001);
+	expect(interpolatedValue, 0.876125, 0.000001);
 
     var i1 = adhan.Astronomical.interpolate(1, -1, 3, 0.6);
-    QUnit.close(i1, 2.2, 0.000001);
+    expect(i1, 2.2, 0.000001);
 });
 
 QUnit.test("Angle Interpolation", function(assert) {
     var i1 = adhan.Astronomical.interpolateAngles(1, -1, 3, 0.6);
-    QUnit.close(i1, 2.2, 0.000001);
+    expect(i1, 2.2, 0.000001);
 
     var i2 = adhan.Astronomical.interpolateAngles(1, 359, 3, 0.6);
-    QUnit.close(i2, 2.2, 0.000001);
+    expect(i2, 2.2, 0.000001);
 });
 
 QUnit.test("Julian Day", function(assert) {
-	/*
-	Comparison values generated from http://aa.usno.navy.mil/data/docs/JulianDate.php
-	*/
+	// Comparison values generated from http://aa.usno.navy.mil/data/docs/JulianDate.php
 	assert.equal(adhan.Astronomical.julianDay(2010, 1, 2), 2455198.500000);
 	assert.equal(adhan.Astronomical.julianDay(2011, 2, 4), 2455596.500000);
 	assert.equal(adhan.Astronomical.julianDay(2012, 3, 6), 2455992.500000);
@@ -191,13 +192,13 @@ QUnit.test("Julian Day", function(assert) {
 	assert.equal(adhan.Astronomical.julianDay(2021, 12, 24), 2459572.500000);
 
 	var jdVal = 2457215.67708333;
-	QUnit.close(adhan.Astronomical.julianDay(2015, 7, 12, 4.25), jdVal, 0.000001);
+	expect(adhan.Astronomical.julianDay(2015, 7, 12, 4.25), jdVal, 0.000001);
 
     var date = new Date(2015, 6, 12, 4, 15);
-    QUnit.close(julianDate(date), jdVal, 0.000001);
+    expect(julianDate(date), jdVal, 0.000001);
 
-	QUnit.close(adhan.Astronomical.julianDay(2015, 7, 12, 8.0), 2457215.833333, 0.000001);
-	QUnit.close(adhan.Astronomical.julianDay(1992, 10, 13, 0.0), 2448908.5, 0.000001);
+	expect(adhan.Astronomical.julianDay(2015, 7, 12, 8.0), 2457215.833333, 0.000001);
+	expect(adhan.Astronomical.julianDay(1992, 10, 13, 0.0), 2448908.5, 0.000001);
 });
 
 QUnit.test("Julian Hours", function(assert) {
@@ -245,3 +246,4 @@ QUnit.test("Days since solstice", function(assert) {
 	assert.equal(364, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2015, 5, 20)), 2015, -1));
 	assert.equal(365, adhan.Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 5, 20)), 2016, -1));
 });
+*/

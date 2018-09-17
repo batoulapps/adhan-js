@@ -165,3 +165,14 @@ document.write('Asr: ' + formattedTime(prayerTimes.asr, -4) + '\n');
 document.write('Maghrib: ' + formattedTime(prayerTimes.maghrib, -4) + '\n');
 document.write('Isha: ' + formattedTime(prayerTimes.isha, -4) + '\n');
 ```
+
+## Contributing
+
+Adhan is made publicly available to provide a well tested and well documented library for Islamic prayer times to all 
+developers. We accept feature contributions provided that they are properly documented and include the appropriate 
+unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different 
+locations, we do ask that the source of the comparison values be properly documented.
+
+## License
+
+Adhan is available under the MIT license. See the LICENSE file for more info.

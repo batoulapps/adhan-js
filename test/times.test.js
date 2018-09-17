@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta name="viewport" content="width=device-width">
-	<title>QUnit Tests</title>
-	<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.22.0.css">
-</head>
-<body>
-	<div id="qunit"></div>
-	<div id="qunit-fixture"></div>
+const fs = require('fs');
+var expect = require("chai").expect;
+var adhan = require("../Adhan.js");
 
-	<script src="../Adhan.js"></script>
+describe("Validate prayer times", function() {
+	var files = fs.readdirSync("Shared/Times");
+    for (var i in files) {
+        var file_contents = fs.readFileSync("Shared/Times/" + files[i])
+        var data = JSON.parse(file_contents)
+        it("compares against the prayer times in " + files[i], function() {
+        	expect(data["times"].length).to.equal(12)
+    	});
+    }
+});
 
-	<script src="https://code.jquery.com/qunit/qunit-1.22.0.js"></script>
-	<script src="plugins/qunit-close-enough.js"></script>
-	<script src="plugins/moment.min.js"></script>
-	<script src="plugins/moment-timezone-with-data-2010-2020.min.js"></script>
-	<script src="times.js"></script>
-	<script type="text/javascript">
+/*
 		function parseParams(data) {
 			var params;
 
@@ -80,6 +77,4 @@
 				});
 			});
 		});
-	</script>
-</body>
-</html>
+		*/
