@@ -1,0 +1,136 @@
+{
+    "params": {
+        "latitude": 25.263056,
+        "longitude": 55.297222,
+        "timezone": "Asia/Dubai",
+        "method": "Dubai",
+        "madhab": "Shafi",
+        "highLatitudeRule": "MiddleOfTheNight"
+    },
+    "source": [
+        "https://www.awqaf.gov.ae/en/Pages/PrayerTimes.aspx",
+        "01/01/2018 13 RABI AL-THANI 1439   5:42 AM 7:01 AM 12:25 PM    3:24 PM 5:44 PM 7:03 PM",
+        "01/02/2018 15 JUMADA AL-AWWAL 1439 5:42 AM 6:58 AM 12:35 PM    3:44 PM 6:07 PM 7:22 PM",
+        "01/03/2018 13 JUMADA AL-THANI 1439 5:25 AM 6:39 AM 12:34 PM    3:54 PM 6:24 PM 7:38 PM",
+        "01/04/2018 14 RAJAB 1439           4:53 AM 6:08 AM 12:25 PM    3:54 PM 6:38 PM 7:53 PM",
+        "01/05/2018 15 SHAABAN 1439         4:21 AM 5:40 AM 12:19 PM    3:47 PM 6:52 PM 8:12 PM",
+        "01/06/2018 16 RAMADAN 1439         4 AM    5:25 AM 12:19 PM    3:43 PM 7:08 PM 8:33 PM",
+        "01/07/2018 17 SHAWWAL 1439         4:02 AM 5:29 AM 12:25 PM    3:48 PM 7:16 PM 8:43 PM",
+        "01/08/2018 19 DHU AL-QIDAH 1439    4:21 AM 5:43 AM 12:28 PM    3:55 PM 7:07 PM 8:29 PM",
+        "01/09/2018 21 DHU AL-HIJJAH 1439   4:40 AM 5:56 AM 12:22 PM    3:51 PM 6:41 PM 7:57 PM",
+        "01/10/2018 22 MUHARRAM 1440        4:54 AM 6:08 AM 12:11 PM    3:35 PM 6:09 PM 7:23 PM",
+        "01/11/2018 24 SAFAR 1440           5:08 AM 6:23 AM 12:05 PM    3:17 PM 5:42 PM 6:57 PM",
+        "01/12/2018 24 RABI AL-AWWAL 1440   5:25 AM 6:43 AM 12:11 PM    3:11 PM 5:32 PM 6:50 PM"
+    ],
+    "variance": 1,
+    "times": [
+        {
+            "date": "2016-01-01",
+            "fajr": "5:42 AM",
+            "sunrise": "7:01 AM",
+            "dhuhr": "12:25 PM",
+            "asr": "3:24 PM",
+            "maghrib": "5:44 PM",
+            "isha": "7:03 PM",
+        },
+        {
+            "date": "2016-02-01",
+            "fajr": "5:42 AM",
+            "sunrise": "6:58 AM",
+            "dhuhr": "12:35 PM",
+            "asr": "3:44 PM",
+            "maghrib": "6:07 PM",
+            "isha": "7:22 PM"
+        },
+        {
+            "date": "2016-03-01",
+            "fajr": "5:25 AM",
+            "sunrise": "6:39 AM",
+            "dhuhr": "12:34 PM",
+            "asr": "3:54 PM",
+            "maghrib": "6:24 PM",
+            "isha": "7:38 PM"
+        },
+        {
+            "date": "2016-04-01",
+            "fajr": "4:53 AM",
+            "sunrise": "6:08 AM",
+            "dhuhr": "12:25 PM",
+            "asr": "3:54 PM",
+            "maghrib": "6:38 PM",
+            "isha": "7:53 PM"
+        },
+        {
+            "date": "2016-05-01",
+            "fajr": "4:21 AM",
+            "sunrise": "5:40 AM",
+            "dhuhr": "12:19 PM",
+            "asr": "3:47 PM",
+            "maghrib": "6:52 PM",
+            "isha": "8:12 PM"
+        },
+        {
+            "date": "2016-06-01",
+            "fajr": "4:00 AM",
+            "sunrise": "5:25 AM",
+            "dhuhr": "12:19 PM",
+            "asr": "3:43 PM",
+            "maghrib": "7:08 PM",
+            "isha": "8:33 PM"
+        },
+        {
+            "date": "2016-07-01",
+            "fajr": "4:02 AM",
+            "sunrise": "5:29 AM",
+            "dhuhr": "12:25 PM",
+            "asr": "3:48 PM",
+            "maghrib": "7:16 PM",
+            "isha": "8:43 PM"
+        },
+        {
+            "date": "2016-08-01",
+            "fajr": "4:21 AM",
+            "sunrise": "5:43 AM",
+            "dhuhr": "12:28 PM",
+            "asr": "3:55 PM",
+            "maghrib": "7:07 PM",
+            "isha": "8:29 PM"
+        },
+        {
+            "date": "2016-09-01",
+            "fajr": "4:40 AM",
+            "sunrise": "5:56 AM",
+            "dhuhr": "12:22 PM",
+            "asr": "3:51 PM",
+            "maghrib": "6:41 PM",
+            "isha": "7:57 PM"
+        },
+        {
+            "date": "2016-10-01",
+            "fajr": "4:54 AM",
+            "sunrise": "6:08 AM",
+            "dhuhr": "12:11 PM",
+            "asr": "3:35 PM",
+            "maghrib": "6:09 PM",
+            "isha": "7:23 PM"
+        },
+        {
+            "date": "2015-11-01",
+            "fajr": "5:08 AM",
+            "sunrise": "6:23 AM",
+            "dhuhr": "12:05 PM",
+            "asr": "3:17 PM",
+            "maghrib": "5:42 PM",
+            "isha": "6:57 PM"
+        },
+        {
+            "date": "2015-12-01",
+            "fajr": "5:25 AM",
+            "sunrise": "6:43 AM",
+            "dhuhr": "12:11 PM",
+            "asr": "3:11 PM",
+            "maghrib": "5:32 PM",
+            "isha": "6:50 PM"
+        }       
+    ]
+}
