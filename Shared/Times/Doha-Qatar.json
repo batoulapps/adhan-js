@@ -1,0 +1,136 @@
+{
+	"params": {
+		"latitude": 25.283897,
+		"longitude": 51.528770,
+		"timezone": "Asia/Riyadh",
+		"method": "Qatar",
+		"madhab": "Shafi",
+		"highLatitudeRule": "MiddleOfTheNight"
+	},
+	"source": [
+		"http://www.islam.gov.qa/",
+		"adjusted +/- 2 minutes",
+		"Janurary(1)  4:58     6:19     11:37     2:35     4:56-1   6:26-1",
+		"February(2)  4:59     6:17     11:47     2:56     5:19-1   6:49-1",
+		"March(3)     4:41     5:57     11:46     3:07     5:37-1   7:07-1",
+		"April(4)     4:09-1   5:26-1   11:38     3:06+1   5:51     7:21",
+		"May(5)       3:37-1   4:58     11:31     3:00     6:05     7:35",
+		"June(6)      3:16-1   4:44-1   11:32     2:56     6:21-1   7:51-1",
+		"July(7)      3:18     4:47     11:38     3:01     6:29-1   7:59-1",
+		"August(8)    3:36+1   5:01     11:40     3:07     6:21-2   7:51-2",
+		"September(9) 3:56     5:14+1   11:34     3:03     5:54-1   7:24-1",
+		"October(10)  4:10     5:26     11:24-1   2:48-1   5:22-2   6:52-2",
+		"November(11) 4:24     5:41+1   11:17     2:29     4:54-1   6:24-1",
+		"December(12) 4:41+1   6:02+1   11:23     2:23     4:44-1   6:14-1"
+	],
+	"times": [
+		{
+			"date": "2016-01-01",
+			"fajr": "4:58 AM",
+			"sunrise": "6:19 AM",
+			"dhuhr": "11:37 AM",
+			"asr": "2:35 PM",
+			"maghrib": "4:55 PM",
+			"isha": "6:25 PM"
+		},		
+		{
+			"date": "2016-02-01",
+			"fajr": "4:59 AM",
+			"sunrise": "6:17 AM",
+			"dhuhr": "11:47 AM",
+			"asr": "2:56 PM",
+			"maghrib": "5:18 PM",
+			"isha": "6:48 PM"
+		},	
+		{
+			"date": "2016-03-01",
+			"fajr": "4:41 AM",
+			"sunrise": "5:57 AM",
+			"dhuhr": "11:46 AM",
+			"asr": "3:07 PM",
+			"maghrib": "5:36 PM",
+			"isha": "7:06 PM"
+		},	
+		{
+			"date": "2016-04-01",
+			"fajr": "4:08 AM",
+			"sunrise": "5:25 AM",
+			"dhuhr": "11:38 AM",
+			"asr": "3:07 PM",
+			"maghrib": "5:51 PM",
+			"isha": "7:21 PM"
+		},
+		{
+			"date": "2016-05-01",
+			"fajr": "3:36 AM",
+			"sunrise": "4:58 AM",
+			"dhuhr": "11:31 AM",
+			"asr": "3:00 PM",
+			"maghrib": "6:05 PM",
+			"isha": "7:35 PM"
+		},
+		{
+			"date": "2016-06-01",
+			"fajr": "3:15 AM",
+			"sunrise": "4:43 AM",
+			"dhuhr": "11:32 AM",
+			"asr": "2:56 PM",
+			"maghrib": "6:20 PM",
+			"isha": "7:50 PM"
+		},
+		{
+			"date": "2016-07-01",
+			"fajr": "3:18 AM",
+			"sunrise": "4:47 AM",
+			"dhuhr": "11:38 AM",
+			"asr": "3:01 PM",
+			"maghrib": "6:28 PM",
+			"isha": "7:58 PM"
+		},
+		{
+			"date": "2016-08-01",
+			"fajr": "3:37 AM",
+			"sunrise": "5:01 AM",
+			"dhuhr": "11:40 AM",
+			"asr": "3:07 PM",
+			"maghrib": "6:19 PM",
+			"isha": "7:49 PM"
+		},
+		{
+			"date": "2016-09-01",
+			"fajr": "3:56 AM",
+			"sunrise": "5:15 AM",
+			"dhuhr": "11:34 AM",
+			"asr": "3:03 PM",
+			"maghrib": "5:53 PM",
+			"isha": "7:23 PM"
+		},
+		{
+			"date": "2016-10-01",
+			"fajr": "4:10 AM",
+			"sunrise": "5:26 AM",
+			"dhuhr": "11:23 AM",
+			"asr": "2:47 PM",
+			"maghrib": "5:20 PM",
+			"isha": "6:50 PM"
+		},
+		{
+			"date": "2016-11-01",
+			"fajr": "4:24 AM",
+			"sunrise": "5:42 AM",
+			"dhuhr": "11:17 AM",
+			"asr": "2:29 PM",
+			"maghrib": "4:53 PM",
+			"isha": "6:23 PM"
+		},
+		{
+			"date": "2016-12-01",
+			"fajr": "4:42 AM",
+			"sunrise": "6:03 AM",
+			"dhuhr": "11:23 AM",
+			"asr": "2:23 PM",
+			"maghrib": "4:43 PM",
+			"isha": "6:13 PM"
+		}
+	]
+}
