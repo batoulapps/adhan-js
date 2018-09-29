@@ -2,17 +2,17 @@
 
 // UMD pattern from https://github.com/umdjs/umd
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define([], factory);
-    } else if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
-        root.adhan = factory();
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+} else if (typeof module === 'object' && module.exports) {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals (root is window)
+    root.adhan = factory();
   }
 }(this, function () {
     var Prayer = {
@@ -291,6 +291,28 @@
         }
     }
 
+    function Qibla(coordinates) {
+        var makkah = { latitude: 21.4225241, longitude: 39.8261818 };
+
+        // Equation from "Spherical Trigonometry For the use of colleges and schools" page 50
+        var term1 = (
+          Math.sin(degreesToRadians(makkah.longitude) -
+          degreesToRadians(coordinates.longitude))
+        );
+        var term2 = (
+          Math.cos(degreesToRadians(coordinates.latitude)) *
+          Math.tan(degreesToRadians(makkah.latitude))
+        );
+        var term3 = (
+          Math.sin(degreesToRadians(coordinates.latitude)) *
+          Math.cos(degreesToRadians(makkah.longitude) -
+          degreesToRadians(coordinates.longitude))
+        );
+        var angle = Math.atan2(term1, term2 - term3);
+
+        return unwindAngle(radiansToDegrees(angle));
+    }
+
     //
     // Astronomical equations
     //
@@ -524,7 +546,7 @@
             var a2 = rightAscension;
             /* Equation from page Astronomical Algorithms 102 */
             var Lw = L * -1;
-            return normalizeWithBound((a2 + Lw - Theta0) / 360, 1);
+            return normalizeToScale((a2 + Lw - Theta0) / 360, 1);
         },
 
         /* The time at which the sun is at its highest point in the sky (in universal time) */
@@ -539,7 +561,7 @@
             var Lw = L * -1;
             var Theta = unwindAngle((Theta0 + (360.985647 * m0)));
             var a = unwindAngle(Astronomical.interpolateAngles(a2, a1, a3, m0));
-            var H = closestAngle(Theta - Lw - a);
+            var H = quadrantShiftAngle(Theta - Lw - a);
             var dm = H / -360;
             return (m0 + dm) * 24;
         },
@@ -736,15 +758,15 @@
         return (radians * 180.0) / Math.PI;
     }
 
-    function normalizeWithBound(number, max) {
+    function normalizeToScale(number, max) {
         return number - (max * (Math.floor(number / max)))
     }
 
     function unwindAngle(angle) {
-        return normalizeWithBound(angle, 360.0);
+        return normalizeToScale(angle, 360.0);
     }
 
-    function closestAngle(angle) {
+    function quadrantShiftAngle(angle) {
         if (angle >= -180 && angle <= 180) {
             return angle;
         }
@@ -839,15 +861,16 @@
         CalculationParameters: CalculationParameters,
         CalculationMethod: CalculationMethod,
         PrayerTimes: PrayerTimes,
+        Qibla: Qibla,
         SolarTime: SolarTime,
         SolarCoordinates: SolarCoordinates,
         Astronomical: Astronomical,
         Math: {
             degreesToRadians: degreesToRadians,
             radiansToDegrees: radiansToDegrees,
-            normalizeWithBound: normalizeWithBound,
+            normalizeToScale: normalizeToScale,
             unwindAngle: unwindAngle,
-            closestAngle: closestAngle,
+            quadrantShiftAngle: quadrantShiftAngle,
             timeComponents: timeComponents
         },
         Date: {

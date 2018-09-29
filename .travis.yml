@@ -1,5 +1,3 @@
 language: node_js
-before_script:
- - npm install -g node-qunit-phantomjs
-script:
- - Tests/runtests
+node_js:
+  - "node"
