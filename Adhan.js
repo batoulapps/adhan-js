@@ -49,6 +49,7 @@
         this.madhab = Madhab.Shafi;
         this.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight;
         this.adjustments = { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 };
+        this.methodAdjustments = { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 };
 
         this.nightPortions = function() {
             switch(this.highLatitudeRule) {
@@ -65,17 +66,23 @@
     var CalculationMethod = {
         // Muslim World League
         MuslimWorldLeague: function() {
-            return new CalculationParameters(18, 17, 0, "MuslimWorldLeague");
+            var params = new CalculationParameters(18, 17, 0, "MuslimWorldLeague");
+            params.methodAdjustments = { dhuhr: 1 };
+            return params;
         },
 
         // Egyptian General Authority of Survey
         Egyptian: function() {
-            return new CalculationParameters(19.5, 17.5, 0, "Egyptian");
+            var params = new CalculationParameters(19.5, 17.5, 0, "Egyptian");
+            params.methodAdjustments = { dhuhr: 1 };
+            return params;
         },
 
         // University of Islamic Sciences, Karachi
         Karachi: function() {
-            return new CalculationParameters(18, 18, 0, "Karachi");
+            var params = new CalculationParameters(18, 18, 0, "Karachi");
+            params.methodAdjustments = { dhuhr: 1 };
+            return params;
         },
 
         // Umm al-Qura University, Makkah
@@ -83,19 +90,25 @@
             return new CalculationParameters(18.5, 0, 90, "UmmAlQura");
         },
 
-        // The Gulf Region
-        Gulf: function() {
-            return new CalculationParameters(19.5, 0, 90, "Gulf");
+        // Dubai
+        Dubai: function() {
+            var params = new CalculationParameters(18.2, 18.2, 0, "Dubai");
+            params.methodAdjustments = { sunrise: -3, dhuhr: 3, asr: 3, maghrib: 3 };
+            return params;
         },
 
         // Moonsighting Committee
         MoonsightingCommittee: function() {
-            return new CalculationParameters(18, 18, 0, "MoonsightingCommittee");
+            var params = new CalculationParameters(18, 18, 0, "MoonsightingCommittee");
+            params.methodAdjustments = { dhuhr: 5, maghrib: 3 };
+            return params;
         },
 
         // ISNA
         NorthAmerica: function() {
-            return new CalculationParameters(15, 15, 0, "NorthAmerica");
+            var params = new CalculationParameters(15, 15, 0, "NorthAmerica");
+            params.methodAdjustments = { dhuhr: 1 };
+            return params;
         },
 
         // Kuwait
@@ -110,7 +123,9 @@
 
         // Singapore
         Singapore: function() {
-            return new CalculationParameters(20, 18, 0, "Singapore");
+            var params = new CalculationParameters(20, 18, 0, "Singapore");
+            params.methodAdjustments = { dhuhr: 1 };
+            return params;
         },
 
         // Other
@@ -190,43 +205,19 @@
             }
         }
 
-        // method based offsets
-        var dhuhrOffset = (function(){
-            switch(calculationParameters.method) {
-                case "MoonsightingCommittee":
-                    // Moonsighting Committee requires 5 minutes for
-                    // the sun to pass the zenith and dhuhr to enter
-                    return 5;
-                case "UmmAlQura":
-                case "Gulf":
-                case "Qatar":
-                    // UmmAlQura and derivatives don't add
-                    // anything to zenith for dhuhr
-                    return 0;
-                default:
-                    // Default behavior waits 1 minute for the
-                    // sun to pass the zenith and dhuhr to enter
-                    return 1;
-            }
-        })();
+        var fajrAdjustment = (calculationParameters.adjustments.fajr || 0) + (calculationParameters.methodAdjustments.fajr || 0);
+        var sunriseAdjustment = (calculationParameters.adjustments.sunrise || 0) + (calculationParameters.methodAdjustments.sunrise || 0);
+        var dhuhrAdjustment = (calculationParameters.adjustments.dhuhr || 0) + (calculationParameters.methodAdjustments.dhuhr || 0);
+        var asrAdjustment = (calculationParameters.adjustments.asr || 0) + (calculationParameters.methodAdjustments.asr || 0);
+        var maghribAdjustment = (calculationParameters.adjustments.maghrib || 0) + (calculationParameters.methodAdjustments.maghrib || 0);
+        var ishaAdjustment = (calculationParameters.adjustments.isha || 0) + (calculationParameters.methodAdjustments.isha || 0);
 
-        var maghribOffset = (function(){
-            switch(calculationParameters.method) {
-                case "MoonsightingCommittee":
-                    // Moonsighting Committee adds 3 minutes to
-                    // sunset time to account for light refraction
-                    return 3;
-                default:
-                    return 0;
-            }
-        })();
-
-        this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, calculationParameters.adjustments.fajr));
-        this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, calculationParameters.adjustments.sunrise));
-        this.dhuhr = roundedMinute(dateByAddingMinutes(dateByAddingMinutes(dhuhrTime, calculationParameters.adjustments.dhuhr), dhuhrOffset));
-        this.asr = roundedMinute(dateByAddingMinutes(asrTime, calculationParameters.adjustments.asr));
-        this.maghrib = roundedMinute(dateByAddingMinutes(dateByAddingMinutes(maghribTime, calculationParameters.adjustments.maghrib), maghribOffset));
-        this.isha = roundedMinute(dateByAddingMinutes(ishaTime, calculationParameters.adjustments.isha));
+        this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment));
+        this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment));
+        this.dhuhr = roundedMinute(dateByAddingMinutes(dhuhrTime, dhuhrAdjustment));
+        this.asr = roundedMinute(dateByAddingMinutes(asrTime, asrAdjustment));
+        this.maghrib = roundedMinute(dateByAddingMinutes(maghribTime, maghribAdjustment));
+        this.isha = roundedMinute(dateByAddingMinutes(ishaTime, ishaAdjustment));
 
         this.timeForPrayer = function(prayer) {
             if (prayer == Prayer.Fajr) {

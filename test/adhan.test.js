@@ -50,11 +50,11 @@ describe("Calculation Method", function() {
         expect(p4.ishaInterval).to.equal(90);
         expect(p4.method).to.equal("UmmAlQura");
 
-        var p5 = adhan.CalculationMethod.Gulf();
-        expect(p5.fajrAngle).to.equal(19.5);
-        expect(p5.ishaAngle).to.equal(0);
-        expect(p5.ishaInterval).to.equal(90);
-        expect(p5.method).to.equal("Gulf");
+        var p5 = adhan.CalculationMethod.Dubai();
+        expect(p5.fajrAngle).to.equal(18.2);
+        expect(p5.ishaAngle).to.equal(18.2);
+        expect(p5.ishaInterval).to.equal(0);
+        expect(p5.method).to.equal("Dubai");
 
         var p6 = adhan.CalculationMethod.MoonsightingCommittee();
         expect(p6.fajrAngle).to.equal(18);
