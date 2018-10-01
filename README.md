@@ -2,6 +2,8 @@
 
 The Adhan JavaScript implementation is written to be compatible with the latest version of all major browsers.
 
+[![Build Status](https://travis-ci.org/batoulapps/adhan-js.svg?branch=master)](https://travis-ci.org/batoulapps/adhan-js)
+
 ## Installation
 
 ### Browser
