@@ -782,6 +782,7 @@
             return hours + ':' + minutes;
         } else {
             hours = offset.getUTCHours() > 12 ? (offset.getUTCHours() - 12).toString() : offset.getUTCHours().toString();
+            hours = hours == 0 ? 12 : hours;
             minutes = offset.getUTCMinutes().toString();
             if (minutes.length < 2) {
                 minutes = '0' + minutes;
