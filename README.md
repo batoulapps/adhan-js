@@ -4,6 +4,8 @@
 
 Adhan is a well tested and well documented library for calculating Islamic prayer times. Implementations of Adhan in other languages can be found in the parent repo [Adhan](https://github.com/batoulapps/Adhan).
 
+All astronomical calculations are high precision equations directly from the book [“Astronomical Algorithms” by Jean Meeus](http://www.willbell.com/math/mc1.htm). This book is recommended by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory of the National Oceanic and Atmospheric Administration.
+
 ## Installation
 
 ### Browser
@@ -98,6 +100,7 @@ params.adjustments.fajr = 2;
 | Qatar | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
 | Kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
 | MoonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
+| Singapore | Method used by Singapore. Fajr angle: 20, Isha angle: 18. |
 | NorthAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
 | Other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` object. |
 
