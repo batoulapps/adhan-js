@@ -4,7 +4,8 @@
   "description": "Adhan is a well tested and well documented library for calculating Islamic prayer times. All astronomical calculations are high precision equations directly from the book “Astronomical Algorithms” by Jean Meeus. This book is recommended by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory of the National Oceanic and Atmospheric Administration.",
   "main": "Adhan.js",
   "scripts": {
-    "test": "mocha"
+    "test": "nyc --reporter=lcov mocha",
+    "coverage": "codecov"
   },
   "repository": {
     "type": "git",
@@ -21,8 +22,10 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-datetime": "^1.5.0",
+    "codecov": "^3.3.0",
     "mocha": "^5.2.0",
     "moment": "^2.22.2",
-    "moment-timezone": "^0.5.21"
+    "moment-timezone": "^0.5.21",
+    "nyc": "^14.0.0"
   }
 }

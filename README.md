@@ -1,8 +1,10 @@
 # Adhan JavaScript
 
-The Adhan JavaScript implementation is written to be compatible with the latest version of all major browsers.
+[![badge-version][]][npm] [![badge-travis][]][travis] [![badge-cov][]][codecov]
 
-[![Build Status](https://travis-ci.org/batoulapps/adhan-js.svg?branch=master)](https://travis-ci.org/batoulapps/adhan-js)
+Adhan is a well tested and well documented library for calculating Islamic prayer times. Implementations of Adhan in other languages can be found in the parent repo [Adhan](https://github.com/batoulapps/Adhan).
+
+All astronomical calculations are high precision equations directly from the book [“Astronomical Algorithms” by Jean Meeus](http://www.willbell.com/math/mc1.htm). This book is recommended by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory of the National Oceanic and Atmospheric Administration.
 
 ## Installation
 
@@ -28,25 +30,7 @@ and then require the module
 var adhan = require('adhan')
 ```
 
-## Upgrading from 1.0.1 to 2.0.0
-Upgrading to 2.0.0 introduces breaking API changes. 
-
-JavaScript `Date` and `Number` prototypes are no longer patched by this library. 
-The library should now be pure without any side effects.
-
-This means you can no longer depend on methods like `formattedTime` being directly accessible on the Date instance. For example,
- 
-**Before**:
-
-```js
-prayerTimes.fajr.formattedTime(); // no longer works
-```
-
-**After**:
-
-```js
-adhan.Date.formattedTime(prayerTimes.fajr); // works
-```
+Read [migration guide from version 1.x](MIGRATION.md)
 
 
 ## Usage
@@ -116,6 +100,7 @@ params.adjustments.fajr = 2;
 | Qatar | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
 | Kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
 | MoonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
+| Singapore | Method used by Singapore. Fajr angle: 20, Isha angle: 18. |
 | NorthAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
 | Other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` object. |
 
@@ -178,3 +163,10 @@ locations, we do ask that the source of the comparison values be properly docume
 ## License
 
 Adhan is available under the MIT license. See the LICENSE file for more info.
+
+[badge-version]: https://img.shields.io/npm/v/adhan.svg
+[badge-travis]: https://travis-ci.org/batoulapps/adhan-js.svg?branch=master
+[badge-cov]: https://codecov.io/gh/batoulapps/adhan-js/branch/master/graph/badge.svg
+[travis]: https://travis-ci.org/batoulapps/adhan-js
+[npm]: https://www.npmjs.org/package/adhan
+[codecov]: https://codecov.io/gh/batoulapps/adhan-js
