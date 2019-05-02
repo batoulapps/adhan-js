@@ -30,10 +30,10 @@ and then require the module
 var adhan = require('adhan')
 ```
 
-Read [migration guide from version 1.x](MIGRATION.md)
-
 
 ## Usage
+
+Migrating from version 1.x? Read the [migration guide](MIGRATION.md)
 
 To get prayer times initialize a new `PrayerTimes` object passing in coordinates,
 date, and calculation parameters.
