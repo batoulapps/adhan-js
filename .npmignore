@@ -1,4 +1,8 @@
 test/
-example.html
 Shared/
+coverage/
+example.html
 .travis.yml
+jest.config.js
+babel.config.js
+webpack.config.js
