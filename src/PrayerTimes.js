@@ -6,6 +6,10 @@ import { dateByAddingDays, dateByAddingMinutes, dateByAddingSeconds, roundedMinu
 
 export default class PrayerTimes {
     constructor(coordinates, date, calculationParameters) {
+        this.coordinates = coordinates;
+        this.date = date;
+        this.calculationParameters = calculationParameters;
+
         var solarTime = new SolarTime(date, coordinates);
 
         var fajrTime;
@@ -23,7 +27,9 @@ export default class PrayerTimes {
 
         asrTime = new TimeComponents(solarTime.afternoon(calculationParameters.madhab)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
-        var tomorrowSunrise = dateByAddingDays(sunriseTime, 1);
+        var tomorrow = dateByAddingDays(date, 1);
+        var tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
+        var tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
         var night = (tomorrowSunrise - maghribTime) / 1000;
 
         fajrTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());

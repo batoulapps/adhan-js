@@ -1,22 +1,16 @@
 import Astronomical from './Astronomical';
-import { julianDayFromDate } from './DateUtils';
 import { degreesToRadians, radiansToDegrees } from './MathUtils'
 import SolarCoordinates from './SolarCoordinates';
 
 export default class SolarTime {
     constructor(date, coordinates) {
-        // calculations need to occur at 0h0m UTC
-        date.setHours(0);
-        date.setMinutes(0);
-        this.date = date;
+        const julianDay = Astronomical.julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), 0);
+
         this.observer = coordinates;
-        this.solar = new SolarCoordinates(julianDayFromDate(date));
+        this.solar = new SolarCoordinates(julianDay);
 
-        const previous = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
-        const next = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-
-        this.prevSolar = new SolarCoordinates(julianDayFromDate(previous));
-        this.nextSolar = new SolarCoordinates(julianDayFromDate(next));
+        this.prevSolar = new SolarCoordinates(julianDay - 1);
+        this.nextSolar = new SolarCoordinates(julianDay + 1);
 
         const m0 = Astronomical.approximateTransit(coordinates.longitude, this.solar.apparentSiderealTime, this.solar.rightAscension);
         const solarAltitude = -50.0 / 60.0;

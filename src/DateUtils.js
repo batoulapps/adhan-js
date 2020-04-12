@@ -1,13 +1,13 @@
 import Astronomical from './Astronomical';
 
 export function dateByAddingDays(date, days) {
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth();
-    const day = date.getUTCDate() + days;
-    const hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
-    const seconds = date.getUTCSeconds();
-    return new Date(Date.UTC(year, month, day, hours, minutes, seconds));
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate() + days;
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    return new Date(year, month, day, hours, minutes, seconds);
 }
 
 export function dateByAddingMinutes(date, minutes) {
@@ -35,8 +35,4 @@ export function dayOfYear(date) {
     returnedDayOfYear += date.getDate();
 
     return returnedDayOfYear;
-}
-
-export function julianDayFromDate(date) {
-    return Astronomical.julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours() + (date.getMinutes() / 60));
 }

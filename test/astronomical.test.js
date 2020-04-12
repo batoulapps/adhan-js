@@ -4,7 +4,7 @@ import Coordinates from '../src/Coordinates';
 import SolarTime from '../src/SolarTime';
 import SolarCoordinates from '../src/SolarCoordinates';
 import { unwindAngle } from '../src/MathUtils';
-import { dayOfYear, julianDayFromDate } from '../src/DateUtils';
+import { dayOfYear } from '../src/DateUtils';
 
 function timeString(hours) {
 	var comps = new TimeComponents(hours);
@@ -185,9 +185,6 @@ test("calculate the Julian day for a given Gregorian date",() => {
 
 	var jdVal = 2457215.67708333;
 	expect(Astronomical.julianDay(2015, 7, 12, 4.25)).toBeCloseTo(jdVal, 5);
-
-	var date = new Date(2015, 6, 12, 4, 15);
-	expect(julianDayFromDate(date)).toBeCloseTo(jdVal, 5);
 
 	expect(Astronomical.julianDay(2015, 7, 12, 8.0)).toBeCloseTo(2457215.833333, 5);
 	expect(Astronomical.julianDay(1992, 10, 13, 0.0)).toBeCloseTo(2448908.5, 5);

@@ -50,18 +50,22 @@ function parseParams(data) {
 }
 
 expect.extend({
-	toBeWithinRange(received, floor, ceiling) {
-	  const pass = received >= floor && received <= ceiling;
+	toBeWithinRange(intialDate, comparisonDate, variance) {
+	  const initalValue = intialDate.getTime();
+	  const varianceValue = variance * 60 * 1000;
+	  const floor = comparisonDate.getTime() - varianceValue;
+	  const ceiling = comparisonDate.getTime() + varianceValue;
+	  const pass = (initalValue >= floor && initalValue <= ceiling);
 	  if (pass) {
 		return {
 		  message: () =>
-			`expected ${received} not to be within range ${floor} - ${ceiling}`,
+			`expected ${intialDate} not to be within range ${comparisonDate} and a variance of ${variance} minute`,
 		  pass: true,
 		};
 	  } else {
 		return {
 		  message: () =>
-			`expected ${received} to be within range ${floor} - ${ceiling}`,
+			`expected ${intialDate} to be within range ${comparisonDate} and a variance of ${variance} minute`,
 		  pass: false,
 		};
 	  }
@@ -74,31 +78,24 @@ fs.readdirSync("Shared/Times").forEach( function (filename) {
 		var data = JSON.parse(file_contents);
 		var coordinates = new adhan.Coordinates(data["params"]["latitude"], data["params"]["longitude"]);
 		var params = parseParams(data["params"]);
-		var variance = (data["variance"] || 0) * 60;
+		var variance = data["variance"] || 0;
 		data["times"].forEach(function(time) {
 			var date = moment(time["date"], "YYYY-MM-DD").toDate();
 			var p = new adhan.PrayerTimes(coordinates, date, params);
 
-			var testFajr = moment.tz(time["date"] + " " + time["fajr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var testSunrise = moment.tz(time["date"] + " " + time["sunrise"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var testDhuhr = moment.tz(time["date"] + " " + time["dhuhr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var testAsr = moment.tz(time["date"] + " " + time["asr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var testMaghrib = moment.tz(time["date"] + " " + time["maghrib"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var testIsha = moment.tz(time["date"] + " " + time["isha"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate().getTime() / 1000.0;
+			var testFajr = moment.tz(time["date"] + " " + time["fajr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			var testSunrise = moment.tz(time["date"] + " " + time["sunrise"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			var testDhuhr = moment.tz(time["date"] + " " + time["dhuhr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			var testAsr = moment.tz(time["date"] + " " + time["asr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			var testMaghrib = moment.tz(time["date"] + " " + time["maghrib"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			var testIsha = moment.tz(time["date"] + " " + time["isha"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
 
-			var fajr = moment(p.fajr).tz(data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var sunrise = moment(p.sunrise).tz(data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var dhuhr = moment(p.dhuhr).tz(data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var asr = moment(p.asr).tz(data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var maghrib = moment(p.maghrib).tz(data["params"]["timezone"]).toDate().getTime() / 1000.0;
-			var isha = moment(p.isha).tz(data["params"]["timezone"]).toDate().getTime() / 1000.0;
-
-			expect(fajr).toBeWithinRange(testFajr - variance, testFajr + variance);
-			expect(sunrise).toBeWithinRange(testSunrise - variance, testSunrise + variance);
-			expect(dhuhr).toBeWithinRange(testDhuhr - variance, testDhuhr + variance);
-			expect(asr).toBeWithinRange(testAsr - variance, testAsr + variance);
-			expect(maghrib).toBeWithinRange(testMaghrib - variance, testMaghrib + variance);
-			expect(isha).toBeWithinRange(testIsha - variance, testIsha + variance);
+			expect(p.fajr).toBeWithinRange(testFajr, variance);
+			expect(p.sunrise).toBeWithinRange(testSunrise, variance);
+			expect(p.dhuhr).toBeWithinRange(testDhuhr, variance);
+			expect(p.asr).toBeWithinRange(testAsr, variance);
+			expect(p.maghrib).toBeWithinRange(testMaghrib, variance);
+			expect(p.isha).toBeWithinRange(testIsha, variance);
 		});
 	});
 });

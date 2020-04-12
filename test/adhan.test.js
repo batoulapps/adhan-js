@@ -17,6 +17,11 @@ test("Verifying the night portion defined by the high latitude rule", () => {
     p3.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
     expect(p3.nightPortions().fajr).toBe(10/60);
     expect(p3.nightPortions().isha).toBe(15/60);
+
+    var p4 = new adhan.CalculationParameters(10, 15);
+    p4.highLatitudeRule = adhan.HighLatitudeRule.fake;
+    expect(() => { p4.nightPortions().fajr }).toThrow();
+    expect(() => { p4.nightPortions().isha }).toThrow();
 });
 
 test("Verifying the angles defined by the calculation method", () => {

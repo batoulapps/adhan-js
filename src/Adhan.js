@@ -6,7 +6,7 @@ import HighLatitudeRule from './HighLatitudeRule';
 import CalculationMethod from './CalculationMethod';
 import CalculationParameters from './CalculationParameters';
 import qibla from './Qibla';
-
+import SunnahTimes from './SunnahTimes';
 
 const adhan = {
     Prayer: Prayer,
@@ -16,6 +16,7 @@ const adhan = {
     CalculationParameters: CalculationParameters,
     CalculationMethod: CalculationMethod,
     PrayerTimes: PrayerTimes,
+    SunnahTimes: SunnahTimes,
     Qibla: qibla
 };
 

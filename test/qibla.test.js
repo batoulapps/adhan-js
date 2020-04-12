@@ -1,6 +1,6 @@
 import qibla from '../src/Qibla';
 
-test("finds Qibla in North America", () => {
+test("finding Qibla in North America", () => {
 	var washingtonDC = { latitude: 38.9072, longitude: -77.0369 };
 	expect(qibla(washingtonDC)).toBeCloseTo(56.560, 3);
 
@@ -14,7 +14,7 @@ test("finds Qibla in North America", () => {
 	expect(qibla(anchorage)).toBeCloseTo(350.883, 3);
 });
 
-test("finds Qibla in the South Pacific", () => {
+test("finding Qibla in the South Pacific", () => {
 	var sydney = { latitude: -33.8688, longitude: 151.2093 };
 	expect(qibla(sydney)).toBeCloseTo(277.4996, 3);
 	
@@ -22,7 +22,7 @@ test("finds Qibla in the South Pacific", () => {
 	expect(qibla(auckland)).toBeCloseTo(261.197, 3);
 });
 
-test("finds Qibla in Europe", () => {
+test("finding Qibla in Europe", () => {
 	var london = { latitude: 51.5074, longitude: -0.1278 };
 	expect(qibla(london)).toBeCloseTo(118.987, 3);
 	
@@ -33,7 +33,7 @@ test("finds Qibla in Europe", () => {
 	expect(qibla(oslo)).toBeCloseTo(139.0278, 3);
 });
 
-test("finds Qibla in Asia", () => {
+test("finding Qibla in Asia", () => {
 	var islamabad = { latitude: 33.7294, longitude: 73.0931 };
 	expect(qibla(islamabad)).toBeCloseTo(255.882, 3);
 	

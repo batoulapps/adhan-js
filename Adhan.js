@@ -133,13 +133,13 @@ function quadrantShiftAngle(angle) {
 // CONCATENATED MODULE: ./src/DateUtils.js
 
 function dateByAddingDays(date, days) {
-  const year = date.getUTCFullYear();
-  const month = date.getUTCMonth();
-  const day = date.getUTCDate() + days;
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
-  const seconds = date.getUTCSeconds();
-  return new Date(Date.UTC(year, month, day, hours, minutes, seconds));
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate() + days;
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+  return new Date(year, month, day, hours, minutes, seconds);
 }
 function dateByAddingMinutes(date, minutes) {
   return dateByAddingSeconds(date, minutes * 60);
@@ -163,9 +163,6 @@ function DateUtils_dayOfYear(date) {
 
   returnedDayOfYear += date.getDate();
   return returnedDayOfYear;
-}
-function julianDayFromDate(date) {
-  return src_Astronomical.julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours() + date.getMinutes() / 60);
 }
 // CONCATENATED MODULE: ./src/Astronomical.js
 
@@ -545,19 +542,13 @@ class SolarCoordinates_SolarCoordinates {
 
 
 
-
 class SolarTime_SolarTime {
   constructor(date, coordinates) {
-    // calculations need to occur at 0h0m UTC
-    date.setHours(0);
-    date.setMinutes(0);
-    this.date = date;
+    const julianDay = src_Astronomical.julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), 0);
     this.observer = coordinates;
-    this.solar = new SolarCoordinates_SolarCoordinates(julianDayFromDate(date));
-    const previous = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
-    const next = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-    this.prevSolar = new SolarCoordinates_SolarCoordinates(julianDayFromDate(previous));
-    this.nextSolar = new SolarCoordinates_SolarCoordinates(julianDayFromDate(next));
+    this.solar = new SolarCoordinates_SolarCoordinates(julianDay);
+    this.prevSolar = new SolarCoordinates_SolarCoordinates(julianDay - 1);
+    this.nextSolar = new SolarCoordinates_SolarCoordinates(julianDay + 1);
     const m0 = src_Astronomical.approximateTransit(coordinates.longitude, this.solar.apparentSiderealTime, this.solar.rightAscension);
     const solarAltitude = -50.0 / 60.0;
     this.approxTransit = m0;
@@ -612,6 +603,9 @@ const Prayer = {
 
 class PrayerTimes_PrayerTimes {
   constructor(coordinates, date, calculationParameters) {
+    this.coordinates = coordinates;
+    this.date = date;
+    this.calculationParameters = calculationParameters;
     var solarTime = new SolarTime_SolarTime(date, coordinates);
     var fajrTime;
     var sunriseTime;
@@ -624,7 +618,9 @@ class PrayerTimes_PrayerTimes {
     sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     maghribTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     asrTime = new TimeComponents(solarTime.afternoon(calculationParameters.madhab)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-    var tomorrowSunrise = dateByAddingDays(sunriseTime, 1);
+    var tomorrow = dateByAddingDays(date, 1);
+    var tomorrowSolarTime = new SolarTime_SolarTime(tomorrow, coordinates);
+    var tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
     var night = (tomorrowSunrise - maghribTime) / 1000;
     fajrTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).utcDate(date.getFullYear(), date.getMonth(), date.getDate()); // special case for moonsighting committee above latitude 55
 
@@ -810,6 +806,9 @@ class CalculationParameters_CalculationParameters {
           fajr: this.fajrAngle / 60,
           isha: this.ishaAngle / 60
         };
+
+      default:
+        throw `Invalid high latitude rule found when attempting to compute night portions: ${this.highLatitudeRule}`;
     }
   }
 
@@ -907,7 +906,22 @@ function qibla(coordinates) {
   var angle = Math.atan2(term1, term2 - term3);
   return unwindAngle(radiansToDegrees(angle));
 }
+// CONCATENATED MODULE: ./src/SunnahTimes.js
+
+
+class SunnahTimes_SunnahTimes {
+  constructor(prayerTimes) {
+    const date = prayerTimes.date;
+    const nextDay = dateByAddingDays(date, 1);
+    const nextDayPrayerTimes = new PrayerTimes_PrayerTimes(prayerTimes.coordinates, nextDay, prayerTimes.calculationParameters);
+    const nightDuration = (nextDayPrayerTimes.fajr.getTime() - prayerTimes.maghrib.getTime()) / 1000.0;
+    this.middleOfTheNight = roundedMinute(dateByAddingSeconds(prayerTimes.maghrib, nightDuration / 2));
+    this.lastThirdOfTheNight = roundedMinute(dateByAddingSeconds(prayerTimes.maghrib, nightDuration * (2 / 3)));
+  }
+
+}
 // CONCATENATED MODULE: ./src/Adhan.js
+
 
 
 
@@ -924,6 +938,7 @@ const adhan = {
   CalculationParameters: CalculationParameters_CalculationParameters,
   CalculationMethod: src_CalculationMethod,
   PrayerTimes: PrayerTimes_PrayerTimes,
+  SunnahTimes: SunnahTimes_SunnahTimes,
   Qibla: qibla
 };
 /* harmony default export */ var Adhan = __webpack_exports__["default"] = (adhan);
