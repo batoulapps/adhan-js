@@ -10,31 +10,33 @@ Implementations of Adhan in other languages can be found in the parent repo [Adh
 
 ## Installation
 
+Adhan was designed to work in the browser and in Node.js
+
 ### Browser
 
 Simply include Adhan.js in your HTML page
 
 ```
 <script src="Adhan.js"></script>
+<script>
+    var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+</script>
 ```
 
 ### Node
-
-Adhan is available in npm
 
 ```
 npm install adhan
 ```
 
-and then require the module
-
 ```
 var adhan = require('adhan')
+var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
 ```
 
 ## Migration
 
-Migrating from version 1.x? Read the [migration guide](MIGRATION.md)
+Migrating from version 3.x? Read the [migration guide](MIGRATION.md)
 
 ## Usage
 
@@ -72,7 +74,7 @@ var date = new Date(2015, 11, 1);
 
 The rest of the needed information is contained within the `CalculationParameters` object.
 Instead of manually initializing this object it is recommended to use one of the pre-populated
-instances in the `CalculationMethod` object. You can then further
+objects in the `CalculationMethod` object. You can then further
 customize the calculation parameters if needed.
 
 ```js
@@ -81,7 +83,7 @@ params.madhab = adhan.Madhab.Hanafi;
 params.adjustments.fajr = 2;
 ```
 
-| Parameter | Description |
+| Property | Description |
 | --------- | ----------- |
 | method    | CalculationMethod name |
 | fajrAngle | Angle of the sun used to calculate Fajr |
@@ -89,57 +91,53 @@ params.adjustments.fajr = 2;
 | ishaInterval | Minutes after Maghrib (if set, the time for Isha will be Maghrib plus ishaInterval) |
 | madhab | Value from the Madhab object, used to calculate Asr |
 | highLatitudeRule | Value from the HighLatitudeRule object, used to set a minimum time for Fajr and a max time for Isha |
-| adjustments | JavaScript object with custom prayer time adjustments in minutes for each prayer time |
+| adjustments | Object with custom prayer time adjustments (in minutes) for each prayer time |
 
-**CalculationMethod**
-
-| Value | Description |
-| ----- | ----------- |
-| MuslimWorldLeague | Muslim World League. Fajr angle: 18, Isha angle: 17 |
-| Egyptian | Egyptian General Authority of Survey. Fajr angle: 19.5, Isha angle: 17.5 |
-| Karachi | University of Islamic Sciences, Karachi. Fajr angle: 18, Isha angle: 18 |
-| UmmAlQura | Umm al-Qura University, Makkah. Fajr angle: 18, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
-| Dubai | Method used in UAE. Fajr angle: 18.2, Isha angle: 18.2. |
-| Qatar | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
-| Kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
-| MoonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
-| Singapore | Method used by Singapore. Fajr angle: 20, Isha angle: 18. |
-| NorthAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
-| Other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` object. |
-
-**Madhab**
+#### CalculationMethod
 
 | Value | Description |
 | ----- | ----------- |
-| Shafi | Earlier Asr time |
-| Hanafi | Later Asr time |
+| adhan.CalculationMethod.MuslimWorldLeague() | Muslim World League. Fajr angle: 18, Isha angle: 17 |
+| adhan.CalculationMethod.Egyptian() | Egyptian General Authority of Survey. Fajr angle: 19.5, Isha angle: 17.5 |
+| adhan.CalculationMethod.Karachi() | University of Islamic Sciences, Karachi. Fajr angle: 18, Isha angle: 18 |
+| adhan.CalculationMethod.UmmAlQura() | Umm al-Qura University, Makkah. Fajr angle: 18, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
+| adhan.CalculationMethod.Dubai() | Method used in UAE. Fajr angle: 18.2, Isha angle: 18.2. |
+| adhan.CalculationMethod.Qatar() | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
+| adhan.CalculationMethod.Kuwait() | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
+| adhan.CalculationMethod.MoonsightingCommittee() | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
+| adhan.CalculationMethod.Singapore() | Method used by Singapore. Fajr angle: 20, Isha angle: 18. |
+| adhan.CalculationMethod.NorthAmerica() | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
+| adhan.CalculationMethod.Other() | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` object. |
 
-**HighLatitudeRule**
+#### Madhab
 
 | Value | Description |
 | ----- | ----------- |
-| MiddleOfTheNight | Fajr will never be earlier than the middle of the night and Isha will never be later than the middle of the night |
-| SeventhOfTheNight | Fajr will never be earlier than the beginning of the last seventh of the night and Isha will never be later than the end of the first seventh of the night |
-| TwilightAngle | Similar to SeventhOfTheNight, but instead of 1/7, the fraction of the night used is fajrAngle/60 and ishaAngle/60 |
+| adhan.Madhab.Shafi | Earlier Asr time |
+| adhan.Madhab.Hanafi | Later Asr time |
+
+#### HighLatitudeRule
+
+| Value | Description |
+| ----- | ----------- |
+| adhan.HighLatitudeRule.MiddleOfTheNight | Fajr will never be earlier than the middle of the night and Isha will never be later than the middle of the night |
+| adhan.HighLatitudeRule.SeventhOfTheNight | Fajr will never be earlier than the beginning of the last seventh of the night and Isha will never be later than the end of the first seventh of the night |
+| adhan.HighLatitudeRule.TwilightAngle | Similar to SeventhOfTheNight, but instead of 1/7, the fraction of the night used is fajrAngle/60 and ishaAngle/60 |
 
 
 ### Prayer Times
 
 Once the `PrayerTimes` object has been initialized it will contain values
 for all five prayer times and the time for sunrise. The prayer times will be
-Date object instances initialized with UTC values. To display these
-times for the local timezone, a formatting and timezone conversion extension
-to the Date object has been provided. Call `formattedTime(date)` and pass in 
-the date instance and the  UTC offset in hours for the appropriate timezone.
-There is also a second optional parameter of style, if you pass in '24h' the
-times will be formatted in 24 hour mode.
+Date object instances initialized with UTC values. You will then need to format
+the times for the correct timezone. You can do that by using a timezone aware 
+date formatting library like [moment](https://momentjs.com/docs/).
 
 ```js
-adhan.Date.formattedTime(prayerTimes.fajr, -4);
-adhan.Date.formattedTime(prayerTimes.fajr, -4, '24h');
+moment(prayerTimes.fajr).tz('America/New_York').format('h:mm A');
 ```
 
-## Full Example
+### Full Example
 
 ```js
 var date = new Date();
@@ -147,13 +145,45 @@ var coordinates = new adhan.Coordinates(35.78056, -78.6389);
 var params = adhan.CalculationMethod.MuslimWorldLeague();
 params.madhab = adhan.Madhab.Hanafi;
 var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
-var formattedTime = adhan.Date.formattedTime;
-document.write('Fajr: ' + formattedTime(prayerTimes.fajr, -4) + '\n');
-document.write('Sunrise: ' + formattedTime(prayerTimes.sunrise, -4) + '\n');
-document.write('Dhuhr: ' + formattedTime(prayerTimes.dhuhr, -4) + '\n');
-document.write('Asr: ' + formattedTime(prayerTimes.asr, -4) + '\n');
-document.write('Maghrib: ' + formattedTime(prayerTimes.maghrib, -4) + '\n');
-document.write('Isha: ' + formattedTime(prayerTimes.isha, -4) + '\n');
+
+var fajrTime = moment(prayerTimes.fajr).tz('America/New_York').format('h:mm A');
+var sunriseTime = moment(prayerTimes.sunrise).tz('America/New_York').format('h:mm A');
+var dhuhrTime = moment(prayerTimes.dhuhr).tz('America/New_York').format('h:mm A');
+var asrTime = moment(prayerTimes.asr).tz('America/New_York').format('h:mm A');
+var maghribTime = moment(prayerTimes.maghrib).tz('America/New_York').format('h:mm A');
+var ishaTime = moment(prayerTimes.isha).tz('America/New_York').format('h:mm A');
+```
+
+### Convenience Utilities
+
+The `PrayerTimes` object has functions for getting the current prayer and the next prayer. You can also get the time for a specified prayer, making it
+easier to dynamically show countdowns until the next prayer.
+
+```js
+var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+
+var current = prayerTimes.currentPrayer();
+var next = prayerTimes.nextPrayer();
+var nextPrayerTime = prayerTimes.timeForPrayer(next);
+```
+
+### Sunnah Times
+
+The Adhan library can also calulate Sunnah times. Given an instance of `PrayerTimes`, you can get a `SunnahTimes` object with the times for Qiyam.
+
+```js
+var sunnahTimes = new adhan.SunnahTimes(prayerTimes);
+var middleOfTheNight = moment(sunnahTimes.middleOfTheNight).tz('America/New_York').format('h:mm A');
+var lastThirdOfTheNight = moment(sunnahTimes.lastThirdOfTheNight).tz('America/New_York').format('h:mm A');
+```
+
+### Qibla Direction
+
+Get the direction, in degrees from North, of the Qibla from a given set of coordinates.
+
+```js
+var coordinates = new adhan.Coordinates(35.78056, -78.6389);
+var qiblaDirection = adhan.Qibla(coordinates);
 ```
 
 ## Contributing

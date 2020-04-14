@@ -30,7 +30,10 @@
     var coordinates = new adhan.Coordinates(35.78056, -78.6389);
     var params = adhan.CalculationMethod.MuslimWorldLeague();
     params.madhab = adhan.Madhab.Hanafi;
+    
     var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+
+    var sunnahTimes = new adhan.SunnahTimes(prayerTimes);
 
     document.write('Raleigh, NC - Muslim World League\n');
     document.write(`Prayer times for ${moment(date).format('MMMM DD, YYYY')}\n`);
@@ -41,7 +44,15 @@
     document.write(`Maghrib: ${moment(prayerTimes.maghrib).tz('America/New_York').format('h:mm A')}\n`);
     document.write(`Isha: ${moment(prayerTimes.isha).tz('America/New_York').format('h:mm A')}\n`);
 
-    document.write('\nCurrent Prayer: ' + prayerName(prayerTimes.currentPrayer()) + '\n');
+    document.write(`middle of the night: ${moment(sunnahTimes.middleOfTheNight).tz('America/New_York').format('h:mm A')}\n`);
+    document.write(`last third of the night: ${moment(sunnahTimes.lastThirdOfTheNight).tz('America/New_York').format('h:mm A')}\n\n`);
+
+    document.write(`Current Prayer: ${prayerName(prayerTimes.currentPrayer())}\n\n`);
+
+    document.write(`Qibla Direction: ${adhan.Qibla(coordinates)}`);
+
+    var nyc = { latitude: 40.7128, longitude: -74.0059 };
+	expect(qibla(nyc)).toBeCloseTo(58.4817, 3);
 
     </script></pre>
 </body>
