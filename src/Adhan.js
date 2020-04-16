@@ -1,7 +1,7 @@
 import Coordinates from './Coordinates';
 import PrayerTimes from './PrayerTimes';
 import Prayer from './Prayer';
-import Madhab from './Madhab';
+import { Madhab } from './Madhab';
 import HighLatitudeRule from './HighLatitudeRule';
 import CalculationMethod from './CalculationMethod';
 import CalculationParameters from './CalculationParameters';

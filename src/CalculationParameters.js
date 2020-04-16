@@ -1,4 +1,4 @@
-import Madhab from './Madhab';
+import { Madhab } from './Madhab';
 import HighLatitudeRule from './HighLatitudeRule';
 
 export default class CalculationParameters {

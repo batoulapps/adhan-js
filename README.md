@@ -14,8 +14,6 @@ Adhan was designed to work in the browser and in Node.js
 
 ### Browser
 
-Simply include Adhan.js in your HTML page
-
 ```
 <script src="Adhan.js"></script>
 <script>

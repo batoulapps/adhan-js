@@ -3,6 +3,7 @@ import TimeComponents from './TimeComponents';
 import Prayer from './Prayer';
 import Astronomical from './Astronomical';
 import { dateByAddingDays, dateByAddingMinutes, dateByAddingSeconds, roundedMinute, dayOfYear } from './DateUtils';
+import { Madhab, shadowLength } from './Madhab';
 
 export default class PrayerTimes {
     constructor(coordinates, date, calculationParameters) {
@@ -25,7 +26,7 @@ export default class PrayerTimes {
         sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
         maghribTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
-        asrTime = new TimeComponents(solarTime.afternoon(calculationParameters.madhab)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+        asrTime = new TimeComponents(solarTime.afternoon(shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
         var tomorrow = dateByAddingDays(date, 1);
         var tomorrowSolarTime = new SolarTime(tomorrow, coordinates);

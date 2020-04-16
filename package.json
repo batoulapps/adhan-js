@@ -1,8 +1,9 @@
 {
   "name": "adhan",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Adhan is a well tested and well documented library for calculating Islamic prayer times. All astronomical calculations are high precision equations directly from the book “Astronomical Algorithms” by Jean Meeus. This book is recommended by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory of the National Oceanic and Atmospheric Administration.",
   "main": "Adhan.js",
+  "types": "Adhan.d.ts",
   "scripts": {
     "build": "webpack --mode production",
     "test": "jest",
@@ -20,6 +21,9 @@
   ],
   "author": "Batoul Apps",
   "license": "MIT",
+  "contributors": [
+    "Ameir Al-Zoubi"
+  ],
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",

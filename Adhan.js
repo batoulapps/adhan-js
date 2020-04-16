@@ -586,16 +586,34 @@ class TimeComponents {
 }
 // CONCATENATED MODULE: ./src/Prayer.js
 const Prayer = {
-  Fajr: 0,
-  Sunrise: 1,
-  Dhuhr: 2,
-  Asr: 3,
-  Maghrib: 4,
-  Isha: 5,
-  None: 6
+  Fajr: 'fajr',
+  Sunrise: 'sunrise',
+  Dhuhr: 'dhuhr',
+  Asr: 'asr',
+  Maghrib: 'maghrib',
+  Isha: 'isha',
+  None: 'none'
 };
 /* harmony default export */ var src_Prayer = (Prayer);
+// CONCATENATED MODULE: ./src/Madhab.js
+const Madhab = {
+  Shafi: 'shafi',
+  Hanafi: 'hanafi'
+};
+function Madhab_shadowLength(madhab) {
+  switch (madhab) {
+    case Madhab.Shafi:
+      return 1;
+
+    case Madhab.Hanafi:
+      return 2;
+
+    default:
+      throw "Invalid Madhab";
+  }
+}
 // CONCATENATED MODULE: ./src/PrayerTimes.js
+
 
 
 
@@ -617,7 +635,7 @@ class PrayerTimes_PrayerTimes {
     dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     maghribTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-    asrTime = new TimeComponents(solarTime.afternoon(calculationParameters.madhab)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    asrTime = new TimeComponents(solarTime.afternoon(Madhab_shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     var tomorrow = dateByAddingDays(date, 1);
     var tomorrowSolarTime = new SolarTime_SolarTime(tomorrow, coordinates);
     var tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
@@ -745,17 +763,11 @@ class PrayerTimes_PrayerTimes {
   }
 
 }
-// CONCATENATED MODULE: ./src/Madhab.js
-const Madhab = {
-  Shafi: 1,
-  Hanafi: 2
-};
-/* harmony default export */ var src_Madhab = (Madhab);
 // CONCATENATED MODULE: ./src/HighLatitudeRule.js
 const HighLatitudeRule = {
-  MiddleOfTheNight: 1,
-  SeventhOfTheNight: 2,
-  TwilightAngle: 3
+  MiddleOfTheNight: 'middleofthenight',
+  SeventhOfTheNight: 'seventhofthenight',
+  TwilightAngle: 'twilightangle'
 };
 /* harmony default export */ var src_HighLatitudeRule = (HighLatitudeRule);
 // CONCATENATED MODULE: ./src/CalculationParameters.js
@@ -767,7 +779,7 @@ class CalculationParameters_CalculationParameters {
     this.fajrAngle = fajrAngle || 0;
     this.ishaAngle = ishaAngle || 0;
     this.ishaInterval = ishaInterval || 0;
-    this.madhab = src_Madhab.Shafi;
+    this.madhab = Madhab.Shafi;
     this.highLatitudeRule = src_HighLatitudeRule.MiddleOfTheNight;
     this.adjustments = {
       fajr: 0,
@@ -818,7 +830,7 @@ class CalculationParameters_CalculationParameters {
 const CalculationMethod = {
   // Muslim World League
   MuslimWorldLeague: function () {
-    var params = new CalculationParameters_CalculationParameters(18, 17, 0, "MuslimWorldLeague");
+    let params = new CalculationParameters_CalculationParameters(18, 17, 0, "MuslimWorldLeague");
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -826,7 +838,7 @@ const CalculationMethod = {
   },
   // Egyptian General Authority of Survey
   Egyptian: function () {
-    var params = new CalculationParameters_CalculationParameters(19.5, 17.5, 0, "Egyptian");
+    let params = new CalculationParameters_CalculationParameters(19.5, 17.5, 0, "Egyptian");
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -834,7 +846,7 @@ const CalculationMethod = {
   },
   // University of Islamic Sciences, Karachi
   Karachi: function () {
-    var params = new CalculationParameters_CalculationParameters(18, 18, 0, "Karachi");
+    let params = new CalculationParameters_CalculationParameters(18, 18, 0, "Karachi");
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -846,7 +858,7 @@ const CalculationMethod = {
   },
   // Dubai
   Dubai: function () {
-    var params = new CalculationParameters_CalculationParameters(18.2, 18.2, 0, "Dubai");
+    let params = new CalculationParameters_CalculationParameters(18.2, 18.2, 0, "Dubai");
     params.methodAdjustments = {
       sunrise: -3,
       dhuhr: 3,
@@ -857,7 +869,7 @@ const CalculationMethod = {
   },
   // Moonsighting Committee
   MoonsightingCommittee: function () {
-    var params = new CalculationParameters_CalculationParameters(18, 18, 0, "MoonsightingCommittee");
+    let params = new CalculationParameters_CalculationParameters(18, 18, 0, "MoonsightingCommittee");
     params.methodAdjustments = {
       dhuhr: 5,
       maghrib: 3
@@ -866,7 +878,7 @@ const CalculationMethod = {
   },
   // ISNA
   NorthAmerica: function () {
-    var params = new CalculationParameters_CalculationParameters(15, 15, 0, "NorthAmerica");
+    let params = new CalculationParameters_CalculationParameters(15, 15, 0, "NorthAmerica");
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -882,7 +894,7 @@ const CalculationMethod = {
   },
   // Singapore
   Singapore: function () {
-    var params = new CalculationParameters_CalculationParameters(20, 18, 0, "Singapore");
+    let params = new CalculationParameters_CalculationParameters(20, 18, 0, "Singapore");
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -898,12 +910,12 @@ const CalculationMethod = {
 
 
 function qibla(coordinates) {
-  var makkah = new Coordinates(21.4225241, 39.8261818); // Equation from "Spherical Trigonometry For the use of colleges and schools" page 50
+  const makkah = new Coordinates(21.4225241, 39.8261818); // Equation from "Spherical Trigonometry For the use of colleges and schools" page 50
 
-  var term1 = Math.sin(degreesToRadians(makkah.longitude) - degreesToRadians(coordinates.longitude));
-  var term2 = Math.cos(degreesToRadians(coordinates.latitude)) * Math.tan(degreesToRadians(makkah.latitude));
-  var term3 = Math.sin(degreesToRadians(coordinates.latitude)) * Math.cos(degreesToRadians(makkah.longitude) - degreesToRadians(coordinates.longitude));
-  var angle = Math.atan2(term1, term2 - term3);
+  const term1 = Math.sin(degreesToRadians(makkah.longitude) - degreesToRadians(coordinates.longitude));
+  const term2 = Math.cos(degreesToRadians(coordinates.latitude)) * Math.tan(degreesToRadians(makkah.latitude));
+  const term3 = Math.sin(degreesToRadians(coordinates.latitude)) * Math.cos(degreesToRadians(makkah.longitude) - degreesToRadians(coordinates.longitude));
+  const angle = Math.atan2(term1, term2 - term3);
   return unwindAngle(radiansToDegrees(angle));
 }
 // CONCATENATED MODULE: ./src/SunnahTimes.js
@@ -932,7 +944,7 @@ class SunnahTimes_SunnahTimes {
 
 const adhan = {
   Prayer: src_Prayer,
-  Madhab: src_Madhab,
+  Madhab: Madhab,
   HighLatitudeRule: src_HighLatitudeRule,
   Coordinates: Coordinates,
   CalculationParameters: CalculationParameters_CalculationParameters,

@@ -1,7 +1,7 @@
 const HighLatitudeRule = {
-    MiddleOfTheNight: 1,
-    SeventhOfTheNight: 2,
-    TwilightAngle: 3
+    MiddleOfTheNight: 'middleofthenight',
+    SeventhOfTheNight: 'seventhofthenight',
+    TwilightAngle: 'twilightangle'
 };
 
 export default HighLatitudeRule;

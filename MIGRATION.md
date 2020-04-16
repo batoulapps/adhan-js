@@ -1,19 +1,20 @@
-## Upgrading from 1.0.1 to 2.0.0
-Upgrading to 2.0.0 introduces breaking API changes. 
+## Upgrading from 3.0.0 to 4.0.0
+Upgrading to 4.0.0 introduces breaking API changes. 
 
-JavaScript `Date` and `Number` prototypes are no longer patched by this library. 
-The library should now be pure without any side effects.
+The `adhan.Date.formattedTime` convenience function is no longer provided by this library. 
+These functions obscure the difficulty in dealing with Daylight Savings Time
+and other timezone issues.
 
-This means you can no longer depend on methods like `formattedTime` being directly accessible on the Date instance. For example,
+Instead you should use a timezone aware date formatting library like [moment](https://momentjs.com).
  
 **Before**:
 
 ```js
-prayerTimes.fajr.formattedTime(); // no longer works
+adhan.Date.formattedTime(prayerTimes.fajr); // no longer available
 ```
 
 **After**:
 
 ```js
-adhan.Date.formattedTime(prayerTimes.fajr); // works
+moment(prayerTimes.fajr).tz('America/New_York').format('h:mm A'); // Recommended method
 ```

@@ -46,43 +46,43 @@ test("find the same angle constrained within the first and fourth quadrants", ()
 });
 
 test("break down an hour value into separate hour, minute, and second values", () => {
-    var comps1 = new TimeComponents(15.199)
+    const comps1 = new TimeComponents(15.199)
     expect(comps1.hours).toBe(15);
     expect(comps1.minutes).toBe(11);
     expect(comps1.seconds).toBe(56);
 
-    var comps2 = new TimeComponents(1.0084);
+    const comps2 = new TimeComponents(1.0084);
     expect(comps2.hours).toBe(1);
     expect(comps2.minutes).toBe(0);
     expect(comps2.seconds).toBe(30);
 
-    var comps3 = new TimeComponents(1.0083);
+    const comps3 = new TimeComponents(1.0083);
     expect(comps3.hours).toBe(1);
     expect(comps3.minutes).toBe(0);
 
-    var comps4 = new TimeComponents(2.1);
+    const comps4 = new TimeComponents(2.1);
     expect(comps4.hours).toBe(2);
     expect(comps4.minutes).toBe(6);
 
-    var comps5 = new TimeComponents(3.5);
+    const comps5 = new TimeComponents(3.5);
     expect(comps5.hours).toBe(3);
     expect(comps5.minutes).toBe(30);
 });
 
 test("rounding a date to the closest minute", () => {
-    var date1 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29));
+    const date1 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29));
     expect(date1.getMinutes()).toBe(2);
     expect(date1.getSeconds()).toBe(0);
 
-    var date2 = roundedMinute(new Date(2015, 0, 1, 10, 2, 31));
+    const date2 = roundedMinute(new Date(2015, 0, 1, 10, 2, 31));
     expect(date2.getMinutes()).toBe(3);
     expect(date2.getSeconds()).toBe(0);
 });
 
 test("adding days to date", () => {
-    var date1 = new Date(2015, 10, 1, 0, 0, 0);
+    const date1 = new Date(2015, 10, 1, 0, 0, 0);
     expect(date1.getDate()).toBe(1);
 
-    var date2 = dateByAddingDays(date1, 1);
+    const date2 = dateByAddingDays(date1, 1);
     expect(date2.getDate()).toBe(2);
 });

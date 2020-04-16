@@ -3,9 +3,9 @@ import adhan from '../src/Adhan';
 import moment from 'moment-timezone';
 
 function parseParams(data) {
-	var params;
+	let params;
 
-	var method = data["method"];
+	let method = data["method"];
 	if (method == "MuslimWorldLeague") {
 		params = adhan.CalculationMethod.MuslimWorldLeague();
 	} else if (method == "Egyptian") {
@@ -30,14 +30,14 @@ function parseParams(data) {
 		params = adhan.CalculationMethod.Other();
 	}
 
-	var madhab = data["madhab"];
+	let madhab = data["madhab"];
 	if (madhab == "Shafi") {
     	params.madhab = adhan.Madhab.Shafi;
 	} else if (madhab == "Hanafi") {
     	params.madhab = adhan.Madhab.Hanafi;
 	}
 
-    var highLatRule = data["highLatitudeRule"];
+    let highLatRule = data["highLatitudeRule"];
 	if (highLatRule == "SeventhOfTheNight") {
     	params.highLatitudeRule = adhan.HighLatitudeRule.SeventhOfTheNight;
     } else if (highLatRule == "TwilightAngle") {
@@ -74,21 +74,21 @@ expect.extend({
 
 fs.readdirSync("Shared/Times").forEach( function (filename) {
 	test(`compare calculated times against the prayer times in ${filename}`, () => {
-		var file_contents = fs.readFileSync("Shared/Times/" + filename)
-		var data = JSON.parse(file_contents);
-		var coordinates = new adhan.Coordinates(data["params"]["latitude"], data["params"]["longitude"]);
-		var params = parseParams(data["params"]);
-		var variance = data["variance"] || 0;
+		let file_contents = fs.readFileSync("Shared/Times/" + filename)
+		let data = JSON.parse(file_contents);
+		let coordinates = new adhan.Coordinates(data["params"]["latitude"], data["params"]["longitude"]);
+		let params = parseParams(data["params"]);
+		let variance = data["variance"] || 0;
 		data["times"].forEach(function(time) {
-			var date = moment(time["date"], "YYYY-MM-DD").toDate();
-			var p = new adhan.PrayerTimes(coordinates, date, params);
+			let date = moment(time["date"], "YYYY-MM-DD").toDate();
+			let p = new adhan.PrayerTimes(coordinates, date, params);
 
-			var testFajr = moment.tz(time["date"] + " " + time["fajr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
-			var testSunrise = moment.tz(time["date"] + " " + time["sunrise"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
-			var testDhuhr = moment.tz(time["date"] + " " + time["dhuhr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
-			var testAsr = moment.tz(time["date"] + " " + time["asr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
-			var testMaghrib = moment.tz(time["date"] + " " + time["maghrib"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
-			var testIsha = moment.tz(time["date"] + " " + time["isha"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			let testFajr = moment.tz(time["date"] + " " + time["fajr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			let testSunrise = moment.tz(time["date"] + " " + time["sunrise"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			let testDhuhr = moment.tz(time["date"] + " " + time["dhuhr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			let testAsr = moment.tz(time["date"] + " " + time["asr"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			let testMaghrib = moment.tz(time["date"] + " " + time["maghrib"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
+			let testIsha = moment.tz(time["date"] + " " + time["isha"], "YYYY-MM-DD h:mm A", data["params"]["timezone"]).toDate();
 
 			expect(p.fajr).toBeWithinRange(testFajr, variance);
 			expect(p.sunrise).toBeWithinRange(testSunrise, variance);
