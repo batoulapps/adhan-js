@@ -1,91 +1,6 @@
-import adhan from '../src/Adhan';
+import adhan from '../Adhan';
 import moment from 'moment-timezone';
 import { dateByAddingSeconds } from '../src/DateUtils';
-import { shadowLength } from '../src/Madhab';
-
-test("Verifying the night portion defined by the high latitude rule", () => {
-    let p1 = new adhan.CalculationParameters(18, 18);
-    p1.highLatitudeRule = adhan.HighLatitudeRule.MiddleOfTheNight;
-    expect(p1.nightPortions().fajr).toBe(0.5);
-    expect(p1.nightPortions().isha).toBe(0.5);
-
-    let p2 = new adhan.CalculationParameters(18, 18);
-    p2.highLatitudeRule = adhan.HighLatitudeRule.SeventhOfTheNight;
-    expect(p2.nightPortions().fajr).toBe(1/7);
-    expect(p2.nightPortions().isha).toBe(1/7);
-
-    let p3 = new adhan.CalculationParameters(10, 15);
-    p3.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
-    expect(p3.nightPortions().fajr).toBe(10/60);
-    expect(p3.nightPortions().isha).toBe(15/60);
-
-    let p4 = new adhan.CalculationParameters(10, 15);
-    p4.highLatitudeRule = adhan.HighLatitudeRule.fake;
-    expect(() => { p4.nightPortions().fajr }).toThrow();
-    expect(() => { p4.nightPortions().isha }).toThrow();
-});
-
-test("Verifying the angles defined by the calculation method", () => {
-    let p1 = adhan.CalculationMethod.MuslimWorldLeague();
-    expect(p1.fajrAngle).toBe(18);
-    expect(p1.ishaAngle).toBe(17);
-    expect(p1.ishaInterval).toBe(0);
-    expect(p1.method).toBe("MuslimWorldLeague");
-
-    let p2 = adhan.CalculationMethod.Egyptian();
-    expect(p2.fajrAngle).toBe(19.5);
-    expect(p2.ishaAngle).toBe(17.5);
-    expect(p2.ishaInterval).toBe(0);
-    expect(p2.method).toBe("Egyptian");
-
-    let p3 = adhan.CalculationMethod.Karachi();
-    expect(p3.fajrAngle).toBe(18);
-    expect(p3.ishaAngle).toBe(18);
-    expect(p3.ishaInterval).toBe(0);
-    expect(p3.method).toBe("Karachi");
-
-    let p4 = adhan.CalculationMethod.UmmAlQura();
-    expect(p4.fajrAngle).toBe(18.5);
-    expect(p4.ishaAngle).toBe(0);
-    expect(p4.ishaInterval).toBe(90);
-    expect(p4.method).toBe("UmmAlQura");
-
-    let p5 = adhan.CalculationMethod.Dubai();
-    expect(p5.fajrAngle).toBe(18.2);
-    expect(p5.ishaAngle).toBe(18.2);
-    expect(p5.ishaInterval).toBe(0);
-    expect(p5.method).toBe("Dubai");
-
-    let p6 = adhan.CalculationMethod.MoonsightingCommittee();
-    expect(p6.fajrAngle).toBe(18);
-    expect(p6.ishaAngle).toBe(18);
-    expect(p6.ishaInterval).toBe(0);
-    expect(p6.method).toBe("MoonsightingCommittee");
-
-    let p7 = adhan.CalculationMethod.NorthAmerica();
-    expect(p7.fajrAngle).toBe(15);
-    expect(p7.ishaAngle).toBe(15);
-    expect(p7.ishaInterval).toBe(0);
-    expect(p7.method).toBe("NorthAmerica");
-
-    let p8 = adhan.CalculationMethod.Other();
-    expect(p8.fajrAngle).toBe(0);
-    expect(p8.ishaAngle).toBe(0);
-    expect(p8.ishaInterval).toBe(0);
-    expect(p8.method).toBe("Other");
-
-    let p9 = adhan.CalculationMethod.Kuwait();
-    expect(p9.fajrAngle).toBe(18);
-    expect(p9.ishaAngle).toBe(17.5);
-    expect(p9.ishaInterval).toBe(0);
-    expect(p9.method).toBe("Kuwait");
-
-    let p10 = adhan.CalculationMethod.Qatar();
-    expect(p10.fajrAngle).toBe(18);
-    expect(p10.ishaAngle).toBe(0);
-    expect(p10.ishaInterval).toBe(90);
-    expect(p10.method).toBe("Qatar");
-});
 
 test("calculating prayer times", () => {
     let date = new Date(2015, 6, 12);
@@ -102,7 +17,7 @@ test("calculating prayer times", () => {
     expect(moment(p.isha).tz("America/New_York").format("HH:mm")).toBe("21:57");
 });
 
-test("using offsets to manually adjust prayer times", () => {
+test("useing offsets to manually adjust prayer times", () => {
     let date = new Date(2015, 11, 1);
     let params = adhan.CalculationMethod.MuslimWorldLeague();
     params.madhab = adhan.Madhab.Shafi;
@@ -187,19 +102,6 @@ test("getting the current prayer", () => {
     expect(p.currentPrayer(dateByAddingSeconds(p.isha, 1))).toBe(adhan.Prayer.Isha);
 });
 
-test("changing the time for asr with different madhabs", () => {
-    let date = new Date(2015, 11, 1);
-    let params = adhan.CalculationMethod.MuslimWorldLeague();
-    params.madhab = adhan.Madhab.Shafi;
-    let p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
-    expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("2:42 PM");
-
-    params.madhab = adhan.Madhab.Hanafi;
-
-    let p2 = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
-    expect(moment(p2.asr).tz("America/New_York").format("h:mm A")).toBe("3:22 PM");
-});
-
 test("getting the next prayer", () => {
     let date = new Date(2015, 8, 1);
     let params = adhan.CalculationMethod.Karachi();
@@ -225,10 +127,4 @@ test("getting the current next prayer", () => {
     const current = p.currentPrayer();
     const next = p.nextPrayer();
     expect(current != null || next != null).toBeTruthy();
-});
-
-test("getting the madhab shadow length", () => {
-    expect(shadowLength(adhan.Madhab.Shafi)).toBe(1);
-    expect(shadowLength(adhan.Madhab.Hanafi)).toBe(2);
-    expect(() => { shadowLength(adhan.Madhab.Foo) }).toThrow();
 });

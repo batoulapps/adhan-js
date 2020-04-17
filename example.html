@@ -1,6 +1,8 @@
 <html>
 <head>
     <script src="Adhan.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.28/moment-timezone-with-data-10-year-range.min.js"></script>
 </head>
 <body>
     <pre><script type="text/javascript">
@@ -28,19 +30,29 @@
     var coordinates = new adhan.Coordinates(35.78056, -78.6389);
     var params = adhan.CalculationMethod.MuslimWorldLeague();
     params.madhab = adhan.Madhab.Hanafi;
+    
     var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
-    var formattedTime = adhan.Date.formattedTime;
+
+    var sunnahTimes = new adhan.SunnahTimes(prayerTimes);
 
     document.write('Raleigh, NC - Muslim World League\n');
-    document.write('Prayer times for ' + date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + '\n');
-    document.write('Fajr: ' + formattedTime(prayerTimes.fajr, -4) + '\n');
-    document.write('Sunrise: ' + formattedTime(prayerTimes.sunrise, -4) + '\n');
-    document.write('Dhuhr: ' + formattedTime(prayerTimes.dhuhr, -4) + '\n');
-    document.write('Asr: ' + formattedTime(prayerTimes.asr, -4) + '\n');
-    document.write('Maghrib: ' + formattedTime(prayerTimes.maghrib, -4) + '\n');
-    document.write('Isha: ' + formattedTime(prayerTimes.isha, -4) + '\n');
+    document.write(`Prayer times for ${moment(date).format('MMMM DD, YYYY')}\n`);
+    document.write(`Fajr: ${moment(prayerTimes.fajr).tz('America/New_York').format('h:mm A')}\n`);
+    document.write(`Sunrise: ${moment(prayerTimes.sunrise).tz('America/New_York').format('h:mm A')}\n`);
+    document.write(`Dhuhr: ${moment(prayerTimes.dhuhr).tz('America/New_York').format('h:mm A')}\n`);
+    document.write(`Asr: ${moment(prayerTimes.asr).tz('America/New_York').format('h:mm A')}\n`);
+    document.write(`Maghrib: ${moment(prayerTimes.maghrib).tz('America/New_York').format('h:mm A')}\n`);
+    document.write(`Isha: ${moment(prayerTimes.isha).tz('America/New_York').format('h:mm A')}\n`);
 
-    document.write('\nCurrent Prayer: ' + prayerName(prayerTimes.currentPrayer()) + '\n');
+    document.write(`middle of the night: ${moment(sunnahTimes.middleOfTheNight).tz('America/New_York').format('h:mm A')}\n`);
+    document.write(`last third of the night: ${moment(sunnahTimes.lastThirdOfTheNight).tz('America/New_York').format('h:mm A')}\n\n`);
+
+    document.write(`Current Prayer: ${prayerName(prayerTimes.currentPrayer())}\n\n`);
+
+    document.write(`Qibla Direction: ${adhan.Qibla(coordinates)}`);
+
+    var nyc = { latitude: 40.7128, longitude: -74.0059 };
+	expect(qibla(nyc)).toBeCloseTo(58.4817, 3);
 
     </script></pre>
 </body>

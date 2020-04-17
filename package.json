@@ -1,31 +1,32 @@
 {
   "name": "adhan",
-  "version": "3.0.0",
-  "description": "Adhan is a well tested and well documented library for calculating Islamic prayer times. All astronomical calculations are high precision equations directly from the book “Astronomical Algorithms” by Jean Meeus. This book is recommended by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory of the National Oceanic and Atmospheric Administration.",
+  "version": "4.0.0",
+  "description": "High precision Islamic prayer time library",
   "main": "Adhan.js",
+  "types": "Adhan.d.ts",
   "scripts": {
-    "test": "nyc --reporter=lcov mocha",
+    "build": "webpack --mode production",
+    "test": "jest",
     "coverage": "codecov"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/batoulapps/adhan-js.git"
   },
-  "keywords": [
-    "adhan",
-    "islam",
-    "muslim",
-    "prayer"
-  ],
-  "author": "Batoul Apps",
+  "homepage": "https://github.com/batoulapps/adhan-js",
+  "keywords": ["adhan", "islam", "muslim", "prayer", "islamic", "prayer times", "salah", "salat", "salaat", "namaz"],
+  "author": "Ameir Al-Zoubi <ameir@ameir.com> (https://ameir.com)",
   "license": "MIT",
   "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-datetime": "^1.5.0",
-    "codecov": "^3.3.0",
-    "mocha": "^5.2.0",
-    "moment": "^2.22.2",
-    "moment-timezone": "^0.5.21",
-    "nyc": "^14.0.0"
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/register": "^7.9.0",
+    "babel-loader": "^8.1.0",
+    "codecov": "^3.6.5",
+    "jest": "^25.3.0",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.28",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   }
 }
