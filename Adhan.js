@@ -634,12 +634,12 @@ class PrayerTimes_PrayerTimes {
     var nightFraction;
     dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-    maghribTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    var sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     asrTime = new TimeComponents(solarTime.afternoon(Madhab_shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     var tomorrow = dateByAddingDays(date, 1);
     var tomorrowSolarTime = new SolarTime_SolarTime(tomorrow, coordinates);
     var tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
-    var night = (tomorrowSunrise - maghribTime) / 1000;
+    var night = (tomorrowSunrise - sunsetTime) / 1000;
     fajrTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).utcDate(date.getFullYear(), date.getMonth(), date.getDate()); // special case for moonsighting committee above latitude 55
 
     if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
@@ -662,27 +662,37 @@ class PrayerTimes_PrayerTimes {
     }
 
     if (calculationParameters.ishaInterval > 0) {
-      ishaTime = dateByAddingMinutes(maghribTime, calculationParameters.ishaInterval);
+      ishaTime = dateByAddingMinutes(sunsetTime, calculationParameters.ishaInterval);
     } else {
       ishaTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate()); // special case for moonsighting committee above latitude 55
 
       if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
         nightFraction = night / 7;
-        ishaTime = dateByAddingSeconds(maghribTime, nightFraction);
+        ishaTime = dateByAddingSeconds(sunsetTime, nightFraction);
       }
 
       var safeIsha = function () {
         if (calculationParameters.method == "MoonsightingCommittee") {
-          return src_Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, DateUtils_dayOfYear(date), date.getFullYear(), maghribTime);
+          return src_Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, DateUtils_dayOfYear(date), date.getFullYear(), sunsetTime);
         } else {
           var portion = calculationParameters.nightPortions().isha;
           nightFraction = portion * night;
-          return dateByAddingSeconds(maghribTime, nightFraction);
+          return dateByAddingSeconds(sunsetTime, nightFraction);
         }
       }();
 
       if (ishaTime == null || isNaN(ishaTime.getTime()) || safeIsha < ishaTime) {
         ishaTime = safeIsha;
+      }
+    }
+
+    maghribTime = sunsetTime;
+
+    if (calculationParameters.maghribAngle) {
+      let angleBasedMaghrib = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+
+      if (sunsetTime < angleBasedMaghrib && ishaTime > angleBasedMaghrib) {
+        maghribTime = angleBasedMaghrib;
       }
     }
 
@@ -774,11 +784,12 @@ const HighLatitudeRule = {
 
 
 class CalculationParameters_CalculationParameters {
-  constructor(fajrAngle, ishaAngle, ishaInterval, methodName) {
+  constructor(methodName, fajrAngle, ishaAngle, ishaInterval, maghribAngle) {
     this.method = methodName || "Other";
     this.fajrAngle = fajrAngle || 0;
     this.ishaAngle = ishaAngle || 0;
     this.ishaInterval = ishaInterval || 0;
+    this.maghribAngle = maghribAngle;
     this.madhab = Madhab.Shafi;
     this.highLatitudeRule = src_HighLatitudeRule.MiddleOfTheNight;
     this.adjustments = {
@@ -830,7 +841,7 @@ class CalculationParameters_CalculationParameters {
 const CalculationMethod = {
   // Muslim World League
   MuslimWorldLeague: function () {
-    let params = new CalculationParameters_CalculationParameters(18, 17, 0, "MuslimWorldLeague");
+    let params = new CalculationParameters_CalculationParameters("MuslimWorldLeague", 18, 17);
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -838,7 +849,7 @@ const CalculationMethod = {
   },
   // Egyptian General Authority of Survey
   Egyptian: function () {
-    let params = new CalculationParameters_CalculationParameters(19.5, 17.5, 0, "Egyptian");
+    let params = new CalculationParameters_CalculationParameters("Egyptian", 19.5, 17.5);
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -846,7 +857,7 @@ const CalculationMethod = {
   },
   // University of Islamic Sciences, Karachi
   Karachi: function () {
-    let params = new CalculationParameters_CalculationParameters(18, 18, 0, "Karachi");
+    let params = new CalculationParameters_CalculationParameters("Karachi", 18, 18);
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -854,11 +865,11 @@ const CalculationMethod = {
   },
   // Umm al-Qura University, Makkah
   UmmAlQura: function () {
-    return new CalculationParameters_CalculationParameters(18.5, 0, 90, "UmmAlQura");
+    return new CalculationParameters_CalculationParameters("UmmAlQura", 18.5, 0, 90);
   },
   // Dubai
   Dubai: function () {
-    let params = new CalculationParameters_CalculationParameters(18.2, 18.2, 0, "Dubai");
+    let params = new CalculationParameters_CalculationParameters("Dubai", 18.2, 18.2);
     params.methodAdjustments = {
       sunrise: -3,
       dhuhr: 3,
@@ -869,7 +880,7 @@ const CalculationMethod = {
   },
   // Moonsighting Committee
   MoonsightingCommittee: function () {
-    let params = new CalculationParameters_CalculationParameters(18, 18, 0, "MoonsightingCommittee");
+    let params = new CalculationParameters_CalculationParameters("MoonsightingCommittee", 18, 18);
     params.methodAdjustments = {
       dhuhr: 5,
       maghrib: 3
@@ -878,7 +889,7 @@ const CalculationMethod = {
   },
   // ISNA
   NorthAmerica: function () {
-    let params = new CalculationParameters_CalculationParameters(15, 15, 0, "NorthAmerica");
+    let params = new CalculationParameters_CalculationParameters("NorthAmerica", 15, 15);
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -886,23 +897,39 @@ const CalculationMethod = {
   },
   // Kuwait
   Kuwait: function () {
-    return new CalculationParameters_CalculationParameters(18, 17.5, 0, "Kuwait");
+    return new CalculationParameters_CalculationParameters("Kuwait", 18, 17.5);
   },
   // Qatar
   Qatar: function () {
-    return new CalculationParameters_CalculationParameters(18, 0, 90, "Qatar");
+    return new CalculationParameters_CalculationParameters("Qatar", 18, 0, 90);
   },
   // Singapore
   Singapore: function () {
-    let params = new CalculationParameters_CalculationParameters(20, 18, 0, "Singapore");
+    let params = new CalculationParameters_CalculationParameters("Singapore", 20, 18);
     params.methodAdjustments = {
       dhuhr: 1
     };
     return params;
   },
+  // Institute of Geophysics, University of Tehran
+  Tehran: function () {
+    let params = new CalculationParameters_CalculationParameters("Tehran", 17.7, 14, 0, 4.5);
+    return params;
+  },
+  // Dianet
+  Turkey: function () {
+    let params = new CalculationParameters_CalculationParameters("Turkey", 18, 17);
+    params.methodAdjustments = {
+      sunrise: -7,
+      dhuhr: 5,
+      asr: 4,
+      maghrib: 7
+    };
+    return params;
+  },
   // Other
   Other: function () {
-    return new CalculationParameters_CalculationParameters(0, 0, 0, "Other");
+    return new CalculationParameters_CalculationParameters("Other", 0, 0);
   }
 };
 /* harmony default export */ var src_CalculationMethod = (CalculationMethod);

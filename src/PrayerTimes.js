@@ -24,14 +24,14 @@ export default class PrayerTimes {
 
         dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
         sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-        maghribTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+        var sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
         asrTime = new TimeComponents(solarTime.afternoon(shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
         var tomorrow = dateByAddingDays(date, 1);
         var tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
         var tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
-        var night = (tomorrowSunrise - maghribTime) / 1000;
+        var night = (tomorrowSunrise - sunsetTime) / 1000;
 
         fajrTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
@@ -57,29 +57,37 @@ export default class PrayerTimes {
         }
 
         if (calculationParameters.ishaInterval > 0) {
-            ishaTime = dateByAddingMinutes(maghribTime, calculationParameters.ishaInterval);
+            ishaTime = dateByAddingMinutes(sunsetTime, calculationParameters.ishaInterval);
         } else {
             ishaTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
             
             // special case for moonsighting committee above latitude 55
             if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
                 nightFraction = night / 7;
-                ishaTime = dateByAddingSeconds(maghribTime, nightFraction);
+                ishaTime = dateByAddingSeconds(sunsetTime, nightFraction);
             }
 
             var safeIsha = (function () {
                 if (calculationParameters.method == "MoonsightingCommittee") {
-                    return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), maghribTime);
+                    return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), sunsetTime);
                 }
                 else {
                     var portion = calculationParameters.nightPortions().isha;
                     nightFraction = portion * night;
-                    return dateByAddingSeconds(maghribTime, nightFraction);
+                    return dateByAddingSeconds(sunsetTime, nightFraction);
                 }
             })();
 
             if (ishaTime == null || isNaN(ishaTime.getTime()) || safeIsha < ishaTime) {
                 ishaTime = safeIsha;
+            }
+        }
+
+        maghribTime = sunsetTime;
+        if (calculationParameters.maghribAngle) {
+            let angleBasedMaghrib = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+            if (sunsetTime < angleBasedMaghrib && ishaTime > angleBasedMaghrib) {
+                maghribTime = angleBasedMaghrib;
             }
         }
 

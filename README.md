@@ -60,8 +60,9 @@ var coordinates = new adhan.Coordinates(35.78056, -78.6389);
 
 The date parameter passed in should be an instance of the JavaScript `Date`
 object. The year, month, and day values need to be populated. All other
-values will be ignored. The year, month and day values should be for the local date
-that you want prayer times for. These date values are expected to be for the Gregorian calendar.
+values will be ignored. The year, month and day values should be for the date
+that you want prayer times for. These date values are expected to be for the 
+Gregorian calendar.
 
 ```js
 var date = new Date();
@@ -95,17 +96,19 @@ params.adjustments.fajr = 2;
 
 | Value | Description |
 | ----- | ----------- |
-| adhan.CalculationMethod.MuslimWorldLeague() | Muslim World League. Fajr angle: 18, Isha angle: 17 |
-| adhan.CalculationMethod.Egyptian() | Egyptian General Authority of Survey. Fajr angle: 19.5, Isha angle: 17.5 |
-| adhan.CalculationMethod.Karachi() | University of Islamic Sciences, Karachi. Fajr angle: 18, Isha angle: 18 |
-| adhan.CalculationMethod.UmmAlQura() | Umm al-Qura University, Makkah. Fajr angle: 18, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
-| adhan.CalculationMethod.Dubai() | Method used in UAE. Fajr angle: 18.2, Isha angle: 18.2. |
-| adhan.CalculationMethod.Qatar() | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
-| adhan.CalculationMethod.Kuwait() | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
-| adhan.CalculationMethod.MoonsightingCommittee() | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
-| adhan.CalculationMethod.Singapore() | Method used by Singapore. Fajr angle: 20, Isha angle: 18. |
-| adhan.CalculationMethod.NorthAmerica() | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
-| adhan.CalculationMethod.Other() | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` object. |
+| adhan.CalculationMethod.MuslimWorldLeague() | Muslim World League. Standard Fajr time with an angle of 18°. Earlier Isha time with an angle of 17°. |
+| adhan.CalculationMethod.Egyptian() | Egyptian General Authority of Survey. Early Fajr time using an angle 19.5° and a slightly earlier Isha time using an angle of 17.5°. |
+| adhan.CalculationMethod.Karachi() | University of Islamic Sciences, Karachi. A generally applicable method that uses standard Fajr and Isha angles of 18°. |
+| adhan.CalculationMethod.UmmAlQura() | Umm al-Qura University, Makkah. Uses a fixed interval of 90 minutes from maghrib to calculate Isha. And a slightly earlier Fajr time with an angle of 18.5°. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
+| adhan.CalculationMethod.Dubai() | Used in the UAE. Slightly earlier Fajr time and slightly later Isha time with angles of 18.2° for Fajr and Isha in addition to 3 minute offsets for sunrise, Dhuhr, Asr, and Maghrib. |
+| adhan.CalculationMethod.Qatar() | Same Isha interval as `ummAlQura` but with the standard Fajr time using an angle of 18°. |
+| adhan.CalculationMethod.Kuwait() | Standard Fajr time with an angle of 18°. Slightly earlier Isha time with an angle of 17.5°. |
+| adhan.CalculationMethod.MoonsightingCommittee() | Method developed by Khalid Shaukat, founder of Moonsighting Committee Worldwide. Uses standard 18° angles for Fajr and Isha in addition to seasonal adjustment values. This method automatically applies the 1/7 approximation rule for locations above 55° latitude. Recommended for North America and the UK. |
+| adhan.CalculationMethod.Singapore() | Used in Singapore, Malaysia, and Indonesia. Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°. |
+| adhan.CalculationMethod.Turkey() | An approximation of the Diyanet method used in Turkey. This approximation is less accurate outside the region of Turkey. |
+| adhan.CalculationMethod.Tehran() | Institute of Geophysics, University of Tehran. Early Isha time with an angle of 14°. Slightly later Fajr time with an angle of 17.7°. Calculates Maghrib based on the sun reaching an angle of 4.5° below the horizon. |
+| adhan.CalculationMethod.NorthAmerica() | Also known as the ISNA method. Can be used for North America, but the moonsightingCommittee method is preferable. Gives later Fajr times and early Isha times with angles of 15°. |
+| adhan.CalculationMethod.Other() | Defaults to angles of 0°, should generally be used for making a custom method and setting your own values. |
 
 #### Madhab
 

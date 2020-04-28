@@ -4,22 +4,22 @@ import { dateByAddingSeconds } from '../src/DateUtils';
 import { shadowLength } from '../src/Madhab';
 
 test("Verifying the night portion defined by the high latitude rule", () => {
-    let p1 = new adhan.CalculationParameters(18, 18);
+    let p1 = new adhan.CalculationParameters("Other", 18, 18);
     p1.highLatitudeRule = adhan.HighLatitudeRule.MiddleOfTheNight;
     expect(p1.nightPortions().fajr).toBe(0.5);
     expect(p1.nightPortions().isha).toBe(0.5);
 
-    let p2 = new adhan.CalculationParameters(18, 18);
+    let p2 = new adhan.CalculationParameters("Other", 18, 18);
     p2.highLatitudeRule = adhan.HighLatitudeRule.SeventhOfTheNight;
     expect(p2.nightPortions().fajr).toBe(1/7);
     expect(p2.nightPortions().isha).toBe(1/7);
 
-    let p3 = new adhan.CalculationParameters(10, 15);
+    let p3 = new adhan.CalculationParameters("Other", 10, 15);
     p3.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
     expect(p3.nightPortions().fajr).toBe(10/60);
     expect(p3.nightPortions().isha).toBe(15/60);
 
-    let p4 = new adhan.CalculationParameters(10, 15);
+    let p4 = new adhan.CalculationParameters("Other", 10, 15);
     p4.highLatitudeRule = adhan.HighLatitudeRule.fake;
     expect(() => { p4.nightPortions().fajr }).toThrow();
     expect(() => { p4.nightPortions().isha }).toThrow();
@@ -85,6 +85,24 @@ test("Verifying the angles defined by the calculation method", () => {
     expect(p10.ishaAngle).toBe(0);
     expect(p10.ishaInterval).toBe(90);
     expect(p10.method).toBe("Qatar");
+
+    let p11 = adhan.CalculationMethod.Singapore();
+    expect(p11.fajrAngle).toBe(20);
+    expect(p11.ishaAngle).toBe(18);
+    expect(p11.ishaInterval).toBe(0);
+    expect(p11.method).toBe("Singapore");
+
+    let p12 = adhan.CalculationMethod.Tehran();
+    expect(p12.fajrAngle).toBe(17.7);
+    expect(p12.ishaAngle).toBe(14);
+    expect(p12.ishaInterval).toBe(0);
+    expect(p12.method).toBe("Tehran");
+
+    let p13 = adhan.CalculationMethod.Turkey();
+    expect(p13.fajrAngle).toBe(18);
+    expect(p13.ishaAngle).toBe(17);
+    expect(p13.ishaInterval).toBe(0);
+    expect(p13.method).toBe("Turkey");
 });
 
 test("calculating prayer times", () => {
@@ -154,7 +172,32 @@ test("calculating Moonsighting Committee prayer times at a high latitude locatio
     expect(moment(p.asr).tz("Europe/Oslo").format("h:mm A")).toBe("1:36 PM");
     expect(moment(p.maghrib).tz("Europe/Oslo").format("h:mm A")).toBe("3:25 PM");
     expect(moment(p.isha).tz("Europe/Oslo").format("h:mm A")).toBe("5:02 PM");
-});    
+});  
+
+test("calculating times for turkey method", () => {
+    // values from https://namazvakitleri.diyanet.gov.tr/en-US/9541/prayer-time-for-istanbul
+    let date = new Date(2020, 3, 16);
+    let params = adhan.CalculationMethod.Turkey();
+    let p = new adhan.PrayerTimes(new adhan.Coordinates(41.005616, 28.976380), date, params);
+    expect(moment(p.fajr).tz("Europe/Istanbul").format("h:mm A")).toBe("4:44 AM");
+    expect(moment(p.sunrise).tz("Europe/Istanbul").format("h:mm A")).toBe("6:16 AM");
+    expect(moment(p.dhuhr).tz("Europe/Istanbul").format("h:mm A")).toBe("1:09 PM");
+    expect(moment(p.asr).tz("Europe/Istanbul").format("h:mm A")).toBe("4:53 PM"); // original time 4:52 PM
+    expect(moment(p.maghrib).tz("Europe/Istanbul").format("h:mm A")).toBe("7:52 PM");
+    expect(moment(p.isha).tz("Europe/Istanbul").format("h:mm A")).toBe("9:19 PM"); // original time 9:18 PM
+});
+
+test("calculating times for the egyptian method", () => {
+    let date = new Date(2020, 0, 1);
+    let params = adhan.CalculationMethod.Egyptian();
+    let p = new adhan.PrayerTimes(new adhan.Coordinates(30.028703, 31.249528), date, params);
+    expect(moment(p.fajr).tz("Africa/Cairo").format("h:mm A")).toBe("5:18 AM");
+    expect(moment(p.sunrise).tz("Africa/Cairo").format("h:mm A")).toBe("6:51 AM");
+    expect(moment(p.dhuhr).tz("Africa/Cairo").format("h:mm A")).toBe("11:59 AM");
+    expect(moment(p.asr).tz("Africa/Cairo").format("h:mm A")).toBe("2:47 PM");
+    expect(moment(p.maghrib).tz("Africa/Cairo").format("h:mm A")).toBe("5:06 PM");
+    expect(moment(p.isha).tz("Africa/Cairo").format("h:mm A")).toBe("6:29 PM");
+});
 
 test("getting the time for a given prayer", () => {
     let date = new Date(2016, 6, 1);
@@ -231,4 +274,37 @@ test("getting the madhab shadow length", () => {
     expect(shadowLength(adhan.Madhab.Shafi)).toBe(1);
     expect(shadowLength(adhan.Madhab.Hanafi)).toBe(2);
     expect(() => { shadowLength(adhan.Madhab.Foo) }).toThrow();
+});
+
+test("adjusting prayer time with high latitude rule", () => {
+    let date = new Date(2020, 5, 15);
+    let params = adhan.CalculationMethod.MuslimWorldLeague();
+    let tzid = "Europe/London";
+    let coords = new adhan.Coordinates(55.983226, -3.216649);
+
+    let p1 = new adhan.PrayerTimes(coords, date, params);
+    expect(moment(p1.fajr).tz(tzid).format("h:mm A")).toBe("1:14 AM");
+    expect(moment(p1.sunrise).tz(tzid).format("h:mm A")).toBe("4:26 AM");
+    expect(moment(p1.dhuhr).tz(tzid).format("h:mm A")).toBe("1:14 PM");
+    expect(moment(p1.asr).tz(tzid).format("h:mm A")).toBe("5:46 PM");
+    expect(moment(p1.maghrib).tz(tzid).format("h:mm A")).toBe("10:01 PM");
+    expect(moment(p1.isha).tz(tzid).format("h:mm A")).toBe("1:14 AM");
+
+    params.highLatitudeRule = adhan.HighLatitudeRule.SeventhOfTheNight;
+    let p2 = new adhan.PrayerTimes(coords, date, params);
+    expect(moment(p2.fajr).tz(tzid).format("h:mm A")).toBe("3:31 AM");
+    expect(moment(p2.sunrise).tz(tzid).format("h:mm A")).toBe("4:26 AM");
+    expect(moment(p2.dhuhr).tz(tzid).format("h:mm A")).toBe("1:14 PM");
+    expect(moment(p2.asr).tz(tzid).format("h:mm A")).toBe("5:46 PM");
+    expect(moment(p2.maghrib).tz(tzid).format("h:mm A")).toBe("10:01 PM");
+    expect(moment(p2.isha).tz(tzid).format("h:mm A")).toBe("10:56 PM");
+
+    params.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
+    let p3 = new adhan.PrayerTimes(coords, date, params);
+    expect(moment(p3.fajr).tz(tzid).format("h:mm A")).toBe("2:31 AM");
+    expect(moment(p3.sunrise).tz(tzid).format("h:mm A")).toBe("4:26 AM");
+    expect(moment(p3.dhuhr).tz(tzid).format("h:mm A")).toBe("1:14 PM");
+    expect(moment(p3.asr).tz(tzid).format("h:mm A")).toBe("5:46 PM");
+    expect(moment(p3.maghrib).tz(tzid).format("h:mm A")).toBe("10:01 PM");
+    expect(moment(p3.isha).tz(tzid).format("h:mm A")).toBe("11:50 PM");
 });
