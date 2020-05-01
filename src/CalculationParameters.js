@@ -2,11 +2,12 @@ import { Madhab } from './Madhab';
 import HighLatitudeRule from './HighLatitudeRule';
 
 export default class CalculationParameters {
-    constructor(fajrAngle, ishaAngle, ishaInterval, methodName) {
+    constructor(methodName, fajrAngle, ishaAngle, ishaInterval, maghribAngle) {
         this.method = methodName || "Other";
         this.fajrAngle = fajrAngle || 0;
         this.ishaAngle = ishaAngle || 0;
         this.ishaInterval = ishaInterval || 0;
+        this.maghribAngle = maghribAngle;
         this.madhab = Madhab.Shafi;
         this.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight;
         this.adjustments = { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 };

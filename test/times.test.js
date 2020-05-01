@@ -26,6 +26,10 @@ function parseParams(data) {
 		params = adhan.CalculationMethod.Qatar();
 	} else if (method == "Singapore") {
 		params = adhan.CalculationMethod.Singapore();
+	} else if (method == "Turkey") {
+		params = adhan.CalculationMethod.Turkey();
+	} else if (method == "Tehran") {
+		params = adhan.CalculationMethod.Tehran();
 	} else {
 		params = adhan.CalculationMethod.Other();
 	}

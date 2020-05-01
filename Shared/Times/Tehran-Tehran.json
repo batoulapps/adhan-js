@@ -1,0 +1,124 @@
+{
+	"params": {
+		"latitude": 35.715298,
+		"longitude": 51.404343,
+		"timezone": "Asia/Tehran",
+		"method": "Tehran",
+		"madhab": "Shafi",
+		"highLatitudeRule": "MiddleOfTheNight"
+	},
+	"source": [
+		"http://praytimes.org/"
+	],
+    "variance": 1,
+	"times": [
+		{
+			"date": "2018-01-01",
+			"fajr": "5:44 AM",
+			"sunrise": "7:14 AM",
+			"dhuhr": "12:08 PM",
+			"asr": "2:44 PM",
+			"maghrib": "5:22 PM",
+			"isha": "6:12 PM"
+		},
+		{
+			"date": "2018-02-01",
+			"fajr": "5:39 AM",
+			"sunrise": "7:05 AM",
+			"dhuhr": "12:18 PM",
+			"asr": "3:10 PM",
+			"maghrib": "5:51 PM",
+			"isha": "6:39 PM"
+		},
+		{
+			"date": "2018-03-01",
+			"fajr": "5:11 AM",
+			"sunrise": "6:35 AM",
+			"dhuhr": "12:17 PM",
+			"asr": "3:30 PM",
+			"maghrib": "6:17 PM",
+			"isha": "7:04 PM"
+		},
+		{
+			"date": "2018-04-01",
+			"fajr": "5:26 AM",
+			"sunrise": "6:51 AM",
+			"dhuhr": "1:08 PM",
+			"asr": "4:42 PM",
+			"maghrib": "7:44 PM",
+			"isha": "8:32 PM"
+		},
+		{
+			"date": "2018-05-01",
+			"fajr": "4:40 AM",
+			"sunrise": "6:13 AM",
+			"dhuhr": "1:02 PM",
+			"asr": "4:46 PM",
+			"maghrib": "8:10 PM",
+			"isha": "9:02 PM"
+		},
+		{
+			"date": "2018-06-01",
+			"fajr": "4:06 AM",
+			"sunrise": "5:50 AM",
+			"dhuhr": "1:02 PM",
+			"asr": "4:51 PM",
+			"maghrib": "8:36 PM",
+			"isha": "9:34 PM"
+		},
+		{
+			"date": "2018-07-01",
+			"fajr": "4:06 AM",
+			"sunrise": "5:52 AM",
+			"dhuhr": "1:08 PM",
+			"asr": "4:57 PM",
+			"maghrib": "8:45 PM",
+			"isha": "9:45 PM"
+		},
+		{
+			"date": "2018-08-01",
+			"fajr": "4:35 AM",
+			"sunrise": "6:12 AM",
+			"dhuhr": "1:11 PM",
+			"asr": "4:58 PM",
+			"maghrib": "8:29 PM",
+			"isha": "9:23 PM"
+		},
+		{
+			"date": "2018-09-01",
+			"fajr": "5:09 AM",
+			"sunrise": "6:36 AM",
+			"dhuhr": "1:04 PM",
+			"asr": "4:43 PM",
+			"maghrib": "7:51 PM",
+			"isha": "8:40 PM"
+		},
+		{
+			"date": "2018-10-01",
+			"fajr": "4:36 AM",
+			"sunrise": "5:59 AM",
+			"dhuhr": "11:54 AM",
+			"asr": "3:16 PM",
+			"maghrib": "6:07 PM",
+			"isha": "6:54 PM"
+		},
+		{
+			"date": "2018-11-01",
+			"fajr": "5:01 AM",
+			"sunrise": "6:26 AM",
+			"dhuhr": "11:48 AM",
+			"asr": "2:46 PM",
+			"maghrib": "5:28 PM",
+			"isha": "6:16 PM"
+		},
+		{
+			"date": "2018-12-01",
+			"fajr": "5:27 AM",
+			"sunrise": "6:55 AM",
+			"dhuhr": "11:53 AM",
+			"asr": "2:32 PM",
+			"maghrib": "5:11 PM",
+			"isha": "6:01 PM"
+		}
+	]
+}

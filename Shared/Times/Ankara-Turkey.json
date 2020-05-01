@@ -1,0 +1,244 @@
+{
+    "params": {
+        "latitude": 39.939382,
+        "longitude": 32.819713,
+        "timezone": "Europe/Istanbul",
+        "method": "Turkey",
+        "madhab": "Shafi",
+        "highLatitudeRule": "MiddleOfTheNight"
+    },
+    "source": [
+        "https://www.yenisafak.com/en/ankara-prayer-times-01.01.2019",
+        "2019-01-01    06:33    08:03    12:57    15:20    17:40    19:05",
+        "2019-02-01    06:25    07:51    13:07    15:49    18:14    19:34",
+        "2019-03-01    05:53    07:16    13:06    16:14    18:46    20:04",
+        "2019-04-01    05:01    06:27    12:58    16:31    19:19    20:39",
+        "2019-05-01    04:07    05:43    12:51    16:40    19:49    21:18",
+        "2019-06-01    03:24    05:15    12:51    16:48    20:17    22:00",
+        "2019-07-01    03:21    05:16    12:57    16:55    20:28    22:15",
+        "2019-08-01    03:58    05:40    13:00    16:53    20:10    21:45",
+        "2019-09-01    04:40    06:09    12:54    16:34    19:29    20:52",
+        "2019-10-01    05:14    06:37    12:44    16:02    18:40    19:58",
+        "2019-11-01    05:45    07:10    12:37    15:28    17:55    19:14",
+        "2019-12-01    06:14    07:43    12:42    15:10    17:31    18:55"
+    ],
+    "variance": 2,
+    "times": [
+        {
+            "date": "2019-01-01",
+            "fajr": "6:33 AM",
+            "sunrise": "8:03 AM",
+            "dhuhr": "12:57 PM",
+            "asr": "3:20 PM",
+            "maghrib": "5:40 PM",
+            "isha": "7:05 PM"
+        },
+        {
+            "date": "2019-01-15",
+            "fajr": "6:33 AM",
+            "sunrise": "8:02 AM",
+            "dhuhr": "1:03 PM",
+            "asr": "3:32 PM",
+            "maghrib": "5:54 PM",
+            "isha": "7:17 PM"
+        },
+        {
+            "date": "2019-02-01",
+            "fajr": "6:25 AM",
+            "sunrise": "7:51 AM",
+            "dhuhr": "1:07 PM",
+            "asr": "3:49 PM",
+            "maghrib": "6:14 PM",
+            "isha": "7:34 PM"
+        },
+        {
+            "date": "2019-02-15",
+            "fajr": "6:11 AM",
+            "sunrise": "7:35 AM",
+            "dhuhr": "1:08 PM",
+            "asr": "4:02 PM",
+            "maghrib": "6:30 PM",
+            "isha": "7:49 PM"
+        },
+        {
+            "date": "2019-03-01",
+            "fajr": "5:53 AM",
+            "sunrise": "7:16 AM",
+            "dhuhr": "1:06 PM",
+            "asr": "4:14 PM",
+            "maghrib": "6:46 PM",
+            "isha": "8:04 PM"
+        },
+        {
+            "date": "2019-03-15",
+            "fajr": "5:31 AM",
+            "sunrise": "6:54 AM",
+            "dhuhr": "1:03 PM",
+            "asr": "4:23 PM",
+            "maghrib": "7:01 PM",
+            "isha": "8:19 PM"
+        },
+        {
+            "date": "2019-04-01",
+            "fajr": "5:01 AM",
+            "sunrise": "6:27 AM",
+            "dhuhr": "12:58 PM",
+            "asr": "4:31 PM",
+            "maghrib": "7:19 PM",
+            "isha": "8:39 PM"
+        },
+        {
+            "date": "2019-04-15",
+            "fajr": "4:35 AM",
+            "sunrise": "6:05 AM",
+            "dhuhr": "12:54 PM",
+            "asr": "4:35 PM",
+            "maghrib": "7:33 PM",
+            "isha": "8:56 PM"
+        },
+        {
+            "date": "2019-05-01",
+            "fajr": "4:07 AM",
+            "sunrise": "5:43 AM",
+            "dhuhr": "12:51 PM",
+            "asr": "4:40 PM",
+            "maghrib": "7:49 PM",
+            "isha": "9:18 PM"
+        },
+        {
+            "date": "2019-05-15",
+            "fajr": "3:44 AM",
+            "sunrise": "5:27 AM",
+            "dhuhr": "12:50 PM",
+            "asr": "4:43 PM",
+            "maghrib": "8:03 PM",
+            "isha": "9:39 PM"
+        },
+        {
+            "date": "2019-06-01",
+            "fajr": "3:24 AM",
+            "sunrise": "5:15 AM",
+            "dhuhr": "12:51 PM",
+            "asr": "4:48 PM",
+            "maghrib": "8:17 PM",
+            "isha": "10:00 PM"
+        },
+        {
+            "date": "2019-06-15",
+            "fajr": "3:17 AM",
+            "sunrise": "5:12 AM",
+            "dhuhr": "12:54 PM",
+            "asr": "4:51 PM",
+            "maghrib": "8:26 PM",
+            "isha": "10:12 PM"
+        },
+        {
+            "date": "2019-07-01",
+            "fajr": "3:21 AM",
+            "sunrise": "5:16 AM",
+            "dhuhr": "12:57 PM",
+            "asr": "4:55 PM",
+            "maghrib": "8:28 PM",
+            "isha": "10:15 PM"
+        },
+        {
+            "date": "2019-07-15",
+            "fajr": "3:35 AM",
+            "sunrise": "5:25 AM",
+            "dhuhr": "1:00 PM",
+            "asr": "4:56 PM",
+            "maghrib": "8:24 PM",
+            "isha": "10:06 PM"
+        },
+        {
+            "date": "2019-08-01",
+            "fajr": "3:58 AM",
+            "sunrise": "5:40 AM",
+            "dhuhr": "1:00 PM",
+            "asr": "4:53 PM",
+            "maghrib": "8:10 PM",
+            "isha": "9:45 PM"
+        },
+        {
+            "date": "2019-08-15",
+            "fajr": "4:18 AM",
+            "sunrise": "5:53 AM",
+            "dhuhr": "12:58 PM",
+            "asr": "4:46 PM",
+            "maghrib": "7:54 PM",
+            "isha": "9:22 PM"
+        },
+        {
+            "date": "2019-09-01",
+            "fajr": "4:40 AM",
+            "sunrise": "6:09 AM",
+            "dhuhr": "12:54 PM",
+            "asr": "4:34 PM",
+            "maghrib": "7:29 PM",
+            "isha": "8:52 PM"
+        },
+        {
+            "date": "2019-09-15",
+            "fajr": "4:57 AM",
+            "sunrise": "6:22 AM",
+            "dhuhr": "12:49 PM",
+            "asr": "4:20 PM",
+            "maghrib": "7:06 PM",
+            "isha": "8:26 PM"
+        },
+        {
+            "date": "2019-10-01",
+            "fajr": "5:14 AM",
+            "sunrise": "6:37 AM",
+            "dhuhr": "12:44 PM",
+            "asr": "4:02 PM",
+            "maghrib": "6:40 PM",
+            "isha": "7:58 PM"
+        },
+        {
+            "date": "2019-10-15",
+            "fajr": "5:28 AM",
+            "sunrise": "6:51 AM",
+            "dhuhr": "12:40 PM",
+            "asr": "3:46 PM",
+            "maghrib": "6:18 PM",
+            "isha": "7:36 PM"
+        },
+        {
+            "date": "2019-11-01",
+            "fajr": "5:45 AM",
+            "sunrise": "7:10 AM",
+            "dhuhr": "12:37 PM",
+            "asr": "3:28 PM",
+            "maghrib": "5:55 PM",
+            "isha": "7:14 PM"
+        },
+        {
+            "date": "2019-11-15",
+            "fajr": "5:59 AM",
+            "sunrise": "7:26 AM",
+            "dhuhr": "12:38 PM",
+            "asr": "3:16 PM",
+            "maghrib": "5:40 PM",
+            "isha": "7:02 PM"
+        },
+        {
+            "date": "2019-12-01",
+            "fajr": "6:14 AM",
+            "sunrise": "7:43 AM",
+            "dhuhr": "12:42 PM",
+            "asr": "3:10 PM",
+            "maghrib": "5:31 PM",
+            "isha": "6:55 PM"
+        },
+        {
+            "date": "2019-12-15",
+            "fajr": "6:25 AM",
+            "sunrise": "7:56 AM",
+            "dhuhr": "12:48 PM",
+            "asr": "3:10 PM",
+            "maghrib": "5:31 PM",
+            "isha": "6:56 PM"
+        }
+    ]
+}
