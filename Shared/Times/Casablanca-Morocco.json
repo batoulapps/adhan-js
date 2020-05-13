@@ -1,0 +1,122 @@
+{
+	"params": {
+		"latitude": 33.58831,
+		"longitude":-7.61138,
+		"timezone": "Africa/Casablanca",
+		"method": "Morocco"
+	},
+	"source": [
+		"http://www.habous.gov.ma/fr/horaire-priere.html"
+  ],
+  "variance": 1,
+    "times": 
+    [
+      {
+        "date": "2020-01-01",
+        "fajr": "7:01 AM",
+        "sunrise": "8:31 AM",
+        "dhuhr": "1:39 PM",
+        "asr": "4:15 PM",
+        "maghrib": "6:38 PM",
+        "isha": "7:57 PM"
+      },
+      {
+        "date": "2020-02-01",
+        "fajr": "6:57 AM",
+        "sunrise": "8:24 AM",
+        "dhuhr": "1:49 PM",
+        "asr": "4:40 PM",
+        "maghrib": "7:06 PM",
+        "isha": "8:22 PM"
+      },
+      {
+        "date": "2020-03-01",
+        "fajr": "6:31 AM",
+        "sunrise": "7:55 AM",
+        "dhuhr": "1:48 PM",
+        "asr": "4:59 PM",
+        "maghrib": "7:32 PM",
+        "isha": "8:46 PM"
+      },
+      {
+        "date": "2020-04-01",
+        "fajr": "5:48 AM",
+        "sunrise": "7:14 AM",
+        "dhuhr": "1:39 PM",
+        "asr": "5:08 PM",
+        "maghrib": "7:56 PM",
+        "isha": "9:11 PM"
+      },
+      {
+        "date": "2020-05-01",
+        "fajr": "4:04 AM",
+        "sunrise": "5:38 AM",
+        "dhuhr": "12:33 PM",
+        "asr": "4:10 PM",
+        "maghrib": "7:18 PM",
+        "isha": "8:40 PM"
+      },
+      {
+        "date": "2020-06-01",
+        "fajr": "4:33 AM",
+        "sunrise": "6:18 AM",
+        "dhuhr": "1:34 PM",
+        "asr": "5:13 PM",
+        "maghrib": "8:41 PM",
+        "isha": "10:11 PM"
+      },
+      {
+        "date": "2020-07-01",
+        "fajr": "4:34 AM",
+        "sunrise": "6:21 AM",
+        "dhuhr": "1:40 PM",
+        "asr": "5:19 PM",
+        "maghrib": "8:49 PM",
+        "isha": "10:21 PM"
+      },
+      {
+        "date": "2020-08-01",
+        "fajr": "5:02 AM",
+        "sunrise": "6:40 AM",
+        "dhuhr": "1:42 PM",
+        "asr": "5:20 PM",
+        "maghrib": "8:35 PM",
+        "isha": "9:59 PM"
+      },
+      {
+        "date": "2020-09-01",
+        "fajr": "5:33 AM",
+        "sunrise": "7:01 AM",
+        "dhuhr": "1:36 PM",
+        "asr": "5:07 PM",
+        "maghrib": "8:00 PM",
+        "isha": "9:16 PM"
+      },
+      {
+        "date": "2020-10-01",
+        "fajr": "5:57 AM",
+        "sunrise": "7:22 AM",
+        "dhuhr": "1:25 PM",
+        "asr": "4:42 PM",
+        "maghrib": "7:19 PM",
+        "isha": "8:32 PM"
+      },
+      {
+        "date": "2020-11-01",
+        "fajr": "6:20 AM",
+        "sunrise": "7:46 AM",
+        "dhuhr": "1:19 PM",
+        "asr": "4:15 PM",
+        "maghrib": "6:43 PM",
+        "isha": "7:58 PM"
+      },
+      {
+        "date": "2020-12-01",
+        "fajr": "6:44 AM",
+        "sunrise": "8:14 AM",
+        "dhuhr": "1:25 PM",
+        "asr": "4:04 PM",
+        "maghrib": "6:27 PM",
+        "isha": "7:45 PM"
+      }]
+}
