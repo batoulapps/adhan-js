@@ -7,6 +7,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "test": "jest",
+    "test:watch": "jest --watch",
     "coverage": "codecov"
   },
   "repository": {
