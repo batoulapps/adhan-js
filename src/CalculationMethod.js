@@ -81,7 +81,7 @@ const CalculationMethod = {
     // Moroccan ministry of Habous and Islamic Affairs
     Morocco: function(){
         let params = new CalculationParameters("Morocco", 19, 17);
-        params.methodAdjustments = { sunrise: -3, dhuhr: 5, maghrib: 5 };
+        params.methodAdjustments = {sunrise: -3, dhuhr: 5, maghrib: 5 };
         return params;
     },
 
