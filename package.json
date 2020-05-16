@@ -15,7 +15,18 @@
     "url": "git://github.com/batoulapps/adhan-js.git"
   },
   "homepage": "https://github.com/batoulapps/adhan-js",
-  "keywords": ["adhan", "islam", "muslim", "prayer", "islamic", "prayer times", "salah", "salat", "salaat", "namaz"],
+  "keywords": [
+    "adhan",
+    "islam",
+    "muslim",
+    "prayer",
+    "islamic",
+    "prayer times",
+    "salah",
+    "salat",
+    "salaat",
+    "namaz"
+  ],
   "author": "Ameir Al-Zoubi <ameir@ameir.com>",
   "license": "MIT",
   "devDependencies": {

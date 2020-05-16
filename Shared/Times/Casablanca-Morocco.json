@@ -1,14 +1,13 @@
 {
   "params": {
-    "latitude": 33.5731,
-    "longitude": -7.5898,
+    "latitude": 33.5950627,
+    "longitude": -7.6187768,
     "timezone": "Africa/Casablanca",
     "method": "Morocco"
   },
   "source": ["http://www.habous.gov.ma/fr/horaire-priere.html"],
-  "variance": 1,
-  "times": [
-    {
+  "variance": 2,
+  "times": [{
       "date": "2020-01-01",
       "fajr": "7:01 AM",
       "sunrise": "8:31 AM",
