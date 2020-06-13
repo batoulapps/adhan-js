@@ -108,6 +108,7 @@ params.adjustments.fajr = 2;
 | adhan.CalculationMethod.Turkey() | An approximation of the Diyanet method used in Turkey. This approximation is less accurate outside the region of Turkey. |
 | adhan.CalculationMethod.Tehran() | Institute of Geophysics, University of Tehran. Early Isha time with an angle of 14°. Slightly later Fajr time with an angle of 17.7°. Calculates Maghrib based on the sun reaching an angle of 4.5° below the horizon. |
 | adhan.CalculationMethod.NorthAmerica() | Also known as the ISNA method. Can be used for North America, but the moonsightingCommittee method is preferable. Gives later Fajr times and early Isha times with angles of 15°. |
+| adhan.CalculationMethod.Morocco() | Used in Morocco. Earlier Fajr time with and angle of 19°. Earlier Isha time with an angle of 17°. With a -3 minute offset for sunrise and 5 minute offset for Dhuhr and Isha.   |
 | adhan.CalculationMethod.Other() | Defaults to angles of 0°, should generally be used for making a custom method and setting your own values. |
 
 #### Madhab
