@@ -51,7 +51,7 @@ export namespace CalculationMethod {
 }
 
 export class Coordinates {
-  constructor(longitude: number, latitude: number);
+  constructor(latitude: number, longitude: number);
   longitude: number;
   latitude: number;
 }
