@@ -30,8 +30,6 @@ function parseParams(data) {
 		params = adhan.CalculationMethod.Turkey();
 	} else if (method == "Tehran") {
 		params = adhan.CalculationMethod.Tehran();
-	} else if (method == "Morocco") {
-		params = adhan.CalculationMethod.Morocco();
 	} else {
 		params = adhan.CalculationMethod.Other();
 	}
