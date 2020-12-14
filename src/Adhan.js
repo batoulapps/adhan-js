@@ -5,19 +5,21 @@ import { Madhab } from './Madhab';
 import HighLatitudeRule from './HighLatitudeRule';
 import CalculationMethod from './CalculationMethod';
 import CalculationParameters from './CalculationParameters';
-import qibla from './Qibla';
+import Qibla from './Qibla';
 import SunnahTimes from './SunnahTimes';
+import { PolarCircleResolution } from './PolarCircleResolution';
 
 const adhan = {
-    Prayer: Prayer,
-    Madhab: Madhab,
-    HighLatitudeRule: HighLatitudeRule,
-    Coordinates: Coordinates,
-    CalculationParameters: CalculationParameters,
-    CalculationMethod: CalculationMethod,
-    PrayerTimes: PrayerTimes,
-    SunnahTimes: SunnahTimes,
-    Qibla: qibla
+    Prayer,
+    Madhab,
+    HighLatitudeRule,
+    Coordinates,
+    CalculationParameters,
+    CalculationMethod,
+    PrayerTimes,
+    SunnahTimes,
+    Qibla,
+    PolarCircleResolution,
 };
 
 export default adhan;

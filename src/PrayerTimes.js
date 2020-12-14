@@ -2,8 +2,16 @@ import SolarTime from './SolarTime';
 import TimeComponents from './TimeComponents';
 import Prayer from './Prayer';
 import Astronomical from './Astronomical';
-import { dateByAddingDays, dateByAddingMinutes, dateByAddingSeconds, roundedMinute, dayOfYear } from './DateUtils';
+import {
+    dateByAddingDays,
+    dateByAddingMinutes,
+    dateByAddingSeconds,
+    roundedMinute,
+    dayOfYear,
+    isValidDate
+} from './DateUtils';
 import { Madhab, shadowLength } from './Madhab';
+import { PolarCircleResolution, polarCircleResolvedValues } from './PolarCircleResolution';
 
 export default class PrayerTimes {
     constructor(coordinates, date, calculationParameters) {
@@ -25,11 +33,29 @@ export default class PrayerTimes {
         dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
         sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
         var sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+        var tomorrow = dateByAddingDays(date, 1);
+        var tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
+
+        const polarCircleResolver = calculationParameters.polarCircleResolution;
+        if (
+          (!isValidDate(sunriseTime) || !isValidDate(sunsetTime) || isNaN(tomorrowSolarTime.sunrise))
+          && polarCircleResolver !== PolarCircleResolution.Unresolved
+        ) {
+            const resolved = polarCircleResolvedValues(polarCircleResolver, date, coordinates);
+            this.coordinates = resolved.coordinates;
+            this.date.setTime(resolved.date.getTime());
+            solarTime = resolved.solarTime;
+            tomorrow = resolved.tomorrow;
+            tomorrowSolarTime = resolved.tomorrowSolarTime;
+            const dateComponents = [date.getFullYear(), date.getMonth(), date.getDate()];
+
+            dhuhrTime = new TimeComponents(solarTime.transit).utcDate(...dateComponents);
+            sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(...dateComponents);
+            sunsetTime = new TimeComponents(solarTime.sunset).utcDate(...dateComponents);
+        }
 
         asrTime = new TimeComponents(solarTime.afternoon(shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
-        var tomorrow = dateByAddingDays(date, 1);
-        var tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
         var tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
         var night = (tomorrowSunrise - sunsetTime) / 1000;
 
@@ -60,7 +86,7 @@ export default class PrayerTimes {
             ishaTime = dateByAddingMinutes(sunsetTime, calculationParameters.ishaInterval);
         } else {
             ishaTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-            
+
             // special case for moonsighting committee above latitude 55
             if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
                 nightFraction = night / 7;

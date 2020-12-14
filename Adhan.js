@@ -164,6 +164,9 @@ function DateUtils_dayOfYear(date) {
   returnedDayOfYear += date.getDate();
   return returnedDayOfYear;
 }
+function isValidDate(date) {
+  return date instanceof Date && !isNaN(date.valueOf());
+}
 // CONCATENATED MODULE: ./src/Astronomical.js
 
 
@@ -612,7 +615,100 @@ function Madhab_shadowLength(madhab) {
       throw "Invalid Madhab";
   }
 }
+// CONCATENATED MODULE: ./src/PolarCircleResolution.js
+
+
+const PolarCircleResolution = {
+  AqrabBalad: 'AqrabBalad',
+  AqrabYaum: 'AqrabYaum',
+  Unresolved: 'Unresolved'
+};
+const LATITUDE_VARIATION_STEP = 0.5; // Degrees to add/remove at each resolution step
+
+const UNSAFE_LATITUDE = 65; // Based on https://en.wikipedia.org/wiki/Midnight_sun
+
+const isValidSolarTime = solarTime => solarTime && !isNaN(solarTime.sunrise) && !isNaN(solarTime.sunset);
+
+const aqrabYaumResolver = (coordinates, date, daysAdded = 1, direction = 1) => {
+  if (daysAdded > Math.ceil(365 / 2)) {
+    return null;
+  }
+
+  const testDate = new Date(date.getTime());
+  testDate.setDate(testDate.getDate() + direction * daysAdded);
+  const tomorrow = dateByAddingDays(testDate, 1);
+  const solarTime = new SolarTime_SolarTime(testDate, coordinates);
+  const tomorrowSolarTime = new SolarTime_SolarTime(tomorrow, coordinates);
+
+  if (!isValidSolarTime(solarTime) || !isValidSolarTime(tomorrowSolarTime)) {
+    return aqrabYaumResolver(coordinates, date, daysAdded + (direction > 0 ? 0 : 1), -direction);
+  }
+
+  return {
+    date,
+    tomorrow,
+    coordinates,
+    solarTime,
+    tomorrowSolarTime
+  };
+};
+
+const aqrabBaladResolver = (coordinates, date, latitude) => {
+  const solarTime = new SolarTime_SolarTime(date, { ...coordinates,
+    latitude
+  });
+  const tomorrow = dateByAddingDays(date, 1);
+  const tomorrowSolarTime = new SolarTime_SolarTime(tomorrow, { ...coordinates,
+    latitude
+  });
+
+  if (!isValidSolarTime(solarTime) || !isValidSolarTime(tomorrowSolarTime)) {
+    return Math.abs(latitude) >= UNSAFE_LATITUDE ? aqrabBaladResolver(coordinates, date, latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP) : null;
+  }
+
+  return {
+    date,
+    tomorrow,
+    coordinates: {
+      latitude,
+      longitude: coordinates.longitude
+    },
+    solarTime,
+    tomorrowSolarTime
+  };
+};
+
+const polarCircleResolvedValues = (resolver, date, coordinates) => {
+  const defaultReturn = {
+    date,
+    tomorrow: dateByAddingDays(date, 1),
+    coordinates,
+    solarTime: new SolarTime_SolarTime(date, coordinates),
+    tomorrowSolarTime: new SolarTime_SolarTime(dateByAddingDays(date, 1), coordinates)
+  };
+
+  switch (resolver) {
+    case PolarCircleResolution.AqrabYaum:
+      {
+        return aqrabYaumResolver(coordinates, date) || defaultReturn;
+      }
+
+    case PolarCircleResolution.AqrabBalad:
+      {
+        const {
+          latitude
+        } = coordinates;
+        return aqrabBaladResolver(coordinates, date, latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP) || defaultReturn;
+      }
+
+    default:
+      {
+        return defaultReturn;
+      }
+  }
+};
 // CONCATENATED MODULE: ./src/PrayerTimes.js
+
 
 
 
@@ -635,9 +731,24 @@ class PrayerTimes_PrayerTimes {
     dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     var sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-    asrTime = new TimeComponents(solarTime.afternoon(Madhab_shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     var tomorrow = dateByAddingDays(date, 1);
     var tomorrowSolarTime = new SolarTime_SolarTime(tomorrow, coordinates);
+    const polarCircleResolver = calculationParameters.polarCircleResolution;
+
+    if ((!isValidDate(sunriseTime) || !isValidDate(sunsetTime) || isNaN(tomorrowSolarTime.sunrise)) && polarCircleResolver !== PolarCircleResolution.Unresolved) {
+      const resolved = polarCircleResolvedValues(polarCircleResolver, date, coordinates);
+      this.coordinates = resolved.coordinates;
+      this.date.setTime(resolved.date.getTime());
+      solarTime = resolved.solarTime;
+      tomorrow = resolved.tomorrow;
+      tomorrowSolarTime = resolved.tomorrowSolarTime;
+      const dateComponents = [date.getFullYear(), date.getMonth(), date.getDate()];
+      dhuhrTime = new TimeComponents(solarTime.transit).utcDate(...dateComponents);
+      sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(...dateComponents);
+      sunsetTime = new TimeComponents(solarTime.sunset).utcDate(...dateComponents);
+    }
+
+    asrTime = new TimeComponents(solarTime.afternoon(Madhab_shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     var tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
     var night = (tomorrowSunrise - sunsetTime) / 1000;
     fajrTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).utcDate(date.getFullYear(), date.getMonth(), date.getDate()); // special case for moonsighting committee above latitude 55
@@ -783,6 +894,7 @@ const HighLatitudeRule = {
 // CONCATENATED MODULE: ./src/CalculationParameters.js
 
 
+
 class CalculationParameters_CalculationParameters {
   constructor(methodName, fajrAngle, ishaAngle, ishaInterval, maghribAngle) {
     this.method = methodName || "Other";
@@ -808,6 +920,7 @@ class CalculationParameters_CalculationParameters {
       maghrib: 0,
       isha: 0
     };
+    this.polarCircleResolution = PolarCircleResolution.Unresolved;
   }
 
   nightPortions() {
@@ -969,6 +1082,7 @@ class SunnahTimes_SunnahTimes {
 
 
 
+
 const adhan = {
   Prayer: src_Prayer,
   Madhab: Madhab,
@@ -978,7 +1092,8 @@ const adhan = {
   CalculationMethod: src_CalculationMethod,
   PrayerTimes: PrayerTimes_PrayerTimes,
   SunnahTimes: SunnahTimes_SunnahTimes,
-  Qibla: qibla
+  Qibla: qibla,
+  PolarCircleResolution: PolarCircleResolution
 };
 /* harmony default export */ var Adhan = __webpack_exports__["default"] = (adhan);
 

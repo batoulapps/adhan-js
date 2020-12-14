@@ -79,6 +79,7 @@ customize the calculation parameters if needed.
 ```js
 var params = adhan.CalculationMethod.MuslimWorldLeague();
 params.madhab = adhan.Madhab.Hanafi;
+params.polarCircleResolution = adhan.PolarCircleResolution.AqrabYaum;
 params.adjustments.fajr = 2;
 ```
 
@@ -91,6 +92,7 @@ params.adjustments.fajr = 2;
 | madhab | Value from the Madhab object, used to calculate Asr |
 | highLatitudeRule | Value from the HighLatitudeRule object, used to set a minimum time for Fajr and a max time for Isha |
 | adjustments | Object with custom prayer time adjustments (in minutes) for each prayer time |
+| polarCircleResolution | Value from the PolarCircleResolution object, strategy used to resolve undefined prayer times for areas located in polar circles  |
 
 #### CalculationMethod
 
@@ -125,6 +127,13 @@ params.adjustments.fajr = 2;
 | adhan.HighLatitudeRule.SeventhOfTheNight | Fajr will never be earlier than the beginning of the last seventh of the night and Isha will never be later than the end of the first seventh of the night |
 | adhan.HighLatitudeRule.TwilightAngle | Similar to SeventhOfTheNight, but instead of 1/7, the fraction of the night used is fajrAngle/60 and ishaAngle/60 |
 
+#### PolarCircleResolution
+
+| Value | Description |
+| ----- | ----------- |
+| adhan.PolarCircleResolution.AqrabBalad | Finds the closest location for which sunrise and sunset prayer times can be computed |
+| adhan.PolarCircleResolution.AqrabYaum | Finds the closest date (forward or backward) for which sunrise and sunset prayer times can be computed |
+| adhan.PolarCircleResolution.Unresolved | (default) Leaves sunrise and sunset prayer times `undefined` when they can't be computed  |
 
 ### Prayer Times
 

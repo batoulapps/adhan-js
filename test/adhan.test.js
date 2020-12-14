@@ -1,7 +1,8 @@
 import adhan from '../src/Adhan';
 import moment from 'moment-timezone';
-import { dateByAddingSeconds } from '../src/DateUtils';
+import { dateByAddingSeconds, isValidDate } from '../src/DateUtils';
 import { shadowLength } from '../src/Madhab';
+import * as polarCircleResolver from '../src/PolarCircleResolution';
 
 test("Verifying the night portion defined by the high latitude rule", () => {
     let p1 = new adhan.CalculationParameters("Other", 18, 18);
@@ -307,4 +308,145 @@ test("adjusting prayer time with high latitude rule", () => {
     expect(moment(p3.asr).tz(tzid).format("h:mm A")).toBe("5:46 PM");
     expect(moment(p3.maghrib).tz(tzid).format("h:mm A")).toBe("10:01 PM");
     expect(moment(p3.isha).tz(tzid).format("h:mm A")).toBe("11:50 PM");
+});
+
+describe('Polar circle resolution cases', () => {
+    const prayersToCheck = ['fajr', 'sunrise', 'maghrib', 'isha'];
+    const regularDate = new Date(2020, 4, 15, 20, 0, 0, 0);
+    const dateAffectedByPolarNight = new Date(2020, 11, 21, 20, 0, 0, 0);
+    const dateAffectedByMidnightSun = new Date(2020, 5, 21, 20, 0, 0, 0);
+    const regularCoordinates = new adhan.Coordinates(31.947351, 35.227163);
+    const ArjeplogSweden = new adhan.Coordinates(66.7222444, 17.7189);
+    const AmundsenScottAntarctic = new adhan.Coordinates(-84.996, 0.01013);
+    const unresolvedParams = adhan.CalculationMethod.MuslimWorldLeague();
+    let aqrabBaladParams = adhan.CalculationMethod.MuslimWorldLeague();
+    aqrabBaladParams.polarCircleResolution = adhan.PolarCircleResolution.AqrabBalad;
+    let aqrabYaumParams = adhan.CalculationMethod.MuslimWorldLeague();
+    aqrabYaumParams.polarCircleResolution = adhan.PolarCircleResolution.AqrabYaum;
+
+    describe('Regular computation', () => {
+        it ('should not attempt to do any resolution if the resolver is set to unresolved', () => {
+            const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+            const prayersTimes1 = new adhan.PrayerTimes(
+              ArjeplogSweden,
+              dateAffectedByMidnightSun,
+              unresolvedParams,
+            );
+            const prayersTimes2 = new adhan.PrayerTimes(
+              ArjeplogSweden,
+              dateAffectedByMidnightSun,
+              unresolvedParams,
+            );
+
+            expect(spy).not.toHaveBeenCalled();
+        });
+
+        it ('should not attempt to do any resolution if the date is affected neither by the polar night nor by the midnight sun', () => {
+            const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+            const prayersTimes1 = new adhan.PrayerTimes(
+              ArjeplogSweden,
+              regularDate,
+              aqrabBaladParams,
+            );
+            const prayersTimes2 = new adhan.PrayerTimes(
+              ArjeplogSweden,
+              regularDate,
+              aqrabYaumParams,
+            );
+
+            expect(spy).not.toHaveBeenCalled();
+        });
+
+        it ('should not make any search if the location is outside the polar circles', () => {
+            const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+            const prayersTimes1 = new adhan.PrayerTimes(
+              regularCoordinates,
+              dateAffectedByPolarNight,
+              aqrabBaladParams,
+            );
+            const prayersTimes2 = new adhan.PrayerTimes(
+              regularCoordinates,
+              dateAffectedByPolarNight,
+              aqrabYaumParams,
+            );
+
+            expect(spy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('Midnight Sun case', () => {
+        it ('should fail to compute targeted prayer times with the "unresolved" resolver', () => {
+            const prayersTimes = new adhan.PrayerTimes(
+              ArjeplogSweden,
+              dateAffectedByMidnightSun,
+              unresolvedParams,
+            );
+
+            prayersToCheck.forEach((prayerName) => {
+                expect(isValidDate(prayersTimes[prayerName])).toEqual(false);
+            });
+        });
+
+        it ('should succeed in computing all prayers times with the "aqrabBalad" resolver', () => {
+            const prayersTimes = new adhan.PrayerTimes(
+              ArjeplogSweden,
+              dateAffectedByMidnightSun,
+              aqrabBaladParams,
+            );
+
+            prayersToCheck.forEach((prayerName) => {
+                expect(isValidDate(prayersTimes[prayerName])).toEqual(true);
+            });
+        });
+
+        it ('should succeed in computing all prayers times with the "aqrabYaum" resolver', () => {
+            const prayersTimes = new adhan.PrayerTimes(
+              ArjeplogSweden,
+              dateAffectedByMidnightSun,
+              aqrabYaumParams,
+            );
+
+            prayersToCheck.forEach((prayerName) => {
+                expect(isValidDate(prayersTimes[prayerName])).toEqual(true);
+            });
+        });
+    });
+
+    describe('Polar Night case', () => {
+        it ('should fail to compute targeted prayer times with the "unresolved" resolver ', () => {
+            const prayersTimes = new adhan.PrayerTimes(
+              AmundsenScottAntarctic,
+              dateAffectedByPolarNight,
+              unresolvedParams,
+            );
+
+            prayersToCheck.forEach((prayerName) => {
+                expect(isValidDate(prayersTimes[prayerName])).toEqual(false);
+            });
+        });
+
+        it ('should succeed in computing all prayers times with the "aqrabBalad" resolver', () => {
+            const prayersTimes = new adhan.PrayerTimes(
+              AmundsenScottAntarctic,
+              dateAffectedByPolarNight,
+              aqrabBaladParams,
+            );
+
+            prayersToCheck.forEach((prayerName) => {
+                expect(isValidDate(prayersTimes[prayerName])).toEqual(true);
+            });
+        });
+
+        it ('should succeed in computing all prayers times with the "aqrabYaum" resolver', () => {
+            const prayersTimes = new adhan.PrayerTimes(
+              AmundsenScottAntarctic,
+              dateAffectedByPolarNight,
+              aqrabYaumParams,
+            );
+
+            prayersToCheck.forEach((prayerName) => {
+                expect(isValidDate(prayersTimes[prayerName])).toEqual(true);
+            });
+        });
+    });
 });

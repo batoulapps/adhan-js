@@ -16,7 +16,7 @@ export class PrayerTimes {
 }
 
 export class CalculationParameters {
-  constructor(fajrAngle: number, ishaAngle: number, ishaInterval: number, methodName?: string)
+  constructor(methodName: string|undefined|null, fajrAngle: number, ishaAngle: number, ishaInterval: number, maghribAngle: number)
 
   readonly method: string;
   fajrAngle: number;
@@ -84,3 +84,8 @@ export enum HighLatitudeRule {
   TwilightAngle
 }
 
+export enum PolarCircleResolution {
+  AqrabBalad,
+  AqrabYaum,
+  Unresolved
+}
