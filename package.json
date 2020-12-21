@@ -1,6 +1,6 @@
 {
   "name": "adhan",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "High precision Islamic prayer time library",
   "main": "Adhan.js",
   "types": "Adhan.d.ts",
