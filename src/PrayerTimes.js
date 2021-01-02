@@ -10,31 +10,32 @@ import {
     dayOfYear,
     isValidDate
 } from './DateUtils';
-import { Madhab, shadowLength } from './Madhab';
+import { shadowLength } from './Madhab';
 import { PolarCircleResolution, polarCircleResolvedValues } from './PolarCircleResolution';
 
 export default class PrayerTimes {
+    // eslint-disable-next-line complexity
     constructor(coordinates, date, calculationParameters) {
         this.coordinates = coordinates;
         this.date = date;
         this.calculationParameters = calculationParameters;
 
-        var solarTime = new SolarTime(date, coordinates);
+        let solarTime = new SolarTime(date, coordinates);
 
-        var fajrTime;
-        var sunriseTime;
-        var dhuhrTime;
-        var asrTime;
-        var maghribTime;
-        var ishaTime;
+        let fajrTime;
+        let sunriseTime;
+        let dhuhrTime;
+        let asrTime;
+        let maghribTime;
+        let ishaTime;
 
-        var nightFraction;
+        let nightFraction;
 
         dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
         sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-        var sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-        var tomorrow = dateByAddingDays(date, 1);
-        var tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
+        let sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+        let tomorrow = dateByAddingDays(date, 1);
+        let tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
 
         const polarCircleResolver = calculationParameters.polarCircleResolution;
         if (
@@ -54,31 +55,32 @@ export default class PrayerTimes {
             sunsetTime = new TimeComponents(solarTime.sunset).utcDate(...dateComponents);
         }
 
+        // eslint-disable-next-line prefer-const
         asrTime = new TimeComponents(solarTime.afternoon(shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
-        var tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
-        var night = (tomorrowSunrise - sunsetTime) / 1000;
+        const tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+        const night = (tomorrowSunrise - sunsetTime) / 1000;
 
         fajrTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
         // special case for moonsighting committee above latitude 55
-        if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
+        if (calculationParameters.method === "MoonsightingCommittee" && coordinates.latitude >= 55) {
             nightFraction = night / 7;
             fajrTime = dateByAddingSeconds(sunriseTime, -nightFraction);
         }
 
-        var safeFajr = (function () {
-            if (calculationParameters.method == "MoonsightingCommittee") {
+        const safeFajr = (function () {
+            if (calculationParameters.method === "MoonsightingCommittee") {
                 return Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), sunriseTime);
             }
             else {
-                var portion = calculationParameters.nightPortions().fajr;
+                const portion = calculationParameters.nightPortions().fajr;
                 nightFraction = portion * night;
                 return dateByAddingSeconds(sunriseTime, -nightFraction);
             }
         })();
 
-        if (fajrTime == null || isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
+        if (fajrTime === null || isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
             fajrTime = safeFajr;
         }
 
@@ -88,17 +90,17 @@ export default class PrayerTimes {
             ishaTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
             // special case for moonsighting committee above latitude 55
-            if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
+            if (calculationParameters.method === "MoonsightingCommittee" && coordinates.latitude >= 55) {
                 nightFraction = night / 7;
                 ishaTime = dateByAddingSeconds(sunsetTime, nightFraction);
             }
 
-            var safeIsha = (function () {
-                if (calculationParameters.method == "MoonsightingCommittee") {
+            const safeIsha = (function () {
+                if (calculationParameters.method === "MoonsightingCommittee") {
                     return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), sunsetTime);
                 }
                 else {
-                    var portion = calculationParameters.nightPortions().isha;
+                    const portion = calculationParameters.nightPortions().isha;
                     nightFraction = portion * night;
                     return dateByAddingSeconds(sunsetTime, nightFraction);
                 }
@@ -111,18 +113,18 @@ export default class PrayerTimes {
 
         maghribTime = sunsetTime;
         if (calculationParameters.maghribAngle) {
-            let angleBasedMaghrib = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+            const angleBasedMaghrib = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
             if (sunsetTime < angleBasedMaghrib && ishaTime > angleBasedMaghrib) {
                 maghribTime = angleBasedMaghrib;
             }
         }
 
-        var fajrAdjustment = (calculationParameters.adjustments.fajr || 0) + (calculationParameters.methodAdjustments.fajr || 0);
-        var sunriseAdjustment = (calculationParameters.adjustments.sunrise || 0) + (calculationParameters.methodAdjustments.sunrise || 0);
-        var dhuhrAdjustment = (calculationParameters.adjustments.dhuhr || 0) + (calculationParameters.methodAdjustments.dhuhr || 0);
-        var asrAdjustment = (calculationParameters.adjustments.asr || 0) + (calculationParameters.methodAdjustments.asr || 0);
-        var maghribAdjustment = (calculationParameters.adjustments.maghrib || 0) + (calculationParameters.methodAdjustments.maghrib || 0);
-        var ishaAdjustment = (calculationParameters.adjustments.isha || 0) + (calculationParameters.methodAdjustments.isha || 0);
+        const fajrAdjustment = (calculationParameters.adjustments.fajr || 0) + (calculationParameters.methodAdjustments.fajr || 0);
+        const sunriseAdjustment = (calculationParameters.adjustments.sunrise || 0) + (calculationParameters.methodAdjustments.sunrise || 0);
+        const dhuhrAdjustment = (calculationParameters.adjustments.dhuhr || 0) + (calculationParameters.methodAdjustments.dhuhr || 0);
+        const asrAdjustment = (calculationParameters.adjustments.asr || 0) + (calculationParameters.methodAdjustments.asr || 0);
+        const maghribAdjustment = (calculationParameters.adjustments.maghrib || 0) + (calculationParameters.methodAdjustments.maghrib || 0);
+        const ishaAdjustment = (calculationParameters.adjustments.isha || 0) + (calculationParameters.methodAdjustments.isha || 0);
 
         this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment));
         this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment));
@@ -133,22 +135,22 @@ export default class PrayerTimes {
     }
 
     timeForPrayer(prayer) {
-        if (prayer == Prayer.Fajr) {
+        if (prayer === Prayer.Fajr) {
             return this.fajr;
         }
-        else if (prayer == Prayer.Sunrise) {
+        else if (prayer === Prayer.Sunrise) {
             return this.sunrise;
         }
-        else if (prayer == Prayer.Dhuhr) {
+        else if (prayer === Prayer.Dhuhr) {
             return this.dhuhr;
         }
-        else if (prayer == Prayer.Asr) {
+        else if (prayer === Prayer.Asr) {
             return this.asr;
         }
-        else if (prayer == Prayer.Maghrib) {
+        else if (prayer === Prayer.Maghrib) {
             return this.maghrib;
         }
-        else if (prayer == Prayer.Isha) {
+        else if (prayer === Prayer.Isha) {
             return this.isha;
         }
         else {
