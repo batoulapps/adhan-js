@@ -16,15 +16,17 @@ export class PrayerTimes {
 }
 
 export class CalculationParameters {
-  constructor(methodName: string|undefined|null, fajrAngle: number, ishaAngle: number, ishaInterval: number, maghribAngle: number)
+  constructor(fajrAngle: number, ishaAngle: number, methodName?: string, ishaInterval?: number, maghribAngle?: number)
 
   readonly method: string;
   fajrAngle: number;
   ishaAngle: number;
   ishaInterval: number;
+  maghribAngle: number;
   madhab: Madhab;
   highLatitudeRule: HighLatitudeRule;
   adjustments: PrayerAdjustments;
+  polarCircleResolution: PolarCircleResolution;
 }
 
 export interface PrayerAdjustments {
@@ -47,6 +49,8 @@ export namespace CalculationMethod {
   export function Kuwait(): CalculationParameters;
   export function Qatar(): CalculationParameters;
   export function Singapore(): CalculationParameters;
+  export function Tehran(): CalculationParameters;
+  export function Turkey(): CalculationParameters;
   export function Other(): CalculationParameters;
 }
 
@@ -89,3 +93,5 @@ export enum PolarCircleResolution {
   AqrabYaum,
   Unresolved
 }
+
+export function Qibla(coordinates: Coordinates): number;
