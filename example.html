@@ -26,10 +26,9 @@
         }
     }
 
-    var date = new Date();
-    var coordinates = new adhan.Coordinates(35.78056, -78.6389);
-    var params = adhan.CalculationMethod.MuslimWorldLeague();
-    params.madhab = adhan.Madhab.Hanafi;
+    const coordinates = new adhan.Coordinates(66.7222444, 17.7189);
+    const params = adhan.CalculationMethod.MuslimWorldLeague();
+    const date = new Date('2020-06-21 21:55')
     
     var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
 
@@ -50,9 +49,6 @@
     document.write(`Current Prayer: ${prayerName(prayerTimes.currentPrayer())}\n\n`);
 
     document.write(`Qibla Direction: ${adhan.Qibla(coordinates)}`);
-
-    var nyc = { latitude: 40.7128, longitude: -74.0059 };
-	expect(qibla(nyc)).toBeCloseTo(58.4817, 3);
 
     </script></pre>
 </body>
