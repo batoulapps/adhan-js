@@ -72,6 +72,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+        # latest nodejs LTS
+          node-version: 14.x
       - run: npm ci
       - name: Preparing a release for npm and github 🚀
       # more about this action here: https://github.com/cycjimmy/semantic-release-action
@@ -81,8 +84,6 @@ jobs:
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
-          # latest nodejs LTS
-          node-version: 14.x
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # NPM_TOKEN: ${{ secrets.npm_token }}
