@@ -12,11 +12,11 @@
     "test:audit": "npm audit --audit-level=high",
     "test-watch": "jest --watch",
     "coverage": "codecov",
-    "semantic-release": "semantic-release --dry-run"
+    "semantic-release": "semantic-release --dry-run --repository-url https://github.com/gimyboya/adhan-js.git"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/batoulapps/adhan-js.git"
+    "url": "https://github.com/batoulapps/adhan-js.git"
   },
   "homepage": "https://github.com/batoulapps/adhan-js",
   "keywords": [
