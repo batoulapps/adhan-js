@@ -25,8 +25,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn --frozen-lockfile # equivalent of npm ci
-    - run: yarn build
+    - run: npm ci # equivalent of npm ci
+    - run: npm build
       env:
         CI: true
 # testing job
@@ -43,8 +43,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
           node-version: ${{ matrix.node-version }}
-    - run: yarn --frozen-lockfile
-    - run: yarn test
+    - run: npm ci
+    - run: npm test
 # # coverage uploading job
 #   coverage:
 #     runs-on: ubuntu-latest
@@ -72,7 +72,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: yarn --frozen-lockfile
+      - run: npm ci
       - name: Preparing a release for npm and github 🚀
       # more about this action here: https://github.com/cycjimmy/semantic-release-action
         uses: cycjimmy/semantic-release-action@v2
