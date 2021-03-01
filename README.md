@@ -1,6 +1,6 @@
 # Adhan JavaScript
 
-[![badge-version][]][npm] [![badge-travis][]][travis] [![badge-cov][]][codecov]
+[![badge-version][]][npm] [![badge-travis][]][travis] [![badge-cov][]][codecov] [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 Adhan JavaScript is a well tested and well documented library for calculating Islamic prayer times in JavaScript using Node or a web browser.
 
@@ -202,6 +202,8 @@ Adhan is made publicly available to provide a well tested and well documented li
 developers. We accept feature contributions provided that they are properly documented and include the appropriate 
 unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different 
 locations, we do ask that the source of the comparison values be properly documented.
+
+**Note:** Commit messages should follow the [commit message convention](./.github/COMMIT_CONVENTIONS.md) so that changelogs can be automatically generated. Commit messages will be automatically validated upon commit. **If you are not familiar with the commit message convention, you should use `npm run commit` instead of `git commit`**, which provides an interactive CLI for generating proper commit messages.
 
 ## License
 
