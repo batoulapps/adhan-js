@@ -11,8 +11,7 @@
     "test:unit": "jest",
     "test:audit": "npm audit --audit-level=high",
     "test-watch": "jest --watch",
-    "coverage": "codecov",
-    "semantic-release": "semantic-release --dry-run --repository-url https://github.com/gimyboya/adhan-js.git"
+    "coverage": "codecov"
   },
   "repository": {
     "type": "git",
@@ -37,10 +36,13 @@
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
     "@babel/register": "^7.9.0",
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
     "@semantic-release/changelog": "^5.0.1",
     "babel-loader": "^8.1.0",
     "codecov": "^3.6.5",
     "eslint": "^7.17.0",
+    "husky": "^5.1.2",
     "jest": "^26.6.0",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",
