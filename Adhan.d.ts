@@ -89,7 +89,7 @@ export enum HighLatitudeRule {
 }
 
 export namespace HighLatitudeRule {
-  export function recommendedz(coordinates: Coordinates): HighLatitudeRule;
+  export function recommended(coordinates: Coordinates): HighLatitudeRule;
 }
 
 export enum PolarCircleResolution {
