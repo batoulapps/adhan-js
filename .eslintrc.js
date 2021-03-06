@@ -4,12 +4,13 @@ module.exports = {
     sourceType: "module",
   },
 
+  extends: ["eslint:recommended", "plugin:jest/recommended"],
+
   env: {
     node: true,
     browser: true,
+    "jest/globals": true,
   },
-
-  extends: ["eslint:recommended"],
 
   rules: {
     "complexity": ["warn", 10],

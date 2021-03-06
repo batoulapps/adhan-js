@@ -168,11 +168,12 @@ function isValidDate(date) {
   return date instanceof Date && !isNaN(date.valueOf());
 }
 // CONCATENATED MODULE: ./src/Astronomical.js
+/* eslint-disable max-params, max-lines */
 
 
 const Astronomical = {
   /* The geometric mean longitude of the sun in degrees. */
-  meanSolarLongitude: function (julianCentury) {
+  meanSolarLongitude(julianCentury) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 163 */
 
@@ -184,7 +185,7 @@ const Astronomical = {
   },
 
   /* The geometric mean longitude of the moon in degrees. */
-  meanLunarLongitude: function (julianCentury) {
+  meanLunarLongitude(julianCentury) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 144 */
 
@@ -193,7 +194,8 @@ const Astronomical = {
     const Lp = term1 + term2;
     return unwindAngle(Lp);
   },
-  ascendingLunarNodeLongitude: function (julianCentury) {
+
+  ascendingLunarNodeLongitude(julianCentury) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 144 */
 
@@ -206,7 +208,7 @@ const Astronomical = {
   },
 
   /* The mean anomaly of the sun. */
-  meanSolarAnomaly: function (julianCentury) {
+  meanSolarAnomaly(julianCentury) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 163 */
 
@@ -218,7 +220,7 @@ const Astronomical = {
   },
 
   /* The Sun's equation of the center in degrees. */
-  solarEquationOfTheCenter: function (julianCentury, meanAnomaly) {
+  solarEquationOfTheCenter(julianCentury, meanAnomaly) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 164 */
 
@@ -231,7 +233,7 @@ const Astronomical = {
 
   /* The apparent longitude of the Sun, referred to the
       true equinox of the date. */
-  apparentSolarLongitude: function (julianCentury, meanLongitude) {
+  apparentSolarLongitude(julianCentury, meanLongitude) {
     const T = julianCentury;
     const L0 = meanLongitude;
     /* Equation from Astronomical Algorithms page 164 */
@@ -245,7 +247,7 @@ const Astronomical = {
   /* The mean obliquity of the ecliptic, formula
       adopted by the International Astronomical Union.
       Represented in degrees. */
-  meanObliquityOfTheEcliptic: function (julianCentury) {
+  meanObliquityOfTheEcliptic(julianCentury) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 147 */
 
@@ -258,7 +260,7 @@ const Astronomical = {
 
   /* The mean obliquity of the ecliptic, corrected for
       calculating the apparent position of the sun, in degrees. */
-  apparentObliquityOfTheEcliptic: function (julianCentury, meanObliquityOfTheEcliptic) {
+  apparentObliquityOfTheEcliptic(julianCentury, meanObliquityOfTheEcliptic) {
     const T = julianCentury;
     const Epsilon0 = meanObliquityOfTheEcliptic;
     /* Equation from Astronomical Algorithms page 165 */
@@ -268,7 +270,7 @@ const Astronomical = {
   },
 
   /* Mean sidereal time, the hour angle of the vernal equinox, in degrees. */
-  meanSiderealTime: function (julianCentury) {
+  meanSiderealTime(julianCentury) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 165 */
 
@@ -280,7 +282,8 @@ const Astronomical = {
     const Theta = term1 + term2 + term3 - term4;
     return unwindAngle(Theta);
   },
-  nutationInLongitude: function (julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
+
+  nutationInLongitude(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
     const L0 = solarLongitude;
     const Lp = lunarLongitude;
     const Omega = ascendingNode;
@@ -292,7 +295,8 @@ const Astronomical = {
     const term4 = 0.21 / 3600 * Math.sin(2 * degreesToRadians(Omega));
     return term1 - term2 - term3 + term4;
   },
-  nutationInObliquity: function (julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
+
+  nutationInObliquity(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
     const L0 = solarLongitude;
     const Lp = lunarLongitude;
     const Omega = ascendingNode;
@@ -304,7 +308,8 @@ const Astronomical = {
     const term4 = 0.09 / 3600 * Math.cos(2 * degreesToRadians(Omega));
     return term1 + term2 + term3 - term4;
   },
-  altitudeOfCelestialBody: function (observerLatitude, declination, localHourAngle) {
+
+  altitudeOfCelestialBody(observerLatitude, declination, localHourAngle) {
     const Phi = observerLatitude;
     const delta = declination;
     const H = localHourAngle;
@@ -314,7 +319,8 @@ const Astronomical = {
     const term2 = Math.cos(degreesToRadians(Phi)) * Math.cos(degreesToRadians(delta)) * Math.cos(degreesToRadians(H));
     return radiansToDegrees(Math.asin(term1 + term2));
   },
-  approximateTransit: function (longitude, siderealTime, rightAscension) {
+
+  approximateTransit(longitude, siderealTime, rightAscension) {
     const L = longitude;
     const Theta0 = siderealTime;
     const a2 = rightAscension;
@@ -325,7 +331,7 @@ const Astronomical = {
   },
 
   /* The time at which the sun is at its highest point in the sky (in universal time) */
-  correctedTransit: function (approximateTransit, longitude, siderealTime, rightAscension, previousRightAscension, nextRightAscension) {
+  correctedTransit(approximateTransit, longitude, siderealTime, rightAscension, previousRightAscension, nextRightAscension) {
     const m0 = approximateTransit;
     const L = longitude;
     const Theta0 = siderealTime;
@@ -341,7 +347,8 @@ const Astronomical = {
     const dm = H / -360;
     return (m0 + dm) * 24;
   },
-  correctedHourAngle: function (approximateTransit, angle, coordinates, afterTransit, siderealTime, rightAscension, previousRightAscension, nextRightAscension, declination, previousDeclination, nextDeclination) {
+
+  correctedHourAngle(approximateTransit, angle, coordinates, afterTransit, siderealTime, rightAscension, previousRightAscension, nextRightAscension, declination, previousDeclination, nextDeclination) {
     const m0 = approximateTransit;
     const h0 = angle;
     const Theta0 = siderealTime;
@@ -373,7 +380,7 @@ const Astronomical = {
       previous and next values and a factor
       equal to the fraction of the interpolated
       point's time over the time between values. */
-  interpolate: function (y2, y1, y3, n) {
+  interpolate(y2, y1, y3, n) {
     /* Equation from Astronomical Algorithms page 24 */
     const a = y2 - y1;
     const b = y3 - y2;
@@ -383,7 +390,7 @@ const Astronomical = {
 
   /* Interpolation of three angles, accounting for
       angle unwinding. */
-  interpolateAngles: function (y2, y1, y3, n) {
+  interpolateAngles(y2, y1, y3, n) {
     /* Equation from Astronomical Algorithms page 24 */
     const a = unwindAngle(y2 - y1);
     const b = unwindAngle(y3 - y2);
@@ -392,7 +399,7 @@ const Astronomical = {
   },
 
   /* The Julian Day for the given Gregorian date components. */
-  julianDay: function (year, month, day, hours) {
+  julianDay(year, month, day, hours) {
     /* Equation from Astronomical Algorithms page 60 */
     if (typeof hours === 'undefined') {
       hours = 0;
@@ -413,24 +420,25 @@ const Astronomical = {
   },
 
   /* Julian century from the epoch. */
-  julianCentury: function (julianDay) {
+  julianCentury(julianDay) {
     /* Equation from Astronomical Algorithms page 163 */
     return (julianDay - 2451545.0) / 36525;
   },
 
   /* Whether or not a year is a leap year (has 366 days). */
-  isLeapYear: function (year) {
-    if (year % 4 != 0) {
+  isLeapYear(year) {
+    if (year % 4 !== 0) {
       return false;
     }
 
-    if (year % 100 == 0 && year % 400 != 0) {
+    if (year % 100 === 0 && year % 400 !== 0) {
       return false;
     }
 
     return true;
   },
-  seasonAdjustedMorningTwilight: function (latitude, dayOfYear, year, sunrise) {
+
+  seasonAdjustedMorningTwilight(latitude, dayOfYear, year, sunrise) {
     const a = 75 + 28.65 / 55.0 * Math.abs(latitude);
     const b = 75 + 19.44 / 55.0 * Math.abs(latitude);
     const c = 75 + 32.74 / 55.0 * Math.abs(latitude);
@@ -456,7 +464,8 @@ const Astronomical = {
 
     return dateByAddingSeconds(sunrise, Math.round(adjustment * -60.0));
   },
-  seasonAdjustedEveningTwilight: function (latitude, dayOfYear, year, sunset) {
+
+  seasonAdjustedEveningTwilight(latitude, dayOfYear, year, sunset) {
     const a = 75 + 25.60 / 55.0 * Math.abs(latitude);
     const b = 75 + 2.050 / 55.0 * Math.abs(latitude);
     const c = 75 - 9.210 / 55.0 * Math.abs(latitude);
@@ -482,7 +491,8 @@ const Astronomical = {
 
     return dateByAddingSeconds(sunset, Math.round(adjustment * 60.0));
   },
-  daysSinceSolstice: function (dayOfYear, year, latitude) {
+
+  daysSinceSolstice(dayOfYear, year, latitude) {
     let daysSinceSolstice = 0;
     const northernOffset = 10;
     const southernOffset = Astronomical.isLeapYear(year) ? 173 : 172;
@@ -504,6 +514,7 @@ const Astronomical = {
 
     return daysSinceSolstice;
   }
+
 };
 /* harmony default export */ var src_Astronomical = (Astronomical);
 // CONCATENATED MODULE: ./src/SolarCoordinates.js
@@ -716,23 +727,24 @@ const polarCircleResolvedValues = (resolver, date, coordinates) => {
 
 
 class PrayerTimes_PrayerTimes {
+  // eslint-disable-next-line complexity
   constructor(coordinates, date, calculationParameters) {
     this.coordinates = coordinates;
     this.date = date;
     this.calculationParameters = calculationParameters;
-    var solarTime = new SolarTime_SolarTime(date, coordinates);
-    var fajrTime;
-    var sunriseTime;
-    var dhuhrTime;
-    var asrTime;
-    var maghribTime;
-    var ishaTime;
-    var nightFraction;
+    let solarTime = new SolarTime_SolarTime(date, coordinates);
+    let fajrTime;
+    let sunriseTime;
+    let dhuhrTime;
+    let asrTime;
+    let maghribTime;
+    let ishaTime;
+    let nightFraction;
     dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-    var sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-    var tomorrow = dateByAddingDays(date, 1);
-    var tomorrowSolarTime = new SolarTime_SolarTime(tomorrow, coordinates);
+    let sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    let tomorrow = dateByAddingDays(date, 1);
+    let tomorrowSolarTime = new SolarTime_SolarTime(tomorrow, coordinates);
     const polarCircleResolver = calculationParameters.polarCircleResolution;
 
     if ((!isValidDate(sunriseTime) || !isValidDate(sunsetTime) || isNaN(tomorrowSolarTime.sunrise)) && polarCircleResolver !== PolarCircleResolution.Unresolved) {
@@ -746,29 +758,30 @@ class PrayerTimes_PrayerTimes {
       dhuhrTime = new TimeComponents(solarTime.transit).utcDate(...dateComponents);
       sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(...dateComponents);
       sunsetTime = new TimeComponents(solarTime.sunset).utcDate(...dateComponents);
-    }
+    } // eslint-disable-next-line prefer-const
+
 
     asrTime = new TimeComponents(solarTime.afternoon(Madhab_shadowLength(calculationParameters.madhab))).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-    var tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
-    var night = (tomorrowSunrise - sunsetTime) / 1000;
+    const tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+    const night = (tomorrowSunrise - sunsetTime) / 1000;
     fajrTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).utcDate(date.getFullYear(), date.getMonth(), date.getDate()); // special case for moonsighting committee above latitude 55
 
-    if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
+    if (calculationParameters.method === "MoonsightingCommittee" && coordinates.latitude >= 55) {
       nightFraction = night / 7;
       fajrTime = dateByAddingSeconds(sunriseTime, -nightFraction);
     }
 
-    var safeFajr = function () {
-      if (calculationParameters.method == "MoonsightingCommittee") {
+    const safeFajr = function () {
+      if (calculationParameters.method === "MoonsightingCommittee") {
         return src_Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, DateUtils_dayOfYear(date), date.getFullYear(), sunriseTime);
       } else {
-        var portion = calculationParameters.nightPortions().fajr;
+        const portion = calculationParameters.nightPortions().fajr;
         nightFraction = portion * night;
         return dateByAddingSeconds(sunriseTime, -nightFraction);
       }
     }();
 
-    if (fajrTime == null || isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
+    if (fajrTime === null || isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
       fajrTime = safeFajr;
     }
 
@@ -777,16 +790,16 @@ class PrayerTimes_PrayerTimes {
     } else {
       ishaTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate()); // special case for moonsighting committee above latitude 55
 
-      if (calculationParameters.method == "MoonsightingCommittee" && coordinates.latitude >= 55) {
+      if (calculationParameters.method === "MoonsightingCommittee" && coordinates.latitude >= 55) {
         nightFraction = night / 7;
         ishaTime = dateByAddingSeconds(sunsetTime, nightFraction);
       }
 
-      var safeIsha = function () {
-        if (calculationParameters.method == "MoonsightingCommittee") {
+      const safeIsha = function () {
+        if (calculationParameters.method === "MoonsightingCommittee") {
           return src_Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, DateUtils_dayOfYear(date), date.getFullYear(), sunsetTime);
         } else {
-          var portion = calculationParameters.nightPortions().isha;
+          const portion = calculationParameters.nightPortions().isha;
           nightFraction = portion * night;
           return dateByAddingSeconds(sunsetTime, nightFraction);
         }
@@ -800,19 +813,19 @@ class PrayerTimes_PrayerTimes {
     maghribTime = sunsetTime;
 
     if (calculationParameters.maghribAngle) {
-      let angleBasedMaghrib = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+      const angleBasedMaghrib = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
       if (sunsetTime < angleBasedMaghrib && ishaTime > angleBasedMaghrib) {
         maghribTime = angleBasedMaghrib;
       }
     }
 
-    var fajrAdjustment = (calculationParameters.adjustments.fajr || 0) + (calculationParameters.methodAdjustments.fajr || 0);
-    var sunriseAdjustment = (calculationParameters.adjustments.sunrise || 0) + (calculationParameters.methodAdjustments.sunrise || 0);
-    var dhuhrAdjustment = (calculationParameters.adjustments.dhuhr || 0) + (calculationParameters.methodAdjustments.dhuhr || 0);
-    var asrAdjustment = (calculationParameters.adjustments.asr || 0) + (calculationParameters.methodAdjustments.asr || 0);
-    var maghribAdjustment = (calculationParameters.adjustments.maghrib || 0) + (calculationParameters.methodAdjustments.maghrib || 0);
-    var ishaAdjustment = (calculationParameters.adjustments.isha || 0) + (calculationParameters.methodAdjustments.isha || 0);
+    const fajrAdjustment = (calculationParameters.adjustments.fajr || 0) + (calculationParameters.methodAdjustments.fajr || 0);
+    const sunriseAdjustment = (calculationParameters.adjustments.sunrise || 0) + (calculationParameters.methodAdjustments.sunrise || 0);
+    const dhuhrAdjustment = (calculationParameters.adjustments.dhuhr || 0) + (calculationParameters.methodAdjustments.dhuhr || 0);
+    const asrAdjustment = (calculationParameters.adjustments.asr || 0) + (calculationParameters.methodAdjustments.asr || 0);
+    const maghribAdjustment = (calculationParameters.adjustments.maghrib || 0) + (calculationParameters.methodAdjustments.maghrib || 0);
+    const ishaAdjustment = (calculationParameters.adjustments.isha || 0) + (calculationParameters.methodAdjustments.isha || 0);
     this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment));
     this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment));
     this.dhuhr = roundedMinute(dateByAddingMinutes(dhuhrTime, dhuhrAdjustment));
@@ -822,17 +835,17 @@ class PrayerTimes_PrayerTimes {
   }
 
   timeForPrayer(prayer) {
-    if (prayer == src_Prayer.Fajr) {
+    if (prayer === src_Prayer.Fajr) {
       return this.fajr;
-    } else if (prayer == src_Prayer.Sunrise) {
+    } else if (prayer === src_Prayer.Sunrise) {
       return this.sunrise;
-    } else if (prayer == src_Prayer.Dhuhr) {
+    } else if (prayer === src_Prayer.Dhuhr) {
       return this.dhuhr;
-    } else if (prayer == src_Prayer.Asr) {
+    } else if (prayer === src_Prayer.Asr) {
       return this.asr;
-    } else if (prayer == src_Prayer.Maghrib) {
+    } else if (prayer === src_Prayer.Maghrib) {
       return this.maghrib;
-    } else if (prayer == src_Prayer.Isha) {
+    } else if (prayer === src_Prayer.Isha) {
       return this.isha;
     } else {
       return null;
@@ -888,7 +901,16 @@ class PrayerTimes_PrayerTimes {
 const HighLatitudeRule = {
   MiddleOfTheNight: 'middleofthenight',
   SeventhOfTheNight: 'seventhofthenight',
-  TwilightAngle: 'twilightangle'
+  TwilightAngle: 'twilightangle',
+
+  recommended(coordinates) {
+    if (coordinates.latitude > 48) {
+      return HighLatitudeRule.SeventhOfTheNight;
+    } else {
+      return HighLatitudeRule.MiddleOfTheNight;
+    }
+  }
+
 };
 /* harmony default export */ var src_HighLatitudeRule = (HighLatitudeRule);
 // CONCATENATED MODULE: ./src/CalculationParameters.js
@@ -953,36 +975,40 @@ class CalculationParameters_CalculationParameters {
 
 const CalculationMethod = {
   // Muslim World League
-  MuslimWorldLeague: function () {
-    let params = new CalculationParameters_CalculationParameters("MuslimWorldLeague", 18, 17);
+  MuslimWorldLeague() {
+    const params = new CalculationParameters_CalculationParameters("MuslimWorldLeague", 18, 17);
     params.methodAdjustments = {
       dhuhr: 1
     };
     return params;
   },
+
   // Egyptian General Authority of Survey
-  Egyptian: function () {
-    let params = new CalculationParameters_CalculationParameters("Egyptian", 19.5, 17.5);
+  Egyptian() {
+    const params = new CalculationParameters_CalculationParameters("Egyptian", 19.5, 17.5);
     params.methodAdjustments = {
       dhuhr: 1
     };
     return params;
   },
+
   // University of Islamic Sciences, Karachi
-  Karachi: function () {
-    let params = new CalculationParameters_CalculationParameters("Karachi", 18, 18);
+  Karachi() {
+    const params = new CalculationParameters_CalculationParameters("Karachi", 18, 18);
     params.methodAdjustments = {
       dhuhr: 1
     };
     return params;
   },
+
   // Umm al-Qura University, Makkah
-  UmmAlQura: function () {
+  UmmAlQura() {
     return new CalculationParameters_CalculationParameters("UmmAlQura", 18.5, 0, 90);
   },
+
   // Dubai
-  Dubai: function () {
-    let params = new CalculationParameters_CalculationParameters("Dubai", 18.2, 18.2);
+  Dubai() {
+    const params = new CalculationParameters_CalculationParameters("Dubai", 18.2, 18.2);
     params.methodAdjustments = {
       sunrise: -3,
       dhuhr: 3,
@@ -991,47 +1017,54 @@ const CalculationMethod = {
     };
     return params;
   },
+
   // Moonsighting Committee
-  MoonsightingCommittee: function () {
-    let params = new CalculationParameters_CalculationParameters("MoonsightingCommittee", 18, 18);
+  MoonsightingCommittee() {
+    const params = new CalculationParameters_CalculationParameters("MoonsightingCommittee", 18, 18);
     params.methodAdjustments = {
       dhuhr: 5,
       maghrib: 3
     };
     return params;
   },
+
   // ISNA
-  NorthAmerica: function () {
-    let params = new CalculationParameters_CalculationParameters("NorthAmerica", 15, 15);
+  NorthAmerica() {
+    const params = new CalculationParameters_CalculationParameters("NorthAmerica", 15, 15);
     params.methodAdjustments = {
       dhuhr: 1
     };
     return params;
   },
+
   // Kuwait
-  Kuwait: function () {
+  Kuwait() {
     return new CalculationParameters_CalculationParameters("Kuwait", 18, 17.5);
   },
+
   // Qatar
-  Qatar: function () {
+  Qatar() {
     return new CalculationParameters_CalculationParameters("Qatar", 18, 0, 90);
   },
+
   // Singapore
-  Singapore: function () {
-    let params = new CalculationParameters_CalculationParameters("Singapore", 20, 18);
+  Singapore() {
+    const params = new CalculationParameters_CalculationParameters("Singapore", 20, 18);
     params.methodAdjustments = {
       dhuhr: 1
     };
     return params;
   },
+
   // Institute of Geophysics, University of Tehran
-  Tehran: function () {
-    let params = new CalculationParameters_CalculationParameters("Tehran", 17.7, 14, 0, 4.5);
+  Tehran() {
+    const params = new CalculationParameters_CalculationParameters("Tehran", 17.7, 14, 0, 4.5);
     return params;
   },
+
   // Dianet
-  Turkey: function () {
-    let params = new CalculationParameters_CalculationParameters("Turkey", 18, 17);
+  Turkey() {
+    const params = new CalculationParameters_CalculationParameters("Turkey", 18, 17);
     params.methodAdjustments = {
       sunrise: -7,
       dhuhr: 5,
@@ -1040,10 +1073,12 @@ const CalculationMethod = {
     };
     return params;
   },
+
   // Other
-  Other: function () {
+  Other() {
     return new CalculationParameters_CalculationParameters("Other", 0, 0);
   }
+
 };
 /* harmony default export */ var src_CalculationMethod = (CalculationMethod);
 // CONCATENATED MODULE: ./src/Qibla.js

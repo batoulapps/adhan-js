@@ -7,15 +7,15 @@ import { unwindAngle } from '../src/MathUtils';
 import { dayOfYear } from '../src/DateUtils';
 
 function timeString(hours) {
-	let comps = new TimeComponents(hours);
+	const comps = new TimeComponents(hours);
     if (isNaN(comps.hours) || isNaN(comps.minutes) || isNaN(comps.seconds)) {
         return "";
     }
 
     // round to the nearest minute
     let minutes = (comps.minutes + Math.round((comps.seconds)/60)).toString();
-    if (minutes.length == 1) {
-    	minutes = "0" + minutes;
+    if (minutes.length === 1) {
+		minutes = "0" + minutes;
     }
     return comps.hours + ":" + minutes;
 }
@@ -29,12 +29,12 @@ test("Calculate solar coordinate values",() => {
 	let T = Astronomical.julianCentury(jd);
 	let L0 = Astronomical.meanSolarLongitude(T);
 	let E0 = Astronomical.meanObliquityOfTheEcliptic(T);
-	let Eapp = Astronomical.apparentObliquityOfTheEcliptic(T, E0);
-	let M = Astronomical.meanSolarAnomaly(T);
-	let C = Astronomical.solarEquationOfTheCenter(T, M);
-	let Lambda = Astronomical.apparentSolarLongitude(T, L0);
-	let Delta = solar.declination;
-	let Alpha = unwindAngle(solar.rightAscension);
+	const Eapp = Astronomical.apparentObliquityOfTheEcliptic(T, E0);
+	const M = Astronomical.meanSolarAnomaly(T);
+	const C = Astronomical.solarEquationOfTheCenter(T, M);
+	const Lambda = Astronomical.apparentSolarLongitude(T, L0);
+	const Delta = solar.declination;
+	const Alpha = unwindAngle(solar.rightAscension);
 
 	expect(T).toBeCloseTo(-0.072183436, 9);
 	expect(L0).toBeCloseTo(201.80720, 4);
@@ -52,15 +52,15 @@ test("Calculate solar coordinate values",() => {
 	solar = new SolarCoordinates(jd);
 	T = Astronomical.julianCentury(jd);
 
-	let Theta0 = Astronomical.meanSiderealTime(T);
-	let Thetaapp = solar.apparentSiderealTime;
-	let Omega = Astronomical.ascendingLunarNodeLongitude(T);
+	const Theta0 = Astronomical.meanSiderealTime(T);
+	const Thetaapp = solar.apparentSiderealTime;
+	const Omega = Astronomical.ascendingLunarNodeLongitude(T);
 	E0 = Astronomical.meanObliquityOfTheEcliptic(T);
 	L0 = Astronomical.meanSolarLongitude(T);
-	let Lp = Astronomical.meanLunarLongitude(T);
-	let dPsi = Astronomical.nutationInLongitude(T, L0, Lp, Omega);
-	let dE = Astronomical.nutationInObliquity(T, L0, Lp, Omega);
-	let E = E0 + dE;
+	const Lp = Astronomical.meanLunarLongitude(T);
+	const dPsi = Astronomical.nutationInLongitude(T, L0, Lp, Omega);
+	const dE = Astronomical.nutationInObliquity(T, L0, Lp, Omega);
+	const E = E0 + dE;
 
 	expect(Theta0).toBeCloseTo(197.693195, 5);
 	expect(Thetaapp).toBeCloseTo(197.6922295833, 3);
@@ -75,48 +75,48 @@ test("Calculate solar coordinate values",() => {
 });
 
 test("Calculate the Altitude Of Celestial Body",() => {
-	let Phi = 38 + (55 / 60) + (17.0 / 3600);
-	let Delta = -6 - (43 / 60) - (11.61 / 3600);
-	let H = 64.352133;
-	let altitude = Astronomical.altitudeOfCelestialBody(Phi, Delta, H);
+	const Phi = 38 + (55 / 60) + (17.0 / 3600);
+	const Delta = -6 - (43 / 60) - (11.61 / 3600);
+	const H = 64.352133;
+	const altitude = Astronomical.altitudeOfCelestialBody(Phi, Delta, H);
 	expect(altitude).toBeCloseTo(15.1249, 3);
 });
 
 test("Calculate the Transit and Hour Angle",() => {
 	// values from Astronomical Algorithms page 103
-	let longitude = -71.0833;
-	let Theta = 177.74208;
-	let Alpha1 = 40.68021;
-	let Alpha2 = 41.73129;
-	let Alpha3 = 42.78204;
-	let m0 = Astronomical.approximateTransit(longitude, Theta, Alpha2);
+	const longitude = -71.0833;
+	const Theta = 177.74208;
+	const Alpha1 = 40.68021;
+	const Alpha2 = 41.73129;
+	const Alpha3 = 42.78204;
+	const m0 = Astronomical.approximateTransit(longitude, Theta, Alpha2);
 
 	expect(m0).toBeCloseTo(0.81965, 4);
 
-	let transit = Astronomical.correctedTransit(m0, longitude, Theta, Alpha2, Alpha1, Alpha3) / 24;
+	const transit = Astronomical.correctedTransit(m0, longitude, Theta, Alpha2, Alpha1, Alpha3) / 24;
 
 	expect(transit).toBeCloseTo(0.81980, 4);
 
-	let Delta1 = 18.04761;
-	let Delta2 = 18.44092;
-	let Delta3 = 18.82742;
-	let coordinates = new Coordinates(42.3333, longitude);
+	const Delta1 = 18.04761;
+	const Delta2 = 18.44092;
+	const Delta3 = 18.82742;
+	const coordinates = new Coordinates(42.3333, longitude);
 
-	let rise = Astronomical.correctedHourAngle(m0, -0.5667, coordinates, false, Theta, Alpha2, Alpha1, Alpha3, Delta2, Delta1, Delta3) / 24;
+	const rise = Astronomical.correctedHourAngle(m0, -0.5667, coordinates, false, Theta, Alpha2, Alpha1, Alpha3, Delta2, Delta1, Delta3) / 24;
 	expect(rise).toBeCloseTo(0.51766, 4);
 });
 
 test("calculate Solar Time values",() => {
 	// Comparison values generated from http://aa.usno.navy.mil/rstt/onedaytable?form=1&ID=AA&year=2015&month=7&day=12&state=NC&place=raleigh
-	let coordinates = new Coordinates(35 + 47/60, -78 - 39/60);
-	let solar = new SolarTime(new Date(2015, 6, 12), coordinates);
+	const coordinates = new Coordinates(35 + 47/60, -78 - 39/60);
+	const solar = new SolarTime(new Date(2015, 6, 12), coordinates);
 
-	let transit = solar.transit;
-	let sunrise = solar.sunrise;
-	let sunset = solar.sunset;
-	let twilightStart = solar.hourAngle(-6, false);
-	let twilightEnd = solar.hourAngle(-6, true);
-	let invalid = solar.hourAngle(-36, true);
+	const transit = solar.transit;
+	const sunrise = solar.sunrise;
+	const sunset = solar.sunset;
+	const twilightStart = solar.hourAngle(-6, false);
+	const twilightEnd = solar.hourAngle(-6, true);
+	const invalid = solar.hourAngle(-36, true);
 	expect(timeString(twilightStart)).toBe("9:38");
 	expect(timeString(sunrise)).toBe("10:08");
 	expect(timeString(transit)).toBe("17:20");
@@ -126,15 +126,15 @@ test("calculate Solar Time values",() => {
 });
 
 test("verify Right Ascension Edge Case",() => {
-	let coordinates = new Coordinates(35 + 47/60, -78 - 39/60);
-	let solar = [];
+	const coordinates = new Coordinates(35 + 47/60, -78 - 39/60);
+	const solar = [];
 	for (let i = 0; i <= 365; i++) {
 		solar.push(new SolarTime(new Date(2016, 0, i), coordinates));
 	}
 
 	for (let i = 1; i < solar.length; i++) {
-		let time = solar[i];
-		let previousTime = solar[i-1];
+		const time = solar[i];
+		const previousTime = solar[i-1];
 		expect(Math.abs(time.transit - previousTime.transit)).toBeLessThan(1/60);
 		expect(Math.abs(time.sunrise - previousTime.sunrise)).toBeLessThan(2/60);
 		expect(Math.abs(time.sunset - previousTime.sunset)).toBeLessThan(2/60);
@@ -143,28 +143,28 @@ test("verify Right Ascension Edge Case",() => {
 
 test("verify the correct calendar date is being used for calculations",() => {
 	// generated from http://aa.usno.navy.mil/data/docs/RS_OneYear.php for KUKUIHAELE, HAWAII
-	let coordinates = new Coordinates(20 + 7/60, -155 - 34/60);
-	let day1solar = new SolarTime(new Date(2015, 3, 2), coordinates);
-	let day2solar = new SolarTime(new Date(2015, 3, 3), coordinates);
+	const coordinates = new Coordinates(20 + 7/60, -155 - 34/60);
+	const day1solar = new SolarTime(new Date(2015, 3, 2), coordinates);
+	const day2solar = new SolarTime(new Date(2015, 3, 3), coordinates);
 
-	let day1 = day1solar.sunrise;
-	let day2 = day2solar.sunrise;
+	const day1 = day1solar.sunrise;
+	const day2 = day2solar.sunrise;
 
 	expect(timeString(day1)).toBe("16:15")
 	expect(timeString(day2)).toBe("16:14")
 });
 
 test("interpolate a value given previous and next values along with an interpolation factor",() => {
-	let interpolatedValue = Astronomical.interpolate(0.877366, 0.884226, 0.870531, 4.35/24)
+	const interpolatedValue = Astronomical.interpolate(0.877366, 0.884226, 0.870531, 4.35/24)
 	expect(interpolatedValue).toBeCloseTo(0.876125, 5);
 
-	let i1 = Astronomical.interpolate(1, -1, 3, 0.6);
+	const i1 = Astronomical.interpolate(1, -1, 3, 0.6);
 	expect(i1).toBeCloseTo(2.2, 5);
 
-	let i2 = Astronomical.interpolateAngles(1, -1, 3, 0.6);
+	const i2 = Astronomical.interpolateAngles(1, -1, 3, 0.6);
 	expect(i2).toBeCloseTo(2.2, 5);
 
-	let i3 = Astronomical.interpolateAngles(1, 359, 3, 0.6);
+	const i3 = Astronomical.interpolateAngles(1, 359, 3, 0.6);
 	expect(i3).toBeCloseTo(2.2, 5);
 });
 
@@ -183,14 +183,14 @@ test("calculate the Julian day for a given Gregorian date",() => {
 	expect(Astronomical.julianDay(2020, 11, 22)).toBe(2459175.500000);
 	expect(Astronomical.julianDay(2021, 12, 24)).toBe(2459572.500000);
 
-	let jdVal = 2457215.67708333;
+	const jdVal = 2457215.67708333;
 	expect(Astronomical.julianDay(2015, 7, 12, 4.25)).toBeCloseTo(jdVal, 5);
 
 	expect(Astronomical.julianDay(2015, 7, 12, 8.0)).toBeCloseTo(2457215.833333, 5);
 	expect(Astronomical.julianDay(1992, 10, 13, 0.0)).toBeCloseTo(2448908.5, 5);
 
-	let j1 = Astronomical.julianDay(2010, 1, 3);
-	let j2 = Astronomical.julianDay(2010, 1, 1, 48);
+	const j1 = Astronomical.julianDay(2010, 1, 3);
+	const j2 = Astronomical.julianDay(2010, 1, 1, 48);
 	expect(j1).toBe(j2);
 });
 
