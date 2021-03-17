@@ -88,6 +88,10 @@ export enum HighLatitudeRule {
   TwilightAngle
 }
 
+export namespace HighLatitudeRule {
+  export function recommended(coordinates: Coordinates): HighLatitudeRule;
+}
+
 export enum PolarCircleResolution {
   AqrabBalad,
   AqrabYaum,

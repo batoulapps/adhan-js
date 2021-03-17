@@ -3,10 +3,10 @@ import moment from 'moment-timezone';
 import { dateByAddingSeconds } from '../src/DateUtils';
 
 test("calculating prayer times", () => {
-    let date = new Date(2015, 6, 12);
-    let params = adhan.CalculationMethod.NorthAmerica();
+    const date = new Date(2015, 6, 12);
+    const params = adhan.CalculationMethod.NorthAmerica();
     params.madhab = adhan.Madhab.Hanafi;
-    let p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
+    const p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
 
     expect(moment(p.fajr).tz('America/New_York').format("h:mm A")).toBe("4:42 AM");
     expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("6:08 AM");
@@ -18,10 +18,10 @@ test("calculating prayer times", () => {
 });
 
 test("useing offsets to manually adjust prayer times", () => {
-    let date = new Date(2015, 11, 1);
-    let params = adhan.CalculationMethod.MuslimWorldLeague();
+    const date = new Date(2015, 11, 1);
+    const params = adhan.CalculationMethod.MuslimWorldLeague();
     params.madhab = adhan.Madhab.Shafi;
-    let p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
+    const p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
     expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("5:35 AM");
     expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:06 AM");
     expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("12:05 PM");
@@ -36,7 +36,7 @@ test("useing offsets to manually adjust prayer times", () => {
     params.adjustments.maghrib = 10;
     params.adjustments.isha = 10;
 
-    let p2 = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
+    const p2 = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, params);
     expect(moment(p2.fajr).tz("America/New_York").format("h:mm A")).toBe("5:45 AM");
     expect(moment(p2.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:16 AM");
     expect(moment(p2.dhuhr).tz("America/New_York").format("h:mm A")).toBe("12:15 PM");
@@ -47,8 +47,8 @@ test("useing offsets to manually adjust prayer times", () => {
 
 test("calculating prayer times using the Moonsighting Committee calculation method", () => {
     // Values from http://www.moonsighting.com/pray.php
-    let date = new Date(2016, 0, 31);
-    let p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, adhan.CalculationMethod.MoonsightingCommittee());
+    const date = new Date(2016, 0, 31);
+    const p = new adhan.PrayerTimes(new adhan.Coordinates(35.7750, -78.6336), date, adhan.CalculationMethod.MoonsightingCommittee());
     expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("5:48 AM");
     expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:16 AM");
     expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("12:33 PM");
@@ -59,10 +59,10 @@ test("calculating prayer times using the Moonsighting Committee calculation meth
 
 test("calculating Moonsighting Committee prayer times at a high latitude location", () => {
     // Values from http://www.moonsighting.com/pray.php
-    let date = new Date(2016, 0, 1);
-    let params = adhan.CalculationMethod.MoonsightingCommittee();
+    const date = new Date(2016, 0, 1);
+    const params = adhan.CalculationMethod.MoonsightingCommittee();
     params.madhab = adhan.Madhab.Hanafi;
-    let p = new adhan.PrayerTimes(new adhan.Coordinates(59.9094, 10.7349), date, params);
+    const p = new adhan.PrayerTimes(new adhan.Coordinates(59.9094, 10.7349), date, params);
     expect(moment(p.fajr).tz("Europe/Oslo").format("h:mm A")).toBe("7:34 AM");
     expect(moment(p.sunrise).tz("Europe/Oslo").format("h:mm A")).toBe("9:19 AM");
     expect(moment(p.dhuhr).tz("Europe/Oslo").format("h:mm A")).toBe("12:25 PM");
@@ -72,11 +72,11 @@ test("calculating Moonsighting Committee prayer times at a high latitude locatio
 });    
 
 test("getting the time for a given prayer", () => {
-    let date = new Date(2016, 6, 1);
-    let params = adhan.CalculationMethod.MuslimWorldLeague();
+    const date = new Date(2016, 6, 1);
+    const params = adhan.CalculationMethod.MuslimWorldLeague();
     params.madhab = adhan.Madhab.Hanafi;
     params.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
-    let p = new adhan.PrayerTimes(new adhan.Coordinates(59.9094, 10.7349), date, params);
+    const p = new adhan.PrayerTimes(new adhan.Coordinates(59.9094, 10.7349), date, params);
     expect(p.timeForPrayer(adhan.Prayer.Fajr)).toBe(p.fajr);
     expect(p.timeForPrayer(adhan.Prayer.Sunrise)).toBe(p.sunrise);
     expect(p.timeForPrayer(adhan.Prayer.Dhuhr)).toBe(p.dhuhr);
@@ -87,11 +87,11 @@ test("getting the time for a given prayer", () => {
 });
 
 test("getting the current prayer", () => {
-    let date = new Date(2015, 8, 1);
-    let params = adhan.CalculationMethod.Karachi();
+    const date = new Date(2015, 8, 1);
+    const params = adhan.CalculationMethod.Karachi();
     params.madhab = adhan.Madhab.Hanafi;
     params.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
-    let p = new adhan.PrayerTimes(new adhan.Coordinates(33.720817, 73.090032), date, params);
+    const p = new adhan.PrayerTimes(new adhan.Coordinates(33.720817, 73.090032), date, params);
     expect(p.currentPrayer(dateByAddingSeconds(p.fajr, -1))).toBe(adhan.Prayer.None);
     expect(p.currentPrayer(p.fajr)).toBe(adhan.Prayer.Fajr);
     expect(p.currentPrayer(dateByAddingSeconds(p.fajr, 1))).toBe(adhan.Prayer.Fajr);
@@ -103,11 +103,11 @@ test("getting the current prayer", () => {
 });
 
 test("getting the next prayer", () => {
-    let date = new Date(2015, 8, 1);
-    let params = adhan.CalculationMethod.Karachi();
+    const date = new Date(2015, 8, 1);
+    const params = adhan.CalculationMethod.Karachi();
     params.madhab = adhan.Madhab.Hanafi;
     params.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
-    let p = new adhan.PrayerTimes(new adhan.Coordinates(33.720817, 73.090032), date, params);
+    const p = new adhan.PrayerTimes(new adhan.Coordinates(33.720817, 73.090032), date, params);
     expect(p.nextPrayer(dateByAddingSeconds(p.fajr, -1))).toBe(adhan.Prayer.Fajr);
     expect(p.nextPrayer(p.fajr)).toBe(adhan.Prayer.Sunrise);
     expect(p.nextPrayer(dateByAddingSeconds(p.fajr, 1))).toBe(adhan.Prayer.Sunrise);
@@ -119,11 +119,11 @@ test("getting the next prayer", () => {
 });
 
 test("getting the current next prayer", () => {
-    let date = new Date();
-    let params = adhan.CalculationMethod.Karachi();
+    const date = new Date();
+    const params = adhan.CalculationMethod.Karachi();
     params.madhab = adhan.Madhab.Hanafi;
     params.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
-    let p = new adhan.PrayerTimes(new adhan.Coordinates(33.720817, 73.090032), date, params);
+    const p = new adhan.PrayerTimes(new adhan.Coordinates(33.720817, 73.090032), date, params);
     const current = p.currentPrayer();
     const next = p.nextPrayer();
     expect(current != null || next != null).toBeTruthy();
