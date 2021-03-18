@@ -12,7 +12,8 @@
     "test:audit": "npm audit --audit-level=high",
     "test-watch": "jest --watch",
     "coverage": "codecov",
-    "commit": "cz"
+    "commit": "cz",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -46,8 +47,8 @@
     "commitizen": "^4.2.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.17.0",
-    "husky": "^5.1.2",
     "eslint-plugin-jest": "^24.1.5",
+    "husky": "^5.1.2",
     "jest": "^26.6.0",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",
