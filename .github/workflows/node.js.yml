@@ -93,7 +93,6 @@ jobs:
         # more about this action here: https://github.com/cycjimmy/semantic-release-action
         uses: cycjimmy/semantic-release-action@v2
         with:
-          dry_run: true
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
