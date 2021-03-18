@@ -11,11 +11,12 @@
     "test:unit": "jest",
     "test:audit": "npm audit --audit-level=high",
     "test-watch": "jest --watch",
-    "coverage": "codecov"
+    "coverage": "codecov",
+    "commit": "cz"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/batoulapps/adhan-js.git"
+    "url": "https://github.com/batoulapps/adhan-js.git"
   },
   "homepage": "https://github.com/batoulapps/adhan-js",
   "keywords": [
@@ -36,15 +37,28 @@
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
     "@babel/register": "^7.9.0",
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
     "babel-loader": "^8.1.0",
     "codecov": "^3.6.5",
+    "commitizen": "^4.2.3",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.17.0",
+    "husky": "^5.1.2",
     "eslint-plugin-jest": "^24.1.5",
     "jest": "^26.6.0",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",
     "npm-run-all": "^4.1.5",
+    "semantic-release": "^17.4.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
