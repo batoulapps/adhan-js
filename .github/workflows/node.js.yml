@@ -65,7 +65,6 @@ jobs:
       - run: npm install -g npm@7 # update to npm 7
       - run: npm ci
       - run: npm test
-      - run: npm run coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
