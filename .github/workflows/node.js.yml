@@ -5,12 +5,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-# building job
+  # building job
   build:
     runs-on: ubuntu-latest
     name: Build
@@ -20,16 +20,18 @@ jobs:
         node-version: [10.x, 12.x, 14.x, 15.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Building on Node.js ${{ matrix.node-version }} 🛠️
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci # equivalent of npm ci
-    - run: npm build
-      env:
-        CI: true
-# testing job
+      - uses: actions/checkout@v2
+      - name: Building on Node.js ${{ matrix.node-version }} 🛠️
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g npm@7 # update to npm 7
+      - run: npm ci # equivalent of npm ci
+      - run: npm build
+        env:
+          CI: true
+
+  # testing job
   test:
     runs-on: ubuntu-latest
     name: Test
@@ -38,46 +40,56 @@ jobs:
       matrix:
         node-version: [10.x, 12.x, 14.x, 15.x]
     steps:
-    - uses: actions/checkout@v2
-    - name: Testing on node ${{ matrix.node-version }} 🧪
-      uses: actions/setup-node@v1
-      with:
+      - uses: actions/checkout@v2
+      - name: Testing on node ${{ matrix.node-version }} 🧪
+        uses: actions/setup-node@v1
+        with:
           node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm test
-# # coverage uploading job
-#   coverage:
-#     runs-on: ubuntu-latest
-#     name: Coverage
-#     needs: test
+      - run: npm install -g npm@7 # update to npm 7
+      - run: npm ci
+      - run: npm test
 
-#     steps:
-#     - name: Checkout
-#       uses: actions/checkout@v2
-#     - run: yarn coverage
-#     - name: Upload coverage to Codecov
-#       uses: codecov/codecov-action@v1
-#       with:
-#         token: ${{ secrets.CODECOV_TOKEN }}
-#         directory: ./tests/unit/coverage
+  # coverage uploading job
+  # coverage:
+  #   runs-on: ubuntu-latest
+  #   name: Coverage
+  #   needs: Test
 
-# release to npm job
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #       with:
+  #         # latest nodejs LTS
+  #         node-version: 14.x
+  #     - run: npm install -g npm@7 # update to npm 7
+  #     - run: npm ci
+  #     - run: npm run coverage
+  #     - name: Upload coverage to Codecov
+  #       uses: codecov/codecov-action@v1
+  #       with:
+  #         token: ${{ secrets.CODECOV_TOKEN }}
+  #         directory: ./tests/unit/coverage
+
+  # release to npm job
   release:
     runs-on: ubuntu-latest
     name: Release
     needs: Test
+
     # release only when pushed to master
     if: github.event_name == 'push'
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-        # latest nodejs LTS
+          # latest nodejs LTS
           node-version: 14.x
+      - run: npm install -g npm@7 # update to npm 7
       - run: npm ci
       - name: Preparing a release for npm and github 🚀
-      # more about this action here: https://github.com/cycjimmy/semantic-release-action
+        # more about this action here: https://github.com/cycjimmy/semantic-release-action
         uses: cycjimmy/semantic-release-action@v2
         with:
           dry_run: true
@@ -86,4 +98,4 @@ jobs:
             @semantic-release/git
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.npm_token }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
