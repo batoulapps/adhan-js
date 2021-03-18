@@ -60,8 +60,8 @@ jobs:
         uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          # latest nodejs LTS
-          node-version: 14.x
+          # latest nodejs (matching travis)
+          node-version: 15.x
       - run: npm install -g npm@7 # update to npm 7
       - run: npm ci
       - run: npm test
