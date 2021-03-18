@@ -50,25 +50,26 @@ jobs:
       - run: npm test
 
   # coverage uploading job
-  # coverage:
-  #   runs-on: ubuntu-latest
-  #   name: Coverage
-  #   needs: Test
+  coverage:
+    runs-on: ubuntu-latest
+    name: Coverage
+    needs: Test
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #       with:
-  #         # latest nodejs LTS
-  #         node-version: 14.x
-  #     - run: npm install -g npm@7 # update to npm 7
-  #     - run: npm ci
-  #     - run: npm run coverage
-  #     - name: Upload coverage to Codecov
-  #       uses: codecov/codecov-action@v1
-  #       with:
-  #         token: ${{ secrets.CODECOV_TOKEN }}
-  #         directory: ./tests/unit/coverage
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          # latest nodejs LTS
+          node-version: 14.x
+      - run: npm install -g npm@7 # update to npm 7
+      - run: npm ci
+      - run: npm test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage
 
   # release to npm job
   release:
