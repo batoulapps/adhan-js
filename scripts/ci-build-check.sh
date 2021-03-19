@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set +e
 
 (git diff --quiet Adhan.js Adhan.js.map)
 DIFF_STATUS=$?
