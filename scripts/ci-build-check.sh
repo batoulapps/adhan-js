@@ -5,6 +5,6 @@ set -euo pipefail
 DIFF_STATUS=$?
 
 if [[ $DIFF_STATUS -ne 0 ]]; then
-    echo "Adhan.js doesn't contain the latest changes. Please run \"npm run build\" and add Adhan.js and Adhan.js.map to your commit."
+    echo "::error file=Adhan.js::Adhan.js doesn't contain the latest changes. Please run \"npm run build\" and add Adhan.js and Adhan.js.map to your commit."
     exit 1
 fi
