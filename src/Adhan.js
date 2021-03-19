@@ -21,5 +21,5 @@ const adhan = {
     Qibla,
     PolarCircleResolution,
 };
-// testing
+
 export default adhan;
