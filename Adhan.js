@@ -1129,8 +1129,7 @@ const adhan = {
   SunnahTimes: SunnahTimes_SunnahTimes,
   Qibla: qibla,
   PolarCircleResolution: PolarCircleResolution
-}; // testing
-
+};
 /* harmony default export */ var Adhan = __webpack_exports__["default"] = (adhan);
 
 /***/ })
