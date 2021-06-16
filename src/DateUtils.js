@@ -21,11 +21,11 @@ export function dateByAddingSeconds(date, seconds) {
 
 export function roundedMinute(date, rounding = Rounding.Nearest) {
     const seconds = date.getUTCSeconds();
-    let offset = 0;
-    if (rounding === Rounding.Nearest) {
-       offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
-    } else if (rounding === Rounding.Up) {
+    let offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
+    if (rounding === Rounding.Up) {
         offset = 60 - seconds;
+    } else if (rounding === Rounding.None) {
+        offset = 0;
     }
 
     return dateByAddingSeconds(date, offset);
