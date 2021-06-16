@@ -1,6 +1,7 @@
 import { Madhab } from './Madhab';
 import HighLatitudeRule from './HighLatitudeRule';
 import { PolarCircleResolution } from './PolarCircleResolution';
+import { Rounding } from './Rounding';
 
 export default class CalculationParameters {
     constructor(methodName, fajrAngle, ishaAngle, ishaInterval, maghribAngle) {
@@ -14,6 +15,7 @@ export default class CalculationParameters {
         this.adjustments = { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 };
         this.methodAdjustments = { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 };
         this.polarCircleResolution = PolarCircleResolution.Unresolved;
+        this.rounding = Rounding.Nearest;
     }
 
     nightPortions() {

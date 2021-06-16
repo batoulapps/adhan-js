@@ -1,4 +1,5 @@
 import Astronomical from './Astronomical';
+import { Rounding } from './Rounding';
 
 export function dateByAddingDays(date, days) {
     const year = date.getFullYear();
@@ -18,9 +19,15 @@ export function dateByAddingSeconds(date, seconds) {
     return new Date(date.getTime() + (seconds * 1000));
 }
 
-export function roundedMinute(date) {
+export function roundedMinute(date, rounding = Rounding.Nearest) {
     const seconds = date.getUTCSeconds();
-    const offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
+    let offset = 0;
+    if (rounding === Rounding.Nearest) {
+       offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
+    } else if (rounding === Rounding.Up) {
+        offset = 60 - seconds;
+    }
+
     return dateByAddingSeconds(date, offset);
 }
 

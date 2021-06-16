@@ -201,6 +201,18 @@ test("calculating times for the egyptian method", () => {
     expect(moment(p.isha).tz("Africa/Cairo").format("h:mm A")).toBe("6:29 PM");
 });
 
+test("calculating times for the singapore method", () => {
+    const date = new Date(2021, 5, 14);
+    const params = adhan.CalculationMethod.Singapore();
+    const p = new adhan.PrayerTimes(new adhan.Coordinates(3.7333333333, 101.3833333333), date, params);
+    expect(moment(p.fajr).tz("Asia/Kuala_Lumpur").format("h:mm A")).toBe("5:41 AM");
+    expect(moment(p.sunrise).tz("Asia/Kuala_Lumpur").format("h:mm A")).toBe("7:05 AM");
+    expect(moment(p.dhuhr).tz("Asia/Kuala_Lumpur").format("h:mm A")).toBe("1:16 PM");
+    expect(moment(p.asr).tz("Asia/Kuala_Lumpur").format("h:mm A")).toBe("4:42 PM");
+    expect(moment(p.maghrib).tz("Asia/Kuala_Lumpur").format("h:mm A")).toBe("7:25 PM");
+    expect(moment(p.isha).tz("Asia/Kuala_Lumpur").format("h:mm A")).toBe("8:41 PM");
+});
+
 test("getting the time for a given prayer", () => {
     const date = new Date(2016, 6, 1);
     const params = adhan.CalculationMethod.MuslimWorldLeague();

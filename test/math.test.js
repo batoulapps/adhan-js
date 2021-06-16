@@ -1,6 +1,7 @@
 import { radiansToDegrees, degreesToRadians, normalizeToScale, unwindAngle, quadrantShiftAngle } from '../src/MathUtils';
 import { roundedMinute, dateByAddingDays } from '../src/DateUtils';
 import TimeComponents from '../src/TimeComponents';
+import { Rounding } from '../src/Rounding';
 
 test("converting between degrees and radians", () => {
     expect(radiansToDegrees(Math.PI)).toBe(180);
@@ -77,6 +78,18 @@ test("rounding a date to the closest minute", () => {
     const date2 = roundedMinute(new Date(2015, 0, 1, 10, 2, 31));
     expect(date2.getMinutes()).toBe(3);
     expect(date2.getSeconds()).toBe(0);
+
+    const date3 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29), Rounding.Up);
+    expect(date3.getMinutes()).toBe(3);
+    expect(date3.getSeconds()).toBe(0);
+
+    const date4 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29), Rounding.None);
+    expect(date4.getMinutes()).toBe(2);
+    expect(date4.getSeconds()).toBe(29);
+
+    const date5 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29), Rounding.Nearest);
+    expect(date5.getMinutes()).toBe(2);
+    expect(date5.getSeconds()).toBe(0);
 });
 
 test("adding days to date", () => {

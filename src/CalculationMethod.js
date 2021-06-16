@@ -1,4 +1,5 @@
 import CalculationParameters from './CalculationParameters';
+import { Rounding } from './Rounding';
 
 const CalculationMethod = {
     // Muslim World League
@@ -62,6 +63,7 @@ const CalculationMethod = {
     Singapore() {
         const params = new CalculationParameters("Singapore", 20, 18);
         params.methodAdjustments = { dhuhr: 1 };
+        params.rounding = Rounding.Up;
         return params;
     },
 
