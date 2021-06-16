@@ -126,12 +126,12 @@ export default class PrayerTimes {
         const maghribAdjustment = (calculationParameters.adjustments.maghrib || 0) + (calculationParameters.methodAdjustments.maghrib || 0);
         const ishaAdjustment = (calculationParameters.adjustments.isha || 0) + (calculationParameters.methodAdjustments.isha || 0);
 
-        this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment));
-        this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment));
-        this.dhuhr = roundedMinute(dateByAddingMinutes(dhuhrTime, dhuhrAdjustment));
-        this.asr = roundedMinute(dateByAddingMinutes(asrTime, asrAdjustment));
-        this.maghrib = roundedMinute(dateByAddingMinutes(maghribTime, maghribAdjustment));
-        this.isha = roundedMinute(dateByAddingMinutes(ishaTime, ishaAdjustment));
+        this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment), calculationParameters.rounding);
+        this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment), calculationParameters.rounding);
+        this.dhuhr = roundedMinute(dateByAddingMinutes(dhuhrTime, dhuhrAdjustment), calculationParameters.rounding);
+        this.asr = roundedMinute(dateByAddingMinutes(asrTime, asrAdjustment), calculationParameters.rounding);
+        this.maghrib = roundedMinute(dateByAddingMinutes(maghribTime, maghribAdjustment), calculationParameters.rounding);
+        this.isha = roundedMinute(dateByAddingMinutes(ishaTime, ishaAdjustment), calculationParameters.rounding);
     }
 
     timeForPrayer(prayer) {

@@ -27,6 +27,7 @@ export class CalculationParameters {
   highLatitudeRule: HighLatitudeRule;
   adjustments: PrayerAdjustments;
   polarCircleResolution: PolarCircleResolution;
+  rounding: Rounding;
 }
 
 export interface PrayerAdjustments {
@@ -70,6 +71,12 @@ export class SunnahTimes {
 export enum Madhab {
   Shafi,
   Hanafi
+}
+
+export enum Rounding {
+  Nearest,
+  Up,
+  None
 }
 
 export enum Prayer {
