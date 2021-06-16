@@ -156,12 +156,12 @@ function dateByAddingSeconds(date, seconds) {
 }
 function roundedMinute(date, rounding = Rounding.Nearest) {
   const seconds = date.getUTCSeconds();
-  let offset = 0;
+  let offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
 
-  if (rounding === Rounding.Nearest) {
-    offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
-  } else if (rounding === Rounding.Up) {
+  if (rounding === Rounding.Up) {
     offset = 60 - seconds;
+  } else if (rounding === Rounding.None) {
+    offset = 0;
   }
 
   return dateByAddingSeconds(date, offset);
