@@ -130,7 +130,14 @@ function quadrantShiftAngle(angle) {
 
   return angle - 360 * Math.round(angle / 360);
 }
+// CONCATENATED MODULE: ./src/Rounding.js
+const Rounding = {
+  Nearest: 'nearest',
+  Up: 'up',
+  None: 'none'
+};
 // CONCATENATED MODULE: ./src/DateUtils.js
+
 
 function dateByAddingDays(date, days) {
   const year = date.getFullYear();
@@ -147,9 +154,16 @@ function dateByAddingMinutes(date, minutes) {
 function dateByAddingSeconds(date, seconds) {
   return new Date(date.getTime() + seconds * 1000);
 }
-function roundedMinute(date) {
+function roundedMinute(date, rounding = Rounding.Nearest) {
   const seconds = date.getUTCSeconds();
-  const offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
+  let offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
+
+  if (rounding === Rounding.Up) {
+    offset = 60 - seconds;
+  } else if (rounding === Rounding.None) {
+    offset = 0;
+  }
+
   return dateByAddingSeconds(date, offset);
 }
 function DateUtils_dayOfYear(date) {
@@ -826,12 +840,12 @@ class PrayerTimes_PrayerTimes {
     const asrAdjustment = (calculationParameters.adjustments.asr || 0) + (calculationParameters.methodAdjustments.asr || 0);
     const maghribAdjustment = (calculationParameters.adjustments.maghrib || 0) + (calculationParameters.methodAdjustments.maghrib || 0);
     const ishaAdjustment = (calculationParameters.adjustments.isha || 0) + (calculationParameters.methodAdjustments.isha || 0);
-    this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment));
-    this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment));
-    this.dhuhr = roundedMinute(dateByAddingMinutes(dhuhrTime, dhuhrAdjustment));
-    this.asr = roundedMinute(dateByAddingMinutes(asrTime, asrAdjustment));
-    this.maghrib = roundedMinute(dateByAddingMinutes(maghribTime, maghribAdjustment));
-    this.isha = roundedMinute(dateByAddingMinutes(ishaTime, ishaAdjustment));
+    this.fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment), calculationParameters.rounding);
+    this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment), calculationParameters.rounding);
+    this.dhuhr = roundedMinute(dateByAddingMinutes(dhuhrTime, dhuhrAdjustment), calculationParameters.rounding);
+    this.asr = roundedMinute(dateByAddingMinutes(asrTime, asrAdjustment), calculationParameters.rounding);
+    this.maghrib = roundedMinute(dateByAddingMinutes(maghribTime, maghribAdjustment), calculationParameters.rounding);
+    this.isha = roundedMinute(dateByAddingMinutes(ishaTime, ishaAdjustment), calculationParameters.rounding);
   }
 
   timeForPrayer(prayer) {
@@ -917,6 +931,7 @@ const HighLatitudeRule = {
 
 
 
+
 class CalculationParameters_CalculationParameters {
   constructor(methodName, fajrAngle, ishaAngle, ishaInterval, maghribAngle) {
     this.method = methodName || "Other";
@@ -943,6 +958,7 @@ class CalculationParameters_CalculationParameters {
       isha: 0
     };
     this.polarCircleResolution = PolarCircleResolution.Unresolved;
+    this.rounding = Rounding.Nearest;
   }
 
   nightPortions() {
@@ -972,6 +988,7 @@ class CalculationParameters_CalculationParameters {
 
 }
 // CONCATENATED MODULE: ./src/CalculationMethod.js
+
 
 const CalculationMethod = {
   // Muslim World League
@@ -1053,6 +1070,7 @@ const CalculationMethod = {
     params.methodAdjustments = {
       dhuhr: 1
     };
+    params.rounding = Rounding.Up;
     return params;
   },
 
