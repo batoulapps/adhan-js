@@ -1,3 +1,12 @@
+# [4.2.0](https://github.com/batoulapps/adhan-js/compare/v4.1.0...v4.2.0) (2021-06-17)
+
+
+### Features
+
+* **calculation-parameters:** adding rounding option parameter ([7cf40d4](https://github.com/batoulapps/adhan-js/commit/7cf40d413bbb8ca554397143fde441046d570876)), closes [#43](https://github.com/batoulapps/adhan-js/issues/43)
+* **date-utils:** default rounding logic to nearest ([87f2b99](https://github.com/batoulapps/adhan-js/commit/87f2b99db42eef29fd6511816403688ffcd6002b))
+* **date-utils:** include rounding changes in webpacked artifact ([fa8a13e](https://github.com/batoulapps/adhan-js/commit/fa8a13e4902fc7bbe2fbaafe78ad541a905fbd8e))
+
 # [4.1.0](https://github.com/batoulapps/adhan-js/compare/v4.0.3...v4.1.0) (2021-03-19)
 
 
