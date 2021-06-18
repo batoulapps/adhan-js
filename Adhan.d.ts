@@ -16,7 +16,7 @@ export class PrayerTimes {
 }
 
 export class CalculationParameters {
-  constructor(fajrAngle: number, ishaAngle: number, methodName?: string, ishaInterval?: number, maghribAngle?: number)
+  constructor(methodName: string|undefined|null, fajrAngle: number, ishaAngle: number, ishaInterval?: number, maghribAngle?: number)
 
   readonly method: string;
   fajrAngle: number;
