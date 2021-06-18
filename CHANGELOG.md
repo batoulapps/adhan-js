@@ -1,3 +1,11 @@
+## [4.2.1](https://github.com/batoulapps/adhan-js/compare/v4.2.0...v4.2.1) (2021-06-18)
+
+
+### Bug Fixes
+
+* **rounding:** add rounding to top level export to make it available ([1663b47](https://github.com/batoulapps/adhan-js/commit/1663b47ec0ea59023ea0d33c42cf2a9ce9c04940)), closes [#68](https://github.com/batoulapps/adhan-js/issues/68)
+* **typescript:** fix typescript definitions for CalculationParameters ([65a6568](https://github.com/batoulapps/adhan-js/commit/65a65687164135ba8e9b2ee1fe1eaa2e5a8298c7))
+
 # [4.2.0](https://github.com/batoulapps/adhan-js/compare/v4.1.0...v4.2.0) (2021-06-17)
 
 
