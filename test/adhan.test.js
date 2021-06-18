@@ -105,6 +105,12 @@ test("Verifying the angles defined by the calculation method", () => {
     expect(p13.ishaAngle).toBe(17);
     expect(p13.ishaInterval).toBe(0);
     expect(p13.method).toBe("Turkey");
+
+    const p14 = new adhan.CalculationParameters(null, 18, 17);
+    expect(p14.fajrAngle).toBe(18);
+    expect(p14.ishaAngle).toBe(17);
+    expect(p14.ishaInterval).toBe(0);
+    expect(p14.method).toBe("Other");
 });
 
 test("calculating prayer times", () => {
