@@ -181,8 +181,21 @@ function DateUtils_dayOfYear(date) {
 function isValidDate(date) {
   return date instanceof Date && !isNaN(date.valueOf());
 }
+// CONCATENATED MODULE: ./src/Shafaq.js
+// Shafaq is the twilight in the sky. Different madhabs define the appearance of
+// twilight differently. These values are used by the MoonsightingComittee method
+// for the different ways to calculate Isha.
+const Shafaq = {
+  // General is a combination of Ahmer and Abyad.
+  General: 'general',
+  // Ahmer means the twilight is the red glow in the sky. Used by the Shafi, Maliki, and Hanbali madhabs.
+  Ahmer: 'ahmer',
+  // Abyad means the twilight is the white glow in the sky. Used by the Hanafi madhab.
+  Abyad: 'abyad'
+};
 // CONCATENATED MODULE: ./src/Astronomical.js
 /* eslint-disable max-params, max-lines */
+
 
 
 const Astronomical = {
@@ -479,11 +492,25 @@ const Astronomical = {
     return dateByAddingSeconds(sunrise, Math.round(adjustment * -60.0));
   },
 
-  seasonAdjustedEveningTwilight(latitude, dayOfYear, year, sunset) {
-    const a = 75 + 25.60 / 55.0 * Math.abs(latitude);
-    const b = 75 + 2.050 / 55.0 * Math.abs(latitude);
-    const c = 75 - 9.210 / 55.0 * Math.abs(latitude);
-    const d = 75 + 6.140 / 55.0 * Math.abs(latitude);
+  seasonAdjustedEveningTwilight(latitude, dayOfYear, year, sunset, shafaq) {
+    let a, b, c, d;
+
+    if (shafaq === Shafaq.Ahmer) {
+      a = 62 + 17.40 / 55.0 * Math.abs(latitude);
+      b = 62 - 7.160 / 55.0 * Math.abs(latitude);
+      c = 62 + 5.120 / 55.0 * Math.abs(latitude);
+      d = 62 + 19.44 / 55.0 * Math.abs(latitude);
+    } else if (shafaq === Shafaq.Abyad) {
+      a = 75 + 25.60 / 55.0 * Math.abs(latitude);
+      b = 75 + 7.160 / 55.0 * Math.abs(latitude);
+      c = 75 + 36.84 / 55.0 * Math.abs(latitude);
+      d = 75 + 81.84 / 55.0 * Math.abs(latitude);
+    } else {
+      a = 75 + 25.60 / 55.0 * Math.abs(latitude);
+      b = 75 + 2.050 / 55.0 * Math.abs(latitude);
+      c = 75 - 9.210 / 55.0 * Math.abs(latitude);
+      d = 75 + 6.140 / 55.0 * Math.abs(latitude);
+    }
 
     const adjustment = function () {
       const dyy = Astronomical.daysSinceSolstice(dayOfYear, year, latitude);
@@ -811,7 +838,7 @@ class PrayerTimes_PrayerTimes {
 
       const safeIsha = function () {
         if (calculationParameters.method === "MoonsightingCommittee") {
-          return src_Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, DateUtils_dayOfYear(date), date.getFullYear(), sunsetTime);
+          return src_Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, DateUtils_dayOfYear(date), date.getFullYear(), sunsetTime, calculationParameters.shafaq);
         } else {
           const portion = calculationParameters.nightPortions().isha;
           nightFraction = portion * night;
@@ -932,15 +959,29 @@ const HighLatitudeRule = {
 
 
 
+
 class CalculationParameters_CalculationParameters {
   constructor(methodName, fajrAngle, ishaAngle, ishaInterval, maghribAngle) {
-    this.method = methodName || "Other";
-    this.fajrAngle = fajrAngle || 0;
-    this.ishaAngle = ishaAngle || 0;
-    this.ishaInterval = ishaInterval || 0;
-    this.maghribAngle = maghribAngle;
-    this.madhab = Madhab.Shafi;
-    this.highLatitudeRule = src_HighLatitudeRule.MiddleOfTheNight;
+    // Name of the method, can be used to apply special behavior in calculations.
+    // This property should not be manually modified.
+    this.method = methodName || "Other"; // Angle of the sun below the horizon used for calculating Fajr.
+
+    this.fajrAngle = fajrAngle || 0; // Angle of the sun below the horizon used for calculating Isha.
+
+    this.ishaAngle = ishaAngle || 0; // Minutes after Maghrib to determine time for Isha
+    // if this value is greater than 0 then ishaAngle is not used.
+
+    this.ishaInterval = ishaInterval || 0; // Angle of the sun below the horizon used for calculating Maghrib.
+    // Only used by the Tehran method to account for lightness in the sky.
+
+    this.maghribAngle = maghribAngle; // Madhab to determine how Asr is calculated.
+
+    this.madhab = Madhab.Shafi; // Rule to determine the earliest time for Fajr and latest time for Isha
+    // needed for high latitude locations where Fajr and Isha may not truly exist
+    // or may present a hardship unless bound to a reasonable time.
+
+    this.highLatitudeRule = src_HighLatitudeRule.MiddleOfTheNight; // Manual adjustments (in minutes) to be added to each prayer time.
+
     this.adjustments = {
       fajr: 0,
       sunrise: 0,
@@ -948,7 +989,8 @@ class CalculationParameters_CalculationParameters {
       asr: 0,
       maghrib: 0,
       isha: 0
-    };
+    }; // Adjustments set by a calculation method. This value should not be manually modified.
+
     this.methodAdjustments = {
       fajr: 0,
       sunrise: 0,
@@ -956,9 +998,15 @@ class CalculationParameters_CalculationParameters {
       asr: 0,
       maghrib: 0,
       isha: 0
-    };
-    this.polarCircleResolution = PolarCircleResolution.Unresolved;
-    this.rounding = Rounding.Nearest;
+    }; // Rule to determine how to resolve prayer times inside the Polar Circle
+    // where daylight or night may persist for more than 24 hours depending
+    // on the season
+
+    this.polarCircleResolution = PolarCircleResolution.Unresolved; // How seconds are rounded when calculating prayer times
+
+    this.rounding = Rounding.Nearest; // Used by the MoonsightingCommittee method to determine how to calculate Isha
+
+    this.shafaq = Shafaq.General;
   }
 
   nightPortions() {
