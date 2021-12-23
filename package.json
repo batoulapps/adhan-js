@@ -9,7 +9,7 @@
     "test": "npm-run-all test:*",
     "test:lint": "eslint src/ test/",
     "test:unit": "jest",
-    "test:audit": "npm audit --audit-level=high",
+    "test:audit": "npm audit --production --audit-level=high",
     "test-watch": "jest --watch",
     "coverage": "codecov",
     "commit": "cz",
