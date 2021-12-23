@@ -97,7 +97,7 @@ export default class PrayerTimes {
 
             const safeIsha = (function () {
                 if (calculationParameters.method === "MoonsightingCommittee") {
-                    return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), sunsetTime);
+                    return Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, dayOfYear(date), date.getFullYear(), sunsetTime, calculationParameters.shafaq);
                 }
                 else {
                     const portion = calculationParameters.nightPortions().isha;

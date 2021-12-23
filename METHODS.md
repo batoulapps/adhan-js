@@ -15,12 +15,14 @@ params.adjustments.fajr = 2;
 | --------- | ----------- |
 | method    | CalculationMethod name |
 | fajrAngle | Angle of the sun used to calculate Fajr |
+| maghribAngle | Angle of the sun used to calculate Maghrib (this is used by the Tehran method) |
 | ishaAngle | Angle of the sun used to calculate Isha |
 | ishaInterval | Minutes after Maghrib (if set, the time for Isha will be Maghrib plus ishaInterval) |
 | madhab | Value from the Madhab object, used to calculate Asr |
 | highLatitudeRule | Value from the HighLatitudeRule object, used to set a minimum time for Fajr and a max time for Isha |
 | adjustments | Object with custom prayer time adjustments (in minutes) for each prayer time |
 | polarCircleResolution | Value from the PolarCircleResolution object, strategy used to resolve undefined prayer times for areas located in polar circles  |
+| shafaq | Used by the MoonsightingCommittee method to determine how to calculate Isha. See explanation of values below. |
 
 #### CalculationMethod
 
@@ -64,3 +66,13 @@ You can get the recommended High Latitude Rule for a location by calling the `ad
 | adhan.PolarCircleResolution.AqrabBalad | Finds the closest location for which sunrise and sunset prayer times can be computed |
 | adhan.PolarCircleResolution.AqrabYaum | Finds the closest date (forward or backward) for which sunrise and sunset prayer times can be computed |
 | adhan.PolarCircleResolution.Unresolved | (default) Leaves sunrise and sunset prayer times `undefined` when they can't be computed  |
+
+#### Shafaq
+
+Shafaq is used by the MoonsightingCommittee method to determine what type of twilight to use in order to determine the time for Isha.
+
+| Value | Description |
+| ----- | ----------- |
+| adhan.Shafaq.General | General is a combination of Ahmer and Abyad. This is the defualt value and will provide more reasonable times for locations at higher latitudes. |
+| adhan.Shafaq.Ahmer | Ahmer means the twilight is the red glow in the sky. Used by the Shafi, Maliki, and Hanbali madhabs. This generally produces an earlier Isha time. |
+| adhan.Shafaq.Abyad | Abyad means the twilight is the white glow in the sky. Used by the Hanafi madhab. This generally produces a later Isha time. |
