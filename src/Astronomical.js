@@ -1,6 +1,7 @@
 /* eslint-disable max-params, max-lines */
 import { degreesToRadians, radiansToDegrees, unwindAngle, normalizeToScale, quadrantShiftAngle } from './MathUtils';
 import { dateByAddingSeconds } from './DateUtils';
+import { Shafaq } from './Shafaq';
 
 const Astronomical = {
 
@@ -284,11 +285,24 @@ const Astronomical = {
         return dateByAddingSeconds(sunrise, Math.round(adjustment * -60.0));
     },
 
-    seasonAdjustedEveningTwilight(latitude, dayOfYear, year, sunset) {
-        const a = 75 + ((25.60 / 55.0) * Math.abs(latitude));
-        const b = 75 + ((2.050 / 55.0) * Math.abs(latitude));
-        const c = 75 - ((9.210 / 55.0) * Math.abs(latitude));
-        const d = 75 + ((6.140 / 55.0) * Math.abs(latitude));
+    seasonAdjustedEveningTwilight(latitude, dayOfYear, year, sunset, shafaq) {
+        let a, b, c, d;
+        if (shafaq === Shafaq.Ahmer) {
+            a = 62 + ((17.40 / 55.0) * Math.abs(latitude));
+            b = 62 - ((7.160 / 55.0) * Math.abs(latitude));
+            c = 62 + ((5.120 / 55.0) * Math.abs(latitude));
+            d = 62 + ((19.44 / 55.0) * Math.abs(latitude));
+        } else if (shafaq === Shafaq.Abyad) {
+            a = 75 + ((25.60 / 55.0) * Math.abs(latitude));
+            b = 75 + ((7.160 / 55.0) * Math.abs(latitude));
+            c = 75 + ((36.84 / 55.0) * Math.abs(latitude));
+            d = 75 + ((81.84 / 55.0) * Math.abs(latitude));
+        } else {
+            a = 75 + ((25.60 / 55.0) * Math.abs(latitude));
+            b = 75 + ((2.050 / 55.0) * Math.abs(latitude));
+            c = 75 - ((9.210 / 55.0) * Math.abs(latitude));
+            d = 75 + ((6.140 / 55.0) * Math.abs(latitude));
+        }
 
         const adjustment = (function() {
             const dyy = Astronomical.daysSinceSolstice(dayOfYear, year, latitude);

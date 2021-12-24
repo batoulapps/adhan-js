@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import { dateByAddingSeconds, isValidDate } from '../src/DateUtils';
 import { shadowLength } from '../src/Madhab';
 import * as polarCircleResolver from '../src/PolarCircleResolution';
+import { Shafaq } from '../src/Shafaq';
 
 test("Verifying the night portion defined by the high latitude rule", () => {
     const p1 = new adhan.CalculationParameters("Other", 18, 18);
@@ -335,6 +336,182 @@ test("getting recommended high latitude rule", () => {
 
     const coords2 = new adhan.Coordinates(48.983226, -3.216649)
     expect(adhan.HighLatitudeRule.recommended(coords2)).toBe(adhan.HighLatitudeRule.SeventhOfTheNight);
+});
+
+describe("Moonsighting Committee method with shafaq general", () => {
+    // Values from http://www.moonsighting.com/pray.php
+    test ('Shafaq general in winter', () => {
+        const date = new Date(2021, 0, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.General;
+        params.madhab = adhan.Madhab.Hanafi;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("6:16 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:52 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("12:28 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("3:12 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("4:57 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("6:27 PM");
+    });
+
+    test ('Shafaq general in Spring', () => {
+        const date = new Date(2021, 3, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.General;
+        params.madhab = adhan.Madhab.Hanafi;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("5:28 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:01 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("1:28 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("5:53 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("7:49 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("9:01 PM");
+    });
+
+    test ('Shafaq general in Summer', () => {
+        const date = new Date(2021, 6, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.General;
+        params.madhab = adhan.Madhab.Hanafi;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("3:52 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("5:42 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("1:28 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("6:42 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("9:07 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("10:22 PM");
+    });
+
+    test ('Shafaq general in Fall', () => {
+        const date = new Date(2021, 10, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.General;
+        params.madhab = adhan.Madhab.Hanafi;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("6:22 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:55 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("1:08 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("4:26 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("6:13 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("7:35 PM");
+    });
+    
+});
+
+describe("Moonsighting Committee method with shafaq ahmer", () => {
+    // Values from http://www.moonsighting.com/pray.php
+    test ('Shafaq ahmer in winter', () => {
+        const date = new Date(2021, 0, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.Ahmer;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("6:16 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:52 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("12:28 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("2:37 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("4:57 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("6:07 PM"); // value from source is 6:08 PM
+    });
+
+    test ('Shafaq ahmer in Spring', () => {
+        const date = new Date(2021, 3, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.Ahmer;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("5:28 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:01 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("1:28 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("4:59 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("7:49 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("8:45 PM");
+    });
+
+    test ('Shafaq ahmer in Summer', () => {
+        const date = new Date(2021, 6, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.Ahmer;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("3:52 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("5:42 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("1:28 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("5:29 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("9:07 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("10:19 PM");
+    });
+
+    test ('Shafaq ahmer in Fall', () => {
+        const date = new Date(2021, 10, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.Ahmer;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("6:22 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:55 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("1:08 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("3:45 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("6:13 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("7:15 PM");
+    });
+    
+});
+
+describe("Moonsighting Committee method with shafaq abyad", () => {
+    // Values from http://www.moonsighting.com/pray.php
+    test ('Shafaq abyad in winter', () => {
+        const date = new Date(2021, 0, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.Abyad;
+        params.madhab = adhan.Madhab.Hanafi;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("6:16 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:52 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("12:28 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("3:12 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("4:57 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("6:28 PM");
+    });
+
+    test ('Shafaq abyad in Spring', () => {
+        const date = new Date(2021, 3, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.Abyad;
+        params.madhab = adhan.Madhab.Hanafi;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("5:28 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:01 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("1:28 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("5:53 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("7:49 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("9:12 PM");
+    });
+
+    test ('Shafaq abyad in Summer', () => {
+        const date = new Date(2021, 6, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.Abyad;
+        params.madhab = adhan.Madhab.Hanafi;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("3:52 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("5:42 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("1:28 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("6:42 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("9:07 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("11:17 PM");
+    });
+
+    test ('Shafaq abyad in Fall', () => {
+        const date = new Date(2021, 10, 1);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        params.shafaq = Shafaq.Abyad;
+        params.madhab = adhan.Madhab.Hanafi;
+        const p = new adhan.PrayerTimes(new adhan.Coordinates(43.494,-79.844), date, params);
+        expect(moment(p.fajr).tz("America/New_York").format("h:mm A")).toBe("6:22 AM");
+        expect(moment(p.sunrise).tz("America/New_York").format("h:mm A")).toBe("7:55 AM");
+        expect(moment(p.dhuhr).tz("America/New_York").format("h:mm A")).toBe("1:08 PM");
+        expect(moment(p.asr).tz("America/New_York").format("h:mm A")).toBe("4:26 PM");
+        expect(moment(p.maghrib).tz("America/New_York").format("h:mm A")).toBe("6:13 PM");
+        expect(moment(p.isha).tz("America/New_York").format("h:mm A")).toBe("7:37 PM");
+    });
+    
 });
 
 describe('Polar circle resolution cases', () => {
