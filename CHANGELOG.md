@@ -1,3 +1,10 @@
+# [4.3.0](https://github.com/batoulapps/adhan-js/compare/v4.2.1...v4.3.0) (2021-12-24)
+
+
+### Features
+
+* **calculation params:** adds shafaq parameter ([4c62bdf](https://github.com/batoulapps/adhan-js/commit/4c62bdf8094cd4df5d459884eccd83258d4f06d8)), closes [#78](https://github.com/batoulapps/adhan-js/issues/78)
+
 ## [4.2.1](https://github.com/batoulapps/adhan-js/compare/v4.2.0...v4.2.1) (2021-06-18)
 
 
