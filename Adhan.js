@@ -1185,6 +1185,7 @@ class SunnahTimes_SunnahTimes {
 
 
 
+
 const adhan = {
   Prayer: src_Prayer,
   Madhab: Madhab,
@@ -1196,7 +1197,8 @@ const adhan = {
   SunnahTimes: SunnahTimes_SunnahTimes,
   Qibla: qibla,
   PolarCircleResolution: PolarCircleResolution,
-  Rounding: Rounding
+  Rounding: Rounding,
+  Shafaq: Shafaq
 };
 /* harmony default export */ var Adhan = __webpack_exports__["default"] = (adhan);
 

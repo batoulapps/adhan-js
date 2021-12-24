@@ -9,6 +9,7 @@ import Qibla from './Qibla';
 import SunnahTimes from './SunnahTimes';
 import { PolarCircleResolution } from './PolarCircleResolution';
 import { Rounding } from './Rounding';
+import { Shafaq } from './Shafaq';
 
 const adhan = {
     Prayer,
@@ -22,6 +23,7 @@ const adhan = {
     Qibla,
     PolarCircleResolution,
     Rounding,
+    Shafaq
 };
 
 export default adhan;
