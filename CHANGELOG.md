@@ -1,3 +1,10 @@
+## [4.3.1](https://github.com/batoulapps/adhan-js/compare/v4.3.0...v4.3.1) (2021-12-25)
+
+
+### Bug Fixes
+
+* **exports:** add shafaq to main export ([22aedeb](https://github.com/batoulapps/adhan-js/commit/22aedeb59c032dd5a2d3f831d7ece520465713d0))
+
 # [4.3.0](https://github.com/batoulapps/adhan-js/compare/v4.2.1...v4.3.0) (2021-12-24)
 
 
