@@ -658,5 +658,22 @@ describe('Polar circle resolution cases', () => {
                 expect(isValidDate(prayersTimes[prayerName])).toEqual(true);
             });
         });
+
+        test("calculating times for the polar circle", () => {
+            const coordinates = new adhan.Coordinates(66.7222444, 17.7189);
+            const params = adhan.CalculationMethod.MuslimWorldLeague();
+            params.polarCircleResolution = adhan.PolarCircleResolution.AqrabYaum;
+            params.highLatitudeRule = adhan.HighLatitudeRule.SeventhOfTheNight;
+            const date = new Date(2020, 5, 21);
+            
+            const p = new adhan.PrayerTimes(coordinates, date, params);
+            expect(moment(p.fajr).tz("Europe/Stockholm").format("MMMM DD, YYYY h:mm A")).toBe("June 21, 2020 12:40 AM");
+            expect(moment(p.sunrise).tz("Europe/Stockholm").format("MMMM DD, YYYY h:mm A")).toBe("June 21, 2020 12:54 AM");
+            expect(moment(p.dhuhr).tz("Europe/Stockholm").format("MMMM DD, YYYY h:mm A")).toBe("June 21, 2020 12:55 PM");
+            expect(moment(p.asr).tz("Europe/Stockholm").format("MMMM DD, YYYY h:mm A")).toBe("June 21, 2020 5:49 PM");
+            expect(moment(p.maghrib).tz("Europe/Stockholm").format("MMMM DD, YYYY h:mm A")).toBe("June 21, 2020 11:36 PM");
+            expect(moment(p.isha).tz("Europe/Stockholm").format("MMMM DD, YYYY h:mm A")).toBe("June 21, 2020 11:51 PM");
+        });
+
     });
 });
