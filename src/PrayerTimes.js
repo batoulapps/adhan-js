@@ -34,7 +34,7 @@ export default class PrayerTimes {
         dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
         sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
         let sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-        let tomorrow = dateByAddingDays(date, 1);
+        const tomorrow = dateByAddingDays(date, 1);
         let tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
 
         const polarCircleResolver = calculationParameters.polarCircleResolution;
@@ -43,10 +43,7 @@ export default class PrayerTimes {
           && polarCircleResolver !== PolarCircleResolution.Unresolved
         ) {
             const resolved = polarCircleResolvedValues(polarCircleResolver, date, coordinates);
-            this.coordinates = resolved.coordinates;
-            this.date.setTime(resolved.date.getTime());
             solarTime = resolved.solarTime;
-            tomorrow = resolved.tomorrow;
             tomorrowSolarTime = resolved.tomorrowSolarTime;
             const dateComponents = [date.getFullYear(), date.getMonth(), date.getDate()];
 
