@@ -1,3 +1,10 @@
+## [4.3.2](https://github.com/batoulapps/adhan-js/compare/v4.3.1...v4.3.2) (2022-03-14)
+
+
+### Bug Fixes
+
+* **prayer times:** fix polar circle prayer times ([0041629](https://github.com/batoulapps/adhan-js/commit/0041629e7ecad5b999a3b382f79314d5d8a0e4b3))
+
 ## [4.3.1](https://github.com/batoulapps/adhan-js/compare/v4.3.0...v4.3.1) (2021-12-25)
 
 
