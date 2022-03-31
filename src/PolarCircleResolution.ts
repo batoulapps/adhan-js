@@ -1,29 +1,48 @@
-import SolarTime from './SolarTime';
-import { dateByAddingDays } from './DateUtils';
+import Coordinates from './Coordinates'
+import {dateByAddingDays} from './DateUtils'
+import SolarTime from './SolarTime'
+import {ValueOf} from './type-utils'
 
 export const PolarCircleResolution = {
   AqrabBalad: 'AqrabBalad',
   AqrabYaum: 'AqrabYaum',
-  Unresolved: 'Unresolved'
-};
+  Unresolved: 'Unresolved',
+} as const
 
-const LATITUDE_VARIATION_STEP = 0.5; // Degrees to add/remove at each resolution step
-const UNSAFE_LATITUDE = 65; // Based on https://en.wikipedia.org/wiki/Midnight_sun
+const LATITUDE_VARIATION_STEP = 0.5 // Degrees to add/remove at each resolution step
+const UNSAFE_LATITUDE = 65 // Based on https://en.wikipedia.org/wiki/Midnight_sun
 
-const isValidSolarTime = (solarTime) => solarTime && !isNaN(solarTime.sunrise) && !isNaN(solarTime.sunset);
+const isValidSolarTime = (solarTime: SolarTime) =>
+  solarTime && !isNaN(solarTime.sunrise) && !isNaN(solarTime.sunset)
 
-const aqrabYaumResolver = (coordinates, date, daysAdded = 1, direction = 1) => {
+const aqrabYaumResolver = (
+  coordinates: Coordinates,
+  date: Date,
+  daysAdded = 1,
+  direction = 1,
+): {
+  date: Date
+  tomorrow: Date
+  coordinates: Coordinates
+  solarTime: SolarTime
+  tomorrowSolarTime: SolarTime
+} | null => {
   if (daysAdded > Math.ceil(365 / 2)) {
-    return null;
+    return null
   }
-  const testDate = new Date(date.getTime());
-  testDate.setDate(testDate.getDate() + (direction * daysAdded));
-  const tomorrow = dateByAddingDays(testDate, 1);
-  const solarTime = new SolarTime(testDate, coordinates);
-  const tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
+  const testDate = new Date(date.getTime())
+  testDate.setDate(testDate.getDate() + direction * daysAdded)
+  const tomorrow = dateByAddingDays(testDate, 1)
+  const solarTime = new SolarTime(testDate, coordinates)
+  const tomorrowSolarTime = new SolarTime(tomorrow, coordinates)
 
   if (!isValidSolarTime(solarTime) || !isValidSolarTime(tomorrowSolarTime)) {
-    return aqrabYaumResolver(coordinates, date, daysAdded + (direction > 0 ? 0 : 1), -direction);
+    return aqrabYaumResolver(
+      coordinates,
+      date,
+      daysAdded + (direction > 0 ? 0 : 1),
+      -direction,
+    )
   }
 
   return {
@@ -32,47 +51,74 @@ const aqrabYaumResolver = (coordinates, date, daysAdded = 1, direction = 1) => {
     coordinates,
     solarTime,
     tomorrowSolarTime,
-  };
+  }
 }
 
-const aqrabBaladResolver = (coordinates, date, latitude) => {
-  const solarTime = new SolarTime(date, { ...coordinates, latitude });
-  const tomorrow = dateByAddingDays(date, 1);
-  const tomorrowSolarTime = new SolarTime(tomorrow, { ...coordinates, latitude });
+const aqrabBaladResolver = (
+  coordinates: Coordinates,
+  date: Date,
+  latitude: number,
+): {
+  date: Date
+  tomorrow: Date
+  coordinates: {
+    latitude: number
+    longitude: number
+  }
+  solarTime: SolarTime
+  tomorrowSolarTime: SolarTime
+} | null => {
+  const solarTime = new SolarTime(date, {...coordinates, latitude})
+  const tomorrow = dateByAddingDays(date, 1)
+  const tomorrowSolarTime = new SolarTime(tomorrow, {...coordinates, latitude})
   if (!isValidSolarTime(solarTime) || !isValidSolarTime(tomorrowSolarTime)) {
-    return (Math.abs(latitude) >= UNSAFE_LATITUDE) ?
-      aqrabBaladResolver(coordinates, date, latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP)
-      : null;
+    return Math.abs(latitude) >= UNSAFE_LATITUDE
+      ? aqrabBaladResolver(
+          coordinates,
+          date,
+          latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP,
+        )
+      : null
   }
 
   return {
     date,
     tomorrow,
-    coordinates: { latitude, longitude: coordinates.longitude },
+    coordinates: {latitude, longitude: coordinates.longitude},
     solarTime,
     tomorrowSolarTime,
-  };
-};
+  }
+}
 
-export const polarCircleResolvedValues = (resolver, date, coordinates) => {
+export const polarCircleResolvedValues = (
+  resolver: ValueOf<typeof PolarCircleResolution>,
+  date: Date,
+  coordinates: Coordinates,
+) => {
   const defaultReturn = {
     date,
     tomorrow: dateByAddingDays(date, 1),
     coordinates,
     solarTime: new SolarTime(date, coordinates),
     tomorrowSolarTime: new SolarTime(dateByAddingDays(date, 1), coordinates),
-  };
+  }
 
   switch (resolver) {
     case PolarCircleResolution.AqrabYaum: {
-      return aqrabYaumResolver(coordinates, date) || defaultReturn;
+      return aqrabYaumResolver(coordinates, date) || defaultReturn
     }
     case PolarCircleResolution.AqrabBalad: {
-      const { latitude } = coordinates;
-      return aqrabBaladResolver(coordinates, date, latitude - (Math.sign(latitude) * LATITUDE_VARIATION_STEP)) || defaultReturn;
+      const {latitude} = coordinates
+      return (
+        aqrabBaladResolver(
+          coordinates,
+          date,
+          latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP,
+        ) || defaultReturn
+      )
     }
     default: {
-      return defaultReturn;
+      return defaultReturn
     }
   }
-};
+}

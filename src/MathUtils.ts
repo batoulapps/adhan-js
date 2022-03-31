@@ -6,8 +6,8 @@ export function radiansToDegrees(radians: number) {
   return (radians * 180.0) / Math.PI
 }
 
-export function normalizeToScale(number: number, max) {
-  return number - max * Math.floor(number / max)
+export function normalizeToScale(num: number, max: number) {
+  return num - max * Math.floor(num / max)
 }
 
 export function unwindAngle(angle: number) {

@@ -17,6 +17,7 @@ import {
 import Prayer from './Prayer'
 import SolarTime from './SolarTime'
 import TimeComponents from './TimeComponents'
+import {ValueOf} from './type-utils'
 
 export default class PrayerTimes {
   fajr: Date
@@ -233,7 +234,7 @@ export default class PrayerTimes {
     )
   }
 
-  timeForPrayer(prayer) {
+  timeForPrayer(prayer: ValueOf<typeof Prayer>) {
     if (prayer === Prayer.Fajr) {
       return this.fajr
     } else if (prayer === Prayer.Sunrise) {

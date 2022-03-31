@@ -1,10 +1,10 @@
+import type CalculationMethod from './CalculationMethod'
 import HighLatitudeRule from './HighLatitudeRule'
 import {Madhab} from './Madhab'
 import {PolarCircleResolution} from './PolarCircleResolution'
 import {Rounding} from './Rounding'
 import {Shafaq} from './Shafaq'
-
-type ValueOf<T> = T[keyof T]
+import {ValueOf} from './type-utils'
 
 export default class CalculationParameters {
   // Madhab to determine how Asr is calculated.
@@ -39,18 +39,19 @@ export default class CalculationParameters {
   // Rule to determine how to resolve prayer times inside the Polar Circle
   // where daylight or night may persist for more than 24 hours depending
   // on the season
-  polarCircleResolution = PolarCircleResolution.Unresolved
+  polarCircleResolution: ValueOf<typeof PolarCircleResolution> =
+    PolarCircleResolution.Unresolved
 
   // How seconds are rounded when calculating prayer times
-  rounding = Rounding.Nearest
+  rounding: ValueOf<typeof Rounding> = Rounding.Nearest
 
   // Used by the MoonsightingCommittee method to determine how to calculate Isha
-  shafaq = Shafaq.General
+  shafaq: ValueOf<typeof Shafaq> = Shafaq.General
 
   constructor(
     // Name of the method, can be used to apply special behavior in calculations.
     // This property should not be manually modified.
-    public method = 'Other',
+    public method: null | keyof typeof CalculationMethod,
     // Angle of the sun below the horizon used for calculating Fajr.
     public fajrAngle = 0,
     // Angle of the sun below the horizon used for calculating Isha.

@@ -3,7 +3,8 @@
     "target": "ES2020",
     "module": "esnext",
     "moduleResolution": "node",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

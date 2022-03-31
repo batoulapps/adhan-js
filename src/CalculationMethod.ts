@@ -101,6 +101,6 @@ const CalculationMethod = {
   Other() {
     return new CalculationParameters('Other', 0, 0)
   },
-}
+} as const
 
 export default CalculationMethod

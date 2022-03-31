@@ -1,9 +1,11 @@
+import type Coordinates from './Coordinates'
+
 const HighLatitudeRule = {
   MiddleOfTheNight: 'middleofthenight',
   SeventhOfTheNight: 'seventhofthenight',
   TwilightAngle: 'twilightangle',
 
-  recommended(coordinates) {
+  recommended(coordinates: Coordinates) {
     if (coordinates.latitude > 48) {
       return HighLatitudeRule.SeventhOfTheNight
     } else {

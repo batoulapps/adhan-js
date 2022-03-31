@@ -830,7 +830,7 @@ describe('Moonsighting Committee method with shafaq abyad', () => {
 })
 
 describe('Polar circle resolution cases', () => {
-  const prayersToCheck = ['fajr', 'sunrise', 'maghrib', 'isha']
+  const prayersToCheck = ['fajr', 'sunrise', 'maghrib', 'isha'] as const
   const regularDate = new Date(2020, 4, 15, 20, 0, 0, 0)
   const dateAffectedByPolarNight = new Date(2020, 11, 21, 20, 0, 0, 0)
   const dateAffectedByMidnightSun = new Date(2020, 5, 21, 20, 0, 0, 0)

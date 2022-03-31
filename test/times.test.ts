@@ -3,7 +3,14 @@ import fs from 'fs'
 import moment from 'moment-timezone'
 import adhan from '../src'
 
-function parseParams(data) {
+function parseParams(data: {
+  latitude: number
+  longitude: number
+  timezone: string
+  method: string
+  madhab: string
+  highLatitudeRule: string
+}) {
   let params
 
   const method = data['method']
@@ -77,6 +84,16 @@ expect.extend({
   },
 })
 
+type TestFileTime = {
+  date: string
+  fajr: string
+  sunrise: string
+  dhuhr: string
+  asr: string
+  maghrib: string
+  isha: string
+}
+
 fs.readdirSync('Shared/Times').forEach(function (filename) {
   test(`compare calculated times against the prayer times in ${filename}`, () => {
     const file_contents = fs.readFileSync('Shared/Times/' + filename)
@@ -88,7 +105,7 @@ fs.readdirSync('Shared/Times').forEach(function (filename) {
     )
     const params = parseParams(data['params'])
     const variance = data['variance'] || 0
-    data['times'].forEach(function (time) {
+    data['times'].forEach(function (time: TestFileTime) {
       const date = moment(time['date'], 'YYYY-MM-DD').toDate()
       const p = new adhan.PrayerTimes(coordinates, date, params)
 
