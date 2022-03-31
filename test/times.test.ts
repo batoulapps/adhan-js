@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import fs from 'fs'
 import moment from 'moment-timezone'
-import adhan from '../src/Adhan'
+import adhan from '../src'
 
 function parseParams(data) {
   let params

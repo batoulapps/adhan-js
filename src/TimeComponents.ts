@@ -11,7 +11,7 @@ export default class TimeComponents {
     return this
   }
 
-  utcDate(year: number, month: number, date: number) {
+  utcDate(year: number, month: number, date: number): Date {
     return new Date(
       Date.UTC(year, month, date, this.hours, this.minutes, this.seconds),
     )

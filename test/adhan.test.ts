@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import moment from 'moment-timezone'
-import adhan from '../src/Adhan'
+import adhan from '../src'
 import {dateByAddingSeconds, isValidDate} from '../src/DateUtils'
 import {shadowLength} from '../src/Madhab'
 import * as polarCircleResolver from '../src/PolarCircleResolution'

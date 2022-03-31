@@ -34,12 +34,12 @@ export default class PrayerTimes {
   ) {
     let solarTime = new SolarTime(date, coordinates)
 
-    let fajrTime
-    let sunriseTime
-    let dhuhrTime
-    let asrTime
-    let maghribTime
-    let ishaTime
+    let fajrTime: Date
+    let sunriseTime: Date
+    let dhuhrTime: Date
+    let asrTime: Date
+    let maghribTime: Date
+    let ishaTime: Date
 
     let nightFraction
 
@@ -189,23 +189,23 @@ export default class PrayerTimes {
     }
 
     const fajrAdjustment =
-      (calculationParameters.adjustments.fajr || 0) +
-      (calculationParameters.methodAdjustments.fajr || 0)
+      calculationParameters.adjustments.fajr +
+      calculationParameters.methodAdjustments.fajr
     const sunriseAdjustment =
-      (calculationParameters.adjustments.sunrise || 0) +
-      (calculationParameters.methodAdjustments.sunrise || 0)
+      calculationParameters.adjustments.sunrise +
+      calculationParameters.methodAdjustments.sunrise
     const dhuhrAdjustment =
-      (calculationParameters.adjustments.dhuhr || 0) +
-      (calculationParameters.methodAdjustments.dhuhr || 0)
+      calculationParameters.adjustments.dhuhr +
+      calculationParameters.methodAdjustments.dhuhr
     const asrAdjustment =
-      (calculationParameters.adjustments.asr || 0) +
-      (calculationParameters.methodAdjustments.asr || 0)
+      calculationParameters.adjustments.asr +
+      calculationParameters.methodAdjustments.asr
     const maghribAdjustment =
-      (calculationParameters.adjustments.maghrib || 0) +
-      (calculationParameters.methodAdjustments.maghrib || 0)
+      calculationParameters.adjustments.maghrib +
+      calculationParameters.methodAdjustments.maghrib
     const ishaAdjustment =
-      (calculationParameters.adjustments.isha || 0) +
-      (calculationParameters.methodAdjustments.isha || 0)
+      calculationParameters.adjustments.isha +
+      calculationParameters.methodAdjustments.isha
 
     this.fajr = roundedMinute(
       dateByAddingMinutes(fajrTime, fajrAdjustment),

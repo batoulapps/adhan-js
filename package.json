@@ -4,8 +4,8 @@
   "description": "High precision Islamic prayer time library",
   "main": "main.js",
   "scripts": {
-    "build": "pika-pack build",
-    "publish": "pika-pack publish",
+    "build": "pika build",
+    "publish": "pika publish",
     "test": "npm-run-all test:*",
     "test:lint": "eslint src/ test/",
     "test:unit": "jest",
