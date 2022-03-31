@@ -13,7 +13,7 @@ export default class SolarTime {
   sunrise: number
   sunset: number
 
-  constructor(date, coordinates: Coordinates) {
+  constructor(date: Date, coordinates: Coordinates) {
     const julianDay = Astronomical.julianDay(
       date.getFullYear(),
       date.getMonth() + 1,
@@ -74,7 +74,7 @@ export default class SolarTime {
     )
   }
 
-  hourAngle(angle, afterTransit) {
+  hourAngle(angle: number, afterTransit: boolean) {
     return Astronomical.correctedHourAngle(
       this.approxTransit,
       angle,
@@ -90,7 +90,7 @@ export default class SolarTime {
     )
   }
 
-  afternoon(shadowLength) {
+  afternoon(shadowLength: number) {
     // TODO source shadow angle calculation
     const tangent = Math.abs(this.observer.latitude - this.solar.declination)
     const inverse = shadowLength + Math.tan(degreesToRadians(tangent))
