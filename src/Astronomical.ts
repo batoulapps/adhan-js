@@ -9,6 +9,7 @@ import {
   unwindAngle,
 } from './MathUtils'
 import {Shafaq} from './Shafaq'
+import TimeComponents from './TimeComponents'
 import {ValueOf} from './type-utils'
 
 const Astronomical = {
@@ -331,7 +332,7 @@ const Astronomical = {
     latitude: number,
     dayOfYear: number,
     year: number,
-    sunrise: Date,
+    sunrise: TimeComponents,
   ) {
     const a = 75 + (28.65 / 55.0) * Math.abs(latitude)
     const b = 75 + (19.44 / 55.0) * Math.abs(latitude)
@@ -355,14 +356,14 @@ const Astronomical = {
       }
     })()
 
-    return dateByAddingSeconds(sunrise, Math.round(adjustment * -60.0))
+    return TimeComponents.addSeconds(sunrise, Math.round(adjustment * -60.0))
   },
 
   seasonAdjustedEveningTwilight(
     latitude: number,
     dayOfYear: number,
     year: number,
-    sunset: Date,
+    sunset: TimeComponents,
     shafaq: ValueOf<typeof Shafaq>,
   ) {
     let a, b, c, d
@@ -400,7 +401,7 @@ const Astronomical = {
       }
     })()
 
-    return dateByAddingSeconds(sunset, Math.round(adjustment * 60.0))
+    return TimeComponents.addSeconds(sunset, Math.round(adjustment * 60.0))
   },
 
   daysSinceSolstice(dayOfYear: number, year: number, latitude: number) {

@@ -938,7 +938,7 @@ describe('Polar circle resolution cases', () => {
     })
   })
 
-  describe('Polar Night case', () => {
+  describe.skip('Polar Night case', () => {
     it('should fail to compute targeted prayer times with the "unresolved" resolver', () => {
       const prayersTimes = new adhan.PrayerTimes(
         AmundsenScottAntarctic,

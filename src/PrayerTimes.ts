@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import Astronomical from './Astronomical'
 import CalculationParameters from './CalculationParameters'
 import Coordinates from './Coordinates'
@@ -35,77 +36,64 @@ export default class PrayerTimes {
   ) {
     let solarTime = new SolarTime(date, coordinates)
 
-    let fajrTime: Date
-    let sunriseTime: Date
-    let dhuhrTime: Date
-    let asrTime: Date
-    let maghribTime: Date
-    let ishaTime: Date
+    let fajrTime: TimeComponents
+    let sunriseTime: TimeComponents
+    let dhuhrTime: TimeComponents
+    let asrTime: TimeComponents
+    let maghribTime: TimeComponents
+    let ishaTime: TimeComponents
 
     let nightFraction
 
-    dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    )
-    sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    )
-    let sunsetTime = new TimeComponents(solarTime.sunset).utcDate(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    )
+    dhuhrTime = new TimeComponents(solarTime.transit)
+    sunriseTime = new TimeComponents(solarTime.sunrise)
+    let sunsetTime = new TimeComponents(solarTime.sunset)
     const tomorrow = dateByAddingDays(date, 1)
     let tomorrowSolarTime = new SolarTime(tomorrow, coordinates)
 
     const polarCircleResolver = calculationParameters.polarCircleResolution
-    if (
-      (!isValidDate(sunriseTime) ||
-        !isValidDate(sunsetTime) ||
-        isNaN(tomorrowSolarTime.sunrise)) &&
-      polarCircleResolver !== PolarCircleResolution.Unresolved
-    ) {
-      const resolved = polarCircleResolvedValues(
-        polarCircleResolver,
-        date,
-        coordinates,
-      )
-      solarTime = resolved.solarTime
-      tomorrowSolarTime = resolved.tomorrowSolarTime
-      const dateComponents = [
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-      ] as const
+    // if (
+    //   (!isValidDate(sunriseTime) ||
+    //     !isValidDate(sunsetTime) ||
+    //     isNaN(tomorrowSolarTime.sunrise)) &&
+    //   polarCircleResolver !== PolarCircleResolution.Unresolved
+    // ) {
+    //   const resolved = polarCircleResolvedValues(
+    //     polarCircleResolver,
+    //     date,
+    //     coordinates,
+    //   )
+    //   solarTime = resolved.solarTime
+    //   tomorrowSolarTime = resolved.tomorrowSolarTime
+    //   const dateComponents = [
+    //     date.getFullYear(),
+    //     date.getMonth(),
+    //     date.getDate(),
+    //   ] as const
 
-      dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
-        ...dateComponents,
-      )
-      sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(
-        ...dateComponents,
-      )
-      sunsetTime = new TimeComponents(solarTime.sunset).utcDate(
-        ...dateComponents,
-      )
-    }
+    //   dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
+    //     ...dateComponents,
+    //   )
+    //   sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(
+    //     ...dateComponents,
+    //   )
+    //   sunsetTime = new TimeComponents(solarTime.sunset).utcDate(
+    //     ...dateComponents,
+    //   )
+    // }
 
     // eslint-disable-next-line prefer-const
     asrTime = new TimeComponents(
       solarTime.afternoon(shadowLength(calculationParameters.madhab)),
-    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
+    )
 
-    const tomorrowSunrise = new TimeComponents(
-      tomorrowSolarTime.sunrise,
-    ).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate())
-    const night = (Number(tomorrowSunrise) - Number(sunsetTime)) / 1000
+    const tomorrowSunrise = new TimeComponents(tomorrowSolarTime.sunrise)
+
+    const night = tomorrowSunrise.toSeconds() - sunsetTime.toSeconds()
 
     fajrTime = new TimeComponents(
       solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false),
-    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
+    )
 
     // special case for moonsighting committee above latitude 55
     if (
@@ -113,7 +101,7 @@ export default class PrayerTimes {
       coordinates.latitude >= 55
     ) {
       nightFraction = night / 7
-      fajrTime = dateByAddingSeconds(sunriseTime, -nightFraction)
+      fajrTime = TimeComponents.addSeconds(sunriseTime, -nightFraction)
     }
 
     const safeFajr = (function () {
@@ -127,23 +115,23 @@ export default class PrayerTimes {
       } else {
         const portion = calculationParameters.nightPortions().fajr
         nightFraction = portion * night
-        return dateByAddingSeconds(sunriseTime, -nightFraction)
+        return TimeComponents.addSeconds(sunriseTime, -nightFraction)
       }
     })()
 
-    if (fajrTime === null || isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
+    if (fajrTime === null || safeFajr > fajrTime) {
       fajrTime = safeFajr
     }
 
     if (calculationParameters.ishaInterval > 0) {
-      ishaTime = dateByAddingMinutes(
+      ishaTime = TimeComponents.addMinutes(
         sunsetTime,
         calculationParameters.ishaInterval,
       )
     } else {
       ishaTime = new TimeComponents(
         solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true),
-      ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
+      )
 
       // special case for moonsighting committee above latitude 55
       if (
@@ -151,7 +139,7 @@ export default class PrayerTimes {
         coordinates.latitude >= 55
       ) {
         nightFraction = night / 7
-        ishaTime = dateByAddingSeconds(sunsetTime, nightFraction)
+        ishaTime = TimeComponents.addSeconds(sunsetTime, nightFraction)
       }
 
       const safeIsha = (function () {
@@ -166,25 +154,25 @@ export default class PrayerTimes {
         } else {
           const portion = calculationParameters.nightPortions().isha
           nightFraction = portion * night
-          return dateByAddingSeconds(sunsetTime, nightFraction)
+          return TimeComponents.addSeconds(sunsetTime, nightFraction)
         }
       })()
 
-      if (
-        ishaTime == null ||
-        isNaN(ishaTime.getTime()) ||
-        safeIsha < ishaTime
-      ) {
+      if (ishaTime == null || safeIsha < ishaTime) {
         ishaTime = safeIsha
       }
     }
 
     maghribTime = sunsetTime
+
     if (calculationParameters.maghribAngle) {
       const angleBasedMaghrib = new TimeComponents(
         solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true),
-      ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
-      if (sunsetTime < angleBasedMaghrib && ishaTime > angleBasedMaghrib) {
+      )
+      if (
+        sunsetTime.smallerThan(angleBasedMaghrib) &&
+        ishaTime.greaterThan(angleBasedMaghrib)
+      ) {
         maghribTime = angleBasedMaghrib
       }
     }
@@ -208,30 +196,30 @@ export default class PrayerTimes {
       calculationParameters.adjustments.isha +
       calculationParameters.methodAdjustments.isha
 
-    this.fajr = roundedMinute(
-      dateByAddingMinutes(fajrTime, fajrAdjustment),
+    this.fajr = TimeComponents.roundedMinute(
+      TimeComponents.addMinutes(fajrTime, fajrAdjustment),
       calculationParameters.rounding,
-    )
-    this.sunrise = roundedMinute(
-      dateByAddingMinutes(sunriseTime, sunriseAdjustment),
+    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
+    this.sunrise = TimeComponents.roundedMinute(
+      TimeComponents.addMinutes(sunriseTime, sunriseAdjustment),
       calculationParameters.rounding,
-    )
-    this.dhuhr = roundedMinute(
-      dateByAddingMinutes(dhuhrTime, dhuhrAdjustment),
+    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
+    this.dhuhr = TimeComponents.roundedMinute(
+      TimeComponents.addMinutes(dhuhrTime, dhuhrAdjustment),
       calculationParameters.rounding,
-    )
-    this.asr = roundedMinute(
-      dateByAddingMinutes(asrTime, asrAdjustment),
+    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
+    this.asr = TimeComponents.roundedMinute(
+      TimeComponents.addMinutes(asrTime, asrAdjustment),
       calculationParameters.rounding,
-    )
-    this.maghrib = roundedMinute(
-      dateByAddingMinutes(maghribTime, maghribAdjustment),
+    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
+    this.maghrib = TimeComponents.roundedMinute(
+      TimeComponents.addMinutes(maghribTime, maghribAdjustment),
       calculationParameters.rounding,
-    )
-    this.isha = roundedMinute(
-      dateByAddingMinutes(ishaTime, ishaAdjustment),
+    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
+    this.isha = TimeComponents.roundedMinute(
+      TimeComponents.addMinutes(ishaTime, ishaAdjustment),
       calculationParameters.rounding,
-    )
+    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate())
   }
 
   timeForPrayer(prayer: ValueOf<typeof Prayer>) {
