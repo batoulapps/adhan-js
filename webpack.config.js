@@ -10,7 +10,7 @@ module.exports = {
     globalObject: 'this',
   },
   optimization: {
-    minimize: false
+    minimize: false,
   },
   devtool: 'source-map',
   module: {
