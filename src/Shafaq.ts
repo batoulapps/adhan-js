@@ -10,4 +10,4 @@ export const Shafaq = {
 
   // Abyad means the twilight is the white glow in the sky. Used by the Hanafi madhab.
   Abyad: 'abyad',
-};
+} as const;

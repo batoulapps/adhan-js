@@ -2,7 +2,11 @@ import Astronomical from './Astronomical';
 import { degreesToRadians, radiansToDegrees, unwindAngle } from './MathUtils';
 
 export default class SolarCoordinates {
-  constructor(julianDay) {
+  declination: number;
+  rightAscension: number;
+  apparentSiderealTime: number;
+
+  constructor(julianDay: number) {
     const T = Astronomical.julianCentury(julianDay);
     const L0 = Astronomical.meanSolarLongitude(T);
     const Lp = Astronomical.meanLunarLongitude(T);

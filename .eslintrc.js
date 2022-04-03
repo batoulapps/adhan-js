@@ -1,14 +1,14 @@
 module.exports = {
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
-  },
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
 
   extends: [
     'eslint:recommended',
     'plugin:jest/recommended',
     'plugin:jest/style',
     'plugin:prettier/recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
 
   env: {
@@ -18,6 +18,7 @@ module.exports = {
   },
 
   rules: {
+    '@typescript-eslint/ban-ts-comment': 'warn',
     complexity: ['warn', 10],
     'max-lines': ['warn', 300],
     'max-params': ['warn', 5],

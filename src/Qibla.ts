@@ -1,7 +1,7 @@
 import Coordinates from './Coordinates';
 import { degreesToRadians, radiansToDegrees, unwindAngle } from './MathUtils';
 
-export default function qibla(coordinates) {
+export default function qibla(coordinates: Coordinates) {
   const makkah = new Coordinates(21.4225241, 39.8261818);
 
   // Equation from "Spherical Trigonometry For the use of colleges and schools" page 50

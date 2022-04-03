@@ -1,7 +1,7 @@
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
+  preset: 'ts-jest',
   collectCoverage: true,
-
-  // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
 
   // An array of file extensions your modules use

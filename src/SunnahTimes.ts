@@ -6,7 +6,10 @@ import {
 import PrayerTimes from './PrayerTimes';
 
 export default class SunnahTimes {
-  constructor(prayerTimes) {
+  middleOfTheNight: Date;
+  lastThirdOfTheNight: Date;
+
+  constructor(prayerTimes: PrayerTimes) {
     const date = prayerTimes.date;
     const nextDay = dateByAddingDays(date, 1);
     const nextDayPrayerTimes = new PrayerTimes(

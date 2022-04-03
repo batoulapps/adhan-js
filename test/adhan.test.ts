@@ -5,6 +5,8 @@ import { dateByAddingSeconds, isValidDate } from '../src/DateUtils';
 import { shadowLength } from '../src/Madhab';
 import * as polarCircleResolver from '../src/PolarCircleResolution';
 import { Shafaq } from '../src/Shafaq';
+import { ValueOf } from '../src/type-utils';
+import HighLatitudeRule from '../src/HighLatitudeRule';
 
 test('Verifying the night portion defined by the high latitude rule', () => {
   const p1 = new adhan.CalculationParameters('Other', 18, 18);
@@ -23,7 +25,11 @@ test('Verifying the night portion defined by the high latitude rule', () => {
   expect(p3.nightPortions().isha).toBe(15 / 60);
 
   const p4 = new adhan.CalculationParameters('Other', 10, 15);
-  p4.highLatitudeRule = adhan.HighLatitudeRule.fake;
+  p4.highLatitudeRule = (
+    adhan.HighLatitudeRule as unknown as {
+      fake: ValueOf<typeof HighLatitudeRule>;
+    }
+  ).fake;
   expect(() => {
     p4.nightPortions().fajr;
   }).toThrow();
@@ -437,7 +443,9 @@ test('getting the madhab shadow length', () => {
   expect(shadowLength(adhan.Madhab.Shafi)).toBe(1);
   expect(shadowLength(adhan.Madhab.Hanafi)).toBe(2);
   expect(() => {
-    shadowLength(adhan.Madhab.Foo);
+    shadowLength(
+      (adhan.Madhab as unknown as { Foo: ValueOf<typeof adhan.Madhab> }).Foo,
+    );
   }).toThrow();
 });
 
@@ -852,7 +860,7 @@ describe('Moonsighting Committee method with shafaq abyad', () => {
 });
 
 describe('Polar circle resolution cases', () => {
-  const prayersToCheck = ['fajr', 'sunrise', 'maghrib', 'isha'];
+  const prayersToCheck = ['fajr', 'sunrise', 'maghrib', 'isha'] as const;
   const regularDate = new Date(2020, 4, 15, 20, 0, 0, 0);
   const dateAffectedByPolarNight = new Date(2020, 11, 21, 20, 0, 0, 0);
   const dateAffectedByMidnightSun = new Date(2020, 5, 21, 20, 0, 0, 0);

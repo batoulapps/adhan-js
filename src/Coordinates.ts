@@ -1,6 +1,3 @@
 export default class Coordinates {
-  constructor(latitude, longitude) {
-    this.latitude = latitude;
-    this.longitude = longitude;
-  }
+  constructor(public latitude: number, public longitude: number) {}
 }
