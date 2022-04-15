@@ -1,7 +1,11 @@
 export as namespace adhan;
 
 export class PrayerTimes {
-  constructor(coordinates: Coordinates, date: Date, params: CalculationParameters);
+  constructor(
+    coordinates: Coordinates,
+    date: Date,
+    params: CalculationParameters,
+  );
 
   fajr: Date;
   sunrise: Date;
@@ -16,7 +20,13 @@ export class PrayerTimes {
 }
 
 export class CalculationParameters {
-  constructor(methodName: string|undefined|null, fajrAngle: number, ishaAngle: number, ishaInterval?: number, maghribAngle?: number)
+  constructor(
+    methodName: string | undefined | null,
+    fajrAngle: number,
+    ishaAngle: number,
+    ishaInterval?: number,
+    maghribAngle?: number,
+  );
 
   /**
    * Name of the method, can be used to apply special behavior in calculations.
@@ -113,20 +123,20 @@ export class Coordinates {
 
 export class SunnahTimes {
   constructor(prayerTimes: PrayerTimes);
-  
+
   middleOfTheNight: Date;
   lastThirdOfTheNight: Date;
 }
 
 export enum Madhab {
   Shafi,
-  Hanafi
+  Hanafi,
 }
 
 export enum Rounding {
   Nearest,
   Up,
-  None
+  None,
 }
 
 export enum Prayer {
@@ -136,13 +146,13 @@ export enum Prayer {
   Asr,
   Maghrib,
   Isha,
-  None
+  None,
 }
 
 export enum HighLatitudeRule {
   MiddleOfTheNight,
   SeventhOfTheNight,
-  TwilightAngle
+  TwilightAngle,
 }
 
 export namespace HighLatitudeRule {
@@ -168,13 +178,13 @@ export enum Shafaq {
   /**
    * Abyad means the twilight is the white glow in the sky. Used by the Hanafi madhab.
    */
-  Abyad
+  Abyad,
 }
 
 export enum PolarCircleResolution {
   AqrabBalad,
   AqrabYaum,
-  Unresolved
+  Unresolved,
 }
 
 export function Qibla(coordinates: Coordinates): number;
