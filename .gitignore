@@ -3,3 +3,4 @@ coverage/
 .idea
 .vscode/
 .env
+lib/

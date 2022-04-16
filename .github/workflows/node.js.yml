@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -28,9 +28,6 @@ jobs:
       - run: npm install -g npm@7 # update to npm 7
       - run: npm ci # equivalent of npm ci
       - run: npm run build
-      - run: ./scripts/ci-build-check.sh
-        env:
-          CI: true
 
   # testing job
   test:
@@ -39,7 +36,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - name: Testing on node ${{ matrix.node-version }} 🧪
@@ -48,6 +45,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g npm@7 # update to npm 7
       - run: npm ci
+      - run: npm run lint
       - run: npm test
 
   # coverage uploading job
@@ -64,6 +62,7 @@ jobs:
           node-version: 14.x
       - run: npm install -g npm@7 # update to npm 7
       - run: npm ci
+      - run: npm run lint
       - run: npm test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -88,7 +87,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           # latest nodejs LTS
-          node-version: 14.x
+          node-version: 16.x
       - run: npm install -g npm@7 # update to npm 7
       - run: npm ci
       - name: Preparing a release for npm and github 🚀

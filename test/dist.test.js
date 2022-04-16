@@ -1,6 +1,9 @@
-import adhan from '../Adhan';
+import adhan from '../src/Adhan';
 import moment from 'moment-timezone';
-import { dateByAddingSeconds } from '../src/DateUtils';
+
+function dateByAddingSeconds(date, seconds) {
+  return new Date(date.getTime() + seconds * 1000);
+}
 
 test('calculating prayer times', () => {
   const date = new Date(2015, 6, 12);
@@ -149,7 +152,7 @@ test('getting the time for a given prayer', () => {
   expect(p.timeForPrayer(adhan.Prayer.Asr)).toBe(p.asr);
   expect(p.timeForPrayer(adhan.Prayer.Maghrib)).toBe(p.maghrib);
   expect(p.timeForPrayer(adhan.Prayer.Isha)).toBe(p.isha);
-  expect(p.timeForPrayer(adhan.Prayer.None)).toBe(null);
+  expect(p.timeForPrayer(adhan.Prayer.None)).toBeNull();
 });
 
 test('getting the current prayer', () => {
