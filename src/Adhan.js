@@ -12,18 +12,18 @@ import { Rounding } from './Rounding';
 import { Shafaq } from './Shafaq';
 
 const adhan = {
-    Prayer,
-    Madhab,
-    HighLatitudeRule,
-    Coordinates,
-    CalculationParameters,
-    CalculationMethod,
-    PrayerTimes,
-    SunnahTimes,
-    Qibla,
-    PolarCircleResolution,
-    Rounding,
-    Shafaq
+  Prayer,
+  Madhab,
+  HighLatitudeRule,
+  Coordinates,
+  CalculationParameters,
+  CalculationMethod,
+  PrayerTimes,
+  SunnahTimes,
+  Qibla,
+  PolarCircleResolution,
+  Rounding,
+  Shafaq,
 };
 
 export default adhan;

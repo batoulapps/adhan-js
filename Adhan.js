@@ -110,26 +110,6 @@ class Coordinates {
   }
 
 }
-// CONCATENATED MODULE: ./src/MathUtils.js
-function degreesToRadians(degrees) {
-  return degrees * Math.PI / 180.0;
-}
-function radiansToDegrees(radians) {
-  return radians * 180.0 / Math.PI;
-}
-function normalizeToScale(number, max) {
-  return number - max * Math.floor(number / max);
-}
-function unwindAngle(angle) {
-  return normalizeToScale(angle, 360.0);
-}
-function quadrantShiftAngle(angle) {
-  if (angle >= -180 && angle <= 180) {
-    return angle;
-  }
-
-  return angle - 360 * Math.round(angle / 360);
-}
 // CONCATENATED MODULE: ./src/Rounding.js
 const Rounding = {
   Nearest: 'nearest',
@@ -180,6 +160,26 @@ function DateUtils_dayOfYear(date) {
 }
 function isValidDate(date) {
   return date instanceof Date && !isNaN(date.valueOf());
+}
+// CONCATENATED MODULE: ./src/MathUtils.js
+function degreesToRadians(degrees) {
+  return degrees * Math.PI / 180.0;
+}
+function radiansToDegrees(radians) {
+  return radians * 180.0 / Math.PI;
+}
+function normalizeToScale(number, max) {
+  return number - max * Math.floor(number / max);
+}
+function unwindAngle(angle) {
+  return normalizeToScale(angle, 360.0);
+}
+function quadrantShiftAngle(angle) {
+  if (angle >= -180 && angle <= 180) {
+    return angle;
+  }
+
+  return angle - 360 * Math.round(angle / 360);
 }
 // CONCATENATED MODULE: ./src/Shafaq.js
 // Shafaq is the twilight in the sky. Different madhabs define the appearance of
@@ -259,7 +259,7 @@ const Astronomical = {
   },
 
   /* The apparent longitude of the Sun, referred to the
-      true equinox of the date. */
+        true equinox of the date. */
   apparentSolarLongitude(julianCentury, meanLongitude) {
     const T = julianCentury;
     const L0 = meanLongitude;
@@ -272,8 +272,8 @@ const Astronomical = {
   },
 
   /* The mean obliquity of the ecliptic, formula
-      adopted by the International Astronomical Union.
-      Represented in degrees. */
+        adopted by the International Astronomical Union.
+        Represented in degrees. */
   meanObliquityOfTheEcliptic(julianCentury) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 147 */
@@ -286,7 +286,7 @@ const Astronomical = {
   },
 
   /* The mean obliquity of the ecliptic, corrected for
-      calculating the apparent position of the sun, in degrees. */
+        calculating the apparent position of the sun, in degrees. */
   apparentObliquityOfTheEcliptic(julianCentury, meanObliquityOfTheEcliptic) {
     const T = julianCentury;
     const Epsilon0 = meanObliquityOfTheEcliptic;
@@ -331,7 +331,7 @@ const Astronomical = {
 
     const term1 = 9.2 / 3600 * Math.cos(degreesToRadians(Omega));
     const term2 = 0.57 / 3600 * Math.cos(2 * degreesToRadians(L0));
-    const term3 = 0.10 / 3600 * Math.cos(2 * degreesToRadians(Lp));
+    const term3 = 0.1 / 3600 * Math.cos(2 * degreesToRadians(Lp));
     const term4 = 0.09 / 3600 * Math.cos(2 * degreesToRadians(Omega));
     return term1 + term2 + term3 - term4;
   },
@@ -404,9 +404,9 @@ const Astronomical = {
   },
 
   /* Interpolation of a value given equidistant
-      previous and next values and a factor
-      equal to the fraction of the interpolated
-      point's time over the time between values. */
+        previous and next values and a factor
+        equal to the fraction of the interpolated
+        point's time over the time between values. */
   interpolate(y2, y1, y3, n) {
     /* Equation from Astronomical Algorithms page 24 */
     const a = y2 - y1;
@@ -416,7 +416,7 @@ const Astronomical = {
   },
 
   /* Interpolation of three angles, accounting for
-      angle unwinding. */
+        angle unwinding. */
   interpolateAngles(y2, y1, y3, n) {
     /* Equation from Astronomical Algorithms page 24 */
     const a = unwindAngle(y2 - y1);
@@ -469,7 +469,7 @@ const Astronomical = {
     const a = 75 + 28.65 / 55.0 * Math.abs(latitude);
     const b = 75 + 19.44 / 55.0 * Math.abs(latitude);
     const c = 75 + 32.74 / 55.0 * Math.abs(latitude);
-    const d = 75 + 48.10 / 55.0 * Math.abs(latitude);
+    const d = 75 + 48.1 / 55.0 * Math.abs(latitude);
 
     const adjustment = function () {
       const dyy = Astronomical.daysSinceSolstice(dayOfYear, year, latitude);
@@ -496,20 +496,20 @@ const Astronomical = {
     let a, b, c, d;
 
     if (shafaq === Shafaq.Ahmer) {
-      a = 62 + 17.40 / 55.0 * Math.abs(latitude);
-      b = 62 - 7.160 / 55.0 * Math.abs(latitude);
-      c = 62 + 5.120 / 55.0 * Math.abs(latitude);
+      a = 62 + 17.4 / 55.0 * Math.abs(latitude);
+      b = 62 - 7.16 / 55.0 * Math.abs(latitude);
+      c = 62 + 5.12 / 55.0 * Math.abs(latitude);
       d = 62 + 19.44 / 55.0 * Math.abs(latitude);
     } else if (shafaq === Shafaq.Abyad) {
-      a = 75 + 25.60 / 55.0 * Math.abs(latitude);
-      b = 75 + 7.160 / 55.0 * Math.abs(latitude);
+      a = 75 + 25.6 / 55.0 * Math.abs(latitude);
+      b = 75 + 7.16 / 55.0 * Math.abs(latitude);
       c = 75 + 36.84 / 55.0 * Math.abs(latitude);
       d = 75 + 81.84 / 55.0 * Math.abs(latitude);
     } else {
-      a = 75 + 25.60 / 55.0 * Math.abs(latitude);
-      b = 75 + 2.050 / 55.0 * Math.abs(latitude);
-      c = 75 - 9.210 / 55.0 * Math.abs(latitude);
-      d = 75 + 6.140 / 55.0 * Math.abs(latitude);
+      a = 75 + 25.6 / 55.0 * Math.abs(latitude);
+      b = 75 + 2.05 / 55.0 * Math.abs(latitude);
+      c = 75 - 9.21 / 55.0 * Math.abs(latitude);
+      d = 75 + 6.14 / 55.0 * Math.abs(latitude);
     }
 
     const adjustment = function () {
@@ -574,20 +574,20 @@ class SolarCoordinates_SolarCoordinates {
     const Epsilon0 = src_Astronomical.meanObliquityOfTheEcliptic(T);
     const EpsilonApparent = degreesToRadians(src_Astronomical.apparentObliquityOfTheEcliptic(T, Epsilon0));
     /* declination: The declination of the sun, the angle between
-        the rays of the Sun and the plane of the Earth's
-        equator, in degrees.
-        Equation from Astronomical Algorithms page 165 */
+            the rays of the Sun and the plane of the Earth's
+            equator, in degrees.
+            Equation from Astronomical Algorithms page 165 */
 
     this.declination = radiansToDegrees(Math.asin(Math.sin(EpsilonApparent) * Math.sin(Lambda)));
     /* rightAscension: Right ascension of the Sun, the angular distance on the
-        celestial equator from the vernal equinox to the hour circle,
-        in degrees.
-        Equation from Astronomical Algorithms page 165 */
+            celestial equator from the vernal equinox to the hour circle,
+            in degrees.
+            Equation from Astronomical Algorithms page 165 */
 
     this.rightAscension = unwindAngle(radiansToDegrees(Math.atan2(Math.cos(EpsilonApparent) * Math.sin(Lambda), Math.cos(Lambda))));
     /* apparentSiderealTime: Apparent sidereal time, the hour angle of the vernal
-        equinox, in degrees.
-        Equation from Astronomical Algorithms page 88 */
+            equinox, in degrees.
+            Equation from Astronomical Algorithms page 88 */
 
     this.apparentSiderealTime = Theta0 + dPsi * 3600 * Math.cos(degreesToRadians(Epsilon0 + dEpsilon)) / 3600;
   }
@@ -664,7 +664,7 @@ function Madhab_shadowLength(madhab) {
       return 2;
 
     default:
-      throw "Invalid Madhab";
+      throw 'Invalid Madhab';
   }
 }
 // CONCATENATED MODULE: ./src/PolarCircleResolution.js
@@ -804,13 +804,13 @@ class PrayerTimes_PrayerTimes {
     const night = (tomorrowSunrise - sunsetTime) / 1000;
     fajrTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false)).utcDate(date.getFullYear(), date.getMonth(), date.getDate()); // special case for moonsighting committee above latitude 55
 
-    if (calculationParameters.method === "MoonsightingCommittee" && coordinates.latitude >= 55) {
+    if (calculationParameters.method === 'MoonsightingCommittee' && coordinates.latitude >= 55) {
       nightFraction = night / 7;
       fajrTime = dateByAddingSeconds(sunriseTime, -nightFraction);
     }
 
     const safeFajr = function () {
-      if (calculationParameters.method === "MoonsightingCommittee") {
+      if (calculationParameters.method === 'MoonsightingCommittee') {
         return src_Astronomical.seasonAdjustedMorningTwilight(coordinates.latitude, DateUtils_dayOfYear(date), date.getFullYear(), sunriseTime);
       } else {
         const portion = calculationParameters.nightPortions().fajr;
@@ -828,13 +828,13 @@ class PrayerTimes_PrayerTimes {
     } else {
       ishaTime = new TimeComponents(solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true)).utcDate(date.getFullYear(), date.getMonth(), date.getDate()); // special case for moonsighting committee above latitude 55
 
-      if (calculationParameters.method === "MoonsightingCommittee" && coordinates.latitude >= 55) {
+      if (calculationParameters.method === 'MoonsightingCommittee' && coordinates.latitude >= 55) {
         nightFraction = night / 7;
         ishaTime = dateByAddingSeconds(sunsetTime, nightFraction);
       }
 
       const safeIsha = function () {
-        if (calculationParameters.method === "MoonsightingCommittee") {
+        if (calculationParameters.method === 'MoonsightingCommittee') {
           return src_Astronomical.seasonAdjustedEveningTwilight(coordinates.latitude, DateUtils_dayOfYear(date), date.getFullYear(), sunsetTime, calculationParameters.shafaq);
         } else {
           const portion = calculationParameters.nightPortions().isha;
@@ -961,7 +961,7 @@ class CalculationParameters_CalculationParameters {
   constructor(methodName, fajrAngle, ishaAngle, ishaInterval, maghribAngle) {
     // Name of the method, can be used to apply special behavior in calculations.
     // This property should not be manually modified.
-    this.method = methodName || "Other"; // Angle of the sun below the horizon used for calculating Fajr.
+    this.method = methodName || 'Other'; // Angle of the sun below the horizon used for calculating Fajr.
 
     this.fajrAngle = fajrAngle || 0; // Angle of the sun below the horizon used for calculating Isha.
 
@@ -1038,7 +1038,7 @@ class CalculationParameters_CalculationParameters {
 const CalculationMethod = {
   // Muslim World League
   MuslimWorldLeague() {
-    const params = new CalculationParameters_CalculationParameters("MuslimWorldLeague", 18, 17);
+    const params = new CalculationParameters_CalculationParameters('MuslimWorldLeague', 18, 17);
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -1047,7 +1047,7 @@ const CalculationMethod = {
 
   // Egyptian General Authority of Survey
   Egyptian() {
-    const params = new CalculationParameters_CalculationParameters("Egyptian", 19.5, 17.5);
+    const params = new CalculationParameters_CalculationParameters('Egyptian', 19.5, 17.5);
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -1056,7 +1056,7 @@ const CalculationMethod = {
 
   // University of Islamic Sciences, Karachi
   Karachi() {
-    const params = new CalculationParameters_CalculationParameters("Karachi", 18, 18);
+    const params = new CalculationParameters_CalculationParameters('Karachi', 18, 18);
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -1065,12 +1065,12 @@ const CalculationMethod = {
 
   // Umm al-Qura University, Makkah
   UmmAlQura() {
-    return new CalculationParameters_CalculationParameters("UmmAlQura", 18.5, 0, 90);
+    return new CalculationParameters_CalculationParameters('UmmAlQura', 18.5, 0, 90);
   },
 
   // Dubai
   Dubai() {
-    const params = new CalculationParameters_CalculationParameters("Dubai", 18.2, 18.2);
+    const params = new CalculationParameters_CalculationParameters('Dubai', 18.2, 18.2);
     params.methodAdjustments = {
       sunrise: -3,
       dhuhr: 3,
@@ -1082,7 +1082,7 @@ const CalculationMethod = {
 
   // Moonsighting Committee
   MoonsightingCommittee() {
-    const params = new CalculationParameters_CalculationParameters("MoonsightingCommittee", 18, 18);
+    const params = new CalculationParameters_CalculationParameters('MoonsightingCommittee', 18, 18);
     params.methodAdjustments = {
       dhuhr: 5,
       maghrib: 3
@@ -1092,7 +1092,7 @@ const CalculationMethod = {
 
   // ISNA
   NorthAmerica() {
-    const params = new CalculationParameters_CalculationParameters("NorthAmerica", 15, 15);
+    const params = new CalculationParameters_CalculationParameters('NorthAmerica', 15, 15);
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -1101,17 +1101,17 @@ const CalculationMethod = {
 
   // Kuwait
   Kuwait() {
-    return new CalculationParameters_CalculationParameters("Kuwait", 18, 17.5);
+    return new CalculationParameters_CalculationParameters('Kuwait', 18, 17.5);
   },
 
   // Qatar
   Qatar() {
-    return new CalculationParameters_CalculationParameters("Qatar", 18, 0, 90);
+    return new CalculationParameters_CalculationParameters('Qatar', 18, 0, 90);
   },
 
   // Singapore
   Singapore() {
-    const params = new CalculationParameters_CalculationParameters("Singapore", 20, 18);
+    const params = new CalculationParameters_CalculationParameters('Singapore', 20, 18);
     params.methodAdjustments = {
       dhuhr: 1
     };
@@ -1121,13 +1121,13 @@ const CalculationMethod = {
 
   // Institute of Geophysics, University of Tehran
   Tehran() {
-    const params = new CalculationParameters_CalculationParameters("Tehran", 17.7, 14, 0, 4.5);
+    const params = new CalculationParameters_CalculationParameters('Tehran', 17.7, 14, 0, 4.5);
     return params;
   },
 
   // Dianet
   Turkey() {
-    const params = new CalculationParameters_CalculationParameters("Turkey", 18, 17);
+    const params = new CalculationParameters_CalculationParameters('Turkey', 18, 17);
     params.methodAdjustments = {
       sunrise: -7,
       dhuhr: 5,
@@ -1139,7 +1139,7 @@ const CalculationMethod = {
 
   // Other
   Other() {
-    return new CalculationParameters_CalculationParameters("Other", 0, 0);
+    return new CalculationParameters_CalculationParameters('Other', 0, 0);
   }
 
 };
