@@ -1,7 +1,8 @@
 import Astronomical from './Astronomical';
 import { Rounding } from './Rounding';
+import { ValueOf } from './type-utils';
 
-export function dateByAddingDays(date, days) {
+export function dateByAddingDays(date: Date, days: number) {
   const year = date.getFullYear();
   const month = date.getMonth();
   const day = date.getDate() + days;
@@ -11,15 +12,18 @@ export function dateByAddingDays(date, days) {
   return new Date(year, month, day, hours, minutes, seconds);
 }
 
-export function dateByAddingMinutes(date, minutes) {
+export function dateByAddingMinutes(date: Date, minutes: number) {
   return dateByAddingSeconds(date, minutes * 60);
 }
 
-export function dateByAddingSeconds(date, seconds) {
+export function dateByAddingSeconds(date: Date, seconds: number) {
   return new Date(date.getTime() + seconds * 1000);
 }
 
-export function roundedMinute(date, rounding = Rounding.Nearest) {
+export function roundedMinute(
+  date: Date,
+  rounding: ValueOf<typeof Rounding> = Rounding.Nearest,
+) {
   const seconds = date.getUTCSeconds();
   let offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
   if (rounding === Rounding.Up) {
@@ -31,7 +35,7 @@ export function roundedMinute(date, rounding = Rounding.Nearest) {
   return dateByAddingSeconds(date, offset);
 }
 
-export function dayOfYear(date) {
+export function dayOfYear(date: Date) {
   let returnedDayOfYear = 0;
   const feb = Astronomical.isLeapYear(date.getFullYear()) ? 29 : 28;
   const months = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -44,6 +48,6 @@ export function dayOfYear(date) {
   return returnedDayOfYear;
 }
 
-export function isValidDate(date) {
+export function isValidDate(date: Date) {
   return date instanceof Date && !isNaN(date.valueOf());
 }

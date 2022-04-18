@@ -6,6 +6,6 @@ const Prayer = {
   Maghrib: 'maghrib',
   Isha: 'isha',
   None: 'none',
-};
+} as const;
 
 export default Prayer;

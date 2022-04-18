@@ -11,7 +11,7 @@ module.exports = {
       ...shared,
       presets: [
         [
-          '@babel/env',
+          '@babel/preset-env',
           {
             targets: '> 0.25%, not dead',
           },
@@ -23,7 +23,7 @@ module.exports = {
       ...shared,
       presets: [
         [
-          '@babel/env',
+          '@babel/preset-env',
           {
             modules: 'commonjs',
           },
@@ -32,7 +32,7 @@ module.exports = {
       ],
     },
     test: {
-      presets: ['@babel/env', ...sharedPresets],
+      presets: ['@babel/preset-env', ...sharedPresets],
     },
   },
 };

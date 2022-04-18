@@ -1,4 +1,8 @@
 module.exports = {
+  root: true,
+
+  parser: '@typescript-eslint/parser',
+
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
@@ -6,6 +10,7 @@ module.exports = {
 
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:jest/recommended',
     'plugin:jest/style',
     'plugin:prettier/recommended',
@@ -27,5 +32,5 @@ module.exports = {
     'object-shorthand': 'error',
   },
 
-  plugins: ['jest'],
+  plugins: ['@typescript-eslint', 'jest'],
 };

@@ -1,9 +1,6 @@
 import adhan from '../src/Adhan';
 import moment from 'moment-timezone';
-
-function dateByAddingSeconds(date, seconds) {
-  return new Date(date.getTime() + seconds * 1000);
-}
+import { dateByAddingSeconds } from '../src/DateUtils';
 
 test('calculating prayer times', () => {
   const date = new Date(2015, 6, 12);

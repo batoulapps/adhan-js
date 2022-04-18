@@ -6,7 +6,7 @@ import SolarCoordinates from '../src/SolarCoordinates';
 import { unwindAngle } from '../src/MathUtils';
 import { dayOfYear } from '../src/DateUtils';
 
-function timeString(hours) {
+function timeString(hours: number) {
   const comps = new TimeComponents(hours);
   if (isNaN(comps.hours) || isNaN(comps.minutes) || isNaN(comps.seconds)) {
     return '';

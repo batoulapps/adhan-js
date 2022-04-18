@@ -1,15 +1,15 @@
-import Coordinates from './Coordinates';
-import PrayerTimes from './PrayerTimes';
-import Prayer from './Prayer';
-import { Madhab } from './Madhab';
-import HighLatitudeRule from './HighLatitudeRule';
 import CalculationMethod from './CalculationMethod';
 import CalculationParameters from './CalculationParameters';
-import Qibla from './Qibla';
-import SunnahTimes from './SunnahTimes';
+import Coordinates from './Coordinates';
+import HighLatitudeRule from './HighLatitudeRule';
+import { Madhab } from './Madhab';
 import { PolarCircleResolution } from './PolarCircleResolution';
+import Prayer from './Prayer';
+import PrayerTimes from './PrayerTimes';
+import Qibla from './Qibla';
 import { Rounding } from './Rounding';
 import { Shafaq } from './Shafaq';
+import SunnahTimes from './SunnahTimes';
 
 const adhan = {
   Prayer,
