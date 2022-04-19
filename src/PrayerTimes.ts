@@ -186,23 +186,23 @@ export default class PrayerTimes {
     }
 
     const fajrAdjustment =
-      calculationParameters.adjustments.fajr +
-      calculationParameters.methodAdjustments.fajr;
+      (calculationParameters.adjustments.fajr || 0) +
+      (calculationParameters.methodAdjustments.fajr || 0);
     const sunriseAdjustment =
-      calculationParameters.adjustments.sunrise +
-      calculationParameters.methodAdjustments.sunrise;
+      (calculationParameters.adjustments.sunrise || 0) +
+      (calculationParameters.methodAdjustments.sunrise || 0);
     const dhuhrAdjustment =
-      calculationParameters.adjustments.dhuhr +
-      calculationParameters.methodAdjustments.dhuhr;
+      (calculationParameters.adjustments.dhuhr || 0) +
+      (calculationParameters.methodAdjustments.dhuhr || 0);
     const asrAdjustment =
-      calculationParameters.adjustments.asr +
-      calculationParameters.methodAdjustments.asr;
+      (calculationParameters.adjustments.asr || 0) +
+      (calculationParameters.methodAdjustments.asr || 0);
     const maghribAdjustment =
-      calculationParameters.adjustments.maghrib +
-      calculationParameters.methodAdjustments.maghrib;
+      (calculationParameters.adjustments.maghrib || 0) +
+      (calculationParameters.methodAdjustments.maghrib || 0);
     const ishaAdjustment =
-      calculationParameters.adjustments.isha +
-      calculationParameters.methodAdjustments.isha;
+      (calculationParameters.adjustments.isha || 0) +
+      (calculationParameters.methodAdjustments.isha || 0);
 
     this.fajr = roundedMinute(
       dateByAddingMinutes(fajrTime, fajrAdjustment),
