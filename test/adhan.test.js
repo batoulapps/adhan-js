@@ -332,7 +332,7 @@ test('getting the time for a given prayer', () => {
   expect(p.timeForPrayer(adhan.Prayer.Asr)).toBe(p.asr);
   expect(p.timeForPrayer(adhan.Prayer.Maghrib)).toBe(p.maghrib);
   expect(p.timeForPrayer(adhan.Prayer.Isha)).toBe(p.isha);
-  expect(p.timeForPrayer(adhan.Prayer.None)).toBe(null);
+  expect(p.timeForPrayer(adhan.Prayer.None)).toBeNull();
 });
 
 test('getting the current prayer', () => {
@@ -931,7 +931,7 @@ describe('Polar circle resolution cases', () => {
       );
 
       prayersToCheck.forEach((prayerName) => {
-        expect(isValidDate(prayersTimes[prayerName])).toEqual(false);
+        expect(isValidDate(prayersTimes[prayerName])).toBe(false);
       });
     });
 
@@ -943,7 +943,7 @@ describe('Polar circle resolution cases', () => {
       );
 
       prayersToCheck.forEach((prayerName) => {
-        expect(isValidDate(prayersTimes[prayerName])).toEqual(true);
+        expect(isValidDate(prayersTimes[prayerName])).toBe(true);
       });
     });
 
@@ -955,7 +955,7 @@ describe('Polar circle resolution cases', () => {
       );
 
       prayersToCheck.forEach((prayerName) => {
-        expect(isValidDate(prayersTimes[prayerName])).toEqual(true);
+        expect(isValidDate(prayersTimes[prayerName])).toBe(true);
       });
     });
   });
@@ -969,7 +969,7 @@ describe('Polar circle resolution cases', () => {
       );
 
       prayersToCheck.forEach((prayerName) => {
-        expect(isValidDate(prayersTimes[prayerName])).toEqual(false);
+        expect(isValidDate(prayersTimes[prayerName])).toBe(false);
       });
     });
 
@@ -981,7 +981,7 @@ describe('Polar circle resolution cases', () => {
       );
 
       prayersToCheck.forEach((prayerName) => {
-        expect(isValidDate(prayersTimes[prayerName])).toEqual(true);
+        expect(isValidDate(prayersTimes[prayerName])).toBe(true);
       });
     });
 
@@ -993,7 +993,7 @@ describe('Polar circle resolution cases', () => {
       );
 
       prayersToCheck.forEach((prayerName) => {
-        expect(isValidDate(prayersTimes[prayerName])).toEqual(true);
+        expect(isValidDate(prayersTimes[prayerName])).toBe(true);
       });
     });
 

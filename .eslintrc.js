@@ -4,7 +4,12 @@ module.exports = {
     sourceType: 'module',
   },
 
-  extends: ['eslint:recommended', 'plugin:jest/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:jest/recommended',
+    'plugin:jest/style',
+    'plugin:prettier/recommended',
+  ],
 
   env: {
     node: true,
@@ -21,4 +26,6 @@ module.exports = {
     'prefer-const': 'error',
     'object-shorthand': 'error',
   },
+
+  plugins: ['jest'],
 };
