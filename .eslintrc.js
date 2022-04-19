@@ -1,8 +1,6 @@
 module.exports = {
-  root: true,
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
-
+  plugins: ['@typescript-eslint', 'jest'],
   extends: [
     'eslint:recommended',
     'plugin:jest/recommended',
@@ -10,6 +8,10 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
+
+  parserOptions: {
+    project: ['./tsconfig.json'],
+  },
 
   env: {
     node: true,
@@ -19,6 +21,7 @@ module.exports = {
 
   rules: {
     '@typescript-eslint/ban-ts-comment': 'warn',
+    '@typescript-eslint/no-unnecessary-condition': 'warn',
     complexity: ['warn', 10],
     'max-lines': ['warn', 300],
     'max-params': ['warn', 5],
@@ -27,6 +30,4 @@ module.exports = {
     'prefer-const': 'error',
     'object-shorthand': 'error',
   },
-
-  plugins: ['jest'],
 };

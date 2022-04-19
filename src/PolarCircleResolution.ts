@@ -13,7 +13,7 @@ const LATITUDE_VARIATION_STEP = 0.5; // Degrees to add/remove at each resolution
 const UNSAFE_LATITUDE = 65; // Based on https://en.wikipedia.org/wiki/Midnight_sun
 
 const isValidSolarTime = (solarTime: SolarTime) =>
-  solarTime && !isNaN(solarTime.sunrise) && !isNaN(solarTime.sunset);
+  !isNaN(solarTime.sunrise) && !isNaN(solarTime.sunset);
 
 const aqrabYaumResolver = (
   coordinates: Coordinates,

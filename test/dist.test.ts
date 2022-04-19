@@ -1,7 +1,7 @@
 import adhan from '../src/Adhan';
 import moment from 'moment-timezone';
 
-function dateByAddingSeconds(date, seconds) {
+function dateByAddingSeconds(date: Date, seconds: number) {
   return new Date(date.getTime() + seconds * 1000);
 }
 
@@ -227,5 +227,5 @@ test('getting the current next prayer', () => {
   );
   const current = p.currentPrayer();
   const next = p.nextPrayer();
-  expect(current != null || next != null).toBeTruthy();
+  expect(current !== 'none' || next !== 'none').toBeTruthy();
 });

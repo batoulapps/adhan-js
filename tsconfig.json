@@ -5,9 +5,10 @@
     "declaration": true,
     "declarationDir": "./dist/",
     "moduleResolution": "node",
+    "noEmit": true,
     "esModuleInterop": true,
     "strict": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules", "lib"]
 }

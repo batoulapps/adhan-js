@@ -436,7 +436,7 @@ test('getting the current next prayer', () => {
   );
   const current = p.currentPrayer();
   const next = p.nextPrayer();
-  expect(current != null || next != null).toBeTruthy();
+  expect(current !== 'none' || next !== 'none').toBeTruthy();
 });
 
 test('getting the madhab shadow length', () => {
@@ -877,13 +877,13 @@ describe('Polar circle resolution cases', () => {
   describe('Regular computation', () => {
     it('should not attempt to do any resolution if the resolver is set to unresolved', () => {
       const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new adhan.PrayerTimes(
         ArjeplogSweden,
         dateAffectedByMidnightSun,
         unresolvedParams,
       );
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes2 = new adhan.PrayerTimes(
         ArjeplogSweden,
         dateAffectedByMidnightSun,
@@ -895,13 +895,13 @@ describe('Polar circle resolution cases', () => {
 
     it('should not attempt to do any resolution if the date is affected neither by the polar night nor by the midnight sun', () => {
       const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new adhan.PrayerTimes(
         ArjeplogSweden,
         regularDate,
         aqrabBaladParams,
       );
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes2 = new adhan.PrayerTimes(
         ArjeplogSweden,
         regularDate,
@@ -913,13 +913,13 @@ describe('Polar circle resolution cases', () => {
 
     it('should not make any search if the location is outside the polar circles', () => {
       const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new adhan.PrayerTimes(
         regularCoordinates,
         dateAffectedByPolarNight,
         aqrabBaladParams,
       );
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes2 = new adhan.PrayerTimes(
         regularCoordinates,
         dateAffectedByPolarNight,

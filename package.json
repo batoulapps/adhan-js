@@ -16,7 +16,7 @@
     "build:bundles": "cross-env BABEL_ENV=esmBundled rollup -c",
     "lint": "run-p -l lint:*",
     "lint:eslint": "eslint --max-warnings=0 .",
-    "lint:tsc": "echo soon... tsc --noEmit",
+    "lint:tsc": "tsc --noEmit",
     "lint-fix": "npm-run-all -l -p lint-fix:* -s lint:tsc",
     "lint-fix:eslint": "eslint --max-warnings=0 --fix .",
     "commit": "cz",
@@ -53,8 +53,12 @@
     "@rollup/plugin-node-resolve": "^13.2.1",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
+    "@types/estree": "^0.0.51",
     "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
     "babel-loader": "^8.2.4",
+    "codecov": "^3.6.5",
     "commitizen": "^4.2.4",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
@@ -73,11 +77,8 @@
     "rollup": "^2.70.2",
     "rollup-plugin-terser": "^7.0.2",
     "semantic-release": "^19.0.2",
-    "typescript": "^4.6.3",
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
-    "@typescript-eslint/parser": "^5.17.0",
-    "codecov": "^3.6.5",
-    "ts-jest": "^27.1.3"
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.6.3"
   },
   "config": {
     "commitizen": {

@@ -292,11 +292,7 @@ const Astronomical = {
   julianDay(year: number, month: number, day: number, hours = 0) {
     /* Equation from Astronomical Algorithms page 60 */
 
-    const trunc =
-      Math.trunc ||
-      function (x) {
-        return x < 0 ? Math.ceil(x) : Math.floor(x);
-      };
+    const trunc = Math.trunc;
 
     const Y = trunc(month > 2 ? year : year - 1);
     const M = trunc(month > 2 ? month : month + 12);

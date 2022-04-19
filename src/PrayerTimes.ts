@@ -131,7 +131,7 @@ export default class PrayerTimes {
       }
     })();
 
-    if (fajrTime === null || isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
+    if (isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
       fajrTime = safeFajr;
     }
 
@@ -170,11 +170,7 @@ export default class PrayerTimes {
         }
       })();
 
-      if (
-        ishaTime == null ||
-        isNaN(ishaTime.getTime()) ||
-        safeIsha < ishaTime
-      ) {
+      if (isNaN(ishaTime.getTime()) || safeIsha < ishaTime) {
         ishaTime = safeIsha;
       }
     }
