@@ -1,11 +1,9 @@
 module.exports = {
-  root: true,
-
   parser: '@typescript-eslint/parser',
 
   parserOptions: {
     ecmaVersion: 2018,
-    project: ['./tsconfig.eslint.json'],
+    project: ['./tsconfig.json'],
     sourceType: 'module',
   },
 
@@ -15,6 +13,18 @@ module.exports = {
     'plugin:jest/recommended',
     'plugin:jest/style',
     'plugin:prettier/recommended',
+  ],
+
+  overrides: [
+    {
+      files: ['*.js'],
+      parser: null,
+      parserOptions: { project: null },
+      rules: {
+        '@typescript-eslint/ban-ts-comment': 'off',
+        '@typescript-eslint/no-unnecessary-condition': 'off',
+      },
+    },
   ],
 
   env: {
