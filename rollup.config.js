@@ -2,10 +2,10 @@ import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 
-const extensions = ['.js'];
+const extensions = ['.ts'];
 
 export default {
-  input: 'src/Adhan.js',
+  input: 'src/Adhan.ts',
   output: [
     {
       file: 'lib/bundles/bundle.esm.js',
@@ -38,7 +38,7 @@ export default {
       babelHelpers: 'bundled',
       exclude: './node_modules/**',
       extensions,
-      include: ['src/**/*.js'],
+      include: ['src/**/*.ts'],
     }),
   ],
 };

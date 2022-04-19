@@ -2,4 +2,5 @@
 /lib
 /Shared
 /Adhan.d.ts
-/*.js
+
+/.eslintrc.js

@@ -1,17 +1,21 @@
 module.exports = {
+  root: true,
+
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'jest'],
+
+  parserOptions: {
+    ecmaVersion: 2018,
+    project: ['./tsconfig.eslint.json'],
+    sourceType: 'module',
+  },
+
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:jest/recommended',
     'plugin:jest/style',
     'plugin:prettier/recommended',
-    'plugin:@typescript-eslint/recommended',
   ],
-
-  parserOptions: {
-    project: ['./tsconfig.json'],
-  },
 
   env: {
     node: true,
@@ -30,4 +34,6 @@ module.exports = {
     'prefer-const': 'error',
     'object-shorthand': 'error',
   },
+
+  plugins: ['@typescript-eslint', 'jest'],
 };

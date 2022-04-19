@@ -1,14 +1,10 @@
 {
+  "extends": "@tsconfig/node12/tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "esnext",
     "declaration": true,
-    "declarationDir": "./dist/",
-    "moduleResolution": "node",
-    "noEmit": true,
-    "esModuleInterop": true,
+    "declarationDir": "lib/types/",
     "strict": true
   },
-  "include": ["src/**/*", "test/**/*"],
-  "exclude": ["node_modules", "lib"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
