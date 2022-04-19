@@ -59,8 +59,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           # latest nodejs LTS
-          node-version: 14.x
-      - run: npm install -g npm@7 # update to npm 7
+          node-version: 16.x
       - run: npm ci
       - run: npm run lint
       - run: npm test
@@ -88,7 +87,6 @@ jobs:
         with:
           # latest nodejs LTS
           node-version: 16.x
-      - run: npm install -g npm@7 # update to npm 7
       - run: npm ci
       - name: Preparing a release for npm and github 🚀
         # more about this action here: https://github.com/cycjimmy/semantic-release-action
