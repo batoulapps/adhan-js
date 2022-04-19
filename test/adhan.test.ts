@@ -5,7 +5,7 @@ import { dateByAddingSeconds, isValidDate } from '../src/DateUtils';
 import { shadowLength } from '../src/Madhab';
 import * as polarCircleResolver from '../src/PolarCircleResolution';
 import { Shafaq } from '../src/Shafaq';
-import { ValueOf } from '../src/type-utils';
+import { ValueOf } from '../src/TypeUtils';
 import HighLatitudeRule from '../src/HighLatitudeRule';
 
 test('Verifying the night portion defined by the high latitude rule', () => {

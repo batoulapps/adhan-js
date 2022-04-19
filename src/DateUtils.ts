@@ -1,6 +1,6 @@
 import Astronomical from './Astronomical';
 import { Rounding } from './Rounding';
-import { ValueOf } from './type-utils';
+import { ValueOf } from './TypeUtils';
 
 export function dateByAddingDays(date: Date, days: number) {
   const year = date.getFullYear();

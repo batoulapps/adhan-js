@@ -1,7 +1,7 @@
 import Coordinates from './Coordinates';
 import SolarTime from './SolarTime';
 import { dateByAddingDays } from './DateUtils';
-import { ValueOf } from './type-utils';
+import { ValueOf } from './TypeUtils';
 
 export const PolarCircleResolution = {
   AqrabBalad: 'AqrabBalad',
@@ -61,10 +61,7 @@ const aqrabBaladResolver = (
 ): {
   date: Date;
   tomorrow: Date;
-  coordinates: {
-    latitude: number;
-    longitude: number;
-  };
+  coordinates: Coordinates;
   solarTime: SolarTime;
   tomorrowSolarTime: SolarTime;
 } | null => {
@@ -87,7 +84,7 @@ const aqrabBaladResolver = (
   return {
     date,
     tomorrow,
-    coordinates: { latitude, longitude: coordinates.longitude },
+    coordinates: new Coordinates(latitude, coordinates.longitude),
     solarTime,
     tomorrowSolarTime,
   };

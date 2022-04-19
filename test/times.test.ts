@@ -5,9 +5,6 @@ import moment from 'moment-timezone';
 import CalculationParameters from '../src/CalculationParameters';
 
 function parseParams(data: {
-  latitude: number;
-  longitude: number;
-  timezone: string;
   method: string;
   madhab: string;
   highLatitudeRule: string;

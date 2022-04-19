@@ -4,7 +4,7 @@ import HighLatitudeRule from './HighLatitudeRule';
 import { PolarCircleResolution } from './PolarCircleResolution';
 import { Rounding } from './Rounding';
 import { Shafaq } from './Shafaq';
-import { ValueOf } from './type-utils';
+import { ValueOf } from './TypeUtils';
 
 export default class CalculationParameters {
   // Madhab to determine how Asr is calculated.

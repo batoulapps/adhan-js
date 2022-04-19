@@ -9,7 +9,7 @@ import {
   unwindAngle,
 } from './MathUtils';
 import { Shafaq } from './Shafaq';
-import { ValueOf } from './type-utils';
+import { ValueOf } from './TypeUtils';
 
 const Astronomical = {
   /* The geometric mean longitude of the sun in degrees. */

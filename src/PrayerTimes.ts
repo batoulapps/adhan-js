@@ -17,7 +17,7 @@ import {
   PolarCircleResolution,
   polarCircleResolvedValues,
 } from './PolarCircleResolution';
-import { ValueOf } from './type-utils';
+import { ValueOf } from './TypeUtils';
 
 export default class PrayerTimes {
   fajr: Date;
