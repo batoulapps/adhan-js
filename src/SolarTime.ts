@@ -1,9 +1,19 @@
 import Astronomical from './Astronomical';
+import type Coordinates from './Coordinates';
 import { degreesToRadians, radiansToDegrees } from './MathUtils';
 import SolarCoordinates from './SolarCoordinates';
 
 export default class SolarTime {
-  constructor(date, coordinates) {
+  observer: Coordinates;
+  solar: SolarCoordinates;
+  prevSolar: SolarCoordinates;
+  nextSolar: SolarCoordinates;
+  approxTransit: number;
+  transit: number;
+  sunrise: number;
+  sunset: number;
+
+  constructor(date: Date, coordinates: Coordinates) {
     const julianDay = Astronomical.julianDay(
       date.getFullYear(),
       date.getMonth() + 1,
@@ -64,7 +74,7 @@ export default class SolarTime {
     );
   }
 
-  hourAngle(angle, afterTransit) {
+  hourAngle(angle: number, afterTransit: boolean) {
     return Astronomical.correctedHourAngle(
       this.approxTransit,
       angle,
@@ -80,7 +90,7 @@ export default class SolarTime {
     );
   }
 
-  afternoon(shadowLength) {
+  afternoon(shadowLength: number) {
     // TODO source shadow angle calculation
     const tangent = Math.abs(this.observer.latitude - this.solar.declination);
     const inverse = shadowLength + Math.tan(degreesToRadians(tangent));

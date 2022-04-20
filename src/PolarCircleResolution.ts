@@ -1,19 +1,32 @@
+import Coordinates from './Coordinates';
 import SolarTime from './SolarTime';
 import { dateByAddingDays } from './DateUtils';
+import { ValueOf } from './TypeUtils';
 
 export const PolarCircleResolution = {
   AqrabBalad: 'AqrabBalad',
   AqrabYaum: 'AqrabYaum',
   Unresolved: 'Unresolved',
-};
+} as const;
 
 const LATITUDE_VARIATION_STEP = 0.5; // Degrees to add/remove at each resolution step
 const UNSAFE_LATITUDE = 65; // Based on https://en.wikipedia.org/wiki/Midnight_sun
 
-const isValidSolarTime = (solarTime) =>
-  solarTime && !isNaN(solarTime.sunrise) && !isNaN(solarTime.sunset);
+const isValidSolarTime = (solarTime: SolarTime) =>
+  !isNaN(solarTime.sunrise) && !isNaN(solarTime.sunset);
 
-const aqrabYaumResolver = (coordinates, date, daysAdded = 1, direction = 1) => {
+const aqrabYaumResolver = (
+  coordinates: Coordinates,
+  date: Date,
+  daysAdded = 1,
+  direction = 1,
+): {
+  date: Date;
+  tomorrow: Date;
+  coordinates: Coordinates;
+  solarTime: SolarTime;
+  tomorrowSolarTime: SolarTime;
+} | null => {
   if (daysAdded > Math.ceil(365 / 2)) {
     return null;
   }
@@ -41,7 +54,17 @@ const aqrabYaumResolver = (coordinates, date, daysAdded = 1, direction = 1) => {
   };
 };
 
-const aqrabBaladResolver = (coordinates, date, latitude) => {
+const aqrabBaladResolver = (
+  coordinates: Coordinates,
+  date: Date,
+  latitude: number,
+): {
+  date: Date;
+  tomorrow: Date;
+  coordinates: Coordinates;
+  solarTime: SolarTime;
+  tomorrowSolarTime: SolarTime;
+} | null => {
   const solarTime = new SolarTime(date, { ...coordinates, latitude });
   const tomorrow = dateByAddingDays(date, 1);
   const tomorrowSolarTime = new SolarTime(tomorrow, {
@@ -61,13 +84,17 @@ const aqrabBaladResolver = (coordinates, date, latitude) => {
   return {
     date,
     tomorrow,
-    coordinates: { latitude, longitude: coordinates.longitude },
+    coordinates: new Coordinates(latitude, coordinates.longitude),
     solarTime,
     tomorrowSolarTime,
   };
 };
 
-export const polarCircleResolvedValues = (resolver, date, coordinates) => {
+export const polarCircleResolvedValues = (
+  resolver: ValueOf<typeof PolarCircleResolution>,
+  date: Date,
+  coordinates: Coordinates,
+) => {
   const defaultReturn = {
     date,
     tomorrow: dateByAddingDays(date, 1),

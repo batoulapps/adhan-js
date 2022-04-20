@@ -5,21 +5,21 @@ const CalculationMethod = {
   // Muslim World League
   MuslimWorldLeague() {
     const params = new CalculationParameters('MuslimWorldLeague', 18, 17);
-    params.methodAdjustments = { dhuhr: 1 };
+    params.methodAdjustments.dhuhr = 1;
     return params;
   },
 
   // Egyptian General Authority of Survey
   Egyptian() {
     const params = new CalculationParameters('Egyptian', 19.5, 17.5);
-    params.methodAdjustments = { dhuhr: 1 };
+    params.methodAdjustments.dhuhr = 1;
     return params;
   },
 
   // University of Islamic Sciences, Karachi
   Karachi() {
     const params = new CalculationParameters('Karachi', 18, 18);
-    params.methodAdjustments = { dhuhr: 1 };
+    params.methodAdjustments.dhuhr = 1;
     return params;
   },
 
@@ -31,21 +31,32 @@ const CalculationMethod = {
   // Dubai
   Dubai() {
     const params = new CalculationParameters('Dubai', 18.2, 18.2);
-    params.methodAdjustments = { sunrise: -3, dhuhr: 3, asr: 3, maghrib: 3 };
+    params.methodAdjustments = {
+      ...params.methodAdjustments,
+      sunrise: -3,
+      dhuhr: 3,
+      asr: 3,
+      maghrib: 3,
+    };
     return params;
   },
 
   // Moonsighting Committee
   MoonsightingCommittee() {
     const params = new CalculationParameters('MoonsightingCommittee', 18, 18);
-    params.methodAdjustments = { dhuhr: 5, maghrib: 3 };
+    params.methodAdjustments = {
+      ...params.methodAdjustments,
+      dhuhr: 5,
+      maghrib: 3,
+    };
+
     return params;
   },
 
   // ISNA
   NorthAmerica() {
     const params = new CalculationParameters('NorthAmerica', 15, 15);
-    params.methodAdjustments = { dhuhr: 1 };
+    params.methodAdjustments.dhuhr = 1;
     return params;
   },
 
@@ -62,7 +73,7 @@ const CalculationMethod = {
   // Singapore
   Singapore() {
     const params = new CalculationParameters('Singapore', 20, 18);
-    params.methodAdjustments = { dhuhr: 1 };
+    params.methodAdjustments.dhuhr = 1;
     params.rounding = Rounding.Up;
     return params;
   },
@@ -76,7 +87,13 @@ const CalculationMethod = {
   // Dianet
   Turkey() {
     const params = new CalculationParameters('Turkey', 18, 17);
-    params.methodAdjustments = { sunrise: -7, dhuhr: 5, asr: 4, maghrib: 7 };
+    params.methodAdjustments = {
+      ...params.methodAdjustments,
+      sunrise: -7,
+      dhuhr: 5,
+      asr: 4,
+      maghrib: 7,
+    };
     return params;
   },
 
@@ -84,6 +101,6 @@ const CalculationMethod = {
   Other() {
     return new CalculationParameters('Other', 0, 0);
   },
-};
+} as const;
 
 export default CalculationMethod;

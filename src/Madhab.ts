@@ -1,9 +1,11 @@
+import { ValueOf } from './TypeUtils';
+
 export const Madhab = {
   Shafi: 'shafi',
   Hanafi: 'hanafi',
-};
+} as const;
 
-export function shadowLength(madhab) {
+export function shadowLength(madhab: ValueOf<typeof Madhab>) {
   switch (madhab) {
     case Madhab.Shafi:
       return 1;

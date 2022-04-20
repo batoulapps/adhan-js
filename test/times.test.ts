@@ -2,9 +2,14 @@
 import fs from 'fs';
 import adhan from '../src/Adhan';
 import moment from 'moment-timezone';
+import CalculationParameters from '../src/CalculationParameters';
 
-function parseParams(data) {
-  let params;
+function parseParams(data: {
+  method: string;
+  madhab: string;
+  highLatitudeRule: string;
+}) {
+  let params: CalculationParameters;
 
   const method = data['method'];
   if (method === 'MuslimWorldLeague') {
@@ -54,9 +59,18 @@ function parseParams(data) {
   return params;
 }
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace jest {
+    interface Matchers<R> {
+      toBeWithinRange(comparisonDate: Date, variance: number): R;
+    }
+  }
+}
+
 expect.extend({
-  toBeWithinRange(intialDate, comparisonDate, variance) {
-    const initalValue = intialDate.getTime();
+  toBeWithinRange(initialDate: Date, comparisonDate: Date, variance: number) {
+    const initalValue = initialDate.getTime();
     const varianceValue = variance * 60 * 1000;
     const floor = comparisonDate.getTime() - varianceValue;
     const ceiling = comparisonDate.getTime() + varianceValue;
@@ -64,23 +78,47 @@ expect.extend({
     if (pass) {
       return {
         message: () =>
-          `expected ${intialDate} not to be within range ${comparisonDate} and a variance of ${variance} minute`,
+          `expected ${initialDate} not to be within range ${comparisonDate} and a variance of ${variance} minute`,
         pass: true,
       };
     } else {
       return {
         message: () =>
-          `expected ${intialDate} to be within range ${comparisonDate} and a variance of ${variance} minute`,
+          `expected ${initialDate} to be within range ${comparisonDate} and a variance of ${variance} minute`,
         pass: false,
       };
     }
   },
 });
 
+type TestFileTime = {
+  date: string;
+  fajr: string;
+  sunrise: string;
+  dhuhr: string;
+  asr: string;
+  maghrib: string;
+  isha: string;
+};
+
+interface TestFile {
+  params: {
+    latitude: number;
+    longitude: number;
+    timezone: string;
+    method: string;
+    madhab: string;
+    highLatitudeRule: string;
+  };
+  source: string[];
+  variance: number;
+  times: TestFileTime[];
+}
+
 fs.readdirSync('Shared/Times').forEach(function (filename) {
   test(`compare calculated times against the prayer times in ${filename}`, () => {
     const file_contents = fs.readFileSync('Shared/Times/' + filename);
-    const data = JSON.parse(file_contents);
+    const data: TestFile = JSON.parse(file_contents.toString());
     const coordinates = new adhan.Coordinates(
       data['params']['latitude'],
       data['params']['longitude'],

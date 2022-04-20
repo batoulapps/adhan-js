@@ -2,35 +2,45 @@ import SolarTime from './SolarTime';
 import TimeComponents from './TimeComponents';
 import Prayer from './Prayer';
 import Astronomical from './Astronomical';
+import CalculationParameters from './CalculationParameters';
+import Coordinates from './Coordinates';
 import {
   dateByAddingDays,
   dateByAddingMinutes,
   dateByAddingSeconds,
-  roundedMinute,
   dayOfYear,
   isValidDate,
+  roundedMinute,
 } from './DateUtils';
 import { shadowLength } from './Madhab';
 import {
   PolarCircleResolution,
   polarCircleResolvedValues,
 } from './PolarCircleResolution';
+import { ValueOf } from './TypeUtils';
 
 export default class PrayerTimes {
-  // eslint-disable-next-line complexity
-  constructor(coordinates, date, calculationParameters) {
-    this.coordinates = coordinates;
-    this.date = date;
-    this.calculationParameters = calculationParameters;
+  fajr: Date;
+  sunrise: Date;
+  dhuhr: Date;
+  asr: Date;
+  maghrib: Date;
+  isha: Date;
 
+  // eslint-disable-next-line complexity
+  constructor(
+    public coordinates: Coordinates,
+    public date: Date,
+    public calculationParameters: CalculationParameters,
+  ) {
     let solarTime = new SolarTime(date, coordinates);
 
-    let fajrTime;
-    let sunriseTime;
-    let dhuhrTime;
-    let asrTime;
-    let maghribTime;
-    let ishaTime;
+    let fajrTime: Date;
+    let sunriseTime: Date;
+    let dhuhrTime: Date;
+    let asrTime: Date;
+    let maghribTime: Date;
+    let ishaTime: Date;
 
     let nightFraction;
 
@@ -70,7 +80,7 @@ export default class PrayerTimes {
         date.getFullYear(),
         date.getMonth(),
         date.getDate(),
-      ];
+      ] as const;
 
       dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
         ...dateComponents,
@@ -91,7 +101,7 @@ export default class PrayerTimes {
     const tomorrowSunrise = new TimeComponents(
       tomorrowSolarTime.sunrise,
     ).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
-    const night = (tomorrowSunrise - sunsetTime) / 1000;
+    const night = (Number(tomorrowSunrise) - Number(sunsetTime)) / 1000;
 
     fajrTime = new TimeComponents(
       solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false),
@@ -121,7 +131,7 @@ export default class PrayerTimes {
       }
     })();
 
-    if (fajrTime === null || isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
+    if (isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
       fajrTime = safeFajr;
     }
 
@@ -160,11 +170,7 @@ export default class PrayerTimes {
         }
       })();
 
-      if (
-        ishaTime == null ||
-        isNaN(ishaTime.getTime()) ||
-        safeIsha < ishaTime
-      ) {
+      if (isNaN(ishaTime.getTime()) || safeIsha < ishaTime) {
         ishaTime = safeIsha;
       }
     }
@@ -224,7 +230,7 @@ export default class PrayerTimes {
     );
   }
 
-  timeForPrayer(prayer) {
+  timeForPrayer(prayer: ValueOf<typeof Prayer>) {
     if (prayer === Prayer.Fajr) {
       return this.fajr;
     } else if (prayer === Prayer.Sunrise) {
@@ -242,10 +248,7 @@ export default class PrayerTimes {
     }
   }
 
-  currentPrayer(date) {
-    if (typeof date === 'undefined') {
-      date = new Date();
-    }
+  currentPrayer(date = new Date()) {
     if (date >= this.isha) {
       return Prayer.Isha;
     } else if (date >= this.maghrib) {
@@ -263,10 +266,7 @@ export default class PrayerTimes {
     }
   }
 
-  nextPrayer(date) {
-    if (typeof date === 'undefined') {
-      date = new Date();
-    }
+  nextPrayer(date = new Date()) {
     if (date >= this.isha) {
       return Prayer.None;
     } else if (date >= this.maghrib) {

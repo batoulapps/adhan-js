@@ -1,4 +1,5 @@
 /* eslint-disable max-params, max-lines */
+import Coordinates from './Coordinates';
 import { dateByAddingSeconds } from './DateUtils';
 import {
   degreesToRadians,
@@ -8,10 +9,11 @@ import {
   unwindAngle,
 } from './MathUtils';
 import { Shafaq } from './Shafaq';
+import { ValueOf } from './TypeUtils';
 
 const Astronomical = {
   /* The geometric mean longitude of the sun in degrees. */
-  meanSolarLongitude(julianCentury) {
+  meanSolarLongitude(julianCentury: number) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 163 */
     const term1 = 280.4664567;
@@ -22,7 +24,7 @@ const Astronomical = {
   },
 
   /* The geometric mean longitude of the moon in degrees. */
-  meanLunarLongitude(julianCentury) {
+  meanLunarLongitude(julianCentury: number) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 144 */
     const term1 = 218.3165;
@@ -31,7 +33,7 @@ const Astronomical = {
     return unwindAngle(Lp);
   },
 
-  ascendingLunarNodeLongitude(julianCentury) {
+  ascendingLunarNodeLongitude(julianCentury: number) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 144 */
     const term1 = 125.04452;
@@ -43,7 +45,7 @@ const Astronomical = {
   },
 
   /* The mean anomaly of the sun. */
-  meanSolarAnomaly(julianCentury) {
+  meanSolarAnomaly(julianCentury: number) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 163 */
     const term1 = 357.52911;
@@ -54,7 +56,7 @@ const Astronomical = {
   },
 
   /* The Sun's equation of the center in degrees. */
-  solarEquationOfTheCenter(julianCentury, meanAnomaly) {
+  solarEquationOfTheCenter(julianCentury: number, meanAnomaly: number) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 164 */
     const Mrad = degreesToRadians(meanAnomaly);
@@ -67,7 +69,7 @@ const Astronomical = {
 
   /* The apparent longitude of the Sun, referred to the
         true equinox of the date. */
-  apparentSolarLongitude(julianCentury, meanLongitude) {
+  apparentSolarLongitude(julianCentury: number, meanLongitude: number) {
     const T = julianCentury;
     const L0 = meanLongitude;
     /* Equation from Astronomical Algorithms page 164 */
@@ -86,7 +88,7 @@ const Astronomical = {
   /* The mean obliquity of the ecliptic, formula
         adopted by the International Astronomical Union.
         Represented in degrees. */
-  meanObliquityOfTheEcliptic(julianCentury) {
+  meanObliquityOfTheEcliptic(julianCentury: number) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 147 */
     const term1 = 23.439291;
@@ -98,7 +100,10 @@ const Astronomical = {
 
   /* The mean obliquity of the ecliptic, corrected for
         calculating the apparent position of the sun, in degrees. */
-  apparentObliquityOfTheEcliptic(julianCentury, meanObliquityOfTheEcliptic) {
+  apparentObliquityOfTheEcliptic(
+    julianCentury: number,
+    meanObliquityOfTheEcliptic: number,
+  ) {
     const T = julianCentury;
     const Epsilon0 = meanObliquityOfTheEcliptic;
     /* Equation from Astronomical Algorithms page 165 */
@@ -107,7 +112,7 @@ const Astronomical = {
   },
 
   /* Mean sidereal time, the hour angle of the vernal equinox, in degrees. */
-  meanSiderealTime(julianCentury) {
+  meanSiderealTime(julianCentury: number) {
     const T = julianCentury;
     /* Equation from Astronomical Algorithms page 165 */
     const JD = T * 36525 + 2451545.0;
@@ -120,10 +125,10 @@ const Astronomical = {
   },
 
   nutationInLongitude(
-    julianCentury,
-    solarLongitude,
-    lunarLongitude,
-    ascendingNode,
+    julianCentury: number,
+    solarLongitude: number,
+    lunarLongitude: number,
+    ascendingNode: number,
   ) {
     const L0 = solarLongitude;
     const Lp = lunarLongitude;
@@ -137,10 +142,10 @@ const Astronomical = {
   },
 
   nutationInObliquity(
-    julianCentury,
-    solarLongitude,
-    lunarLongitude,
-    ascendingNode,
+    julianCentury: number,
+    solarLongitude: number,
+    lunarLongitude: number,
+    ascendingNode: number,
   ) {
     const L0 = solarLongitude;
     const Lp = lunarLongitude;
@@ -153,7 +158,11 @@ const Astronomical = {
     return term1 + term2 + term3 - term4;
   },
 
-  altitudeOfCelestialBody(observerLatitude, declination, localHourAngle) {
+  altitudeOfCelestialBody(
+    observerLatitude: number,
+    declination: number,
+    localHourAngle: number,
+  ) {
     const Phi = observerLatitude;
     const delta = declination;
     const H = localHourAngle;
@@ -167,7 +176,11 @@ const Astronomical = {
     return radiansToDegrees(Math.asin(term1 + term2));
   },
 
-  approximateTransit(longitude, siderealTime, rightAscension) {
+  approximateTransit(
+    longitude: number,
+    siderealTime: number,
+    rightAscension: number,
+  ) {
     const L = longitude;
     const Theta0 = siderealTime;
     const a2 = rightAscension;
@@ -178,12 +191,12 @@ const Astronomical = {
 
   /* The time at which the sun is at its highest point in the sky (in universal time) */
   correctedTransit(
-    approximateTransit,
-    longitude,
-    siderealTime,
-    rightAscension,
-    previousRightAscension,
-    nextRightAscension,
+    approximateTransit: number,
+    longitude: number,
+    siderealTime: number,
+    rightAscension: number,
+    previousRightAscension: number,
+    nextRightAscension: number,
   ) {
     const m0 = approximateTransit;
     const L = longitude;
@@ -201,17 +214,17 @@ const Astronomical = {
   },
 
   correctedHourAngle(
-    approximateTransit,
-    angle,
-    coordinates,
-    afterTransit,
-    siderealTime,
-    rightAscension,
-    previousRightAscension,
-    nextRightAscension,
-    declination,
-    previousDeclination,
-    nextDeclination,
+    approximateTransit: number,
+    angle: number,
+    coordinates: Coordinates,
+    afterTransit: boolean,
+    siderealTime: number,
+    rightAscension: number,
+    previousRightAscension: number,
+    nextRightAscension: number,
+    declination: number,
+    previousDeclination: number,
+    nextDeclination: number,
   ) {
     const m0 = approximateTransit;
     const h0 = angle;
@@ -257,7 +270,7 @@ const Astronomical = {
         previous and next values and a factor
         equal to the fraction of the interpolated
         point's time over the time between values. */
-  interpolate(y2, y1, y3, n) {
+  interpolate(y2: number, y1: number, y3: number, n: number) {
     /* Equation from Astronomical Algorithms page 24 */
     const a = y2 - y1;
     const b = y3 - y2;
@@ -267,7 +280,7 @@ const Astronomical = {
 
   /* Interpolation of three angles, accounting for
         angle unwinding. */
-  interpolateAngles(y2, y1, y3, n) {
+  interpolateAngles(y2: number, y1: number, y3: number, n: number) {
     /* Equation from Astronomical Algorithms page 24 */
     const a = unwindAngle(y2 - y1);
     const b = unwindAngle(y3 - y2);
@@ -276,17 +289,10 @@ const Astronomical = {
   },
 
   /* The Julian Day for the given Gregorian date components. */
-  julianDay(year, month, day, hours) {
+  julianDay(year: number, month: number, day: number, hours = 0) {
     /* Equation from Astronomical Algorithms page 60 */
-    if (typeof hours === 'undefined') {
-      hours = 0;
-    }
 
-    const trunc =
-      Math.trunc ||
-      function (x) {
-        return x < 0 ? Math.ceil(x) : Math.floor(x);
-      };
+    const trunc = Math.trunc;
 
     const Y = trunc(month > 2 ? year : year - 1);
     const M = trunc(month > 2 ? month : month + 12);
@@ -302,13 +308,13 @@ const Astronomical = {
   },
 
   /* Julian century from the epoch. */
-  julianCentury(julianDay) {
+  julianCentury(julianDay: number) {
     /* Equation from Astronomical Algorithms page 163 */
     return (julianDay - 2451545.0) / 36525;
   },
 
   /* Whether or not a year is a leap year (has 366 days). */
-  isLeapYear(year) {
+  isLeapYear(year: number) {
     if (year % 4 !== 0) {
       return false;
     }
@@ -320,7 +326,12 @@ const Astronomical = {
     return true;
   },
 
-  seasonAdjustedMorningTwilight(latitude, dayOfYear, year, sunrise) {
+  seasonAdjustedMorningTwilight(
+    latitude: number,
+    dayOfYear: number,
+    year: number,
+    sunrise: Date,
+  ) {
     const a = 75 + (28.65 / 55.0) * Math.abs(latitude);
     const b = 75 + (19.44 / 55.0) * Math.abs(latitude);
     const c = 75 + (32.74 / 55.0) * Math.abs(latitude);
@@ -346,7 +357,13 @@ const Astronomical = {
     return dateByAddingSeconds(sunrise, Math.round(adjustment * -60.0));
   },
 
-  seasonAdjustedEveningTwilight(latitude, dayOfYear, year, sunset, shafaq) {
+  seasonAdjustedEveningTwilight(
+    latitude: number,
+    dayOfYear: number,
+    year: number,
+    sunset: Date,
+    shafaq: ValueOf<typeof Shafaq>,
+  ) {
     let a, b, c, d;
     if (shafaq === Shafaq.Ahmer) {
       a = 62 + (17.4 / 55.0) * Math.abs(latitude);
@@ -385,7 +402,7 @@ const Astronomical = {
     return dateByAddingSeconds(sunset, Math.round(adjustment * 60.0));
   },
 
-  daysSinceSolstice(dayOfYear, year, latitude) {
+  daysSinceSolstice(dayOfYear: number, year: number, latitude: number) {
     let daysSinceSolstice = 0;
     const northernOffset = 10;
     const southernOffset = Astronomical.isLeapYear(year) ? 173 : 172;
