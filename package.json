@@ -1,7 +1,9 @@
 {
   "name": "adhan",
-  "version": "4.3.2",
   "description": "High precision Islamic prayer time library",
+  "version": "4.3.2",
+  "author": "Ameir Al-Zoubi <ameir@ameir.com>",
+  "license": "MIT",
   "main": "lib/cjs/Adhan.js",
   "module": "lib/esm/Adhan.js",
   "types": "lib/types/Adhan.d.ts",
@@ -40,8 +42,6 @@
     "salaat",
     "namaz"
   ],
-  "author": "Ameir Al-Zoubi <ameir@ameir.com>",
-  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.9",
@@ -52,7 +52,10 @@
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-node-resolve": "^13.2.1",
     "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.4",
+    "@semantic-release/release-notes-generator": "^10.0.3",
     "@tsconfig/node12": "^1.0.9",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
