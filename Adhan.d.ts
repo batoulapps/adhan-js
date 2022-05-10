@@ -103,6 +103,10 @@ export namespace CalculationMethod {
   export function Tehran(): CalculationParameters;
   export function Turkey(): CalculationParameters;
   export function Other(): CalculationParameters;
+  export function Jafari(): CalculationParameters;
+  export function Gulf(): CalculationParameters;
+  export function France(): CalculationParameters;
+  export function Russia(): CalculationParameters;
 }
 
 export class Coordinates {
