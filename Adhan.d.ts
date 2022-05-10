@@ -7,6 +7,7 @@ export class PrayerTimes {
   sunrise: Date;
   dhuhr: Date;
   asr: Date;
+  sunset: Date;
   maghrib: Date;
   isha: Date;
 
@@ -85,6 +86,7 @@ export interface PrayerAdjustments {
   sunrise: number;
   dhuhr: number;
   asr: number;
+  sunset: number;
   maghrib: number;
   isha: number;
 }
@@ -134,6 +136,7 @@ export enum Prayer {
   Sunrise,
   Dhuhr,
   Asr,
+  Sunset,
   Maghrib,
   Isha,
   None
