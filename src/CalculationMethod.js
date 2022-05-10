@@ -80,6 +80,30 @@ const CalculationMethod = {
         return params;
     },
 
+    // Ithna-Ashari, Leva Research Institute, Qum
+    Jafari() {
+        const params = new CalculationParameters("Jafari", 16.0, 14.0, 0, 4.0);
+        return params;
+    },
+
+    // Gulf Region
+    Gulf() {
+        const params = new CalculationParameters("Gulf", undefined, 90);
+        return params;
+    },
+
+    // Union Organization Islamic de France
+    France() {
+        const params = new CalculationParameters("France", 12.0, 12.0);
+        return params;
+    },
+    
+    // Spiritual Administration of Muslims of Russia
+    Russia() {
+        const params = new CalculationParameters("Russia", 16.0, 15.0);
+        return params;
+    },
+
     // Other
     Other() {
         return new CalculationParameters("Other", 0, 0);
