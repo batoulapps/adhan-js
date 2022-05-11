@@ -1,3 +1,10 @@
+## [4.4.1](https://github.com/batoulapps/adhan-js/compare/v4.4.0...v4.4.1) (2022-05-11)
+
+### Bug Fixes
+
+- **ci:** fix for release ci action ([7b18595](https://github.com/batoulapps/adhan-js/commit/7b18595a8e0bc89892bc54d25fec6de7d96fef82))
+- **ci:** fix incorrect setting for actions/checkout ([a9620ff](https://github.com/batoulapps/adhan-js/commit/a9620ff129cf9fb11185e6a277c04ca75cd41fe1))
+
 # [4.4.0](https://github.com/batoulapps/adhan-js/compare/v4.3.2...v4.4.0) (2022-05-11)
 
 ### Features
