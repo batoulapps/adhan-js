@@ -1,8 +1,12 @@
 /* eslint-disable complexity */
 import fs from 'fs';
-import adhan from '../src/Adhan';
 import moment from 'moment-timezone';
+import CalculationMethod from '../src/CalculationMethod';
 import CalculationParameters from '../src/CalculationParameters';
+import Coordinates from '../src/Coordinates';
+import HighLatitudeRule from '../src/HighLatitudeRule';
+import { Madhab } from '../src/Madhab';
+import PrayerTimes from '../src/PrayerTimes';
 
 function parseParams(data: {
   method: string;
@@ -13,47 +17,47 @@ function parseParams(data: {
 
   const method = data['method'];
   if (method === 'MuslimWorldLeague') {
-    params = adhan.CalculationMethod.MuslimWorldLeague();
+    params = CalculationMethod.MuslimWorldLeague();
   } else if (method === 'Egyptian') {
-    params = adhan.CalculationMethod.Egyptian();
+    params = CalculationMethod.Egyptian();
   } else if (method === 'Karachi') {
-    params = adhan.CalculationMethod.Karachi();
+    params = CalculationMethod.Karachi();
   } else if (method === 'UmmAlQura') {
-    params = adhan.CalculationMethod.UmmAlQura();
+    params = CalculationMethod.UmmAlQura();
   } else if (method === 'Dubai') {
-    params = adhan.CalculationMethod.Dubai();
+    params = CalculationMethod.Dubai();
   } else if (method === 'MoonsightingCommittee') {
-    params = adhan.CalculationMethod.MoonsightingCommittee();
+    params = CalculationMethod.MoonsightingCommittee();
   } else if (method === 'NorthAmerica') {
-    params = adhan.CalculationMethod.NorthAmerica();
+    params = CalculationMethod.NorthAmerica();
   } else if (method === 'Kuwait') {
-    params = adhan.CalculationMethod.Kuwait();
+    params = CalculationMethod.Kuwait();
   } else if (method === 'Qatar') {
-    params = adhan.CalculationMethod.Qatar();
+    params = CalculationMethod.Qatar();
   } else if (method === 'Singapore') {
-    params = adhan.CalculationMethod.Singapore();
+    params = CalculationMethod.Singapore();
   } else if (method === 'Turkey') {
-    params = adhan.CalculationMethod.Turkey();
+    params = CalculationMethod.Turkey();
   } else if (method === 'Tehran') {
-    params = adhan.CalculationMethod.Tehran();
+    params = CalculationMethod.Tehran();
   } else {
-    params = adhan.CalculationMethod.Other();
+    params = CalculationMethod.Other();
   }
 
   const madhab = data['madhab'];
   if (madhab === 'Shafi') {
-    params.madhab = adhan.Madhab.Shafi;
+    params.madhab = Madhab.Shafi;
   } else if (madhab === 'Hanafi') {
-    params.madhab = adhan.Madhab.Hanafi;
+    params.madhab = Madhab.Hanafi;
   }
 
   const highLatRule = data['highLatitudeRule'];
   if (highLatRule === 'SeventhOfTheNight') {
-    params.highLatitudeRule = adhan.HighLatitudeRule.SeventhOfTheNight;
+    params.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight;
   } else if (highLatRule === 'TwilightAngle') {
-    params.highLatitudeRule = adhan.HighLatitudeRule.TwilightAngle;
+    params.highLatitudeRule = HighLatitudeRule.TwilightAngle;
   } else {
-    params.highLatitudeRule = adhan.HighLatitudeRule.MiddleOfTheNight;
+    params.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight;
   }
 
   return params;
@@ -119,7 +123,7 @@ fs.readdirSync('Shared/Times').forEach(function (filename) {
   test(`compare calculated times against the prayer times in ${filename}`, () => {
     const file_contents = fs.readFileSync('Shared/Times/' + filename);
     const data: TestFile = JSON.parse(file_contents.toString());
-    const coordinates = new adhan.Coordinates(
+    const coordinates = new Coordinates(
       data['params']['latitude'],
       data['params']['longitude'],
     );
@@ -127,7 +131,7 @@ fs.readdirSync('Shared/Times').forEach(function (filename) {
     const variance = data['variance'] || 0;
     data['times'].forEach(function (time) {
       const date = moment(time['date'], 'YYYY-MM-DD').toDate();
-      const p = new adhan.PrayerTimes(coordinates, date, params);
+      const p = new PrayerTimes(coordinates, date, params);
 
       const testFajr = moment
         .tz(

@@ -11,7 +11,7 @@ import { Rounding } from './Rounding';
 import { Shafaq } from './Shafaq';
 import SunnahTimes from './SunnahTimes';
 
-const adhan = {
+export {
   Prayer,
   Madhab,
   HighLatitudeRule,
@@ -25,5 +25,3 @@ const adhan = {
   Rounding,
   Shafaq,
 };
-
-export default adhan;

@@ -1,4 +1,4 @@
-import adhan from '../src/Adhan';
+import * as adhan from '../src/Adhan';
 import moment from 'moment-timezone';
 
 function dateByAddingSeconds(date: Date, seconds: number) {
