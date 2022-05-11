@@ -24,6 +24,7 @@ export default class PrayerTimes {
   sunrise: Date;
   dhuhr: Date;
   asr: Date;
+  sunset: Date;
   maghrib: Date;
   isha: Date;
 
@@ -39,6 +40,7 @@ export default class PrayerTimes {
     let sunriseTime: Date;
     let dhuhrTime: Date;
     let asrTime: Date;
+    let sunsetTime: Date;
     let maghribTime: Date;
     let ishaTime: Date;
 
@@ -54,7 +56,7 @@ export default class PrayerTimes {
       date.getMonth(),
       date.getDate(),
     );
-    let sunsetTime = new TimeComponents(solarTime.sunset).utcDate(
+    sunsetTime = new TimeComponents(solarTime.sunset).utcDate(
       date.getFullYear(),
       date.getMonth(),
       date.getDate(),
@@ -220,6 +222,7 @@ export default class PrayerTimes {
       dateByAddingMinutes(asrTime, asrAdjustment),
       calculationParameters.rounding,
     );
+    this.sunset = roundedMinute(sunsetTime, calculationParameters.rounding);
     this.maghrib = roundedMinute(
       dateByAddingMinutes(maghribTime, maghribAdjustment),
       calculationParameters.rounding,
