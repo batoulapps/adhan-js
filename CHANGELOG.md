@@ -1,3 +1,9 @@
+## [4.4.2](https://github.com/batoulapps/adhan-js/compare/v4.4.1...v4.4.2) (2022-05-11)
+
+### Bug Fixes
+
+- fixed backwards compatibility with commonjs ([8b4da1b](https://github.com/batoulapps/adhan-js/commit/8b4da1bfba0bcd447d0f4e21d7fba5cf6852156b))
+
 ## [4.4.1](https://github.com/batoulapps/adhan-js/compare/v4.4.0...v4.4.1) (2022-05-11)
 
 ### Bug Fixes
