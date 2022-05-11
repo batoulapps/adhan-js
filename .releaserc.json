@@ -1,11 +1,15 @@
 {
-  "branches": [ "master", "next", "next-major", "build", 
+  "branches": [
+    "master",
+    "next",
+    "next-major",
+    "build",
     {
-      "name": "beta", 
+      "name": "beta",
       "prerelease": true
-    }, 
+    },
     {
-      "name": "alpha", 
+      "name": "alpha",
       "prerelease": true
     }
   ],
@@ -13,8 +17,18 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    "@semantic-release/github",
-    "@semantic-release/npm",
-    "@semantic-release/git"
+    [
+      "@semantic-release/npm",
+      {
+        "tarballDir": "dist"
+      }
+    ],
+    "@semantic-release/git",
+    [
+      "@semantic-release/github",
+      {
+        "assets": "dist/*.tgz"
+      }
     ]
+  ]
 }

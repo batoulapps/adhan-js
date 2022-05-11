@@ -1,0 +1,54 @@
+name: Test
+'on':
+  push:
+    branches:
+      - master
+      - renovate/**
+  pull_request:
+    types:
+      - opened
+      - synchronize
+jobs:
+  test_matrix:
+    strategy:
+      matrix:
+        node-version: [12, 14, 16, 17]
+        os:
+          - ubuntu-latest
+    runs-on: '${{ matrix.os }}'
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Use Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '${{ matrix.node-version }}'
+          cache: npm
+      - run: npm ci
+      - run: npm run test
+  coverage:
+    runs-on: ubuntu-latest
+    needs: test_matrix
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          directory: ./coverage
+  build:
+    runs-on: ubuntu-latest
+    needs: test_matrix
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+      - run: npm ci
+      - run: npm run build

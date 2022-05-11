@@ -1,57 +1,56 @@
 <html>
-<head>
-    <script src="Adhan.js"></script>
+  <head>
+    <script src="lib/bundles/bundle.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.28/moment-timezone-with-data-10-year-range.min.js"></script>
-</head>
-<body>
+  </head>
+
+  <body>
     <pre><script type="text/javascript">
 
 
-    function prayerName(prayer) {
-        if (prayer == adhan.Prayer.Fajr) {
-            return "Fajr";
-        } else if (prayer == adhan.Prayer.Sunrise) {
-            return "Sunrise";
-        } else if (prayer == adhan.Prayer.Dhuhr) {
-            return "Dhuhr";
-        } else if (prayer == adhan.Prayer.Asr) {
-            return "Asr";
-        } else if (prayer == adhan.Prayer.Maghrib) {
-            return "Maghrib";
-        } else if (prayer == adhan.Prayer.Isha) {
-            return "Isha";
-        } else if (prayer == adhan.Prayer.None) {
-            return "None";
+        function prayerName(prayer) {
+            if (prayer == adhan.Prayer.Fajr) {
+                return "Fajr";
+            } else if (prayer == adhan.Prayer.Sunrise) {
+                return "Sunrise";
+            } else if (prayer == adhan.Prayer.Dhuhr) {
+                return "Dhuhr";
+            } else if (prayer == adhan.Prayer.Asr) {
+                return "Asr";
+            } else if (prayer == adhan.Prayer.Maghrib) {
+                return "Maghrib";
+            } else if (prayer == adhan.Prayer.Isha) {
+                return "Isha";
+            } else if (prayer == adhan.Prayer.None) {
+                return "None";
+            }
         }
-    }
 
-    const coordinates = new adhan.Coordinates(66.7222444, 17.7189);
-    const params = adhan.CalculationMethod.MuslimWorldLeague();
-    params.polarCircleResolution = adhan.PolarCircleResolution.AqrabYaum;
-    params.highLatitudeRule = adhan.HighLatitudeRule.SeventhOfTheNight;
-    const date = new Date(2020, 05, 21);
-    
-    var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+        const coordinates = new adhan.Coordinates(35.7897507, -78.6912485);
+        const params = adhan.CalculationMethod.MoonsightingCommittee();
+        const date = new Date(2022, 3, 20);
 
-    var sunnahTimes = new adhan.SunnahTimes(prayerTimes);
+        var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
 
-    document.write('Raleigh, NC - Muslim World League\n');
-    document.write(`Prayer times for ${moment(date).format('MMMM DD, YYYY')}\n`);
-    document.write(`Fajr: ${moment(prayerTimes.fajr).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A')}\n`);
-    document.write(`Sunrise: ${moment(prayerTimes.sunrise).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A')}\n`);
-    document.write(`Dhuhr: ${moment(prayerTimes.dhuhr).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A')}\n`);
-    document.write(`Asr: ${moment(prayerTimes.asr).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A')}\n`);
-    document.write(`Maghrib: ${moment(prayerTimes.maghrib).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A')}\n`);
-    document.write(`Isha: ${moment(prayerTimes.isha).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A')}\n`);
+        var sunnahTimes = new adhan.SunnahTimes(prayerTimes);
 
-    document.write(`middle of the night: ${moment(sunnahTimes.middleOfTheNight).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A')}\n`);
-    document.write(`last third of the night: ${moment(sunnahTimes.lastThirdOfTheNight).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A')}\n\n`);
+        document.write('Raleigh, NC - Moonsighting Committee\n');
+        document.write(`Prayer times for ${moment(date).format('MMMM DD, YYYY')}\n`);
+        document.write(`Fajr: ${moment(prayerTimes.fajr).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
+        document.write(`Sunrise: ${moment(prayerTimes.sunrise).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
+        document.write(`Dhuhr: ${moment(prayerTimes.dhuhr).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
+        document.write(`Asr: ${moment(prayerTimes.asr).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
+        document.write(`Maghrib: ${moment(prayerTimes.maghrib).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
+        document.write(`Isha: ${moment(prayerTimes.isha).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
 
-    document.write(`Current Prayer: ${prayerName(prayerTimes.currentPrayer())}\n\n`);
+        document.write(`middle of the night: ${moment(sunnahTimes.middleOfTheNight).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
+        document.write(`last third of the night: ${moment(sunnahTimes.lastThirdOfTheNight).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n\n`);
 
-    document.write(`Qibla Direction: ${adhan.Qibla(coordinates)}`);
+        document.write(`Current Prayer: ${prayerName(prayerTimes.currentPrayer())}\n\n`);
+
+        document.write(`Qibla Direction: ${adhan.Qibla(coordinates)}`);
 
     </script></pre>
-</body>
+  </body>
 </html>
