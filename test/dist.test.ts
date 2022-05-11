@@ -1,10 +1,12 @@
 import moment from 'moment-timezone';
-import CalculationMethod from '../src/CalculationMethod';
-import Coordinates from '../src/Coordinates';
-import HighLatitudeRule from '../src/HighLatitudeRule';
-import { Madhab } from '../src/Madhab';
-import Prayer from '../src/Prayer';
-import PrayerTimes from '../src/PrayerTimes';
+import {
+  CalculationMethod,
+  Coordinates,
+  HighLatitudeRule,
+  Madhab,
+  Prayer,
+  PrayerTimes,
+} from '../src/Adhan';
 
 function dateByAddingSeconds(date: Date, seconds: number) {
   return new Date(date.getTime() + seconds * 1000);
