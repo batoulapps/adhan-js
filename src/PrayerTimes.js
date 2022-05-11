@@ -120,7 +120,6 @@ export default class PrayerTimes {
         const sunriseAdjustment = (calculationParameters.adjustments.sunrise || 0) + (calculationParameters.methodAdjustments.sunrise || 0);
         const dhuhrAdjustment = (calculationParameters.adjustments.dhuhr || 0) + (calculationParameters.methodAdjustments.dhuhr || 0);
         const asrAdjustment = (calculationParameters.adjustments.asr || 0) + (calculationParameters.methodAdjustments.asr || 0);
-        const sunsetAdjustment = (calculationParameters.adjustments.sunset || 0) + (calculationParameters.methodAdjustments.sunset || 0);
         const maghribAdjustment = (calculationParameters.adjustments.maghrib || 0) + (calculationParameters.methodAdjustments.maghrib || 0);
         const ishaAdjustment = (calculationParameters.adjustments.isha || 0) + (calculationParameters.methodAdjustments.isha || 0);
 
@@ -128,7 +127,6 @@ export default class PrayerTimes {
         this.sunrise = roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment), calculationParameters.rounding);
         this.dhuhr = roundedMinute(dateByAddingMinutes(dhuhrTime, dhuhrAdjustment), calculationParameters.rounding);
         this.asr = roundedMinute(dateByAddingMinutes(asrTime, asrAdjustment), calculationParameters.rounding);
-        this.sunset = roundedMinute(dateByAddingMinutes(sunsetTime, sunsetAdjustment), calculationParameters.rounding);
         this.maghrib = roundedMinute(dateByAddingMinutes(maghribTime, maghribAdjustment), calculationParameters.rounding);
         this.isha = roundedMinute(dateByAddingMinutes(ishaTime, ishaAdjustment), calculationParameters.rounding);
     }
@@ -145,9 +143,6 @@ export default class PrayerTimes {
         }
         else if (prayer === Prayer.Asr) {
             return this.asr;
-        }
-        else if (prayer === Prayer.Sunset) {
-            return this.sunset;
         }
         else if (prayer === Prayer.Maghrib) {
             return this.maghrib;
@@ -169,9 +164,6 @@ export default class PrayerTimes {
         }
         else if (date >= this.maghrib) {
             return Prayer.Maghrib;
-        }
-        else if (date >= this.sunset && this.sunset !== this.maghrib) {
-            return Prayer.Sunset;
         }
         else if (date >= this.asr) {
             return Prayer.Asr;
@@ -200,11 +192,8 @@ export default class PrayerTimes {
         else if (date >= this.maghrib) {
             return Prayer.Isha;
         }
-        else if (date >= this.sunset) {
+        else if (date >= this.asr) {
             return Prayer.Maghrib;
-        }
-        else if (date >= this.asr && this.sunset !== this.maghrib) {
-            return Prayer.Sunset;
         }
         else if (date >= this.dhuhr) {
             return Prayer.Asr;
