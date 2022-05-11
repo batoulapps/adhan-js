@@ -6,6 +6,7 @@ Shared/
 src/
 test/
 coverage/
+dist/
 *.config.js
 .nvmrc
 .eslint*
