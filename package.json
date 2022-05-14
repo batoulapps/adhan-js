@@ -82,6 +82,11 @@
     "ts-jest": "^27.1.4",
     "typescript": "^4.6.3"
   },
+  "overrides": {
+    "commitizen": {
+      "minimist": "1.2.6"
+    }
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
