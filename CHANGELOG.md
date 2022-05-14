@@ -1,3 +1,9 @@
+## [4.4.3](https://github.com/batoulapps/adhan-js/compare/v4.4.2...v4.4.3) (2022-05-14)
+
+### Bug Fixes
+
+- **types:** fix incorrect types generation ([f5613da](https://github.com/batoulapps/adhan-js/commit/f5613da9ea6608c2b0d0cae1432d62d4d90add01)), closes [#113](https://github.com/batoulapps/adhan-js/issues/113)
+
 ## [4.4.2](https://github.com/batoulapps/adhan-js/compare/v4.4.1...v4.4.2) (2022-05-11)
 
 ### Bug Fixes
