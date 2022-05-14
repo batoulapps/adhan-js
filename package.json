@@ -16,7 +16,7 @@
     "build:esm": "cross-env BABEL_ENV=esmUnbundled babel src --extensions '.ts' --out-dir 'lib/esm' --source-maps",
     "build:cjs": "cross-env BABEL_ENV=cjs babel src --extensions '.ts' --out-dir 'lib/cjs' --source-maps",
     "build:bundles": "cross-env BABEL_ENV=esmBundled rollup -c",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build:types": "tsc -b tsconfig.types.json",
     "lint": "run-p -l lint:*",
     "lint:eslint": "eslint --max-warnings=0 .",
     "lint:tsc": "tsc --noEmit",
