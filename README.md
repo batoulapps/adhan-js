@@ -10,26 +10,44 @@ Implementations of Adhan in other languages can be found in the parent repo [Adh
 
 ## Installation
 
-Adhan was designed to work in the browser and in Node.js
+Adhan was designed to work in both the browser and NodeJS applications.
 
 ### Browser
 
-```
-<script src="Adhan.js"></script>
+We provide both ESM and UMD bundles for use in the browser.
+
+Download the latest release and check under `package/lib/bundles`.
+
+```html
+<script src="adhan.umd.min.js"></script>
 <script>
-    var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+  var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
 </script>
 ```
 
 ### Node
 
+Both CommonJS and ES Module libraries are provided.
+
 ```
 npm install adhan
 ```
 
+CommonJS:
+
+```js
+const adhan = require('adhan');
+const prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
 ```
-var adhan = require('adhan')
-var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+
+ES Modules:
+
+```js
+import { Coordinates, CalculationMethod, PrayerTimes } from 'adhan';
+const coordinates = new Coordinates(35.7897507, -78.6912485);
+const params = CalculationMethod.MoonsightingCommittee();
+const date = new Date(2022, 3, 20);
+const prayerTimes = new PrayerTimes(coordinates, date, params);
 ```
 
 ## Migration
@@ -42,7 +60,7 @@ To get prayer times initialize a new `PrayerTimes` object passing in coordinates
 date, and calculation parameters.
 
 ```js
-var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+const prayerTimes = new PrayerTimes(coordinates, date, params);
 ```
 
 ### Initialization parameters
@@ -53,7 +71,7 @@ Create a `Coordinates` object with the latitude and longitude for the location
 you want prayer times for.
 
 ```js
-var coordinates = new adhan.Coordinates(35.78056, -78.6389);
+const coordinates = new Coordinates(35.78056, -78.6389);
 ```
 
 #### Date
@@ -61,12 +79,12 @@ var coordinates = new adhan.Coordinates(35.78056, -78.6389);
 The date parameter passed in should be an instance of the JavaScript `Date`
 object. The year, month, and day values need to be populated. All other
 values will be ignored. The year, month and day values should be for the date
-that you want prayer times for. These date values are expected to be for the 
+that you want prayer times for. These date values are expected to be for the
 Gregorian calendar.
 
 ```js
-var date = new Date();
-var date = new Date(2015, 11, 1);
+const date = new Date();
+const date = new Date(2015, 11, 1);
 ```
 
 #### Calculation parameters
@@ -75,13 +93,12 @@ The rest of the needed information is contained within the `CalculationParameter
 
 [Calculation Parameters & Methods Guide](METHODS.md)
 
-
 ### Prayer Times
 
 Once the `PrayerTimes` object has been initialized it will contain values
 for all five prayer times and the time for sunrise. The prayer times will be
 Date object instances initialized with UTC values. You will then need to format
-the times for the correct timezone. You can do that by using a timezone aware 
+the times for the correct timezone. You can do that by using a timezone aware
 date formatting library like [moment](https://momentjs.com/docs/).
 
 ```js
@@ -90,20 +107,25 @@ moment(prayerTimes.fajr).tz('America/New_York').format('h:mm A');
 
 ### Full Example
 
-```js
-var date = new Date();
-var coordinates = new adhan.Coordinates(35.78056, -78.6389);
-var params = adhan.CalculationMethod.MuslimWorldLeague();
-params.madhab = adhan.Madhab.Hanafi;
-var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+```ts
+import {
+  Coordinates,
+  CalculationMethod,
+  PrayerTimes,
+  SunnahTimes,
+  Prayer,
+  Qibla,
+} from 'adhan';
+import moment from 'moment-timezone';
 
-var fajrTime = moment(prayerTimes.fajr).tz('America/New_York').format('h:mm A');
-var sunriseTime = moment(prayerTimes.sunrise).tz('America/New_York').format('h:mm A');
-var dhuhrTime = moment(prayerTimes.dhuhr).tz('America/New_York').format('h:mm A');
-var asrTime = moment(prayerTimes.asr).tz('America/New_York').format('h:mm A');
-var maghribTime = moment(prayerTimes.maghrib).tz('America/New_York').format('h:mm A');
-var ishaTime = moment(prayerTimes.isha).tz('America/New_York').format('h:mm A');
+const coordinates = new Coordinates(35.7897507, -78.6912485);
+const params = CalculationMethod.MoonsightingCommittee();
+const date = new Date();
+const prayerTimes = new PrayerTimes(coordinates, date, params);
+const sunnahTimes = new SunnahTimes(prayerTimes);
 ```
+
+[![Edit Adhan Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/adhan-example-88v549?fontsize=14&hidenavigation=1&theme=dark)
 
 ### Convenience Utilities
 
@@ -111,7 +133,7 @@ The `PrayerTimes` object has functions for getting the current prayer and the ne
 easier to dynamically show countdowns until the next prayer.
 
 ```js
-var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+var prayerTimes = new PrayerTimes(coordinates, date, params);
 
 var current = prayerTimes.currentPrayer();
 var next = prayerTimes.nextPrayer();
@@ -123,9 +145,13 @@ var nextPrayerTime = prayerTimes.timeForPrayer(next);
 The Adhan library can also calulate Sunnah times. Given an instance of `PrayerTimes`, you can get a `SunnahTimes` object with the times for Qiyam.
 
 ```js
-var sunnahTimes = new adhan.SunnahTimes(prayerTimes);
-var middleOfTheNight = moment(sunnahTimes.middleOfTheNight).tz('America/New_York').format('h:mm A');
-var lastThirdOfTheNight = moment(sunnahTimes.lastThirdOfTheNight).tz('America/New_York').format('h:mm A');
+var sunnahTimes = new SunnahTimes(prayerTimes);
+var middleOfTheNight = moment(sunnahTimes.middleOfTheNight)
+  .tz('America/New_York')
+  .format('h:mm A');
+var lastThirdOfTheNight = moment(sunnahTimes.lastThirdOfTheNight)
+  .tz('America/New_York')
+  .format('h:mm A');
 ```
 
 ### Qibla Direction
@@ -133,15 +159,15 @@ var lastThirdOfTheNight = moment(sunnahTimes.lastThirdOfTheNight).tz('America/Ne
 Get the direction, in degrees from North, of the Qibla from a given set of coordinates.
 
 ```js
-var coordinates = new adhan.Coordinates(35.78056, -78.6389);
-var qiblaDirection = adhan.Qibla(coordinates);
+var coordinates = new Coordinates(35.78056, -78.6389);
+var qiblaDirection = Qibla(coordinates);
 ```
 
 ## Contributing
 
-Adhan is made publicly available to provide a well tested and well documented library for Islamic prayer times to all 
-developers. We accept feature contributions provided that they are properly documented and include the appropriate 
-unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different 
+Adhan is made publicly available to provide a well tested and well documented library for Islamic prayer times to all
+developers. We accept feature contributions provided that they are properly documented and include the appropriate
+unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different
 locations, we do ask that the source of the comparison values be properly documented.
 
 **Note:** Commit messages should follow the [commit message convention](./.github/COMMIT_CONVENTIONS.md) so that changelogs can be automatically generated. Commit messages will be automatically validated upon commit. **If you are not familiar with the commit message convention, you should use `npm run commit` instead of `git commit`**, which provides an interactive CLI for generating proper commit messages.

@@ -8,24 +8,24 @@ export default {
   input: 'src/Adhan.ts',
   output: [
     {
-      file: 'lib/bundles/bundle.esm.js',
+      file: 'lib/bundles/adhan.esm.js',
       format: 'esm',
       sourcemap: true,
     },
     {
-      file: 'lib/bundles/bundle.esm.min.js',
+      file: 'lib/bundles/adhan.esm.min.js',
       format: 'esm',
       plugins: [terser()],
       sourcemap: true,
     },
     {
-      file: 'lib/bundles/bundle.umd.js',
+      file: 'lib/bundles/adhan.umd.js',
       format: 'umd',
       name: 'adhan',
       sourcemap: true,
     },
     {
-      file: 'lib/bundles/bundle.umd.min.js',
+      file: 'lib/bundles/adhan.umd.min.js',
       format: 'umd',
       name: 'adhan',
       plugins: [terser()],
