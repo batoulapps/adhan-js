@@ -15,7 +15,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: npm
-          node-version: 18
+          node-version: 18.3
+          check-latest: true
       - run: npm ci
       - run: npm run build
       - run: npx semantic-release
