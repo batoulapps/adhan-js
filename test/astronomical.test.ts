@@ -223,22 +223,6 @@ test('calculate the Julian day for a given Gregorian date', () => {
   expect(j1).toBe(j2);
 });
 
-test('determine if a year is a leap year', () => {
-  expect(Astronomical.isLeapYear(2015)).toBeFalsy();
-  expect(Astronomical.isLeapYear(2016)).toBeTruthy();
-  expect(Astronomical.isLeapYear(1600)).toBeTruthy();
-  expect(Astronomical.isLeapYear(2000)).toBeTruthy();
-  expect(Astronomical.isLeapYear(2400)).toBeTruthy();
-  expect(Astronomical.isLeapYear(1700)).toBeFalsy();
-  expect(Astronomical.isLeapYear(1800)).toBeFalsy();
-  expect(Astronomical.isLeapYear(1900)).toBeFalsy();
-  expect(Astronomical.isLeapYear(2100)).toBeFalsy();
-  expect(Astronomical.isLeapYear(2200)).toBeFalsy();
-  expect(Astronomical.isLeapYear(2300)).toBeFalsy();
-  expect(Astronomical.isLeapYear(2500)).toBeFalsy();
-  expect(Astronomical.isLeapYear(2600)).toBeFalsy();
-});
-
 test('get the day of the year for a date', () => {
   expect(dayOfYear(new Date(2015, 0, 1))).toBe(1);
   expect(dayOfYear(new Date(2015, 11, 31))).toBe(365);

@@ -1,4 +1,3 @@
-import Astronomical from './Astronomical';
 import { Rounding } from './Rounding';
 import { ValueOf } from './TypeUtils';
 
@@ -35,9 +34,22 @@ export function roundedMinute(
   return dateByAddingSeconds(date, offset);
 }
 
+/* Whether or not a year is a leap year (has 366 days). */
+export function isLeapYear(year: number) {
+  if (year % 4 !== 0) {
+    return false;
+  }
+
+  if (year % 100 === 0 && year % 400 !== 0) {
+    return false;
+  }
+
+  return true;
+}
+
 export function dayOfYear(date: Date) {
   let returnedDayOfYear = 0;
-  const feb = Astronomical.isLeapYear(date.getFullYear()) ? 29 : 28;
+  const feb = isLeapYear(date.getFullYear()) ? 29 : 28;
   const months = [31, feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   for (let i = 0; i < date.getMonth(); i++) {
     returnedDayOfYear += months[i];
