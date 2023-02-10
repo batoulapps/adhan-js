@@ -1,6 +1,6 @@
 /* eslint-disable max-params, max-lines */
 import Coordinates from './Coordinates';
-import { dateByAddingSeconds } from './DateUtils';
+import { dateByAddingSeconds, isLeapYear } from './DateUtils';
 import {
   degreesToRadians,
   normalizeToScale,
@@ -313,19 +313,6 @@ const Astronomical = {
     return (julianDay - 2451545.0) / 36525;
   },
 
-  /* Whether or not a year is a leap year (has 366 days). */
-  isLeapYear(year: number) {
-    if (year % 4 !== 0) {
-      return false;
-    }
-
-    if (year % 100 === 0 && year % 400 !== 0) {
-      return false;
-    }
-
-    return true;
-  },
-
   seasonAdjustedMorningTwilight(
     latitude: number,
     dayOfYear: number,
@@ -405,8 +392,8 @@ const Astronomical = {
   daysSinceSolstice(dayOfYear: number, year: number, latitude: number) {
     let daysSinceSolstice = 0;
     const northernOffset = 10;
-    const southernOffset = Astronomical.isLeapYear(year) ? 173 : 172;
-    const daysInYear = Astronomical.isLeapYear(year) ? 366 : 365;
+    const southernOffset = isLeapYear(year) ? 173 : 172;
+    const daysInYear = isLeapYear(year) ? 366 : 365;
 
     if (latitude >= 0) {
       daysSinceSolstice = dayOfYear + northernOffset;

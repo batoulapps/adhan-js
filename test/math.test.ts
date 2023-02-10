@@ -5,7 +5,7 @@ import {
   unwindAngle,
   quadrantShiftAngle,
 } from '../src/MathUtils';
-import { roundedMinute, dateByAddingDays } from '../src/DateUtils';
+import { roundedMinute, dateByAddingDays, isLeapYear } from '../src/DateUtils';
 import TimeComponents from '../src/TimeComponents';
 import { Rounding } from '../src/Rounding';
 
@@ -107,4 +107,20 @@ test('adding days to date', () => {
 
   const date2 = dateByAddingDays(date1, 1);
   expect(date2.getDate()).toBe(2);
+});
+
+test('determine if a year is a leap year', () => {
+  expect(isLeapYear(2015)).toBeFalsy();
+  expect(isLeapYear(2016)).toBeTruthy();
+  expect(isLeapYear(1600)).toBeTruthy();
+  expect(isLeapYear(2000)).toBeTruthy();
+  expect(isLeapYear(2400)).toBeTruthy();
+  expect(isLeapYear(1700)).toBeFalsy();
+  expect(isLeapYear(1800)).toBeFalsy();
+  expect(isLeapYear(1900)).toBeFalsy();
+  expect(isLeapYear(2100)).toBeFalsy();
+  expect(isLeapYear(2200)).toBeFalsy();
+  expect(isLeapYear(2300)).toBeFalsy();
+  expect(isLeapYear(2500)).toBeFalsy();
+  expect(isLeapYear(2600)).toBeFalsy();
 });
