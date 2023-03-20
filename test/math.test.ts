@@ -119,6 +119,9 @@ describe('test adding days to date on different time-zones', () => {
 
         const date2 = dateByAddingDays(date1, 1);
         expect(date2.getDate()).toBe(2);
+
+        const date3 = dateByAddingDays(date1, -1);
+        expect(date3.getDate()).toBe(31);
       });
 
       test('special date 1', () => {
@@ -127,6 +130,20 @@ describe('test adding days to date on different time-zones', () => {
 
         const date2 = dateByAddingDays(date1, 1);
         expect(date2.getDate()).toBe(6);
+
+        const date3 = dateByAddingDays(date1, -1);
+        expect(date3.getDate()).toBe(4);
+      });
+
+      test('special date 2', () => {
+        const date1 = new Date(1699066800000);
+        expect(date1.getDate()).toBe(4);
+
+        const date2 = dateByAddingDays(date1, 1);
+        expect(date2.getDate()).toBe(5);
+
+        const date3 = dateByAddingDays(date1, -1);
+        expect(date3.getDate()).toBe(3);
       });
     });
 

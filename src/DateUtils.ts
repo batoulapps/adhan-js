@@ -3,13 +3,15 @@ import { Rounding } from './Rounding';
 import { ValueOf } from './TypeUtils';
 
 export function dateByAddingDays(date: Date, days: number) {
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const day = date.getDate() + days;
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-  return new Date(year, month, day, hours, minutes, seconds);
+  let result = new Date(date.getTime());
+  result.setDate(date.getDate() + days);
+  while (result.toDateString() === date.toDateString()) {
+    // this is for tricky daylight savings
+    result = new Date(
+      result.valueOf() + (days / Math.abs(days)) * (60 * 60 * 1000), // 1 hour in ms
+    );
+  }
+  return result;
 }
 
 export function dateByAddingMinutes(date: Date, minutes: number) {
