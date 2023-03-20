@@ -9,6 +9,8 @@ import { roundedMinute, dateByAddingDays } from '../src/DateUtils';
 import TimeComponents from '../src/TimeComponents';
 import { Rounding } from '../src/Rounding';
 
+import timezoneMock = require('timezone-mock');
+
 test('converting between degrees and radians', () => {
   expect(radiansToDegrees(Math.PI)).toBe(180);
   expect(degreesToRadians(180)).toBe(Math.PI);
@@ -101,10 +103,32 @@ test('rounding a date to the closest minute', () => {
   expect(date5.getSeconds()).toBe(0);
 });
 
-test('adding days to date', () => {
-  const date1 = new Date(2015, 10, 1, 0, 0, 0);
-  expect(date1.getDate()).toBe(1);
+describe('test adding days to date on different time-zones', () => {
+  const testTimezone = (tz: string) =>
+    describe('timezone: ' + tz, () => {
+      beforeAll(() => {
+        timezoneMock.register('Brazil/East');
+      });
+      afterAll(() => {
+        timezoneMock.unregister();
+      });
 
-  const date2 = dateByAddingDays(date1, 1);
-  expect(date2.getDate()).toBe(2);
+      test('normal date', () => {
+        const date1 = new Date(2015, 10, 1, 0, 0, 0);
+        expect(date1.getDate()).toBe(1);
+
+        const date2 = dateByAddingDays(date1, 1);
+        expect(date2.getDate()).toBe(2);
+      });
+
+      test('special date 1', () => {
+        const date1 = new Date(1667617200000);
+        expect(date1.getDate()).toBe(5);
+
+        const date2 = dateByAddingDays(date1, 1);
+        expect(date2.getDate()).toBe(6);
+      });
+    });
+
+  ['UTC', 'Australia/Adelaide', 'Brazil/East'].forEach(testTimezone);
 });
