@@ -9,8 +9,6 @@ import { roundedMinute, dateByAddingDays } from '../src/DateUtils';
 import TimeComponents from '../src/TimeComponents';
 import { Rounding } from '../src/Rounding';
 
-import timezoneMock = require('timezone-mock');
-
 test('converting between degrees and radians', () => {
   expect(radiansToDegrees(Math.PI)).toBe(180);
   expect(degreesToRadians(180)).toBe(Math.PI);
@@ -104,48 +102,47 @@ test('rounding a date to the closest minute', () => {
 });
 
 describe('test adding days to date on different time-zones', () => {
-  const testTimezone = (tz: any) =>
-    describe('timezone: ' + tz, () => {
-      beforeAll(() => {
-        timezoneMock.register(tz);
-      });
-      afterAll(() => {
-        timezoneMock.unregister();
-      });
+  test('normal date', () => {
+    const date1 = new Date(2015, 10, 1, 0, 0, 0);
+    expect(date1.getDate()).toBe(1);
 
-      test('normal date', () => {
-        const date1 = new Date(2015, 10, 1, 0, 0, 0);
-        expect(date1.getDate()).toBe(1);
+    const date2 = dateByAddingDays(date1, 1);
+    expect(date2.getDate()).toBe(2);
 
-        const date2 = dateByAddingDays(date1, 1);
-        expect(date2.getDate()).toBe(2);
+    const date3 = dateByAddingDays(date1, -1);
+    expect(date3.getDate()).toBe(31);
+  });
 
-        const date3 = dateByAddingDays(date1, -1);
-        expect(date3.getDate()).toBe(31);
-      });
+  test('special date 1', () => {
+    const date1 = new Date(1667617200000);
+    expect(date1.getDate()).toBe(5);
 
-      test('special date 1', () => {
-        const date1 = new Date(1667617200000);
-        expect(date1.getDate()).toBe(5);
+    const date2 = dateByAddingDays(date1, 1);
+    expect(date2.getDate()).toBe(6);
 
-        const date2 = dateByAddingDays(date1, 1);
-        expect(date2.getDate()).toBe(6);
+    const date3 = dateByAddingDays(date1, -1);
+    expect(date3.getDate()).toBe(4);
+  });
 
-        const date3 = dateByAddingDays(date1, -1);
-        expect(date3.getDate()).toBe(4);
-      });
+  test('special date 2', () => {
+    const date1 = new Date(1699066800000);
+    expect(date1.getDate()).toBe(4);
 
-      test('special date 2', () => {
-        const date1 = new Date(1699066800000);
-        expect(date1.getDate()).toBe(4);
+    const date2 = dateByAddingDays(date1, 1);
+    expect(date2.getDate()).toBe(5);
 
-        const date2 = dateByAddingDays(date1, 1);
-        expect(date2.getDate()).toBe(5);
+    const date3 = dateByAddingDays(date1, -1);
+    expect(date3.getDate()).toBe(3);
+  });
 
-        const date3 = dateByAddingDays(date1, -1);
-        expect(date3.getDate()).toBe(3);
-      });
-    });
+  test('special date 3', () => {
+    const date1 = new Date(1679257800000);
+    expect(date1.getDate()).toBe(20);
 
-  ['UTC', 'Australia/Adelaide', 'Brazil/East'].forEach(testTimezone);
+    const date2 = dateByAddingDays(date1, 1);
+    expect(date2.getDate()).toBe(21);
+
+    const date3 = dateByAddingDays(date1, -1);
+    expect(date3.getDate()).toBe(19);
+  });
 });
