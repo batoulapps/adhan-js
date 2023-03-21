@@ -114,6 +114,7 @@ describe('test adding days to date on different time-zones', () => {
   });
 
   test('special date 1', () => {
+    // for Brazil/East
     const date1 = new Date(1667617200000);
     expect(date1.getDate()).toBe(5);
 
@@ -125,6 +126,7 @@ describe('test adding days to date on different time-zones', () => {
   });
 
   test('special date 2', () => {
+    // for Brazil/East
     const date1 = new Date(1699066800000);
     expect(date1.getDate()).toBe(4);
 
@@ -136,6 +138,7 @@ describe('test adding days to date on different time-zones', () => {
   });
 
   test('special date 3', () => {
+    // for Asia/Tehran
     const date1 = new Date(1679257800000);
     expect(date1.getDate()).toBe(20);
 
