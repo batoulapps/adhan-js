@@ -104,10 +104,10 @@ test('rounding a date to the closest minute', () => {
 });
 
 describe('test adding days to date on different time-zones', () => {
-  const testTimezone = (tz: string) =>
+  const testTimezone = (tz: any) =>
     describe('timezone: ' + tz, () => {
       beforeAll(() => {
-        timezoneMock.register('Brazil/East');
+        timezoneMock.register(tz);
       });
       afterAll(() => {
         timezoneMock.unregister();
