@@ -5,11 +5,13 @@ import { ValueOf } from './TypeUtils';
 export function dateByAddingDays(date: Date, days: number) {
   let result = new Date(date.getTime());
   result.setDate(date.getDate() + days);
-  while (result.toDateString() === date.toDateString()) {
-    // this is for tricky daylight savings
-    result = new Date(
-      result.valueOf() + (days / Math.abs(days)) * (60 * 60 * 1000), // 1 hour in ms
-    );
+  if (days !== 0) {
+    while (result.toDateString() === date.toDateString()) {
+      // this is for tricky daylight savings
+      result = new Date(
+        result.valueOf() + (days / Math.abs(days)) * (60 * 60 * 1000), // 1 hour in ms
+      );
+    }
   }
   return result;
 }
