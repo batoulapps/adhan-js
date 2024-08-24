@@ -69,13 +69,10 @@ export default class PrayerTimes {
 
     const polarCircleResolver = calculationParameters.polarCircleResolution;
     if (
-      !isValidDate(sunriseTime) ||
-      !isValidDate(sunsetTime) ||
-      isNaN(tomorrowSolarTime.sunrise) ||
-      (isNaN(
-        solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false),
-      ) &&
-        polarCircleResolver !== PolarCircleResolution.Unresolved)
+      (!isValidDate(sunriseTime) ||
+        !isValidDate(sunsetTime) ||
+        isNaN(tomorrowSolarTime.sunrise)) &&
+      polarCircleResolver !== PolarCircleResolution.Unresolved
     ) {
       const resolved = polarCircleResolvedValues(
         polarCircleResolver,
