@@ -12,12 +12,14 @@ export default HighLatitudeFajrRule;
 export const highLatitudeAqrabulAyyamResolver = (
   date: Date,
   coordinates: Coordinates,
+  fajrAngle: number,
 ): Date => {
   const solarTime = new SolarTime(date, coordinates);
-  if (isNaN(solarTime.hourAngle(-18.0, false))) {
+  if (isNaN(solarTime.hourAngle(-1 * fajrAngle, false))) {
     return highLatitudeAqrabulAyyamResolver(
       dateByAddingDays(date, -1),
       coordinates,
+      fajrAngle,
     );
   } else {
     return date;

@@ -139,6 +139,7 @@ export default class PrayerTimes {
         const lastFajrDate = highLatitudeAqrabulAyyamResolver(
           date,
           coordinates,
+          calculationParameters.fajrAngle,
         );
         const lastFajrSolarTime = new SolarTime(lastFajrDate, coordinates);
         return new TimeComponents(
