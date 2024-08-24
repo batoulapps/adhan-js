@@ -11,6 +11,7 @@ import CalculationParameters from '../src/CalculationParameters';
 import Coordinates from '../src/Coordinates';
 import Prayer from '../src/Prayer';
 import PrayerTimes from '../src/PrayerTimes';
+import * as highLatitudeAqrabulAyyamResolver from '../src/HighLatitudeFajrRule';
 
 test('Verifying the night portion defined by the high latitude rule', () => {
   const p1 = new CalculationParameters('Other', 18, 18);
@@ -121,11 +122,17 @@ test('Verifying the angles defined by the calculation method', () => {
   expect(p13.ishaInterval).toBe(0);
   expect(p13.method).toBe('Turkey');
 
-  const p14 = new CalculationParameters(null, 18, 17);
+  const p14 = CalculationMethod.UnitedKingdom();
   expect(p14.fajrAngle).toBe(18);
-  expect(p14.ishaAngle).toBe(17);
+  expect(p14.ishaAngle).toBe(15);
   expect(p14.ishaInterval).toBe(0);
-  expect(p14.method).toBe('Other');
+  expect(p14.method).toBe('UnitedKingdom');
+
+  const p15 = new CalculationParameters(null, 18, 17);
+  expect(p15.fajrAngle).toBe(18);
+  expect(p15.ishaAngle).toBe(17);
+  expect(p15.ishaInterval).toBe(0);
+  expect(p15.method).toBe('Other');
 });
 
 test('calculating prayer times', () => {
@@ -940,5 +947,50 @@ describe('Polar circle resolution cases', () => {
         moment(p.isha).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
       ).toBe('June 21, 2020 11:51 PM');
     });
+  });
+});
+
+describe('HighLatitudeFajr Aqrab Youm', () => {
+  const londonCoordinates = new Coordinates(51.5113785, -0.1846385);
+  const params = CalculationMethod.UnitedKingdom();
+  it('Should calculate fajr without invoking the resolver as it is not in perpetual twilight', () => {
+    const spy = jest.spyOn(
+      highLatitudeAqrabulAyyamResolver,
+      'highLatitudeAqrabulAyyamResolver',
+    );
+    const date = new Date(2024, 1, 21);
+    const prayerTimes = new PrayerTimes(londonCoordinates, date, params);
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
+  it('Should calculate fajr by getting the last night before perpetual twilight began', () => {
+    const spy = jest.spyOn(
+      highLatitudeAqrabulAyyamResolver,
+      'highLatitudeAqrabulAyyamResolver',
+    );
+    const date = new Date(2024, 5, 21);
+    const prayerTimes = new PrayerTimes(londonCoordinates, date, params);
+    expect(spy).toHaveBeenCalled();
+  });
+  test('Testing times produced by Aqrab Youm Resolver', () => {
+    const date = new Date(2024, 5, 21);
+    const p = new PrayerTimes(londonCoordinates, date, params);
+    expect(
+      moment(p.fajr).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
+    ).toBe('June 21, 2024 1:09 AM');
+    expect(
+      moment(p.sunrise).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
+    ).toBe('June 21, 2024 4:44 AM');
+    expect(
+      moment(p.dhuhr).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
+    ).toBe('June 21, 2024 1:07 PM');
+    expect(
+      moment(p.asr).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
+    ).toBe('June 21, 2024 6:40 PM');
+    expect(
+      moment(p.maghrib).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
+    ).toBe('June 21, 2024 9:27 PM');
+    expect(
+      moment(p.isha).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
+    ).toBe('June 21, 2024 10:25 PM');
   });
 });
