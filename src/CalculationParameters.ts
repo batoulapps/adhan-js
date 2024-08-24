@@ -5,6 +5,7 @@ import { PolarCircleResolution } from './PolarCircleResolution';
 import { Rounding } from './Rounding';
 import { Shafaq } from './Shafaq';
 import { ValueOf } from './TypeUtils';
+import HighLatitudeFajrRule from './HighLatitudeFajrRule';
 
 export default class CalculationParameters {
   // Madhab to determine how Asr is calculated.
@@ -15,6 +16,9 @@ export default class CalculationParameters {
   // or may present a hardship unless bound to a reasonable time.
   highLatitudeRule: ValueOf<typeof HighLatitudeRule> =
     HighLatitudeRule.MiddleOfTheNight;
+
+  highLatitudeFajrRule: ValueOf<typeof HighLatitudeFajrRule> =
+    HighLatitudeFajrRule.Default;
 
   // Manual adjustments (in minutes) to be added to each prayer time.
   adjustments = {

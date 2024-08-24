@@ -18,6 +18,9 @@ import {
   polarCircleResolvedValues,
 } from './PolarCircleResolution';
 import { ValueOf } from './TypeUtils';
+import HighLatitudeFajrRule, {
+  highLatitudeAqrabulAyyamResolver,
+} from './HighLatitudeFajrRule';
 
 export default class PrayerTimes {
   fajr: Date;
@@ -66,10 +69,13 @@ export default class PrayerTimes {
 
     const polarCircleResolver = calculationParameters.polarCircleResolution;
     if (
-      (!isValidDate(sunriseTime) ||
-        !isValidDate(sunsetTime) ||
-        isNaN(tomorrowSolarTime.sunrise)) &&
-      polarCircleResolver !== PolarCircleResolution.Unresolved
+      !isValidDate(sunriseTime) ||
+      !isValidDate(sunsetTime) ||
+      isNaN(tomorrowSolarTime.sunrise) ||
+      (isNaN(
+        solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false),
+      ) &&
+        polarCircleResolver !== PolarCircleResolution.Unresolved)
     ) {
       const resolved = polarCircleResolvedValues(
         polarCircleResolver,
@@ -126,6 +132,21 @@ export default class PrayerTimes {
           date.getFullYear(),
           sunriseTime,
         );
+      } else if (
+        calculationParameters.highLatitudeFajrRule ===
+        HighLatitudeFajrRule.AqrabYaum
+      ) {
+        const lastFajrDate = highLatitudeAqrabulAyyamResolver(
+          date,
+          coordinates,
+        );
+        const lastFajrSolarTime = new SolarTime(lastFajrDate, coordinates);
+        return new TimeComponents(
+          lastFajrSolarTime.hourAngle(
+            -1 * calculationParameters.fajrAngle,
+            false,
+          ),
+        ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
       } else {
         const portion = calculationParameters.nightPortions().fajr;
         nightFraction = portion * night;
