@@ -69,12 +69,6 @@ export default class PrayerTimes {
       );
       solarTime = resolved.solarTime;
       tomorrowSolarTime = resolved.tomorrowSolarTime;
-      const dateComponents = [
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-      ] as const;
-
       dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date);
       sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date);
       sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date);
