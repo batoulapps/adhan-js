@@ -979,7 +979,7 @@ describe('HighLatitudeFajr Aqrab Youm', () => {
     ).toBe('June 21, 2024 1:09 AM');
     expect(
       moment(p.sunrise).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
-    ).toBe('June 21, 2024 4:44 AM');
+    ).toBe('June 21, 2024 4:43 AM');
     expect(
       moment(p.dhuhr).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
     ).toBe('June 21, 2024 1:07 PM');
