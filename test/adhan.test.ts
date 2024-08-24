@@ -959,6 +959,7 @@ describe('HighLatitudeFajr Aqrab Youm', () => {
       'highLatitudeAqrabulAyyamResolver',
     );
     const date = new Date(2024, 1, 21);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const prayerTimes = new PrayerTimes(londonCoordinates, date, params);
     expect(spy).toHaveBeenCalledTimes(0);
   });
@@ -968,6 +969,7 @@ describe('HighLatitudeFajr Aqrab Youm', () => {
       'highLatitudeAqrabulAyyamResolver',
     );
     const date = new Date(2024, 5, 21);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const prayerTimes = new PrayerTimes(londonCoordinates, date, params);
     expect(spy).toHaveBeenCalled();
   });
