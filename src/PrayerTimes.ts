@@ -134,7 +134,8 @@ export default class PrayerTimes {
         );
       } else if (
         calculationParameters.highLatitudeFajrRule ===
-        HighLatitudeFajrRule.AqrabYaum
+          HighLatitudeFajrRule.AqrabYaum &&
+        isNaN(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false))
       ) {
         const lastFajrDate = highLatitudeAqrabulAyyamResolver(
           date,
