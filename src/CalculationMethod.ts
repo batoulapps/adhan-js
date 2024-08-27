@@ -1,6 +1,5 @@
 import CalculationParameters from './CalculationParameters';
 import { Rounding } from './Rounding';
-import { PolarCircleResolution } from './PolarCircleResolution';
 import HighLatitudeRule from './HighLatitudeRule';
 import { Madhab } from './Madhab';
 import HighLatitudeFajrRule from './HighLatitudeFajrRule';
