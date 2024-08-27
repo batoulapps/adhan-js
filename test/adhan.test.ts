@@ -12,6 +12,7 @@ import Coordinates from '../src/Coordinates';
 import Prayer from '../src/Prayer';
 import PrayerTimes from '../src/PrayerTimes';
 import * as highLatitudeAqrabulAyyamResolver from '../src/HighLatitudeFajrRule';
+import HighLatitudeFajrRule from '../src/HighLatitudeFajrRule';
 
 test('Verifying the night portion defined by the high latitude rule', () => {
   const p1 = new CalculationParameters('Other', 18, 18);
@@ -994,5 +995,58 @@ describe('HighLatitudeFajr Aqrab Youm', () => {
     expect(
       moment(p.isha).tz('Europe/London').format('MMMM DD, YYYY h:mm A'),
     ).toBe('June 21, 2024 10:25 PM');
+  });
+});
+
+describe('HighLatitudeFajr MiddleOfTheNight', () => {
+  describe('Where both high latitude rules are set to Middle of the night', () => {
+    it('Should return night portions of 1/2 for both Isha and Fajr', () => {
+      const calcParams = CalculationMethod.Other();
+      calcParams.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight;
+      expect(calcParams.nightPortions()).toEqual({
+        fajr: 1 / 2,
+        isha: 1 / 2,
+      });
+    });
+    it('Night Portions should be 1/2 even when set independently', () => {
+      const calcParams = CalculationMethod.Other();
+      calcParams.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight;
+      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfNight;
+      expect(calcParams.nightPortions()).toEqual({
+        fajr: 1 / 2,
+        isha: 1 / 2,
+      });
+    });
+  });
+  describe('Where isha high latitude is set to to differ with Fajr', () => {
+    it('Should return 1/7 for isha and 1/2 for Fajr', () => {
+      const calcParams = CalculationMethod.Other();
+      calcParams.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight;
+      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfNight;
+      expect(calcParams.nightPortions()).toEqual({
+        fajr: 1 / 2,
+        isha: 1 / 7,
+      });
+    });
+    it('Should return 0.3 for isha and 1/2 for Fajr', () => {
+      const calcParams = CalculationMethod.Other();
+      calcParams.highLatitudeRule = HighLatitudeRule.TwilightAngle;
+      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfNight;
+      calcParams.ishaAngle = 18;
+      expect(calcParams.nightPortions()).toEqual({
+        fajr: 1 / 2,
+        isha: 0.3,
+      });
+    });
+  });
+  describe('Where highLatitudeRule is set to SeventhOfNight and highLatitudeFajr is unset', () => {
+    it('Should return 1/7 for both', () => {
+      const calcParams = CalculationMethod.Other();
+      calcParams.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight;
+      expect(calcParams.nightPortions()).toEqual({
+        fajr: 1 / 7,
+        isha: 1 / 7,
+      });
+    });
   });
 });
