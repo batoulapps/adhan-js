@@ -3,31 +3,33 @@
     "latitude": 51.507194,
     "longitude": -0.116711,
     "timezone": "Europe/London",
-    "method": "UnitedKingdom"
+    "method": "UnitedKingdom",
+    "highLatitudeRule": "SeventhOfTheNight"
   },
+  "variance": 1,
   "source": [
     "https://wifaqululama.co.uk/testnew/",
     "adjusted +/- 1 minute",
-    "Jan 01 (Fri)   06:03 am    08:06 am   12:09 pm+1 02:15 pm    04:07 pm    05:45 pm",
-    "Feb 01 (Mon)   05:44 am    07:40 am   12:19 pm   03:02 pm+1  04:54 pm    06:25 pm",
-    "Mar 01 (Tue)   04:54 am    06:45 am   12:18 pm+1 03:48 pm+1  05:46 pm-1  07:13 pm",
-    "Apr 01 (Fri)   04:36 am-1  06:35 am   01:09 pm   05:31 pm-1  07:39 pm-1  09:09 pm",
-    "May 01 (Sun)   03:02 am    05:31 am   01:02 pm   06:05 pm-1  08:29 pm-1  09:43 pm",
-    "Jun 01 (Wed)   00:58 am-1  04:49 am   01:03 pm   06:31 pm-1  09:14 pm    10:14 pm-1",
-    "Jul 01 (Fri)   01:04 am    04:48 am   01:09 pm   06:41 pm    09:26 pm    10:25 pm",
-    "Aug 01 (Mon)   02:35 am-1  05:25 am   01:12 pm   06:23 pm    08:53 pm    10:02 pm",
-    "Sep 01 (Thu)   04:09 am    06:14 am   01:05 pm   05:40 pm-1  07:51 pm    09:16 pm",
-    "Oct 01 (Sat)   05:10 am    07:02 am   12:55 pm   04:43 pm+1  06:42 pm    08:09 pm",
-    "Nov 01 (Tue)   05:01 am    06:55 am   11:49 am+1 02:44 pm+1  04:37 pm+1  06:07 pm",
-    "Dec 01 (Thu)   05:43 am    07:44 am   11:55 am+1 02:08 pm    04:00 pm    05:36 pm-1"
+    "Jan 01 (Mon)   06:03 am    08:06 am   12:09 pm 02:15 pm+1    04:07 pm    05:45 pm",
+    "Feb 01 (Thu)   05:44 am    07:40 am   12:19 pm   03:02 pm+1  04:54 pm    06:25 pm",
+    "Mar 01 (Fri)   04:54 am    06:45 am   12:18 pm+1 03:48 pm+1  05:46 pm-1  07:13 pm",
+    "Apr 01 (Mon)   04:36 am-1  06:35 am   01:09 pm   05:31 pm-1  07:39 pm-1  09:09 pm",
+    "May 01 (Wed)   03:02 am    05:31 am   01:02 pm   06:05 pm-1  08:29 pm-1  09:43 pm",
+    "Jun 01 (Sat)   12:59 am  04:49 am   01:03 pm   06:31 pm-1  09:14 pm    10:14 pm-1",
+    "Jul 01 (Mon)   01:04 am    04:48 am   01:09 pm   06:41 pm    09:26 pm    10:25 pm",
+    "Aug 01 (Thu)   02:35 am-1  05:25 am   01:12 pm   06:23 pm    08:53 pm    10:02 pm",
+    "Sep 01 (Sun)   04:09 am    06:14 am   01:05 pm   05:40 pm-1  07:51 pm    09:16 pm",
+    "Oct 01 (Tue)   05:10 am    07:02 am   12:55 pm   04:43 pm+1  06:42 pm    08:09 pm",
+    "Nov 01 (Fri)   05:01 am    06:55 am   11:49 am+1 02:44 pm+1  04:37 pm+1  06:07 pm",
+    "Dec 01 (Sun)   05:43 am    07:44 am   11:55 am+1 02:08 pm    04:00 pm    05:36 pm-1"
   ],
   "times": [
     {
       "date": "2024-01-01",
       "fajr": "6:03 AM",
       "sunrise": "8:06 AM",
-      "dhuhr": "12:08 PM",
-      "asr": "2:16 PM",
+      "dhuhr": "12:09 PM",
+      "asr": "2:15 PM",
       "maghrib": "4:07 PM",
       "isha": "5:45 PM"
     },
@@ -35,8 +37,8 @@
       "date": "2024-02-01",
       "fajr": "5:44 AM",
       "sunrise": "7:40 AM",
-      "dhuhr": "12:18 PM",
-      "asr": "3:01 PM",
+      "dhuhr": "12:19 PM",
+      "asr": "3:02 PM",
       "maghrib": "4:54 PM",
       "isha": "6:25 PM"
     },
@@ -44,27 +46,27 @@
       "date": "2024-03-01",
       "fajr": "4:54 AM",
       "sunrise": "6:45 AM",
-      "dhuhr": "12:17 PM",
-      "asr": "3:49 PM",
-      "maghrib": "5:47 PM",
+      "dhuhr": "12:18 PM",
+      "asr": "3:48 PM",
+      "maghrib": "5:46 PM",
       "isha": "7:13 PM"
     },
     {
       "date": "2024-04-01",
-      "fajr": "4:37 AM",
+      "fajr": "4:36 AM",
       "sunrise": "6:35 AM",
-      "dhuhr": "1:08 PM",
-      "asr": "5:32 PM",
-      "maghrib": "7:40 PM",
+      "dhuhr": "1:09 PM",
+      "asr": "5:31 PM",
+      "maghrib": "7:39 PM",
       "isha": "9:09 PM"
     },
     {
       "date": "2024-05-01",
       "fajr": "3:02 AM",
-      "sunrise": "5:32 AM",
+      "sunrise": "5:31 AM",
       "dhuhr": "1:02 PM",
-      "asr": "6:06 PM",
-      "maghrib": "8:30 PM",
+      "asr": "6:05 PM",
+      "maghrib": "8:29 PM",
       "isha": "9:43 PM"
     },
     {
@@ -72,9 +74,9 @@
       "fajr": "12:59 AM",
       "sunrise": "4:49 AM",
       "dhuhr": "1:03 PM",
-      "asr": "6:32 PM",
+      "asr": "6:31 PM",
       "maghrib": "9:14 PM",
-      "isha": "10:15 PM"
+      "isha": "10:14 PM"
     },
     {
       "date": "2024-07-01",
@@ -87,7 +89,7 @@
     },
     {
       "date": "2024-08-01",
-      "fajr": "2:34 AM",
+      "fajr": "2:35 AM",
       "sunrise": "5:25 AM",
       "dhuhr": "1:11 PM",
       "asr": "6:23 PM",
@@ -99,7 +101,7 @@
       "fajr": "4:09 AM",
       "sunrise": "6:14 AM",
       "dhuhr": "1:05 PM",
-      "asr": "5:39 PM",
+      "asr": "5:40 PM",
       "maghrib": "7:51 PM",
       "isha": "9:16 PM"
     },
@@ -108,7 +110,7 @@
       "fajr": "5:10 AM",
       "sunrise": "7:02 AM",
       "dhuhr": "12:54 PM",
-      "asr": "4:42 PM",
+      "asr": "4:43 PM",
       "maghrib": "6:42 PM",
       "isha": "8:09 PM"
     },
@@ -116,19 +118,19 @@
       "date": "2024-11-01",
       "fajr": "5:01 AM",
       "sunrise": "6:55 AM",
-      "dhuhr": "11:48 AM",
-      "asr": "2:43 PM",
-      "maghrib": "4:38 PM",
+      "dhuhr": "11:49 AM",
+      "asr": "2:44 PM",
+      "maghrib": "4:37 PM",
       "isha": "6:07 PM"
     },
     {
       "date": "2024-12-01",
       "fajr": "5:43 AM",
-      "sunrise": "7:45 AM",
-      "dhuhr": "11:54 AM",
+      "sunrise": "7:44 AM",
+      "dhuhr": "11:55 AM",
       "asr": "2:08 PM",
       "maghrib": "4:00 PM",
-      "isha": "5:37 PM"
+      "isha": "5:36 PM"
     }
   ]
 }

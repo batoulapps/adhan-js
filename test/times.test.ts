@@ -40,6 +40,8 @@ function parseParams(data: {
     params = CalculationMethod.Turkey();
   } else if (method === 'Tehran') {
     params = CalculationMethod.Tehran();
+  } else if (method === 'UnitedKingdom') {
+    params = CalculationMethod.UnitedKingdom();
   } else {
     params = CalculationMethod.Other();
   }
