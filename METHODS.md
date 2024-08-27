@@ -11,20 +11,19 @@ params.polarCircleResolution = adhan.PolarCircleResolution.AqrabYaum;
 params.adjustments.fajr = 2;
 ```
 
-| Property              | Description                                                                                                                                                                                                            |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| method                | CalculationMethod name.                                                                                                                                                                                                |
-| fajrAngle             | Angle of the sun used to calculate Fajr.                                                                                                                                                                               |
-| maghribAngle          | Angle of the sun used to calculate Maghrib (this is used by the Tehran method).                                                                                                                                        |
-| ishaAngle             | Angle of the sun used to calculate Isha.                                                                                                                                                                               |
-| ishaInterval          | Minutes after Maghrib (if set, the time for Isha will be Maghrib plus ishaInterval).                                                                                                                                   |
-| madhab                | Value from the Madhab object, used to calculate Asr. `Shafi` is the default value.                                                                                                                                     |
-| highLatitudeRule      | Value from the HighLatitudeRule object, used to set a minimum time for Fajr and a max time for Isha.                                                                                                                   |
-| highLatitudeFajrRule  | Value from the HighLatitudeFajrRule object, provides support for AqrabYaum during perpetual twilight in high latitude regions. `Default` is the default value which falls back to the value set for `HighLatitudeRule` |
-| adjustments           | Object with custom prayer time adjustments (in minutes) for each prayer time.                                                                                                                                          |
-| rounding              | The behavior for rounding prayer times. Either to nearest minute, to the higher minute, or none. `Nearest` is the default value.                                                                                       |
-| polarCircleResolution | Value from the PolarCircleResolution object, strategy used to resolve undefined prayer times for areas located in polar circles. `Unresolved` is the default value.                                                    |
-| shafaq                | Used by the MoonsightingCommittee method to determine how to calculate Isha. See explanation of values below. `General` is the default value.                                                                          |
+| Property              | Description                                                                                                                                                         |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| method                | CalculationMethod name.                                                                                                                                             |
+| fajrAngle             | Angle of the sun used to calculate Fajr.                                                                                                                            |
+| maghribAngle          | Angle of the sun used to calculate Maghrib (this is used by the Tehran method).                                                                                     |
+| ishaAngle             | Angle of the sun used to calculate Isha.                                                                                                                            |
+| ishaInterval          | Minutes after Maghrib (if set, the time for Isha will be Maghrib plus ishaInterval).                                                                                |
+| madhab                | Value from the Madhab object, used to calculate Asr. `Shafi` is the default value.                                                                                  |
+| highLatitudeRule      | Value from the HighLatitudeRule object, used to set a minimum time for Fajr and a max time for Isha.                                                                |
+| adjustments           | Object with custom prayer time adjustments (in minutes) for each prayer time.                                                                                       |
+| rounding              | The behavior for rounding prayer times. Either to nearest minute, to the higher minute, or none. `Nearest` is the default value.                                    |
+| polarCircleResolution | Value from the PolarCircleResolution object, strategy used to resolve undefined prayer times for areas located in polar circles. `Unresolved` is the default value. |
+| shafaq                | Used by the MoonsightingCommittee method to determine how to calculate Isha. See explanation of values below. `General` is the default value.                       |
 
 #### CalculationMethod
 
@@ -42,7 +41,6 @@ params.adjustments.fajr = 2;
 | adhan.CalculationMethod.Turkey()                | An approximation of the Diyanet method used in Turkey. This approximation is less accurate outside the region of Turkey.                                                                                                                                                                                        |
 | adhan.CalculationMethod.Tehran()                | Institute of Geophysics, University of Tehran. Early Isha time with an angle of 14°. Slightly later Fajr time with an angle of 17.7°. Calculates Maghrib based on the sun reaching an angle of 4.5° below the horizon.                                                                                          |
 | adhan.CalculationMethod.NorthAmerica()          | Also known as the ISNA method. Can be used for North America, but the moonsightingCommittee method is preferable. Gives later Fajr times and early Isha times with angles of 15°.                                                                                                                               |
-| adhan.CalculationMethod.UnitedKingsom()         | Also known as the Wifaqul Ulama method. Used in the United Kingdom. Fajr is 18° and Aqrabul Yaum during perpetual twilight. Isha 15° and Seventh of the night during perpetual twilight conditions. Adds 4 minutes to Dhuhr and 5 minutes to Maghrib to factor refraction.                                      |
 | adhan.CalculationMethod.Other()                 | Defaults to angles of 0°, should generally be used for making a custom method and setting your own values.                                                                                                                                                                                                      |
 
 #### Madhab
