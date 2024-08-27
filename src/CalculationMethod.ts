@@ -110,7 +110,7 @@ const CalculationMethod = {
       maghrib: 5,
     };
     params.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight;
-    params.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfNight;
+    params.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfTheNight;
     return params;
   },
 

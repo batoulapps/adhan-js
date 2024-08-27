@@ -1012,7 +1012,7 @@ describe('HighLatitudeFajr MiddleOfTheNight', () => {
     it('Night Portions should be 1/2 even when set independently', () => {
       const calcParams = CalculationMethod.Other();
       calcParams.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight;
-      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfNight;
+      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfTheNight;
       expect(calcParams.nightPortions()).toEqual({
         fajr: 1 / 2,
         isha: 1 / 2,
@@ -1023,7 +1023,7 @@ describe('HighLatitudeFajr MiddleOfTheNight', () => {
     it('Should return 1/7 for isha and 1/2 for Fajr', () => {
       const calcParams = CalculationMethod.Other();
       calcParams.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight;
-      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfNight;
+      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfTheNight;
       expect(calcParams.nightPortions()).toEqual({
         fajr: 1 / 2,
         isha: 1 / 7,
@@ -1032,7 +1032,7 @@ describe('HighLatitudeFajr MiddleOfTheNight', () => {
     it('Should return 0.3 for isha and 1/2 for Fajr', () => {
       const calcParams = CalculationMethod.Other();
       calcParams.highLatitudeRule = HighLatitudeRule.TwilightAngle;
-      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfNight;
+      calcParams.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfTheNight;
       calcParams.ishaAngle = 18;
       expect(calcParams.nightPortions()).toEqual({
         fajr: 1 / 2,

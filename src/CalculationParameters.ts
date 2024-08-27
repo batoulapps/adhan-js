@@ -75,7 +75,7 @@ export default class CalculationParameters {
 
   nightPortions() {
     let fajrPortion;
-    if (this.highLatitudeFajrRule === HighLatitudeFajrRule.MiddleOfNight) {
+    if (this.highLatitudeFajrRule === HighLatitudeFajrRule.MiddleOfTheNight) {
       fajrPortion = 1 / 2; // Fajr should always be 1/2
     }
     switch (this.highLatitudeRule) {
