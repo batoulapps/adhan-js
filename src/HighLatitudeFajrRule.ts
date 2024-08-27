@@ -5,6 +5,7 @@ import { dateByAddingDays } from './DateUtils';
 const HighLatitudeFajrRule = {
   Default: 'default', //Falls back to HighLatitudeRule
   AqrabYaum: 'aqrabyaum', //Uses Aqrab Youm
+  MiddleOfNight: 'middleofthenight',
 };
 
 export default HighLatitudeFajrRule;

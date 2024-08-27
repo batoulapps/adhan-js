@@ -74,15 +74,24 @@ export default class CalculationParameters {
   }
 
   nightPortions() {
+    let fajrPortion;
+    if (this.highLatitudeFajrRule === HighLatitudeFajrRule.MiddleOfNight) {
+      fajrPortion = 1 / 2; // Fajr should always be 1/2
+    }
     switch (this.highLatitudeRule) {
       case HighLatitudeRule.MiddleOfTheNight:
-        return { fajr: 1 / 2, isha: 1 / 2 };
+        return { fajr: fajrPortion || 1 / 2, isha: 1 / 2 };
       case HighLatitudeRule.SeventhOfTheNight:
-        return { fajr: 1 / 7, isha: 1 / 7 };
+        return { fajr: fajrPortion || 1 / 7, isha: 1 / 7 };
       case HighLatitudeRule.TwilightAngle:
-        return { fajr: this.fajrAngle / 60, isha: this.ishaAngle / 60 };
+        return {
+          fajr: fajrPortion || this.fajrAngle / 60,
+          isha: this.ishaAngle / 60,
+        };
       default:
-        throw `Invalid high latitude rule found when attempting to compute night portions: ${this.highLatitudeRule}`;
+        throw new Error(
+          `Invalid high latitude rule found when attempting to compute night portions: ${this.highLatitudeRule}`,
+        );
     }
   }
 }
