@@ -954,6 +954,7 @@ describe('Polar circle resolution cases', () => {
 describe('HighLatitudeFajr Aqrab Youm', () => {
   const londonCoordinates = new Coordinates(51.5113785, -0.1846385);
   const params = CalculationMethod.UnitedKingdom();
+  params.highLatitudeFajrRule = HighLatitudeFajrRule.AqrabYaum;
   it('Should calculate fajr without invoking the resolver as it is not in perpetual twilight', () => {
     const spy = jest.spyOn(
       highLatitudeAqrabulAyyamResolver,
