@@ -135,7 +135,6 @@ export default class PrayerTimes {
     })();
 
     if (isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
-      console.log(`Safe Fajr ${safeFajr}. Fajr time ${fajrTime}`);
       fajrTime = safeFajr;
     }
 
