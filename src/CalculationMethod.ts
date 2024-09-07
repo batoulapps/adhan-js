@@ -1,5 +1,8 @@
 import CalculationParameters from './CalculationParameters';
 import { Rounding } from './Rounding';
+import HighLatitudeRule from './HighLatitudeRule';
+import { Madhab } from './Madhab';
+import HighLatitudeFajrRule from './HighLatitudeFajrRule';
 
 const CalculationMethod = {
   // Muslim World League
@@ -94,6 +97,19 @@ const CalculationMethod = {
       asr: 4,
       maghrib: 7,
     };
+    return params;
+  },
+  //Wifaqul Ulama, UK
+  UnitedKingdom() {
+    const params = new CalculationParameters('UnitedKingdom', 18, 15);
+    params.madhab = Madhab.Hanafi;
+    params.methodAdjustments = {
+      ...params.methodAdjustments,
+      dhuhr: 4,
+      maghrib: 5,
+    };
+    params.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight;
+    params.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfTheNight;
     return params;
   },
 

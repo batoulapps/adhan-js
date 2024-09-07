@@ -12,9 +12,16 @@ export default class TimeComponents {
     return this;
   }
 
-  utcDate(year: number, month: number, date: number): Date {
+  utcDate(date: Date) {
     return new Date(
-      Date.UTC(year, month, date, this.hours, this.minutes, this.seconds),
+      Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        this.hours,
+        this.minutes,
+        this.seconds,
+      ),
     );
   }
 }

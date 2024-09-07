@@ -2,6 +2,7 @@ import CalculationMethod from './CalculationMethod';
 import CalculationParameters from './CalculationParameters';
 import Coordinates from './Coordinates';
 import HighLatitudeRule from './HighLatitudeRule';
+import HighLatitudeFajrRule from './HighLatitudeFajrRule';
 import { Madhab } from './Madhab';
 import { PolarCircleResolution } from './PolarCircleResolution';
 import Prayer from './Prayer';
@@ -15,6 +16,7 @@ export {
   Prayer,
   Madhab,
   HighLatitudeRule,
+  HighLatitudeFajrRule,
   Coordinates,
   CalculationParameters,
   CalculationMethod,

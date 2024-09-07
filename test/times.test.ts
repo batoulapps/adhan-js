@@ -7,11 +7,13 @@ import Coordinates from '../src/Coordinates';
 import HighLatitudeRule from '../src/HighLatitudeRule';
 import { Madhab } from '../src/Madhab';
 import PrayerTimes from '../src/PrayerTimes';
+import HighLatitudeFajrRule from '../src/HighLatitudeFajrRule';
 
 function parseParams(data: {
   method: string;
   madhab: string;
   highLatitudeRule: string;
+  highLatitudeFajrRule?: string;
 }) {
   let params: CalculationParameters;
 
@@ -40,6 +42,8 @@ function parseParams(data: {
     params = CalculationMethod.Turkey();
   } else if (method === 'Tehran') {
     params = CalculationMethod.Tehran();
+  } else if (method === 'UnitedKingdom') {
+    params = CalculationMethod.UnitedKingdom();
   } else {
     params = CalculationMethod.Other();
   }
@@ -58,6 +62,13 @@ function parseParams(data: {
     params.highLatitudeRule = HighLatitudeRule.TwilightAngle;
   } else {
     params.highLatitudeRule = HighLatitudeRule.MiddleOfTheNight;
+  }
+
+  const highLatFajrRule = data['highLatitudeFajrRule'];
+  if (highLatFajrRule === 'aqrabyaum') {
+    params.highLatitudeFajrRule = HighLatitudeFajrRule.AqrabYaum;
+  } else if (highLatFajrRule === 'middleofthenight') {
+    params.highLatitudeFajrRule = HighLatitudeFajrRule.MiddleOfTheNight;
   }
 
   return params;

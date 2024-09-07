@@ -18,6 +18,9 @@ import {
   polarCircleResolvedValues,
 } from './PolarCircleResolution';
 import { ValueOf } from './TypeUtils';
+import HighLatitudeFajrRule, {
+  highLatitudeAqrabulAyyamResolver,
+} from './HighLatitudeFajrRule';
 
 export default class PrayerTimes {
   fajr: Date;
@@ -46,21 +49,9 @@ export default class PrayerTimes {
 
     let nightFraction;
 
-    dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    );
-    sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    );
-    sunsetTime = new TimeComponents(solarTime.sunset).utcDate(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    );
+    dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date);
+    sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date);
+    sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date);
     const tomorrow = dateByAddingDays(date, 1);
     let tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
 
@@ -78,36 +69,24 @@ export default class PrayerTimes {
       );
       solarTime = resolved.solarTime;
       tomorrowSolarTime = resolved.tomorrowSolarTime;
-      const dateComponents = [
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-      ] as const;
-
-      dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
-        ...dateComponents,
-      );
-      sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(
-        ...dateComponents,
-      );
-      sunsetTime = new TimeComponents(solarTime.sunset).utcDate(
-        ...dateComponents,
-      );
+      dhuhrTime = new TimeComponents(solarTime.transit).utcDate(date);
+      sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(date);
+      sunsetTime = new TimeComponents(solarTime.sunset).utcDate(date);
     }
 
     // eslint-disable-next-line prefer-const
     asrTime = new TimeComponents(
       solarTime.afternoon(shadowLength(calculationParameters.madhab)),
-    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    ).utcDate(date);
 
     const tomorrowSunrise = new TimeComponents(
       tomorrowSolarTime.sunrise,
-    ).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+    ).utcDate(tomorrow);
     const night = (Number(tomorrowSunrise) - Number(sunsetTime)) / 1000;
 
     fajrTime = new TimeComponents(
       solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false),
-    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+    ).utcDate(date);
 
     // special case for moonsighting committee above latitude 55
     if (
@@ -126,6 +105,28 @@ export default class PrayerTimes {
           date.getFullYear(),
           sunriseTime,
         );
+      } else if (
+        calculationParameters.method === 'UnitedKingdom' &&
+        !isNaN(fajrTime.getTime())
+      ) {
+        return fajrTime;
+      } else if (
+        calculationParameters.highLatitudeFajrRule ===
+          HighLatitudeFajrRule.AqrabYaum &&
+        isNaN(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false))
+      ) {
+        const lastFajrDate = highLatitudeAqrabulAyyamResolver(
+          date,
+          coordinates,
+          calculationParameters.fajrAngle,
+        );
+        const lastFajrSolarTime = new SolarTime(lastFajrDate, coordinates);
+        return new TimeComponents(
+          lastFajrSolarTime.hourAngle(
+            -1 * calculationParameters.fajrAngle,
+            false,
+          ),
+        ).utcDate(date);
       } else {
         const portion = calculationParameters.nightPortions().fajr;
         nightFraction = portion * night;
@@ -145,7 +146,7 @@ export default class PrayerTimes {
     } else {
       ishaTime = new TimeComponents(
         solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true),
-      ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+      ).utcDate(date);
 
       // special case for moonsighting committee above latitude 55
       if (
@@ -181,7 +182,7 @@ export default class PrayerTimes {
     if (calculationParameters.maghribAngle) {
       const angleBasedMaghrib = new TimeComponents(
         solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true),
-      ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
+      ).utcDate(date);
       if (sunsetTime < angleBasedMaghrib && ishaTime > angleBasedMaghrib) {
         maghribTime = angleBasedMaghrib;
       }
