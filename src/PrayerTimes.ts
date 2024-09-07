@@ -106,6 +106,11 @@ export default class PrayerTimes {
           sunriseTime,
         );
       } else if (
+        calculationParameters.method === 'UnitedKingdom' &&
+        !isNaN(fajrTime.getTime())
+      ) {
+        return fajrTime;
+      } else if (
         calculationParameters.highLatitudeFajrRule ===
           HighLatitudeFajrRule.AqrabYaum &&
         isNaN(solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false))
@@ -130,6 +135,7 @@ export default class PrayerTimes {
     })();
 
     if (isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
+      console.log(`Safe Fajr ${safeFajr}. Fajr time ${fajrTime}`);
       fajrTime = safeFajr;
     }
 
