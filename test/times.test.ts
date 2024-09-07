@@ -7,7 +7,7 @@ import Coordinates from '../src/Coordinates';
 import HighLatitudeRule from '../src/HighLatitudeRule';
 import { Madhab } from '../src/Madhab';
 import PrayerTimes from '../src/PrayerTimes';
-import HighLatitudeFajrRule from '../lib/types/HighLatitudeFajrRule';
+import HighLatitudeFajrRule from '../src/HighLatitudeFajrRule';
 
 function parseParams(data: {
   method: string;
