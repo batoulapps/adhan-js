@@ -97,6 +97,13 @@ const CalculationMethod = {
     return params;
   },
 
+  // Ministry of Awqaf, Islamic Affairs and Holy Places, Jordan
+  Jordan() {
+    const params = new CalculationParameters('Jordan', 18, 18);
+    params.methodAdjustments.maghrib = 5;
+    return params;
+  },
+
   // Other
   Other() {
     return new CalculationParameters('Other', 0, 0);
