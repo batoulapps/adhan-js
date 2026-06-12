@@ -1,22 +1,31 @@
-# Adhan JavaScript
+# Adhan JS
 
-[![badge-version][]][npm] [![badge-travis][]][travis] [![badge-cov][]][codecov] [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![badge-version][]][npm]
 
-Adhan JavaScript is a well tested and well documented library for calculating Islamic prayer times in JavaScript using Node or a web browser.
+Adhan JS is a well tested and well documented library for calculating Islamic prayer times in JavaScript using Node or a web browser.
 
-All astronomical calculations are high precision equations directly from the book [“Astronomical Algorithms” by Jean Meeus](http://www.willbell.com/math/mc1.htm). This book is recommended by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory of the National Oceanic and Atmospheric Administration.
+All astronomical calculations are high precision equations directly from the book _“Astronomical Algorithms” by Jean Meeus_. This book is recommended by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory of the National Oceanic and Atmospheric Administration.
 
 Implementations of Adhan in other languages can be found in the parent repo [Adhan](https://github.com/batoulapps/Adhan).
 
+## Features
+
+- 📦 **Dual Package Support:** Native distribution for both modern ES Modules (`import`) and legacy CommonJS (`require`).
+- 🚀 **Environment Agnostic:** Runs flawlessly across Node.js, modern browsers, Bun, Deno, and frameworks like Next.js or Vite.
+- ⛑️ **Type Safe:** Ships with native TypeScript declarations included out of the box.
+- 🎯 **High Precision:** Implements strict, rigorous astronomical algorithms for pinpoint accuracy.
+
+---
+
 ## Installation
 
-Adhan was designed to work in both the browser and NodeJS applications.
+Adhan was designed to work seamlessly in both browser and server environments.
 
 ### Browser
 
-We provide both ESM and UMD bundles for use in the browser.
+We provide both ESM and UMD bundles for native use in the browser via CDN.
 
-ES Modules:
+#### ES Modules
 
 ```html
 <script type="module">
@@ -27,33 +36,33 @@ ES Modules:
   } from 'https://unpkg.com/adhan/lib/bundles/adhan.esm.js';
 
   const coordinates = new Coordinates(35.789751, -78.691249);
-  const params = CalculationMethod.MoonsightingCommittee();
+  const params = CalculationMethod.NorthAmerica();
   const prayerTimes = new PrayerTimes(coordinates, new Date(), params);
 
   console.log(prayerTimes.fajr);
 </script>
 ```
 
-UMD global:
+#### UMD global
 
 ```html
 <script src="https://unpkg.com/adhan/lib/bundles/adhan.umd.min.js"></script>
 <script>
   const coordinates = new adhan.Coordinates(35.789751, -78.691249);
-  const params = adhan.CalculationMethod.MoonsightingCommittee();
+  const params = adhan.CalculationMethod.NorthAmerica();
   const prayerTimes = new adhan.PrayerTimes(coordinates, new Date(), params);
 </script>
 ```
 
 ### Node
 
-Both CommonJS and ES Module libraries are provided.
+Install the package via your preferred package manager.
 
 ```
 npm install adhan
 ```
 
-ES Modules:
+#### ES Modules
 
 ```js
 import { Coordinates, CalculationMethod, PrayerTimes } from 'adhan';
@@ -65,7 +74,7 @@ const prayerTimes = new PrayerTimes(coordinates, new Date(), params);
 console.log(prayerTimes.fajr);
 ```
 
-CommonJS:
+#### CommonJS
 
 ```js
 const adhan = require('adhan');
@@ -99,15 +108,11 @@ const coordinates = new Coordinates(35.78056, -78.6389);
 
 #### Date
 
-The date parameter passed in should be an instance of the JavaScript `Date`
-object. The year, month, and day values need to be populated. All other
-values will be ignored. The year, month and day values should be for the date
-that you want prayer times for. These date values are expected to be for the
-Gregorian calendar.
+The date parameter passed in should be an instance of the JavaScript `Date` object. The year, month, and day values need to be populated. All other values will be ignored. The year, month and day values should be for the date that you want prayer times for. These date values are expected to be for the Gregorian calendar.
 
 ```js
-const date = new Date();
-const date = new Date(2015, 11, 1);
+const date = new Date(); // current date
+const date = new Date(2026, 0, 1); // specific date
 ```
 
 #### Calculation parameters
@@ -118,20 +123,21 @@ The rest of the needed information is contained within the `CalculationParameter
 
 ### Prayer Times
 
-Once the `PrayerTimes` object has been initialized it will contain values
-for all five prayer times and the time for sunrise. The prayer times will be
-Date object instances initialized with UTC values. You will then need to format
-the times for the correct timezone. You can do that by using a timezone aware
-date formatting library like [moment](https://momentjs.com/docs/).
+The `PrayerTimes` object outputs raw JavaScript `Date` instances initialized to absolute UTC values.
+
+Never assume the user's local device timezone matches the calculation coordinates. Always format prayer times with a specific Time Zone Identifier (e.g., `Europe/London` or `America/New_York`) to ensure the times display correctly and match with local daylight savings time (DST) adjustments.
+
+We highly recommend utilizing the modern, native Temporal API (with a fallback polyfill if your target environment requires it):
 
 ```js
-moment(prayerTimes.fajr).tz('America/New_York').format('h:mm A');
+Temporal.Instant.fromEpochMilliseconds(prayerTimes.fajr)
+  .toZonedDateTimeISO('America/New_York')
+  .toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' });
 ```
 
 ### Convenience Utilities
 
-The `PrayerTimes` object has functions for getting the current prayer and the next prayer. You can also get the time for a specified prayer, making it
-easier to dynamically show countdowns until the next prayer.
+The `PrayerTimes` object has functions for getting the current prayer and the next prayer. You can also get the time for a specified prayer, making it easier to dynamically show countdowns until the next prayer.
 
 ```js
 var prayerTimes = new PrayerTimes(coordinates, date, params);
@@ -147,12 +153,18 @@ The Adhan library can also calulate Sunnah times. Given an instance of `PrayerTi
 
 ```js
 var sunnahTimes = new SunnahTimes(prayerTimes);
-var middleOfTheNight = moment(sunnahTimes.middleOfTheNight)
-  .tz('America/New_York')
-  .format('h:mm A');
-var lastThirdOfTheNight = moment(sunnahTimes.lastThirdOfTheNight)
-  .tz('America/New_York')
-  .format('h:mm A');
+
+var middleOfTheNight = Temporal.Instant.fromEpochMilliseconds(
+  sunnahTimes.middleOfTheNight,
+)
+  .toZonedDateTimeISO('America/New_York')
+  .toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+var lastThirdOfTheNight = Temporal.Instant.fromEpochMilliseconds(
+  sunnahTimes.lastThirdOfTheNight,
+)
+  .toZonedDateTimeISO('America/New_York')
+  .toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' });
 ```
 
 ### Qibla Direction
@@ -174,10 +186,7 @@ Migrating from version 3.x? Read the [migration guide](MIGRATION.md)
 
 ## Contributing
 
-Adhan is made publicly available to provide a well tested and well documented library for Islamic prayer times to all
-developers. We accept feature contributions provided that they are properly documented and include the appropriate
-unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different
-locations, we do ask that the source of the comparison values be properly documented.
+Adhan is made publicly available to provide a well tested and well documented library for Islamic prayer times to all developers. We accept feature contributions provided that they are properly documented and include the appropriate unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different locations, we do ask that the source of the comparison values be properly documented.
 
 **Note:** Commit messages should follow the [commit message convention](./.github/COMMIT_CONVENTIONS.md) so that changelogs can be automatically generated. Commit messages will be automatically validated upon commit. **If you are not familiar with the commit message convention, you should use `npm run commit` instead of `git commit`**, which provides an interactive CLI for generating proper commit messages.
 
@@ -186,8 +195,4 @@ locations, we do ask that the source of the comparison values be properly docume
 Adhan is available under the MIT license. See the LICENSE file for more info.
 
 [badge-version]: https://img.shields.io/npm/v/adhan.svg
-[badge-travis]: https://travis-ci.org/batoulapps/adhan-js.svg?branch=master
-[badge-cov]: https://codecov.io/gh/batoulapps/adhan-js/branch/master/graph/badge.svg
-[travis]: https://travis-ci.org/batoulapps/adhan-js
 [npm]: https://www.npmjs.org/package/adhan
-[codecov]: https://codecov.io/gh/batoulapps/adhan-js
