@@ -1,7 +1,7 @@
-import Astronomical from './Astronomical';
-import type Coordinates from './Coordinates';
-import { degreesToRadians, radiansToDegrees } from './MathUtils';
-import SolarCoordinates from './SolarCoordinates';
+import Astronomical from './Astronomical.js';
+import type Coordinates from './Coordinates.js';
+import { degreesToRadians, radiansToDegrees } from './MathUtils.js';
+import SolarCoordinates from './SolarCoordinates.js';
 
 export default class SolarTime {
   observer: Coordinates;

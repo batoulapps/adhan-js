@@ -1,16 +1,16 @@
-/* eslint-disable max-lines */
 import moment from 'moment-timezone';
-import { dateByAddingSeconds, isValidDate } from '../src/DateUtils';
-import { Madhab, shadowLength } from '../src/Madhab';
-import * as polarCircleResolver from '../src/PolarCircleResolution';
-import { Shafaq } from '../src/Shafaq';
-import { ValueOf } from '../src/TypeUtils';
-import HighLatitudeRule from '../src/HighLatitudeRule';
-import CalculationMethod from '../src/CalculationMethod';
-import CalculationParameters from '../src/CalculationParameters';
-import Coordinates from '../src/Coordinates';
-import Prayer from '../src/Prayer';
-import PrayerTimes from '../src/PrayerTimes';
+import { dateByAddingSeconds, isValidDate } from '../src/DateUtils.js';
+import { Madhab, shadowLength } from '../src/Madhab.js';
+import * as polarCircleResolver from '../src/PolarCircleResolution.js';
+import { Shafaq } from '../src/Shafaq.js';
+import { ValueOf } from '../src/TypeUtils.js';
+import HighLatitudeRule from '../src/HighLatitudeRule.js';
+import CalculationMethod from '../src/CalculationMethod.js';
+import CalculationParameters from '../src/CalculationParameters.js';
+import Coordinates from '../src/Coordinates.js';
+import Prayer from '../src/Prayer.js';
+import PrayerTimes from '../src/PrayerTimes.js';
+import { describe, it, expect, test, vi } from 'vitest';
 
 test('Verifying the night portion defined by the high latitude rule', () => {
   const p1 = new CalculationParameters('Other', 18, 18);
@@ -34,12 +34,9 @@ test('Verifying the night portion defined by the high latitude rule', () => {
       fake: ValueOf<typeof HighLatitudeRule>;
     }
   ).fake;
-  expect(() => {
-    p4.nightPortions().fajr;
-  }).toThrow();
-  expect(() => {
-    p4.nightPortions().isha;
-  }).toThrow();
+
+  expect(() => p4.nightPortions().fajr).toThrow();
+  expect(() => p4.nightPortions().isha).toThrow();
 });
 
 test('Verifying the angles defined by the calculation method', () => {
@@ -783,7 +780,7 @@ describe('Polar circle resolution cases', () => {
 
   describe('Regular computation', () => {
     it('should not attempt to do any resolution if the resolver is set to unresolved', () => {
-      const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+      const spy = vi.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new PrayerTimes(
         ArjeplogSweden,
@@ -801,7 +798,7 @@ describe('Polar circle resolution cases', () => {
     });
 
     it('should not attempt to do any resolution if the date is affected neither by the polar night nor by the midnight sun', () => {
-      const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+      const spy = vi.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new PrayerTimes(
         ArjeplogSweden,
@@ -819,7 +816,7 @@ describe('Polar circle resolution cases', () => {
     });
 
     it('should not make any search if the location is outside the polar circles', () => {
-      const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+      const spy = vi.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new PrayerTimes(
         regularCoordinates,

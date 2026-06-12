@@ -1,5 +1,9 @@
-import Coordinates from './Coordinates';
-import { degreesToRadians, radiansToDegrees, unwindAngle } from './MathUtils';
+import Coordinates from './Coordinates.js';
+import {
+  degreesToRadians,
+  radiansToDegrees,
+  unwindAngle,
+} from './MathUtils.js';
 
 export default function qibla(coordinates: Coordinates) {
   const makkah = new Coordinates(21.4225241, 39.8261818);

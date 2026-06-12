@@ -1,10 +1,10 @@
-import type CalculationMethod from './CalculationMethod';
-import { Madhab } from './Madhab';
-import HighLatitudeRule from './HighLatitudeRule';
-import { PolarCircleResolution } from './PolarCircleResolution';
-import { Rounding } from './Rounding';
-import { Shafaq } from './Shafaq';
-import { ValueOf } from './TypeUtils';
+import type CalculationMethod from './CalculationMethod.js';
+import { Madhab } from './Madhab.js';
+import HighLatitudeRule from './HighLatitudeRule.js';
+import { PolarCircleResolution } from './PolarCircleResolution.js';
+import { Rounding } from './Rounding.js';
+import { Shafaq } from './Shafaq.js';
+import { ValueOf } from './TypeUtils.js';
 
 export default class CalculationParameters {
   // Madhab to determine how Asr is calculated.

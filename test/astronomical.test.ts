@@ -1,10 +1,11 @@
-import Astronomical from '../src/Astronomical';
-import TimeComponents from '../src/TimeComponents';
-import Coordinates from '../src/Coordinates';
-import SolarTime from '../src/SolarTime';
-import SolarCoordinates from '../src/SolarCoordinates';
-import { unwindAngle } from '../src/MathUtils';
-import { dayOfYear } from '../src/DateUtils';
+import Astronomical from '../src/Astronomical.js';
+import TimeComponents from '../src/TimeComponents.js';
+import Coordinates from '../src/Coordinates.js';
+import SolarTime from '../src/SolarTime.js';
+import SolarCoordinates from '../src/SolarCoordinates.js';
+import { unwindAngle } from '../src/MathUtils.js';
+import { dayOfYear } from '../src/DateUtils.js';
+import { expect, test } from 'vitest';
 
 function timeString(hours: number) {
   const comps = new TimeComponents(hours);

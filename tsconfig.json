@@ -1,7 +1,11 @@
 {
   "extends": "@tsconfig/node12/tsconfig.json",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "types": ["node", "vitest/globals"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "isolatedModules": true
   },
   "include": ["src/**/*.ts", "test/**/*.ts"],
   "exclude": ["node_modules"]

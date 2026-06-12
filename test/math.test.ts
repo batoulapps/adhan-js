@@ -4,10 +4,15 @@ import {
   normalizeToScale,
   unwindAngle,
   quadrantShiftAngle,
-} from '../src/MathUtils';
-import { roundedMinute, dateByAddingDays, isLeapYear } from '../src/DateUtils';
-import TimeComponents from '../src/TimeComponents';
-import { Rounding } from '../src/Rounding';
+} from '../src/MathUtils.js';
+import {
+  roundedMinute,
+  dateByAddingDays,
+  isLeapYear,
+} from '../src/DateUtils.js';
+import TimeComponents from '../src/TimeComponents.js';
+import { Rounding } from '../src/Rounding.js';
+import { expect, test } from 'vitest';
 
 test('converting between degrees and radians', () => {
   expect(radiansToDegrees(Math.PI)).toBe(180);

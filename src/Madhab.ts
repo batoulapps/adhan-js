@@ -1,4 +1,4 @@
-import { ValueOf } from './TypeUtils';
+import { ValueOf } from './TypeUtils.js';
 
 export const Madhab = {
   Shafi: 'shafi',
