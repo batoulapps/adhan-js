@@ -8,6 +8,13 @@
   "main": "lib/cjs/Adhan.js",
   "module": "lib/esm/Adhan.js",
   "types": "lib/types/Adhan.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/Adhan.d.ts",
+      "import": "./lib/esm/Adhan.js",
+      "require": "./lib/cjs/Adhan.js"
+    }
+  },
   "scripts": {
     "clean": "rimraf lib",
     "test": "vitest run",

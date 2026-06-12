@@ -16,12 +16,32 @@ Adhan was designed to work in both the browser and NodeJS applications.
 
 We provide both ESM and UMD bundles for use in the browser.
 
-Download the latest release and check under `package/lib/bundles`.
+ES Modules:
 
 ```html
-<script src="adhan.umd.min.js"></script>
+<script type="module">
+  import {
+    Coordinates,
+    CalculationMethod,
+    PrayerTimes,
+  } from 'https://unpkg.com/adhan/lib/bundles/adhan.esm.js';
+
+  const coordinates = new Coordinates(35.789751, -78.691249);
+  const params = CalculationMethod.MoonsightingCommittee();
+  const prayerTimes = new PrayerTimes(coordinates, new Date(), params);
+
+  console.log(prayerTimes.fajr);
+</script>
+```
+
+UMD global:
+
+```html
+<script src="https://unpkg.com/adhan/lib/bundles/adhan.umd.min.js"></script>
 <script>
-  var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+  const coordinates = new adhan.Coordinates(35.789751, -78.691249);
+  const params = adhan.CalculationMethod.MoonsightingCommittee();
+  const prayerTimes = new adhan.PrayerTimes(coordinates, new Date(), params);
 </script>
 ```
 
@@ -33,26 +53,29 @@ Both CommonJS and ES Module libraries are provided.
 npm install adhan
 ```
 
-CommonJS:
-
-```js
-const adhan = require('adhan');
-const prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
-```
-
 ES Modules:
 
 ```js
 import { Coordinates, CalculationMethod, PrayerTimes } from 'adhan';
-const coordinates = new Coordinates(35.7897507, -78.6912485);
+
+const coordinates = new Coordinates(35.789751, -78.691249);
 const params = CalculationMethod.MoonsightingCommittee();
-const date = new Date(2022, 3, 20);
-const prayerTimes = new PrayerTimes(coordinates, date, params);
+const prayerTimes = new PrayerTimes(coordinates, new Date(), params);
+
+console.log(prayerTimes.fajr);
 ```
 
-## Migration
+CommonJS:
 
-Migrating from version 3.x? Read the [migration guide](MIGRATION.md)
+```js
+const adhan = require('adhan');
+
+const coordinates = new adhan.Coordinates(35.789751, -78.691249);
+const params = adhan.CalculationMethod.MoonsightingCommittee();
+const prayerTimes = new adhan.PrayerTimes(coordinates, new Date(), params);
+
+console.log(prayerTimes.fajr);
+```
 
 ## Usage
 
@@ -105,28 +128,6 @@ date formatting library like [moment](https://momentjs.com/docs/).
 moment(prayerTimes.fajr).tz('America/New_York').format('h:mm A');
 ```
 
-### Full Example
-
-```ts
-import {
-  Coordinates,
-  CalculationMethod,
-  PrayerTimes,
-  SunnahTimes,
-  Prayer,
-  Qibla,
-} from 'adhan';
-import moment from 'moment-timezone';
-
-const coordinates = new Coordinates(35.7897507, -78.6912485);
-const params = CalculationMethod.MoonsightingCommittee();
-const date = new Date();
-const prayerTimes = new PrayerTimes(coordinates, date, params);
-const sunnahTimes = new SunnahTimes(prayerTimes);
-```
-
-[![Edit Adhan Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/adhan-example-88v549?fontsize=14&hidenavigation=1&theme=dark)
-
 ### Convenience Utilities
 
 The `PrayerTimes` object has functions for getting the current prayer and the next prayer. You can also get the time for a specified prayer, making it
@@ -162,6 +163,14 @@ Get the direction, in degrees from North, of the Qibla from a given set of coord
 var coordinates = new Coordinates(35.78056, -78.6389);
 var qiblaDirection = Qibla(coordinates);
 ```
+
+### Full Example
+
+See `example.html` for a full browser based example.
+
+## Migration
+
+Migrating from version 3.x? Read the [migration guide](MIGRATION.md)
 
 ## Contributing
 
