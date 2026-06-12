@@ -1,7 +1,7 @@
-import Coordinates from './Coordinates';
-import SolarTime from './SolarTime';
-import { dateByAddingDays } from './DateUtils';
-import { ValueOf } from './TypeUtils';
+import Coordinates from './Coordinates.js';
+import SolarTime from './SolarTime.js';
+import { dateByAddingDays } from './DateUtils.js';
+import { ValueOf } from './TypeUtils.js';
 
 export const PolarCircleResolution = {
   AqrabBalad: 'AqrabBalad',

@@ -1,15 +1,14 @@
-/* eslint-disable max-params, max-lines */
-import Coordinates from './Coordinates';
-import { dateByAddingSeconds, isLeapYear } from './DateUtils';
+import Coordinates from './Coordinates.js';
+import { dateByAddingSeconds, isLeapYear } from './DateUtils.js';
 import {
   degreesToRadians,
   normalizeToScale,
   quadrantShiftAngle,
   radiansToDegrees,
   unwindAngle,
-} from './MathUtils';
-import { Shafaq } from './Shafaq';
-import { ValueOf } from './TypeUtils';
+} from './MathUtils.js';
+import { Shafaq } from './Shafaq.js';
+import { ValueOf } from './TypeUtils.js';
 
 const Astronomical = {
   /* The geometric mean longitude of the sun in degrees. */
@@ -390,7 +389,7 @@ const Astronomical = {
   },
 
   daysSinceSolstice(dayOfYear: number, year: number, latitude: number) {
-    let daysSinceSolstice = 0;
+    let daysSinceSolstice: number;
     const northernOffset = 10;
     const southernOffset = isLeapYear(year) ? 173 : 172;
     const daysInYear = isLeapYear(year) ? 366 : 365;

@@ -1,9 +1,10 @@
 import moment from 'moment-timezone';
-import CalculationMethod from '../src/CalculationMethod';
-import Coordinates from '../src/Coordinates';
-import HighLatitudeRule from '../src/HighLatitudeRule';
-import PrayerTimes from '../src/PrayerTimes';
-import SunnahTimes from '../src/SunnahTimes';
+import CalculationMethod from '../src/CalculationMethod.js';
+import Coordinates from '../src/Coordinates.js';
+import HighLatitudeRule from '../src/HighLatitudeRule.js';
+import PrayerTimes from '../src/PrayerTimes.js';
+import SunnahTimes from '../src/SunnahTimes.js';
+import { expect, test } from 'vitest';
 
 test('getting sunnah times for the New York timezone', () => {
   const coords = new Coordinates(35.775, -78.6336);

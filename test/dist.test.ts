@@ -1,5 +1,6 @@
-import * as adhan from '../src/Adhan';
+import * as adhan from '../src/Adhan.js';
 import moment from 'moment-timezone';
+import { expect, test } from 'vitest';
 
 function dateByAddingSeconds(date: Date, seconds: number) {
   return new Date(date.getTime() + seconds * 1000);

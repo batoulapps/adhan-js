@@ -1,9 +1,9 @@
-import SolarTime from './SolarTime';
-import TimeComponents from './TimeComponents';
-import Prayer from './Prayer';
-import Astronomical from './Astronomical';
-import CalculationParameters from './CalculationParameters';
-import Coordinates from './Coordinates';
+import SolarTime from './SolarTime.js';
+import TimeComponents from './TimeComponents.js';
+import Prayer from './Prayer.js';
+import Astronomical from './Astronomical.js';
+import CalculationParameters from './CalculationParameters.js';
+import Coordinates from './Coordinates.js';
 import {
   dateByAddingDays,
   dateByAddingMinutes,
@@ -11,13 +11,13 @@ import {
   dayOfYear,
   isValidDate,
   roundedMinute,
-} from './DateUtils';
-import { shadowLength } from './Madhab';
+} from './DateUtils.js';
+import { shadowLength } from './Madhab.js';
 import {
   PolarCircleResolution,
   polarCircleResolvedValues,
-} from './PolarCircleResolution';
-import { ValueOf } from './TypeUtils';
+} from './PolarCircleResolution.js';
+import { ValueOf } from './TypeUtils.js';
 
 export default class PrayerTimes {
   fajr: Date;
@@ -28,7 +28,6 @@ export default class PrayerTimes {
   maghrib: Date;
   isha: Date;
 
-  // eslint-disable-next-line complexity
   constructor(
     public coordinates: Coordinates,
     public date: Date,

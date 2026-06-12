@@ -1,5 +1,5 @@
-import { Rounding } from './Rounding';
-import { ValueOf } from './TypeUtils';
+import { Rounding } from './Rounding.js';
+import { ValueOf } from './TypeUtils.js';
 
 export function dateByAddingDays(date: Date, days: number) {
   const year = date.getFullYear();

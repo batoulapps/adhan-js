@@ -1,4 +1,4 @@
-import type Coordinates from './Coordinates';
+import type Coordinates from './Coordinates.js';
 
 const HighLatitudeRule = {
   MiddleOfTheNight: 'middleofthenight',
