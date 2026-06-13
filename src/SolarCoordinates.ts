@@ -1,5 +1,9 @@
-import Astronomical from './Astronomical';
-import { degreesToRadians, radiansToDegrees, unwindAngle } from './MathUtils';
+import Astronomical from './Astronomical.js';
+import {
+  degreesToRadians,
+  radiansToDegrees,
+  unwindAngle,
+} from './MathUtils.js';
 
 export default class SolarCoordinates {
   declination: number;

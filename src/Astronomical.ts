@@ -1,15 +1,14 @@
-/* eslint-disable max-params, max-lines */
-import Coordinates from './Coordinates';
-import { dateByAddingSeconds } from './DateUtils';
+import Coordinates from './Coordinates.js';
+import { dateByAddingSeconds, isLeapYear } from './DateUtils.js';
 import {
   degreesToRadians,
   normalizeToScale,
   quadrantShiftAngle,
   radiansToDegrees,
   unwindAngle,
-} from './MathUtils';
-import { Shafaq } from './Shafaq';
-import { ValueOf } from './TypeUtils';
+} from './MathUtils.js';
+import { Shafaq } from './Shafaq.js';
+import { ValueOf } from './TypeUtils.js';
 
 const Astronomical = {
   /* The geometric mean longitude of the sun in degrees. */
@@ -186,7 +185,19 @@ const Astronomical = {
     const a2 = rightAscension;
     /* Equation from page Astronomical Algorithms 102 */
     const Lw = L * -1;
-    return normalizeToScale((a2 + Lw - Theta0) / 360, 1);
+    const m0 = normalizeToScale((a2 + Lw - Theta0) / 360, 1);
+    // For locations near the International Date Line, normalizeWithBound can produce
+    // an m0 for the wrong calendar date.  We detect this by comparing m0 to a
+    // generalized transit time based on the longitude. If they differ by more than
+    // half a day, m0 is off by one cycle and we adjust in the correct direction.
+    const expectedTransit = normalizeToScale((12.0 - L / 15.0) / 24.0, 1);
+    if (m0 - expectedTransit > 0.5) {
+      return m0 - 1.0;
+    } else if (expectedTransit - m0 > 0.5) {
+      return m0 + 1.0;
+    } else {
+      return m0;
+    }
   },
 
   /* The time at which the sun is at its highest point in the sky (in universal time) */
@@ -313,19 +324,6 @@ const Astronomical = {
     return (julianDay - 2451545.0) / 36525;
   },
 
-  /* Whether or not a year is a leap year (has 366 days). */
-  isLeapYear(year: number) {
-    if (year % 4 !== 0) {
-      return false;
-    }
-
-    if (year % 100 === 0 && year % 400 !== 0) {
-      return false;
-    }
-
-    return true;
-  },
-
   seasonAdjustedMorningTwilight(
     latitude: number,
     dayOfYear: number,
@@ -403,10 +401,10 @@ const Astronomical = {
   },
 
   daysSinceSolstice(dayOfYear: number, year: number, latitude: number) {
-    let daysSinceSolstice = 0;
+    let daysSinceSolstice: number;
     const northernOffset = 10;
-    const southernOffset = Astronomical.isLeapYear(year) ? 173 : 172;
-    const daysInYear = Astronomical.isLeapYear(year) ? 366 : 365;
+    const southernOffset = isLeapYear(year) ? 173 : 172;
+    const daysInYear = isLeapYear(year) ? 366 : 365;
 
     if (latitude >= 0) {
       daysSinceSolstice = dayOfYear + northernOffset;

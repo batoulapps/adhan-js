@@ -1,4 +1,5 @@
-import qibla from '../src/Qibla';
+import qibla from '../src/Qibla.js';
+import { expect, test } from 'vitest';
 
 test('finding Qibla in North America', () => {
   const washingtonDC = { latitude: 38.9072, longitude: -77.0369 };

@@ -1,54 +1,64 @@
 name: Test
-'on':
+
+on:
   push:
     branches:
-      - master
-      - renovate/**
+      - main
   pull_request:
     types:
       - opened
       - synchronize
+
 jobs:
   test_matrix:
+    name: Test (Node ${{ matrix.node-version }} on ${{ matrix.os }})
     strategy:
       matrix:
-        node-version: [14, 16, 18, 19]
-        os:
-          - ubuntu-latest
-    runs-on: '${{ matrix.os }}'
+        node-version: [20, 22]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+
     steps:
-      - uses: actions/checkout@v3
-      - name: 'Use Node.js ${{ matrix.node-version }}'
-        uses: actions/setup-node@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
-          node-version: '${{ matrix.node-version }}'
-          cache: npm
-      - run: npm ci
-      - run: npm run test
-  coverage:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm run test
+
+  qa_and_build:
+    name: Lint, Coverage, and Build
     runs-on: ubuntu-latest
     needs: test_matrix
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run test
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Build Project
+        run: npm run build
+
+      # Assumes your normal test run generates the coverage folder
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v4
         with:
           directory: ./coverage
-  build:
-    runs-on: ubuntu-latest
-    needs: test_matrix
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: npm
-      - run: npm ci
-      - run: npm run build

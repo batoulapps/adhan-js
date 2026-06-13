@@ -2,8 +2,8 @@ import {
   dateByAddingDays,
   dateByAddingSeconds,
   roundedMinute,
-} from './DateUtils';
-import PrayerTimes from './PrayerTimes';
+} from './DateUtils.js';
+import PrayerTimes from './PrayerTimes.js';
 
 export default class SunnahTimes {
   middleOfTheNight: Date;

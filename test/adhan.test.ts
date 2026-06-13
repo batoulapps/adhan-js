@@ -1,16 +1,16 @@
-/* eslint-disable max-lines */
 import moment from 'moment-timezone';
-import { dateByAddingSeconds, isValidDate } from '../src/DateUtils';
-import { Madhab, shadowLength } from '../src/Madhab';
-import * as polarCircleResolver from '../src/PolarCircleResolution';
-import { Shafaq } from '../src/Shafaq';
-import { ValueOf } from '../src/TypeUtils';
-import HighLatitudeRule from '../src/HighLatitudeRule';
-import CalculationMethod from '../src/CalculationMethod';
-import CalculationParameters from '../src/CalculationParameters';
-import Coordinates from '../src/Coordinates';
-import Prayer from '../src/Prayer';
-import PrayerTimes from '../src/PrayerTimes';
+import { dateByAddingSeconds, isValidDate } from '../src/DateUtils.js';
+import { Madhab, shadowLength } from '../src/Madhab.js';
+import * as polarCircleResolver from '../src/PolarCircleResolution.js';
+import { Shafaq } from '../src/Shafaq.js';
+import { ValueOf } from '../src/TypeUtils.js';
+import HighLatitudeRule from '../src/HighLatitudeRule.js';
+import CalculationMethod from '../src/CalculationMethod.js';
+import CalculationParameters from '../src/CalculationParameters.js';
+import Coordinates from '../src/Coordinates.js';
+import Prayer from '../src/Prayer.js';
+import PrayerTimes from '../src/PrayerTimes.js';
+import { describe, it, expect, test, vi } from 'vitest';
 
 test('Verifying the night portion defined by the high latitude rule', () => {
   const p1 = new CalculationParameters('Other', 18, 18);
@@ -34,12 +34,9 @@ test('Verifying the night portion defined by the high latitude rule', () => {
       fake: ValueOf<typeof HighLatitudeRule>;
     }
   ).fake;
-  expect(() => {
-    p4.nightPortions().fajr;
-  }).toThrow();
-  expect(() => {
-    p4.nightPortions().isha;
-  }).toThrow();
+
+  expect(() => p4.nightPortions().fajr).toThrow();
+  expect(() => p4.nightPortions().isha).toThrow();
 });
 
 test('Verifying the angles defined by the calculation method', () => {
@@ -783,7 +780,7 @@ describe('Polar circle resolution cases', () => {
 
   describe('Regular computation', () => {
     it('should not attempt to do any resolution if the resolver is set to unresolved', () => {
-      const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+      const spy = vi.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new PrayerTimes(
         ArjeplogSweden,
@@ -801,7 +798,7 @@ describe('Polar circle resolution cases', () => {
     });
 
     it('should not attempt to do any resolution if the date is affected neither by the polar night nor by the midnight sun', () => {
-      const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+      const spy = vi.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new PrayerTimes(
         ArjeplogSweden,
@@ -819,7 +816,7 @@ describe('Polar circle resolution cases', () => {
     });
 
     it('should not make any search if the location is outside the polar circles', () => {
-      const spy = jest.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+      const spy = vi.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new PrayerTimes(
         regularCoordinates,
@@ -941,4 +938,38 @@ describe('Polar circle resolution cases', () => {
       ).toBe('June 21, 2020 11:51 PM');
     });
   });
+});
+
+test('calculating prayer times near the International Date Line', () => {
+  // Coordinates near the International Date Line (longitude ~177.24°E).
+  // Prior to the approximateTransit fix, the solar transit would be miscalculated
+  // as just before UTC midnight instead of just after, causing prayer times to be
+  // off by a full day. Verify that all prayer times are in the correct order.
+  const params = CalculationMethod.MuslimWorldLeague();
+  params.madhab = Madhab.Shafi;
+  params.highLatitudeRule = HighLatitudeRule.TwilightAngle;
+
+  const date = new Date(2025, 11, 1); // Dec 1, 2025
+
+  const p1 = new PrayerTimes(
+    new Coordinates(42.74674252600066, 177.2401196144623),
+    date,
+    params,
+  );
+  expect(p1.fajr.getTime()).toBeLessThan(p1.sunrise.getTime());
+  expect(p1.sunrise.getTime()).toBeLessThan(p1.dhuhr.getTime());
+  expect(p1.dhuhr.getTime()).toBeLessThan(p1.asr.getTime());
+  expect(p1.asr.getTime()).toBeLessThan(p1.maghrib.getTime());
+  expect(p1.maghrib.getTime()).toBeLessThan(p1.isha.getTime());
+
+  const p2 = new PrayerTimes(
+    new Coordinates(47.082209457885355, 177.24642294208638),
+    date,
+    params,
+  );
+  expect(p2.fajr.getTime()).toBeLessThan(p2.sunrise.getTime());
+  expect(p2.sunrise.getTime()).toBeLessThan(p2.dhuhr.getTime());
+  expect(p2.dhuhr.getTime()).toBeLessThan(p2.asr.getTime());
+  expect(p2.asr.getTime()).toBeLessThan(p2.maghrib.getTime());
+  expect(p2.maghrib.getTime()).toBeLessThan(p2.isha.getTime());
 });

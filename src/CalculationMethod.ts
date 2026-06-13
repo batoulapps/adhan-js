@@ -1,5 +1,5 @@
-import CalculationParameters from './CalculationParameters';
-import { Rounding } from './Rounding';
+import CalculationParameters from './CalculationParameters.js';
+import { Rounding } from './Rounding.js';
 
 const CalculationMethod = {
   // Muslim World League

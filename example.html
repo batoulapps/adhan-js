@@ -1,55 +1,136 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <title>Adhan JS Example</title>
     <script src="lib/bundles/adhan.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.28/moment-timezone-with-data-10-year-range.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@js-temporal/polyfill@0.4.4/dist/index.umd.production.min.js"></script>
+
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 400px;
+        margin: 40px auto;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #eee;
+        padding: 6px 0;
+      }
+      .label {
+        font-weight: bold;
+      }
+      .meta {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+    </style>
   </head>
-
   <body>
-    <pre><script type="text/javascript">
+    <h2>Raleigh, NC</h2>
+    <div class="meta" id="meta-display"></div>
 
-        function prayerName(prayer) {
-            if (prayer == adhan.Prayer.Fajr) {
-                return "Fajr";
-            } else if (prayer == adhan.Prayer.Sunrise) {
-                return "Sunrise";
-            } else if (prayer == adhan.Prayer.Dhuhr) {
-                return "Dhuhr";
-            } else if (prayer == adhan.Prayer.Asr) {
-                return "Asr";
-            } else if (prayer == adhan.Prayer.Maghrib) {
-                return "Maghrib";
-            } else if (prayer == adhan.Prayer.Isha) {
-                return "Isha";
-            } else if (prayer == adhan.Prayer.None) {
-                return "None";
-            }
-        }
+    <div id="timetable">
+      <div class="row">
+        <span class="label">Fajr</span><span id="fajr"></span>
+      </div>
+      <div class="row">
+        <span class="label">Sunrise</span><span id="sunrise"></span>
+      </div>
+      <div class="row">
+        <span class="label">Dhuhr</span><span id="dhuhr"></span>
+      </div>
+      <div class="row">
+        <span class="label">Asr</span><span id="asr"></span>
+      </div>
+      <div class="row">
+        <span class="label">Maghrib</span><span id="maghrib"></span>
+      </div>
+      <div class="row">
+        <span class="label">Isha</span><span id="isha"></span>
+      </div>
+      <br />
+      <div class="row">
+        <span class="label">Middle of Night</span><span id="midnight"></span>
+      </div>
+      <div class="row">
+        <span class="label">Last Third of Night</span
+        ><span id="last-third"></span>
+      </div>
+      <br />
+      <div class="row" style="text-transform: capitalize">
+        <span class="label">Current Prayer</span
+        ><span id="current-prayer"></span>
+      </div>
+      <div class="row" style="text-transform: capitalize">
+        <span class="label">Next Prayer</span><span id="next-prayer"></span>
+      </div>
+    </div>
 
-        const coordinates = new adhan.Coordinates(35.7897507, -78.6912485);
-        const params = adhan.CalculationMethod.MoonsightingCommittee();
-        const date = new Date(2022, 3, 20);
+    <script>
+      const coordinates = new adhan.Coordinates(35.7897507, -78.6912485);
+      const params = adhan.CalculationMethod.NorthAmerica();
+      const timeZone = 'America/New_York';
 
-        var prayerTimes = new adhan.PrayerTimes(coordinates, date, params);
+      const instant = Temporal.Now.instant();
+      const zonedDateTime = instant.toZonedDateTimeISO(timeZone);
 
-        var sunnahTimes = new adhan.SunnahTimes(prayerTimes);
+      const prayerTimes = new adhan.PrayerTimes(
+        coordinates,
+        new Date(instant.epochMilliseconds),
+        params,
+      );
+      const sunnahTimes = new adhan.SunnahTimes(prayerTimes);
 
-        document.write('Raleigh, NC - Moonsighting Committee\n');
-        document.write(`Prayer times for ${moment(date).format('MMMM DD, YYYY')}\n`);
-        document.write(`Fajr: ${moment(prayerTimes.fajr).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
-        document.write(`Sunrise: ${moment(prayerTimes.sunrise).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
-        document.write(`Dhuhr: ${moment(prayerTimes.dhuhr).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
-        document.write(`Asr: ${moment(prayerTimes.asr).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
-        document.write(`Maghrib: ${moment(prayerTimes.maghrib).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
-        document.write(`Isha: ${moment(prayerTimes.isha).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
+      const format = (jsDate) => {
+        if (!jsDate) return '--:--';
+        return Temporal.Instant.fromEpochMilliseconds(jsDate.getTime())
+          .toZonedDateTimeISO(timeZone)
+          .toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+          });
+      };
 
-        document.write(`middle of the night: ${moment(sunnahTimes.middleOfTheNight).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n`);
-        document.write(`last third of the night: ${moment(sunnahTimes.lastThirdOfTheNight).tz('America/New_York').format('MMMM DD, YYYY h:mm A')}\n\n`);
+      // Meta display (Date & Qibla)
+      const dateString = zonedDateTime.toLocaleString('en-US', {
+        dateStyle: 'full',
+      });
+      document.getElementById('meta-display').innerHTML =
+        `${dateString}<br>Qibla: ${adhan.Qibla(coordinates).toFixed(2)}°`;
 
-        document.write(`Current Prayer: ${prayerName(prayerTimes.currentPrayer())}\n\n`);
+      // Times population
+      document.getElementById('fajr').textContent = format(prayerTimes.fajr);
+      document.getElementById('sunrise').textContent = format(
+        prayerTimes.sunrise,
+      );
+      document.getElementById('dhuhr').textContent = format(prayerTimes.dhuhr);
+      document.getElementById('asr').textContent = format(prayerTimes.asr);
+      document.getElementById('maghrib').textContent = format(
+        prayerTimes.maghrib,
+      );
+      document.getElementById('isha').textContent = format(prayerTimes.isha);
 
-        document.write(`Qibla Direction: ${adhan.Qibla(coordinates)}`);
+      document.getElementById('midnight').textContent = format(
+        sunnahTimes.middleOfTheNight,
+      );
+      document.getElementById('last-third').textContent = format(
+        sunnahTimes.lastThirdOfTheNight,
+      );
 
-    </script></pre>
+      // Current & Next Prayer Logic
+      const current = prayerTimes.currentPrayer();
+      const next = prayerTimes.nextPrayer();
+      const nextTime = prayerTimes.timeForPrayer(next);
+
+      document.getElementById('current-prayer').textContent = current;
+      document.getElementById('next-prayer').textContent =
+        `${next} @ ${format(nextTime)}`;
+    </script>
   </body>
 </html>

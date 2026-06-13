@@ -1,12 +1,12 @@
-/* eslint-disable complexity */
 import fs from 'fs';
 import moment from 'moment-timezone';
-import CalculationMethod from '../src/CalculationMethod';
-import CalculationParameters from '../src/CalculationParameters';
-import Coordinates from '../src/Coordinates';
-import HighLatitudeRule from '../src/HighLatitudeRule';
-import { Madhab } from '../src/Madhab';
-import PrayerTimes from '../src/PrayerTimes';
+import CalculationMethod from '../src/CalculationMethod.js';
+import CalculationParameters from '../src/CalculationParameters.js';
+import Coordinates from '../src/Coordinates.js';
+import HighLatitudeRule from '../src/HighLatitudeRule.js';
+import { Madhab } from '../src/Madhab.js';
+import PrayerTimes from '../src/PrayerTimes.js';
+import { expect, test } from 'vitest';
 
 function parseParams(data: {
   method: string;

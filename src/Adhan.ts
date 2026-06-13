@@ -1,15 +1,15 @@
-import CalculationMethod from './CalculationMethod';
-import CalculationParameters from './CalculationParameters';
-import Coordinates from './Coordinates';
-import HighLatitudeRule from './HighLatitudeRule';
-import { Madhab } from './Madhab';
-import { PolarCircleResolution } from './PolarCircleResolution';
-import Prayer from './Prayer';
-import PrayerTimes from './PrayerTimes';
-import Qibla from './Qibla';
-import { Rounding } from './Rounding';
-import { Shafaq } from './Shafaq';
-import SunnahTimes from './SunnahTimes';
+import CalculationMethod from './CalculationMethod.js';
+import CalculationParameters from './CalculationParameters.js';
+import Coordinates from './Coordinates.js';
+import HighLatitudeRule from './HighLatitudeRule.js';
+import { Madhab } from './Madhab.js';
+import { PolarCircleResolution } from './PolarCircleResolution.js';
+import Prayer from './Prayer.js';
+import PrayerTimes from './PrayerTimes.js';
+import Qibla from './Qibla.js';
+import { Rounding } from './Rounding.js';
+import { Shafaq } from './Shafaq.js';
+import SunnahTimes from './SunnahTimes.js';
 
 export {
   Prayer,

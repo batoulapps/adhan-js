@@ -1,8 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "rootDir": "src",
     "declaration": true,
-    "declarationDir": "lib/types/",
+    "outDir": "lib/types/",
     "emitDeclarationOnly": true
   },
   "exclude": ["test/**/*.ts"]
