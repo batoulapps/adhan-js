@@ -939,3 +939,37 @@ describe('Polar circle resolution cases', () => {
     });
   });
 });
+
+test('calculating prayer times near the International Date Line', () => {
+  // Coordinates near the International Date Line (longitude ~177.24°E).
+  // Prior to the approximateTransit fix, the solar transit would be miscalculated
+  // as just before UTC midnight instead of just after, causing prayer times to be
+  // off by a full day. Verify that all prayer times are in the correct order.
+  const params = CalculationMethod.MuslimWorldLeague();
+  params.madhab = Madhab.Shafi;
+  params.highLatitudeRule = HighLatitudeRule.TwilightAngle;
+
+  const date = new Date(2025, 11, 1); // Dec 1, 2025
+
+  const p1 = new PrayerTimes(
+    new Coordinates(42.74674252600066, 177.2401196144623),
+    date,
+    params,
+  );
+  expect(p1.fajr.getTime()).toBeLessThan(p1.sunrise.getTime());
+  expect(p1.sunrise.getTime()).toBeLessThan(p1.dhuhr.getTime());
+  expect(p1.dhuhr.getTime()).toBeLessThan(p1.asr.getTime());
+  expect(p1.asr.getTime()).toBeLessThan(p1.maghrib.getTime());
+  expect(p1.maghrib.getTime()).toBeLessThan(p1.isha.getTime());
+
+  const p2 = new PrayerTimes(
+    new Coordinates(47.082209457885355, 177.24642294208638),
+    date,
+    params,
+  );
+  expect(p2.fajr.getTime()).toBeLessThan(p2.sunrise.getTime());
+  expect(p2.sunrise.getTime()).toBeLessThan(p2.dhuhr.getTime());
+  expect(p2.dhuhr.getTime()).toBeLessThan(p2.asr.getTime());
+  expect(p2.asr.getTime()).toBeLessThan(p2.maghrib.getTime());
+  expect(p2.maghrib.getTime()).toBeLessThan(p2.isha.getTime());
+});

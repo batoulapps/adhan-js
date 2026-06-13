@@ -231,6 +231,45 @@ test('get the day of the year for a date', () => {
   expect(dayOfYear(new Date(2015, 1, 1))).toBe(32);
 });
 
+test('verify approximateTransit near the International Date Line', () => {
+  // For longitude ~177.24°E on Dec 1, 2025, solar transit falls just after UTC midnight.
+  // The raw formula produces a tiny negative number that normalizeToScale wraps to ~1.
+  // The fix should detect this and return a value near 0, not near 1.
+  const longitude = 177.24;
+  const jd = Astronomical.julianDay(2025, 12, 1);
+  const solar = new SolarCoordinates(jd);
+  const m0 = Astronomical.approximateTransit(
+    longitude,
+    solar.apparentSiderealTime,
+    solar.rightAscension,
+  );
+  // Transit should be near 0 (just after UTC midnight), not near 1 (just before UTC midnight).
+  // A small negative value (floating-point rounding) is acceptable; what matters is that
+  // m0 was not incorrectly wrapped to ~1 by normalizeToScale.
+  expect(m0).toBeGreaterThan(-0.01);
+  expect(m0).toBeLessThan(0.1);
+});
+
+test('verify Right Ascension Edge Case near the International Date Line', () => {
+  // Coordinates near the International Date Line (Fiji region, longitude ~177.24°E)
+  const coordinates = new Coordinates(42.74674252600066, 177.2401196144623);
+  const solar = [];
+  // Iterate over a full year starting Nov 1, 2025
+  for (let i = 0; i <= 365; i++) {
+    const date = new Date(2025, 10, 1); // Nov 1, 2025
+    date.setDate(date.getDate() + i);
+    solar.push(new SolarTime(date, coordinates));
+  }
+
+  for (let i = 1; i < solar.length; i++) {
+    const time = solar[i];
+    const previousTime = solar[i - 1];
+    expect(Math.abs(time.transit - previousTime.transit)).toBeLessThan(1 / 60);
+    expect(Math.abs(time.sunrise - previousTime.sunrise)).toBeLessThan(2 / 60);
+    expect(Math.abs(time.sunset - previousTime.sunset)).toBeLessThan(2 / 60);
+  }
+});
+
 test('calculate the days since the winter or summer solstice', () => {
   expect(
     Astronomical.daysSinceSolstice(dayOfYear(new Date(2016, 0, 1)), 2016, 1),
