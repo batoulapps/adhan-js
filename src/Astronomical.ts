@@ -185,7 +185,19 @@ const Astronomical = {
     const a2 = rightAscension;
     /* Equation from page Astronomical Algorithms 102 */
     const Lw = L * -1;
-    return normalizeToScale((a2 + Lw - Theta0) / 360, 1);
+    const m0 = normalizeToScale((a2 + Lw - Theta0) / 360, 1);
+    // For locations near the International Date Line, normalizeWithBound can produce
+    // an m0 for the wrong calendar date.  We detect this by comparing m0 to a
+    // generalized transit time based on the longitude. If they differ by more than
+    // half a day, m0 is off by one cycle and we adjust in the correct direction.
+    const expectedTransit = normalizeToScale((12.0 - L / 15.0) / 24.0, 1);
+    if (m0 - expectedTransit > 0.5) {
+      return m0 - 1.0;
+    } else if (expectedTransit - m0 > 0.5) {
+      return m0 + 1.0;
+    } else {
+      return m0;
+    }
   },
 
   /* The time at which the sun is at its highest point in the sky (in universal time) */
