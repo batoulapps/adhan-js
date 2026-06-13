@@ -1,3 +1,10 @@
+## [4.4.4](https://github.com/batoulapps/adhan-js/compare/v4.4.3...v4.4.4) (2026-06-13)
+
+### Bug Fixes
+
+- **dependencies:** fix circular dependency ([92ba45a](https://github.com/batoulapps/adhan-js/commit/92ba45af189c842cb07e2465df42c4e586b1e338))
+- **prayertimes:** fix idl edge case ([8fd1d16](https://github.com/batoulapps/adhan-js/commit/8fd1d167bf460cb461368ad11fa8f3bc6ccb14c8))
+
 ## [4.4.3](https://github.com/batoulapps/adhan-js/compare/v4.4.2...v4.4.3) (2022-05-14)
 
 ### Bug Fixes
