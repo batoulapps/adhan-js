@@ -3,6 +3,11 @@ import type Coordinates from './Coordinates.js';
 import { degreesToRadians, radiansToDegrees } from './MathUtils.js';
 import SolarCoordinates from './SolarCoordinates.js';
 
+// Standard solar altitude at sunrise/sunset (degrees): -0.833°, i.e. the
+// sun's center is 0.833° below the horizon (0.2667° semidiameter + 0.5667°
+// average refraction).
+const SUNRISE_SUNSET_ALTITUDE = -50.0 / 60.0;
+
 export default class SolarTime {
   observer: Coordinates;
   solar: SolarCoordinates;
@@ -32,7 +37,7 @@ export default class SolarTime {
       this.solar.apparentSiderealTime,
       this.solar.rightAscension,
     );
-    const solarAltitude = -50.0 / 60.0;
+    const solarAltitude = SUNRISE_SUNSET_ALTITUDE;
 
     this.approxTransit = m0;
 
