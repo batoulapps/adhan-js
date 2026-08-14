@@ -5,8 +5,13 @@ import {
   unwindAngle,
 } from './MathUtils.js';
 
+// The Kaaba (Makkah) — the fixed point every Qibla direction points to.
+// Official coordinates: 21°25'21.1"N, 39°49'34.3"E.
+const MAKKAH_LATITUDE = 21.4225241;
+const MAKKAH_LONGITUDE = 39.8261818;
+
 export default function qibla(coordinates: Coordinates) {
-  const makkah = new Coordinates(21.4225241, 39.8261818);
+  const makkah = new Coordinates(MAKKAH_LATITUDE, MAKKAH_LONGITUDE);
 
   // Equation from "Spherical Trigonometry For the use of colleges and schools" page 50
   const term1 = Math.sin(
