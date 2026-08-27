@@ -4,6 +4,7 @@ import Coordinates from '../src/Coordinates.js';
 import HighLatitudeRule from '../src/HighLatitudeRule.js';
 import { PolarCircleResolution } from '../src/PolarCircleResolution.js';
 import PrayerTimes from '../src/PrayerTimes.js';
+import { Rounding } from '../src/Rounding.js';
 import SunnahTimes from '../src/SunnahTimes.js';
 import { expect, test } from 'vitest';
 
@@ -193,4 +194,22 @@ test("isValid is false when today's PrayerTimes is valid but tomorrow's independ
 
   const sunnah = new SunnahTimes(prayerTimes);
   expect(sunnah.isValid).toBe(false);
+});
+
+test('sunnah times honor the rounding setting of the calculation parameters', () => {
+  const coords = new Coordinates(35.775, -78.6336);
+  const date = new Date(2015, 6, 12);
+
+  // With rounding disabled, the prayer times keep their seconds and the
+  // sunnah times must not silently round them back to the nearest minute.
+  const params = CalculationMethod.NorthAmerica();
+  params.rounding = Rounding.None;
+  const p = new PrayerTimes(coords, date, params);
+  const sunnah = new SunnahTimes(p);
+
+  const nightDuration =
+    new PrayerTimes(coords, new Date(2015, 6, 13), params).fajr.getTime() -
+    p.maghrib.getTime();
+  const expectedMiddle = new Date(p.maghrib.getTime() + nightDuration / 2);
+  expect(sunnah.middleOfTheNight.getTime()).toBe(expectedMiddle.getTime());
 });
