@@ -12,6 +12,6 @@ export function shadowLength(madhab: ValueOf<typeof Madhab>) {
     case Madhab.Hanafi:
       return 2;
     default:
-      throw 'Invalid Madhab';
+      throw new Error('Invalid Madhab');
   }
 }
