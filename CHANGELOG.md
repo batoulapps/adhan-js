@@ -1,3 +1,10 @@
+## [4.4.5](https://github.com/batoulapps/adhan-js/compare/v4.4.4...v4.4.5) (2026-08-30)
+
+### Bug Fixes
+
+- **test:** correct year typo in Makkah-UmmAlQura source annotation ([e8af32e](https://github.com/batoulapps/adhan-js/commit/e8af32edbaf5ff54cbf3e6488d3bad0afa4010e8))
+- **test:** use 2018 dates matching source in Dubai-Gulf fixture ([b414ab4](https://github.com/batoulapps/adhan-js/commit/b414ab4fabcd6450cd3857845549a7768a97f076))
+
 ## [4.4.4](https://github.com/batoulapps/adhan-js/compare/v4.4.3...v4.4.4) (2026-06-13)
 
 ### Bug Fixes
