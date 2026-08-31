@@ -1,3 +1,9 @@
+## [4.4.6](https://github.com/batoulapps/adhan-js/compare/v4.4.5...v4.4.6) (2026-08-31)
+
+### Bug Fixes
+
+- make the published CommonJS build loadable by Node ([83a79c8](https://github.com/batoulapps/adhan-js/commit/83a79c823e76241502368910b9794c64ebea1de0))
+
 ## [4.4.5](https://github.com/batoulapps/adhan-js/compare/v4.4.4...v4.4.5) (2026-08-30)
 
 ### Bug Fixes
