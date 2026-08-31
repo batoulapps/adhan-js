@@ -1,3 +1,23 @@
+## [4.4.6](https://github.com/batoulapps/adhan-js/compare/v4.4.5...v4.4.6) (2026-08-31)
+
+### Bug Fixes
+
+- make the published CommonJS build loadable by Node ([83a79c8](https://github.com/batoulapps/adhan-js/commit/83a79c823e76241502368910b9794c64ebea1de0))
+
+## [4.4.5](https://github.com/batoulapps/adhan-js/compare/v4.4.4...v4.4.5) (2026-08-30)
+
+### Bug Fixes
+
+- **test:** correct year typo in Makkah-UmmAlQura source annotation ([e8af32e](https://github.com/batoulapps/adhan-js/commit/e8af32edbaf5ff54cbf3e6488d3bad0afa4010e8))
+- **test:** use 2018 dates matching source in Dubai-Gulf fixture ([b414ab4](https://github.com/batoulapps/adhan-js/commit/b414ab4fabcd6450cd3857845549a7768a97f076))
+
+## [4.4.4](https://github.com/batoulapps/adhan-js/compare/v4.4.3...v4.4.4) (2026-06-13)
+
+### Bug Fixes
+
+- **dependencies:** fix circular dependency ([92ba45a](https://github.com/batoulapps/adhan-js/commit/92ba45af189c842cb07e2465df42c4e586b1e338))
+- **prayertimes:** fix idl edge case ([8fd1d16](https://github.com/batoulapps/adhan-js/commit/8fd1d167bf460cb461368ad11fa8f3bc6ccb14c8))
+
 ## [4.4.3](https://github.com/batoulapps/adhan-js/compare/v4.4.2...v4.4.3) (2022-05-14)
 
 ### Bug Fixes

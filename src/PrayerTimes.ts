@@ -19,6 +19,10 @@ import {
 } from './PolarCircleResolution.js';
 import { ValueOf } from './TypeUtils.js';
 
+// Moonsighting Committee applies a special 1/7 night-fraction rule at high
+// latitudes (>= 55°), where angle-based Fajr/Isha may not exist.
+const HIGH_LATITUDE_THRESHOLD = 55;
+
 export default class PrayerTimes {
   fajr: Date;
   sunrise: Date;
@@ -111,7 +115,7 @@ export default class PrayerTimes {
     // special case for moonsighting committee above latitude 55
     if (
       calculationParameters.method === 'MoonsightingCommittee' &&
-      coordinates.latitude >= 55
+      coordinates.latitude >= HIGH_LATITUDE_THRESHOLD
     ) {
       nightFraction = night / 7;
       fajrTime = dateByAddingSeconds(sunriseTime, -nightFraction);
@@ -149,7 +153,7 @@ export default class PrayerTimes {
       // special case for moonsighting committee above latitude 55
       if (
         calculationParameters.method === 'MoonsightingCommittee' &&
-        coordinates.latitude >= 55
+        coordinates.latitude >= HIGH_LATITUDE_THRESHOLD
       ) {
         nightFraction = night / 7;
         ishaTime = dateByAddingSeconds(sunsetTime, nightFraction);
