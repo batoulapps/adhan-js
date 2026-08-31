@@ -14,16 +14,16 @@ jobs:
     name: Test (Node ${{ matrix.node-version }} on ${{ matrix.os }})
     strategy:
       matrix:
-        node-version: [20, 22]
+        node-version: [20, 22, 24]
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -40,10 +40,10 @@ jobs:
     needs: test_matrix
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: 'npm'
@@ -59,6 +59,6 @@ jobs:
 
       # Assumes your normal test run generates the coverage folder
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
           directory: ./coverage
