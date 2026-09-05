@@ -104,6 +104,28 @@ test('rounding a date to the closest minute', () => {
   );
   expect(date5.getMinutes()).toBe(2);
   expect(date5.getSeconds()).toBe(0);
+
+  // A time already on an exact minute is its own ceiling: rounding up must
+  // not push it a full minute later.
+  const date6 = roundedMinute(new Date(2015, 0, 1, 10, 2, 0), Rounding.Up);
+  expect(date6.getMinutes()).toBe(2);
+  expect(date6.getSeconds()).toBe(0);
+
+  // Sub-second residue (the night-portion fajr/isha path produces fractional
+  // seconds) is cleared by rounding.
+  const date7 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29, 500));
+  expect(date7.getMinutes()).toBe(2);
+  expect(date7.getSeconds()).toBe(0);
+  expect(date7.getMilliseconds()).toBe(0);
+
+  const date8 = roundedMinute(new Date(2015, 0, 1, 10, 2, 0, 500), Rounding.Up);
+  expect(date8.getMinutes()).toBe(2);
+  expect(date8.getMilliseconds()).toBe(0);
+
+  // Rounding.None keeps the instant untouched, milliseconds included.
+  const date9 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29, 500), Rounding.None);
+  expect(date9.getSeconds()).toBe(29);
+  expect(date9.getMilliseconds()).toBe(500);
 });
 
 test('adding days to date', () => {
