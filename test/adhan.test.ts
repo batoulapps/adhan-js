@@ -443,6 +443,18 @@ test('getting recommended high latitude rule', () => {
   expect(HighLatitudeRule.recommended(coords2)).toBe(
     HighLatitudeRule.SeventhOfTheNight,
   );
+
+  // The southern hemisphere mirrors the northern one: -49 needs the strong
+  // rule for exactly the same reason +49 does.
+  const coords3 = new Coordinates(-48.983226, -3.216649);
+  expect(HighLatitudeRule.recommended(coords3)).toBe(
+    HighLatitudeRule.SeventhOfTheNight,
+  );
+
+  const coords4 = new Coordinates(-45.983226, -3.216649);
+  expect(HighLatitudeRule.recommended(coords4)).toBe(
+    HighLatitudeRule.MiddleOfTheNight,
+  );
 });
 
 describe('Moonsighting Committee method with shafaq general', () => {
