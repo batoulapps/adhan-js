@@ -160,4 +160,18 @@ describe('SolarTime.afternoon guards', () => {
 
     expect(isNaN(solarTime.afternoon(1))).toBe(false);
   });
+
+  // Exercises the after-transit guard specifically: the requested shadow
+  // angle is well clear of the angular-diameter cutoff (32/60 degrees,
+  // margin ~3.2 degrees) and the day's maximum solar altitude comfortably
+  // reaches it (margin ~0.11 degrees), so neither of the other two guards
+  // is what makes this NaN — only the corrected hour angle (~12.041)
+  // falling before solar transit (~12.153) does.
+  test('is NaN when the corrected hour angle falls before solar transit despite a reachable altitude (lat -89, shadow length 0.5, 2026-03-14)', () => {
+    const coordinates = new Coordinates(-89, 0);
+    const date = new Date(Date.UTC(2026, 2, 14));
+    const solarTime = new SolarTime(date, coordinates);
+
+    expect(isNaN(solarTime.afternoon(0.5))).toBe(true);
+  });
 });
