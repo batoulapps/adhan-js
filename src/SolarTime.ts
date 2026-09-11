@@ -105,18 +105,6 @@ export default class SolarTime {
       return NaN;
     }
 
-    const maxAltitude = Astronomical.altitudeOfCelestialBody(
-      this.observer.latitude,
-      this.solar.declination,
-      0.0,
-    );
-
-    // Confirm the sun's maximum altitude on this day actually reaches the
-    // computed angle.
-    if (maxAltitude < angle) {
-      return NaN;
-    }
-
     // Confirm the resulting time is after solar transit (noon) to ensure
     // this is afternoon.
     const result = this.hourAngle(angle, true);
