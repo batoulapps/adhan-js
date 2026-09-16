@@ -112,6 +112,11 @@ The date parameter passed in should be an instance of the JavaScript `Date` obje
 
 ```js
 const date = new Date(); // current date
+```
+
+Or, for a specific date:
+
+```js
 const date = new Date(2026, 0, 1); // specific date
 ```
 
