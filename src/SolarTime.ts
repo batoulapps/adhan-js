@@ -3,6 +3,8 @@ import type Coordinates from './Coordinates.js';
 import { degreesToRadians, radiansToDegrees } from './MathUtils.js';
 import SolarCoordinates from './SolarCoordinates.js';
 
+const SOLAR_ANGULAR_DIAMETER = 32.0 / 60.0;
+
 export default class SolarTime {
   observer: Coordinates;
   solar: SolarCoordinates;
@@ -95,6 +97,21 @@ export default class SolarTime {
     const tangent = Math.abs(this.observer.latitude - this.solar.declination);
     const inverse = shadowLength + Math.tan(degreesToRadians(tangent));
     const angle = radiansToDegrees(Math.atan(1.0 / inverse));
-    return this.hourAngle(angle, true);
+
+    // A valid afternoon time requires that the sun's disc is fully above
+    // the horizon. The hourAngle calculation is based on the midpoint of
+    // the sun's disc.
+    if (angle <= SOLAR_ANGULAR_DIAMETER / 2) {
+      return NaN;
+    }
+
+    // Confirm the resulting time is after solar transit (noon) to ensure
+    // this is afternoon.
+    const result = this.hourAngle(angle, true);
+    if (result <= this.transit) {
+      return NaN;
+    }
+
+    return result;
   }
 }
