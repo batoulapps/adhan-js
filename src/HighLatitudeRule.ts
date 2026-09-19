@@ -6,7 +6,7 @@ const HighLatitudeRule = {
   TwilightAngle: 'twilightangle',
 
   recommended(coordinates: Coordinates) {
-    if (coordinates.latitude > 48) {
+    if (Math.abs(coordinates.latitude) > 48) {
       return HighLatitudeRule.SeventhOfTheNight;
     } else {
       return HighLatitudeRule.MiddleOfTheNight;
