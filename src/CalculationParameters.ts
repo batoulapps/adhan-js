@@ -78,7 +78,9 @@ export default class CalculationParameters {
       case HighLatitudeRule.TwilightAngle:
         return { fajr: this.fajrAngle / 60, isha: this.ishaAngle / 60 };
       default:
-        throw `Invalid high latitude rule found when attempting to compute night portions: ${this.highLatitudeRule}`;
+        throw new Error(
+          `Invalid high latitude rule found when attempting to compute night portions: ${this.highLatitudeRule}`,
+        );
     }
   }
 }
