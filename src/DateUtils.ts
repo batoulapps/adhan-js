@@ -26,9 +26,20 @@ export function roundedMinute(
   const seconds = date.getUTCSeconds();
   let offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
   if (rounding === Rounding.Up) {
-    offset = 60 - seconds;
+    // A time already on an exact minute is its own ceiling; adding a full
+    // minute to it would over-round.
+    offset = (60 - seconds) % 60;
   } else if (rounding === Rounding.None) {
     offset = 0;
+  }
+
+  if (rounding !== Rounding.None) {
+    // Rounding to the minute must also clear sub-second residue: the
+    // high-latitude night-portion path (safeFajr/safeIsha) produces
+    // fractional seconds that otherwise survive into the result.
+    const rounded = dateByAddingSeconds(date, offset);
+    rounded.setUTCMilliseconds(0);
+    return rounded;
   }
 
   return dateByAddingSeconds(date, offset);
