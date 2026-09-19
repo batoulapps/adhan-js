@@ -4,6 +4,7 @@ import Coordinates from '../src/Coordinates.js';
 import HighLatitudeRule from '../src/HighLatitudeRule.js';
 import PrayerTimes from '../src/PrayerTimes.js';
 import SunnahTimes from '../src/SunnahTimes.js';
+import { Rounding } from '../src/Rounding.js';
 import { expect, test } from 'vitest';
 
 test('getting sunnah times for the New York timezone', () => {
@@ -159,4 +160,22 @@ test('getting sunnah times for Europe DST change', () => {
       .tz('Europe/Paris')
       .format('M/D/YY, h:mm A'),
   ).toBe('10/25/15, 2:42 AM');
+});
+
+test('sunnah times honor the rounding setting of the calculation parameters', () => {
+  const coords = new Coordinates(35.775, -78.6336);
+  const date = new Date(2015, 6, 12);
+
+  // With rounding disabled, the prayer times keep their seconds and the
+  // sunnah times must not silently round them back to the nearest minute.
+  const params = CalculationMethod.NorthAmerica();
+  params.rounding = Rounding.None;
+  const p = new PrayerTimes(coords, date, params);
+  const sunnah = new SunnahTimes(p);
+
+  const nightDuration =
+    new PrayerTimes(coords, new Date(2015, 6, 13), params).fajr.getTime() -
+    p.maghrib.getTime();
+  const expectedMiddle = new Date(p.maghrib.getTime() + nightDuration / 2);
+  expect(sunnah.middleOfTheNight.getTime()).toBe(expectedMiddle.getTime());
 });
