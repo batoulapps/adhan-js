@@ -23,6 +23,11 @@ import { ValueOf } from './TypeUtils.js';
 // latitudes (>= 55°), where angle-based Fajr/Isha may not exist.
 const HIGH_LATITUDE_THRESHOLD = 55;
 
+// Near the polar circle, the afternoon solar angle can be technically valid
+// (see SolarTime.afternoon) yet land only moments after solar transit,
+// which is not a usable asr time. Require some separation from dhuhr.
+const MIN_PRAYER_GAP_MS = 5 * 60 * 1000;
+
 export default class PrayerTimes {
   fajr: Date;
   sunrise: Date;
@@ -234,6 +239,14 @@ export default class PrayerTimes {
       dateByAddingMinutes(ishaTime, ishaAdjustment),
       calculationParameters.rounding,
     );
+
+    if (
+      !isNaN(this.dhuhr.getTime()) &&
+      !isNaN(this.asr.getTime()) &&
+      this.asr.getTime() - this.dhuhr.getTime() < MIN_PRAYER_GAP_MS
+    ) {
+      this.asr = new Date(NaN);
+    }
   }
 
   timeForPrayer(prayer: ValueOf<typeof Prayer>) {
