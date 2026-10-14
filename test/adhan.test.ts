@@ -940,6 +940,43 @@ describe('Polar circle resolution cases', () => {
   });
 });
 
+describe('Asr when the sun never rises high enough to cast the defining shadow', () => {
+  // Deep winter above ~66 degrees: the sun clears the horizon (so sunrise and
+  // sunset exist and no polar-circle resolution engages) but its noon
+  // altitude is at or below zero, i.e. |latitude - declination| >= 90. The
+  // shadow-length condition that defines asr never occurs on such days.
+  // afternoon()'s tangent used to flip sign there and yield a plausible-
+  // looking Date that could land before dhuhr, after maghrib, or on the next
+  // calendar day entirely.
+  test('reports an invalid asr instead of a time on the wrong day', () => {
+    // Tromso, Norway - on 2026-01-19 the sun rises (maghrib exists) but its
+    // noon altitude is below zero; asr used to come back as Jan 21 00:55 UTC,
+    // two calendar days after the dhuhr it belongs to.
+    const tromso = new Coordinates(69.6492, 18.9553);
+    const params = CalculationMethod.MuslimWorldLeague();
+    const p = new PrayerTimes(tromso, new Date(2026, 0, 19), params);
+
+    expect(isValidDate(p.dhuhr)).toBe(true);
+    expect(isValidDate(p.maghrib)).toBe(true);
+    expect(isValidDate(p.asr)).toBe(false);
+  });
+
+  test('keeps asr on days and latitudes where it exists', () => {
+    const tromso = new Coordinates(69.6492, 18.9553);
+    const params = CalculationMethod.MuslimWorldLeague();
+    const midsummerish = new PrayerTimes(tromso, new Date(2026, 8, 15), params);
+    expect(isValidDate(midsummerish.asr)).toBe(true);
+    expect(midsummerish.asr > midsummerish.dhuhr).toBe(true);
+    expect(midsummerish.asr < midsummerish.maghrib).toBe(true);
+
+    const london = new Coordinates(51.5074, -0.1278);
+    const winter = new PrayerTimes(london, new Date(2026, 0, 14), params);
+    expect(isValidDate(winter.asr)).toBe(true);
+    expect(winter.asr > winter.dhuhr).toBe(true);
+    expect(winter.asr < winter.maghrib).toBe(true);
+  });
+});
+
 test('calculating prayer times near the International Date Line', () => {
   // Coordinates near the International Date Line (longitude ~177.24°E).
   // Prior to the approximateTransit fix, the solar transit would be miscalculated

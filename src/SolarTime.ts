@@ -93,6 +93,14 @@ export default class SolarTime {
   afternoon(shadowLength: number) {
     // TODO source shadow angle calculation
     const tangent = Math.abs(this.observer.latitude - this.solar.declination);
+    if (tangent >= 90) {
+      // The sun's noon altitude (90 - tangent) is at or below the horizon, so
+      // the shadow condition that defines asr never occurs. Past this point
+      // Math.tan also flips sign, which used to produce a plausible-looking
+      // but wrong time - sometimes on the next calendar day. Report
+      // "no such time" instead, as sunrise/sunset already do.
+      return NaN;
+    }
     const inverse = shadowLength + Math.tan(degreesToRadians(tangent));
     const angle = radiansToDegrees(Math.atan(1.0 / inverse));
     return this.hourAngle(angle, true);
