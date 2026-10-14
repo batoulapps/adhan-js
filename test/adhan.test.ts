@@ -35,8 +35,10 @@ test('Verifying the night portion defined by the high latitude rule', () => {
     }
   ).fake;
 
-  expect(() => p4.nightPortions().fajr).toThrow();
-  expect(() => p4.nightPortions().isha).toThrow();
+  expect(() => p4.nightPortions().fajr).toThrow(Error);
+  expect(() => p4.nightPortions().isha).toThrow(
+    /Invalid high latitude rule/,
+  );
 });
 
 test('Verifying the angles defined by the calculation method', () => {
@@ -397,7 +399,7 @@ test('getting the madhab shadow length', () => {
   expect(shadowLength(Madhab.Hanafi)).toBe(2);
   expect(() => {
     shadowLength((Madhab as unknown as { Foo: ValueOf<typeof Madhab> }).Foo);
-  }).toThrow();
+  }).toThrow(Error);
 });
 
 test('adjusting prayer time with high latitude rule', () => {
