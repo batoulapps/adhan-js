@@ -40,7 +40,7 @@ export default class CalculationParameters {
   // where daylight or night may persist for more than 24 hours depending
   // on the season
   polarCircleResolution: ValueOf<typeof PolarCircleResolution> =
-    PolarCircleResolution.Unresolved;
+    PolarCircleResolution.AqrabBalad;
 
   // How seconds are rounded when calculating prayer times
   rounding: ValueOf<typeof Rounding> = Rounding.Nearest;

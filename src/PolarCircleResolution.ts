@@ -1,6 +1,10 @@
 import Coordinates from './Coordinates.js';
-import SolarTime from './SolarTime.js';
-import { dateByAddingDays } from './DateUtils.js';
+import type CalculationParameters from './CalculationParameters.js';
+import {
+  computePrayerTimesForDay,
+  shiftPrayerTimesByDays,
+} from './PrayerTimesCalculation.js';
+import type { PrayerTimesResult } from './PrayerTimesCalculation.js';
 import { ValueOf } from './TypeUtils.js';
 
 export const PolarCircleResolution = {
@@ -10,115 +14,97 @@ export const PolarCircleResolution = {
 } as const;
 
 const LATITUDE_VARIATION_STEP = 0.5; // Degrees to add/remove at each resolution step
-const UNSAFE_LATITUDE = 65; // Based on https://en.wikipedia.org/wiki/Midnight_sun
-
-const isValidSolarTime = (solarTime: SolarTime) =>
-  !isNaN(solarTime.sunrise) && !isNaN(solarTime.sunset);
 
 const aqrabYaumResolver = (
   coordinates: Coordinates,
   date: Date,
+  calculationParameters: CalculationParameters,
   daysAdded = 1,
   direction = 1,
-): {
-  date: Date;
-  tomorrow: Date;
-  coordinates: Coordinates;
-  solarTime: SolarTime;
-  tomorrowSolarTime: SolarTime;
-} | null => {
+): PrayerTimesResult | null => {
   if (daysAdded > Math.ceil(365 / 2)) {
     return null;
   }
+
   const testDate = new Date(date.getTime());
   testDate.setDate(testDate.getDate() + direction * daysAdded);
-  const tomorrow = dateByAddingDays(testDate, 1);
-  const solarTime = new SolarTime(testDate, coordinates);
-  const tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
 
-  if (!isValidSolarTime(solarTime) || !isValidSolarTime(tomorrowSolarTime)) {
+  const result = computePrayerTimesForDay(
+    coordinates,
+    testDate,
+    calculationParameters,
+  );
+  if (!result.isValid) {
     return aqrabYaumResolver(
       coordinates,
       date,
+      calculationParameters,
       daysAdded + (direction > 0 ? 0 : 1),
       -direction,
     );
   }
 
-  return {
-    date,
-    tomorrow,
-    coordinates,
-    solarTime,
-    tomorrowSolarTime,
-  };
+  // testDate is direction*daysAdded days from date; shift back by that
+  // amount to relabel the candidate day's times onto the requested date.
+  return shiftPrayerTimesByDays(result, -(direction * daysAdded));
 };
 
 const aqrabBaladResolver = (
   coordinates: Coordinates,
   date: Date,
   latitude: number,
-): {
-  date: Date;
-  tomorrow: Date;
-  coordinates: Coordinates;
-  solarTime: SolarTime;
-  tomorrowSolarTime: SolarTime;
-} | null => {
-  const solarTime = new SolarTime(date, { ...coordinates, latitude });
-  const tomorrow = dateByAddingDays(date, 1);
-  const tomorrowSolarTime = new SolarTime(tomorrow, {
-    ...coordinates,
-    latitude,
-  });
-  if (!isValidSolarTime(solarTime) || !isValidSolarTime(tomorrowSolarTime)) {
-    return Math.abs(latitude) >= UNSAFE_LATITUDE
-      ? aqrabBaladResolver(
-          coordinates,
-          date,
-          latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP,
-        )
-      : null;
+  calculationParameters: CalculationParameters,
+): PrayerTimesResult | null => {
+  const candidateCoordinates = new Coordinates(latitude, coordinates.longitude);
+  const result = computePrayerTimesForDay(
+    candidateCoordinates,
+    date,
+    calculationParameters,
+  );
+
+  if (!result.isValid) {
+    // The equator is the terminal search value: moving past it would flip
+    // into the other hemisphere, which has the wrong season's solar
+    // geometry for the requested date.
+    if (latitude === 0) {
+      return null;
+    }
+
+    const nextLatitude =
+      Math.sign(latitude) *
+      Math.max(0, Math.abs(latitude) - LATITUDE_VARIATION_STEP);
+    return aqrabBaladResolver(
+      coordinates,
+      date,
+      nextLatitude,
+      calculationParameters,
+    );
   }
 
-  return {
-    date,
-    tomorrow,
-    coordinates: new Coordinates(latitude, coordinates.longitude),
-    solarTime,
-    tomorrowSolarTime,
-  };
+  return result;
 };
 
-export const polarCircleResolvedValues = (
+export const resolvePolarCircle = (
   resolver: ValueOf<typeof PolarCircleResolution>,
-  date: Date,
   coordinates: Coordinates,
-) => {
-  const defaultReturn = {
-    date,
-    tomorrow: dateByAddingDays(date, 1),
-    coordinates,
-    solarTime: new SolarTime(date, coordinates),
-    tomorrowSolarTime: new SolarTime(dateByAddingDays(date, 1), coordinates),
-  };
-
+  date: Date,
+  calculationParameters: CalculationParameters,
+): PrayerTimesResult | null => {
   switch (resolver) {
     case PolarCircleResolution.AqrabYaum: {
-      return aqrabYaumResolver(coordinates, date) || defaultReturn;
+      return aqrabYaumResolver(coordinates, date, calculationParameters);
     }
     case PolarCircleResolution.AqrabBalad: {
       const { latitude } = coordinates;
-      return (
-        aqrabBaladResolver(
-          coordinates,
-          date,
-          latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP,
-        ) || defaultReturn
+      return aqrabBaladResolver(
+        coordinates,
+        date,
+        latitude - Math.sign(latitude) * LATITUDE_VARIATION_STEP,
+        calculationParameters,
       );
     }
     default: {
-      return defaultReturn;
+      return null;
     }
   }
 };

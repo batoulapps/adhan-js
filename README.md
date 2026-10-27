@@ -93,6 +93,10 @@ date, and calculation parameters.
 
 ```js
 const prayerTimes = new PrayerTimes(coordinates, date, params);
+
+if (prayerTimes.isValid) {
+  // prayerTimes.fajr, .sunrise, .dhuhr, .asr, .maghrib, .isha are valid
+}
 ```
 
 ### Initialization parameters
@@ -140,6 +144,33 @@ Temporal.Instant.fromEpochMilliseconds(prayerTimes.fajr)
   .toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' });
 ```
 
+#### Polar circle locations
+
+Near the polar circles (latitudes beyond ±66.56°) the sun may not rise or
+set, or may not reach the angle required for a given prayer, on certain days
+of the year. By default, the `polarCircleResolution` calculation parameter is
+set to `AqrabBalad`, which automatically substitutes the closest latitude
+(at the same longitude) for which prayer times can be computed, so this is
+handled for you in almost every case.
+
+It's still possible, though rare, for a substitute to not be found (or if
+you've set `polarCircleResolution` to `Unresolved` yourself), in which case
+`PrayerTimes` cannot compute that day's times and every prayer time field is
+set to an invalid `Date`. Check `prayerTimes.isValid` before using the times:
+
+```js
+const prayerTimes = new PrayerTimes(coordinates, date, params);
+
+if (prayerTimes.isValid) {
+  // prayerTimes.fajr, .sunrise, .dhuhr, .asr, .maghrib, .isha are valid
+} else {
+  // Prayer times could not be determined for this date/location.
+}
+```
+
+See [`polarCircleResolution`](METHODS.md) for the other available
+resolution strategies.
+
 ### Convenience Utilities
 
 The `PrayerTimes` object has functions for getting the current prayer and the next prayer. You can also get the time for a specified prayer, making it easier to dynamically show countdowns until the next prayer.
@@ -170,6 +201,21 @@ var lastThirdOfTheNight = Temporal.Instant.fromEpochMilliseconds(
 )
   .toZonedDateTimeISO('America/New_York')
   .toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' });
+```
+
+`SunnahTimes` internally computes a second `PrayerTimes` for the following
+day (using the same coordinates and calculation parameters) to determine the
+length of the night. That computation can fail independently of the
+`PrayerTimes` you passed in - near the polar circle, today's times may be
+valid while tomorrow's aren't (or vice versa) - so check `sunnahTimes.isValid`
+before using these times, even if `prayerTimes.isValid` was already `true`:
+
+```js
+const sunnahTimes = new SunnahTimes(prayerTimes);
+
+if (sunnahTimes.isValid) {
+  // sunnahTimes.middleOfTheNight, .lastThirdOfTheNight are valid
+}
 ```
 
 ### Qibla Direction

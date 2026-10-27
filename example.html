@@ -84,7 +84,6 @@
         new Date(instant.epochMilliseconds),
         params,
       );
-      const sunnahTimes = new adhan.SunnahTimes(prayerTimes);
 
       const format = (jsDate) => {
         if (!jsDate) return '--:--';
@@ -104,33 +103,45 @@
       document.getElementById('meta-display').innerHTML =
         `${dateString}<br>Qibla: ${adhan.Qibla(coordinates).toFixed(2)}°`;
 
-      // Times population
-      document.getElementById('fajr').textContent = format(prayerTimes.fajr);
-      document.getElementById('sunrise').textContent = format(
-        prayerTimes.sunrise,
-      );
-      document.getElementById('dhuhr').textContent = format(prayerTimes.dhuhr);
-      document.getElementById('asr').textContent = format(prayerTimes.asr);
-      document.getElementById('maghrib').textContent = format(
-        prayerTimes.maghrib,
-      );
-      document.getElementById('isha').textContent = format(prayerTimes.isha);
+      // Near the polar circles, prayer times may not be computable for a
+      // given date (e.g. the sun never rises/sets). Always check `isValid`
+      // before reading the individual prayer time fields.
+      if (prayerTimes.isValid) {
+        const sunnahTimes = new adhan.SunnahTimes(prayerTimes);
 
-      document.getElementById('midnight').textContent = format(
-        sunnahTimes.middleOfTheNight,
-      );
-      document.getElementById('last-third').textContent = format(
-        sunnahTimes.lastThirdOfTheNight,
-      );
+        // Times population
+        document.getElementById('fajr').textContent = format(prayerTimes.fajr);
+        document.getElementById('sunrise').textContent = format(
+          prayerTimes.sunrise,
+        );
+        document.getElementById('dhuhr').textContent = format(
+          prayerTimes.dhuhr,
+        );
+        document.getElementById('asr').textContent = format(prayerTimes.asr);
+        document.getElementById('maghrib').textContent = format(
+          prayerTimes.maghrib,
+        );
+        document.getElementById('isha').textContent = format(prayerTimes.isha);
 
-      // Current & Next Prayer Logic
-      const current = prayerTimes.currentPrayer();
-      const next = prayerTimes.nextPrayer();
-      const nextTime = prayerTimes.timeForPrayer(next);
+        document.getElementById('midnight').textContent = format(
+          sunnahTimes.middleOfTheNight,
+        );
+        document.getElementById('last-third').textContent = format(
+          sunnahTimes.lastThirdOfTheNight,
+        );
 
-      document.getElementById('current-prayer').textContent = current;
-      document.getElementById('next-prayer').textContent =
-        `${next} @ ${format(nextTime)}`;
+        // Current & Next Prayer Logic
+        const current = prayerTimes.currentPrayer();
+        const next = prayerTimes.nextPrayer();
+        const nextTime = prayerTimes.timeForPrayer(next);
+
+        document.getElementById('current-prayer').textContent = current;
+        document.getElementById('next-prayer').textContent =
+          `${next} @ ${format(nextTime)}`;
+      } else {
+        document.getElementById('timetable').innerHTML =
+          '<p>Prayer times are not available for this location and date.</p>';
+      }
     </script>
   </body>
 </html>

@@ -39,6 +39,13 @@ test('Verifying the night portion defined by the high latitude rule', () => {
   expect(() => p4.nightPortions().isha).toThrow();
 });
 
+test('default polarCircleResolution is AqrabBalad', () => {
+  const params = new CalculationParameters('Other', 18, 18);
+  expect(params.polarCircleResolution).toBe(
+    polarCircleResolver.PolarCircleResolution.AqrabBalad,
+  );
+});
+
 test('Verifying the angles defined by the calculation method', () => {
   const p1 = CalculationMethod.MuslimWorldLeague();
   expect(p1.fajrAngle).toBe(18);
@@ -771,6 +778,8 @@ describe('Polar circle resolution cases', () => {
   const ArjeplogSweden = new Coordinates(66.7222444, 17.7189);
   const AmundsenScottAntarctic = new Coordinates(-84.996, 0.01013);
   const unresolvedParams = CalculationMethod.MuslimWorldLeague();
+  unresolvedParams.polarCircleResolution =
+    polarCircleResolver.PolarCircleResolution.Unresolved;
   const aqrabBaladParams = CalculationMethod.MuslimWorldLeague();
   aqrabBaladParams.polarCircleResolution =
     polarCircleResolver.PolarCircleResolution.AqrabBalad;
@@ -778,9 +787,25 @@ describe('Polar circle resolution cases', () => {
   aqrabYaumParams.polarCircleResolution =
     polarCircleResolver.PolarCircleResolution.AqrabYaum;
 
+  // AqrabYaum borrows another day's solar geometry, but must always relabel
+  // the result onto the originally requested calendar date - otherwise
+  // currentPrayer()/nextPrayer() would compare "now" against the wrong day
+  // entirely. This checks the calendar date directly rather than relying on
+  // ordering (fajr < sunrise < ... < isha), since ordering alone doesn't
+  // guarantee which day the times landed on. Dhuhr (solar noon) is used here
+  // since it's the field least likely to sit near a UTC day boundary.
+  const expectDhuhrOnRequestedDate = (
+    prayersTimes: PrayerTimes,
+    date: Date,
+  ) => {
+    expect(prayersTimes.dhuhr.getUTCFullYear()).toBe(date.getFullYear());
+    expect(prayersTimes.dhuhr.getUTCMonth()).toBe(date.getMonth());
+    expect(prayersTimes.dhuhr.getUTCDate()).toBe(date.getDate());
+  };
+
   describe('Regular computation', () => {
     it('should not attempt to do any resolution if the resolver is set to unresolved', () => {
-      const spy = vi.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+      const spy = vi.spyOn(polarCircleResolver, 'resolvePolarCircle');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new PrayerTimes(
         ArjeplogSweden,
@@ -798,7 +823,7 @@ describe('Polar circle resolution cases', () => {
     });
 
     it('should not attempt to do any resolution if the date is affected neither by the polar night nor by the midnight sun', () => {
-      const spy = vi.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+      const spy = vi.spyOn(polarCircleResolver, 'resolvePolarCircle');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new PrayerTimes(
         ArjeplogSweden,
@@ -816,7 +841,7 @@ describe('Polar circle resolution cases', () => {
     });
 
     it('should not make any search if the location is outside the polar circles', () => {
-      const spy = vi.spyOn(polarCircleResolver, 'polarCircleResolvedValues');
+      const spy = vi.spyOn(polarCircleResolver, 'resolvePolarCircle');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const prayersTimes1 = new PrayerTimes(
         regularCoordinates,
@@ -842,6 +867,7 @@ describe('Polar circle resolution cases', () => {
         unresolvedParams,
       );
 
+      expect(prayersTimes.isValid).toBe(false);
       prayersToCheck.forEach((prayerName) => {
         expect(isValidDate(prayersTimes[prayerName])).toBe(false);
       });
@@ -854,6 +880,7 @@ describe('Polar circle resolution cases', () => {
         aqrabBaladParams,
       );
 
+      expect(prayersTimes.isValid).toBe(true);
       prayersToCheck.forEach((prayerName) => {
         expect(isValidDate(prayersTimes[prayerName])).toBe(true);
       });
@@ -866,9 +893,11 @@ describe('Polar circle resolution cases', () => {
         aqrabYaumParams,
       );
 
+      expect(prayersTimes.isValid).toBe(true);
       prayersToCheck.forEach((prayerName) => {
         expect(isValidDate(prayersTimes[prayerName])).toBe(true);
       });
+      expectDhuhrOnRequestedDate(prayersTimes, dateAffectedByMidnightSun);
     });
   });
 
@@ -880,6 +909,7 @@ describe('Polar circle resolution cases', () => {
         unresolvedParams,
       );
 
+      expect(prayersTimes.isValid).toBe(false);
       prayersToCheck.forEach((prayerName) => {
         expect(isValidDate(prayersTimes[prayerName])).toBe(false);
       });
@@ -892,6 +922,7 @@ describe('Polar circle resolution cases', () => {
         aqrabBaladParams,
       );
 
+      expect(prayersTimes.isValid).toBe(true);
       prayersToCheck.forEach((prayerName) => {
         expect(isValidDate(prayersTimes[prayerName])).toBe(true);
       });
@@ -904,9 +935,11 @@ describe('Polar circle resolution cases', () => {
         aqrabYaumParams,
       );
 
+      expect(prayersTimes.isValid).toBe(true);
       prayersToCheck.forEach((prayerName) => {
         expect(isValidDate(prayersTimes[prayerName])).toBe(true);
       });
+      expectDhuhrOnRequestedDate(prayersTimes, dateAffectedByPolarNight);
     });
 
     test('calculating times for the polar circle', () => {
@@ -920,7 +953,7 @@ describe('Polar circle resolution cases', () => {
       const p = new PrayerTimes(coordinates, date, params);
       expect(
         moment(p.fajr).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
-      ).toBe('June 21, 2020 12:40 AM');
+      ).toBe('June 21, 2020 12:48 AM');
       expect(
         moment(p.sunrise).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
       ).toBe('June 21, 2020 12:54 AM');
@@ -932,12 +965,99 @@ describe('Polar circle resolution cases', () => {
       ).toBe('June 21, 2020 5:49 PM');
       expect(
         moment(p.maghrib).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
-      ).toBe('June 21, 2020 11:36 PM');
+      ).toBe('June 22, 2020 12:30 AM');
       expect(
         moment(p.isha).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
-      ).toBe('June 21, 2020 11:51 PM');
+      ).toBe('June 22, 2020 12:37 AM');
     });
   });
+});
+
+test('AqrabYaum resolution produces ordered prayer times when sun cannot reach Asr altitude at 67N in January', () => {
+  const coordinates = new Coordinates(67.37800510772394, -67.26246475893095);
+  const params = CalculationMethod.MuslimWorldLeague();
+  params.polarCircleResolution =
+    polarCircleResolver.PolarCircleResolution.AqrabYaum;
+
+  for (let day = 2; day <= 8; day++) {
+    const date = new Date(2026, 0, day);
+    const p = new PrayerTimes(coordinates, date, params);
+    expect(p.fajr.getTime()).toBeLessThan(p.sunrise.getTime());
+    expect(p.sunrise.getTime()).toBeLessThan(p.dhuhr.getTime());
+    expect(p.dhuhr.getTime()).toBeLessThan(p.asr.getTime());
+    expect(p.asr.getTime()).toBeLessThan(p.maghrib.getTime());
+    expect(p.maghrib.getTime()).toBeLessThan(p.isha.getTime());
+  }
+});
+
+test('prayer times are ordered when sun barely clears the Asr altitude threshold at 67N without polar resolution', () => {
+  const coordinates = new Coordinates(67.37800510772394, -67.26246475893095);
+  const params = CalculationMethod.MuslimWorldLeague();
+  params.polarCircleResolution =
+    polarCircleResolver.PolarCircleResolution.Unresolved;
+
+  const date = new Date(2026, 0, 8);
+  const p = new PrayerTimes(coordinates, date, params);
+  expect(p.fajr.getTime()).toBeLessThan(p.sunrise.getTime());
+  expect(p.sunrise.getTime()).toBeLessThan(p.dhuhr.getTime());
+  expect(p.dhuhr.getTime()).toBeLessThan(p.asr.getTime());
+  expect(p.asr.getTime()).toBeLessThan(p.maghrib.getTime());
+  expect(p.maghrib.getTime()).toBeLessThan(p.isha.getTime());
+});
+
+test('asr is NaN when sun cannot reach the required altitude at 67N in early January', () => {
+  const coordinates = new Coordinates(67.37800510772394, -67.26246475893095);
+  const params = CalculationMethod.MuslimWorldLeague();
+  params.polarCircleResolution =
+    polarCircleResolver.PolarCircleResolution.Unresolved;
+
+  const date = new Date(2026, 0, 5);
+  const p = new PrayerTimes(coordinates, date, params);
+  expect(isNaN(p.asr.getTime())).toBe(true);
+});
+
+test("isValid is false when a resolver is configured but resolution still can't find valid times", () => {
+  // A misconfigured ishaInterval (below the 5 minute minimum gap) makes
+  // maghrib and isha collide at any latitude or date, so neither AqrabYaum
+  // nor AqrabBalad can ever find a valid substitute.
+  const coordinates = new Coordinates(70, 10);
+  const date = new Date(2026, 0, 1);
+
+  const aqrabYaumParams = CalculationMethod.MuslimWorldLeague();
+  aqrabYaumParams.polarCircleResolution =
+    polarCircleResolver.PolarCircleResolution.AqrabYaum;
+  aqrabYaumParams.ishaInterval = 1;
+  const p1 = new PrayerTimes(coordinates, date, aqrabYaumParams);
+  expect(p1.isValid).toBe(false);
+
+  const aqrabBaladParams = CalculationMethod.MuslimWorldLeague();
+  aqrabBaladParams.polarCircleResolution =
+    polarCircleResolver.PolarCircleResolution.AqrabBalad;
+  aqrabBaladParams.ishaInterval = 1;
+  const p2 = new PrayerTimes(coordinates, date, aqrabBaladParams);
+  expect(p2.isValid).toBe(false);
+});
+
+test('asr is ordered correctly at 86N on 2025-03-11 with AqrabYaum', () => {
+  const coordinates = new Coordinates(86.0, -165.0);
+  const params = CalculationMethod.MuslimWorldLeague();
+  params.polarCircleResolution =
+    polarCircleResolver.PolarCircleResolution.AqrabYaum;
+  const date = new Date(2025, 2, 11);
+  const p = new PrayerTimes(coordinates, date, params);
+  expect(p.dhuhr.getTime()).toBeLessThan(p.asr.getTime());
+  expect(p.asr.getTime()).toBeLessThan(p.maghrib.getTime());
+});
+
+test('asr is ordered correctly at 69.8N on 2025-11-07 with AqrabYaum', () => {
+  const coordinates = new Coordinates(69.8, -178.0);
+  const params = CalculationMethod.MuslimWorldLeague();
+  params.polarCircleResolution =
+    polarCircleResolver.PolarCircleResolution.AqrabYaum;
+  const date = new Date(2025, 10, 7);
+  const p = new PrayerTimes(coordinates, date, params);
+  expect(p.dhuhr.getTime()).toBeLessThan(p.asr.getTime());
+  expect(p.asr.getTime()).toBeLessThan(p.maghrib.getTime());
 });
 
 test('calculating prayer times near the International Date Line', () => {
