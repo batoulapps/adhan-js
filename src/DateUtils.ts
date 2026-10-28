@@ -63,3 +63,12 @@ export function dayOfYear(date: Date) {
 export function isValidDate(date: Date) {
   return date instanceof Date && !isNaN(date.valueOf());
 }
+
+export const MIN_PRAYER_GAP_MS = 5 * 60 * 1000;
+
+export function timesInOrder(a: Date, b: Date): boolean {
+  if (!isValidDate(a) || !isValidDate(b)) {
+    return false;
+  }
+  return b.getTime() - a.getTime() >= MIN_PRAYER_GAP_MS;
+}

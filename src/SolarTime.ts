@@ -91,10 +91,35 @@ export default class SolarTime {
   }
 
   afternoon(shadowLength: number) {
-    // TODO source shadow angle calculation
     const tangent = Math.abs(this.observer.latitude - this.solar.declination);
     const inverse = shadowLength + Math.tan(degreesToRadians(tangent));
     const angle = radiansToDegrees(Math.atan(1.0 / inverse));
-    return this.hourAngle(angle, true);
+
+    // A valid afternoon time requires that the sun's disc is fully above
+    // the horizon. The hourAngle calcuation is based on the midpoint of
+    // the sun's disc.
+    const solarAngularDiameter = 32.0 / 60.0;
+    if (angle <= solarAngularDiameter / 2) {
+      return NaN;
+    }
+
+    const maxAltitude = Astronomical.altitudeOfCelestialBody(
+      this.observer.latitude,
+      this.solar.declination,
+      0,
+    );
+
+    // Confirm the sun's maximum altitude on this day actually reaches the computed angle.
+    if (maxAltitude < angle) {
+      return NaN;
+    }
+
+    // Confirm the resulting time is after solar transit (noon) to ensure this is afternoon.
+    const result = this.hourAngle(angle, true);
+    if (result <= this.transit) {
+      return NaN;
+    }
+
+    return result;
   }
 }

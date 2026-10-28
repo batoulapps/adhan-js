@@ -2,6 +2,7 @@ import moment from 'moment-timezone';
 import CalculationMethod from '../src/CalculationMethod.js';
 import Coordinates from '../src/Coordinates.js';
 import HighLatitudeRule from '../src/HighLatitudeRule.js';
+import { PolarCircleResolution } from '../src/PolarCircleResolution.js';
 import PrayerTimes from '../src/PrayerTimes.js';
 import SunnahTimes from '../src/SunnahTimes.js';
 import { expect, test } from 'vitest';
@@ -23,6 +24,7 @@ test('getting sunnah times for the New York timezone', () => {
   );
 
   const sunnah = new SunnahTimes(p1);
+  expect(sunnah.isValid).toBe(true);
   expect(
     moment(sunnah.middleOfTheNight)
       .tz('America/New_York')
@@ -159,4 +161,36 @@ test('getting sunnah times for Europe DST change', () => {
       .tz('Europe/Paris')
       .format('M/D/YY, h:mm A'),
   ).toBe('10/25/15, 2:42 AM');
+});
+
+test('isValid is false when the underlying PrayerTimes is itself invalid', () => {
+  const coords = new Coordinates(66.7222444, 17.7189); // Arjeplog, Sweden
+  const params = CalculationMethod.MuslimWorldLeague();
+  params.polarCircleResolution = PolarCircleResolution.Unresolved;
+
+  const prayerTimes = new PrayerTimes(
+    coords,
+    new Date(2020, 5, 21), // midnight sun
+    params,
+  );
+  expect(prayerTimes.isValid).toBe(false);
+
+  const sunnah = new SunnahTimes(prayerTimes);
+  expect(sunnah.isValid).toBe(false);
+});
+
+test("isValid is false when today's PrayerTimes is valid but tomorrow's independently fails to resolve", () => {
+  // June 2, 2020 is the last day before permanent midnight sun begins at this
+  // location - today's times are valid on their own, but SunnahTimes also
+  // depends on tomorrow's prayer times to compute the night's length, and
+  // tomorrow is where this location crosses into the polar circle.
+  const coords = new Coordinates(66.7222444, 17.7189); // Arjeplog, Sweden
+  const params = CalculationMethod.MuslimWorldLeague();
+  params.polarCircleResolution = PolarCircleResolution.Unresolved;
+
+  const prayerTimes = new PrayerTimes(coords, new Date(2020, 5, 2), params);
+  expect(prayerTimes.isValid).toBe(true);
+
+  const sunnah = new SunnahTimes(prayerTimes);
+  expect(sunnah.isValid).toBe(false);
 });

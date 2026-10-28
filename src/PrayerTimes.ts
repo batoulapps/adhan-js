@@ -1,28 +1,27 @@
-import SolarTime from './SolarTime.js';
-import TimeComponents from './TimeComponents.js';
 import Prayer from './Prayer.js';
-import Astronomical from './Astronomical.js';
 import CalculationParameters from './CalculationParameters.js';
 import Coordinates from './Coordinates.js';
-import {
-  dateByAddingDays,
-  dateByAddingMinutes,
-  dateByAddingSeconds,
-  dayOfYear,
-  isValidDate,
-  roundedMinute,
-} from './DateUtils.js';
-import { shadowLength } from './Madhab.js';
+import { isValidDate } from './DateUtils.js';
+import { computePrayerTimesForDay } from './PrayerTimesCalculation.js';
 import {
   PolarCircleResolution,
-  polarCircleResolvedValues,
+  resolvePolarCircle,
 } from './PolarCircleResolution.js';
 import { ValueOf } from './TypeUtils.js';
 
-// Moonsighting Committee applies a special 1/7 night-fraction rule at high
-// latitudes (>= 55°), where angle-based Fajr/Isha may not exist.
-const HIGH_LATITUDE_THRESHOLD = 55;
-
+/**
+ * Computes prayer times for a given location, date, and set of calculation
+ * parameters.
+ *
+ * Near the polar circles the sun may not rise or set, or may not reach the
+ * angle required for a given prayer, on certain days of the year. By default
+ * `calculationParameters.polarCircleResolution` is `AqrabBalad`, which
+ * automatically substitutes the closest usable latitude in these cases. If a
+ * substitute can't be found (or `polarCircleResolution` is `Unresolved`),
+ * every prayer time field below is set to an invalid `Date` (i.e.
+ * `isNaN(date.getTime())`) rather than a subset of them, so check `isValid`
+ * (or an individual field) before using the times.
+ */
 export default class PrayerTimes {
   fajr: Date;
   sunrise: Date;
@@ -37,202 +36,62 @@ export default class PrayerTimes {
     public date: Date,
     public calculationParameters: CalculationParameters,
   ) {
-    let solarTime = new SolarTime(date, coordinates);
-
-    let fajrTime: Date;
-    let sunriseTime: Date;
-    let dhuhrTime: Date;
-    let asrTime: Date;
-    let sunsetTime: Date;
-    let maghribTime: Date;
-    let ishaTime: Date;
-
-    let nightFraction;
-
-    dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
+    let result = computePrayerTimesForDay(
+      coordinates,
+      date,
+      calculationParameters,
     );
-    sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    );
-    sunsetTime = new TimeComponents(solarTime.sunset).utcDate(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    );
-    const tomorrow = dateByAddingDays(date, 1);
-    let tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
 
-    const polarCircleResolver = calculationParameters.polarCircleResolution;
     if (
-      (!isValidDate(sunriseTime) ||
-        !isValidDate(sunsetTime) ||
-        isNaN(tomorrowSolarTime.sunrise)) &&
-      polarCircleResolver !== PolarCircleResolution.Unresolved
+      !result.isValid &&
+      calculationParameters.polarCircleResolution !==
+        PolarCircleResolution.Unresolved
     ) {
-      const resolved = polarCircleResolvedValues(
-        polarCircleResolver,
-        date,
+      const resolved = resolvePolarCircle(
+        calculationParameters.polarCircleResolution,
         coordinates,
+        date,
+        calculationParameters,
       );
-      solarTime = resolved.solarTime;
-      tomorrowSolarTime = resolved.tomorrowSolarTime;
-      const dateComponents = [
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-      ] as const;
-
-      dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
-        ...dateComponents,
-      );
-      sunriseTime = new TimeComponents(solarTime.sunrise).utcDate(
-        ...dateComponents,
-      );
-      sunsetTime = new TimeComponents(solarTime.sunset).utcDate(
-        ...dateComponents,
-      );
-    }
-
-    // eslint-disable-next-line prefer-const
-    asrTime = new TimeComponents(
-      solarTime.afternoon(shadowLength(calculationParameters.madhab)),
-    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-
-    const tomorrowSunrise = new TimeComponents(
-      tomorrowSolarTime.sunrise,
-    ).utcDate(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
-    const night = (Number(tomorrowSunrise) - Number(sunsetTime)) / 1000;
-
-    fajrTime = new TimeComponents(
-      solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false),
-    ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-
-    // special case for moonsighting committee above latitude 55
-    if (
-      calculationParameters.method === 'MoonsightingCommittee' &&
-      coordinates.latitude >= HIGH_LATITUDE_THRESHOLD
-    ) {
-      nightFraction = night / 7;
-      fajrTime = dateByAddingSeconds(sunriseTime, -nightFraction);
-    }
-
-    const safeFajr = (function () {
-      if (calculationParameters.method === 'MoonsightingCommittee') {
-        return Astronomical.seasonAdjustedMorningTwilight(
-          coordinates.latitude,
-          dayOfYear(date),
-          date.getFullYear(),
-          sunriseTime,
-        );
-      } else {
-        const portion = calculationParameters.nightPortions().fajr;
-        nightFraction = portion * night;
-        return dateByAddingSeconds(sunriseTime, -nightFraction);
+      if (resolved) {
+        result = resolved;
       }
-    })();
-
-    if (isNaN(fajrTime.getTime()) || safeFajr > fajrTime) {
-      fajrTime = safeFajr;
     }
 
-    if (calculationParameters.ishaInterval > 0) {
-      ishaTime = dateByAddingMinutes(
-        sunsetTime,
-        calculationParameters.ishaInterval,
-      );
+    if (result.isValid) {
+      this.fajr = result.fajr;
+      this.sunrise = result.sunrise;
+      this.dhuhr = result.dhuhr;
+      this.asr = result.asr;
+      this.sunset = result.sunset;
+      this.maghrib = result.maghrib;
+      this.isha = result.isha;
     } else {
-      ishaTime = new TimeComponents(
-        solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true),
-      ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-
-      // special case for moonsighting committee above latitude 55
-      if (
-        calculationParameters.method === 'MoonsightingCommittee' &&
-        coordinates.latitude >= HIGH_LATITUDE_THRESHOLD
-      ) {
-        nightFraction = night / 7;
-        ishaTime = dateByAddingSeconds(sunsetTime, nightFraction);
-      }
-
-      const safeIsha = (function () {
-        if (calculationParameters.method === 'MoonsightingCommittee') {
-          return Astronomical.seasonAdjustedEveningTwilight(
-            coordinates.latitude,
-            dayOfYear(date),
-            date.getFullYear(),
-            sunsetTime,
-            calculationParameters.shafaq,
-          );
-        } else {
-          const portion = calculationParameters.nightPortions().isha;
-          nightFraction = portion * night;
-          return dateByAddingSeconds(sunsetTime, nightFraction);
-        }
-      })();
-
-      if (isNaN(ishaTime.getTime()) || safeIsha < ishaTime) {
-        ishaTime = safeIsha;
-      }
+      this.fajr = new Date(NaN);
+      this.sunrise = new Date(NaN);
+      this.dhuhr = new Date(NaN);
+      this.asr = new Date(NaN);
+      this.sunset = new Date(NaN);
+      this.maghrib = new Date(NaN);
+      this.isha = new Date(NaN);
     }
+  }
 
-    maghribTime = sunsetTime;
-    if (calculationParameters.maghribAngle) {
-      const angleBasedMaghrib = new TimeComponents(
-        solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true),
-      ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
-      if (sunsetTime < angleBasedMaghrib && ishaTime > angleBasedMaghrib) {
-        maghribTime = angleBasedMaghrib;
-      }
-    }
-
-    const fajrAdjustment =
-      (calculationParameters.adjustments.fajr || 0) +
-      (calculationParameters.methodAdjustments.fajr || 0);
-    const sunriseAdjustment =
-      (calculationParameters.adjustments.sunrise || 0) +
-      (calculationParameters.methodAdjustments.sunrise || 0);
-    const dhuhrAdjustment =
-      (calculationParameters.adjustments.dhuhr || 0) +
-      (calculationParameters.methodAdjustments.dhuhr || 0);
-    const asrAdjustment =
-      (calculationParameters.adjustments.asr || 0) +
-      (calculationParameters.methodAdjustments.asr || 0);
-    const maghribAdjustment =
-      (calculationParameters.adjustments.maghrib || 0) +
-      (calculationParameters.methodAdjustments.maghrib || 0);
-    const ishaAdjustment =
-      (calculationParameters.adjustments.isha || 0) +
-      (calculationParameters.methodAdjustments.isha || 0);
-
-    this.fajr = roundedMinute(
-      dateByAddingMinutes(fajrTime, fajrAdjustment),
-      calculationParameters.rounding,
-    );
-    this.sunrise = roundedMinute(
-      dateByAddingMinutes(sunriseTime, sunriseAdjustment),
-      calculationParameters.rounding,
-    );
-    this.dhuhr = roundedMinute(
-      dateByAddingMinutes(dhuhrTime, dhuhrAdjustment),
-      calculationParameters.rounding,
-    );
-    this.asr = roundedMinute(
-      dateByAddingMinutes(asrTime, asrAdjustment),
-      calculationParameters.rounding,
-    );
-    this.sunset = roundedMinute(sunsetTime, calculationParameters.rounding);
-    this.maghrib = roundedMinute(
-      dateByAddingMinutes(maghribTime, maghribAdjustment),
-      calculationParameters.rounding,
-    );
-    this.isha = roundedMinute(
-      dateByAddingMinutes(ishaTime, ishaAdjustment),
-      calculationParameters.rounding,
+  /**
+   * Whether all prayer times could be computed. This is false when the
+   * location and date fall inside a polar circle where the sun's position
+   * doesn't reach the angle required for one or more prayers (see the class
+   * doc comment above).
+   */
+  get isValid() {
+    return (
+      isValidDate(this.fajr) &&
+      isValidDate(this.sunrise) &&
+      isValidDate(this.dhuhr) &&
+      isValidDate(this.asr) &&
+      isValidDate(this.sunset) &&
+      isValidDate(this.maghrib) &&
+      isValidDate(this.isha)
     );
   }
 

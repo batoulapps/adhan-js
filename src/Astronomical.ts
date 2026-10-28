@@ -247,7 +247,7 @@ const Astronomical = {
     const d1 = previousDeclination;
     const d3 = nextDeclination;
 
-    /* Equation from page Astronomical Algorithms 102 */
+    /* Equation from Astronomical Algorithms page 102 */
     const Lw = coordinates.longitude * -1;
     const term1 =
       Math.sin(degreesToRadians(h0)) -
@@ -257,24 +257,39 @@ const Astronomical = {
       Math.cos(degreesToRadians(coordinates.latitude)) *
       Math.cos(degreesToRadians(d2));
     const H0 = radiansToDegrees(Math.acos(term1 / term2));
-    const m = afterTransit ? m0 + H0 / 360 : m0 - H0 / 360;
-    const Theta = unwindAngle(Theta0 + 360.985647 * m);
-    const a = unwindAngle(Astronomical.interpolateAngles(a2, a1, a3, m));
-    const delta = Astronomical.interpolate(d2, d1, d3, m);
-    const H = Theta - Lw - a;
-    const h = Astronomical.altitudeOfCelestialBody(
-      coordinates.latitude,
-      delta,
-      H,
-    );
-    const term3 = h - h0;
-    const term4 =
-      360 *
-      Math.cos(degreesToRadians(delta)) *
-      Math.cos(degreesToRadians(coordinates.latitude)) *
-      Math.sin(degreesToRadians(H));
-    const dm = term3 / term4;
-    return (m + dm) * 24;
+    let m = afterTransit ? m0 + H0 / 360 : m0 - H0 / 360;
+
+    // Astronomical Algorithms page 103 notes that the correction value of dm
+    // should be ±0.01 and to recalculate with the corrected m value if needed.
+    // Iteration is capped at 10 to account for situations where convergence doesn't occur.
+    for (let i = 0; i < 10; i++) {
+      const Theta = unwindAngle(Theta0 + 360.985647 * m);
+      const a = unwindAngle(Astronomical.interpolateAngles(a2, a1, a3, m));
+      const delta = Astronomical.interpolate(d2, d1, d3, m);
+      const H = Theta - Lw - a;
+      const h = Astronomical.altitudeOfCelestialBody(
+        coordinates.latitude,
+        delta,
+        H,
+      );
+      const dmDenominator =
+        360 *
+        Math.cos(degreesToRadians(delta)) *
+        Math.cos(degreesToRadians(coordinates.latitude)) *
+        Math.sin(degreesToRadians(H));
+      if (dmDenominator === 0) {
+        return NaN;
+      }
+      const dm = (h - h0) / dmDenominator;
+      m = m + dm;
+
+      // Stop iteration once the correction value of dm is ±0.01
+      if (Math.abs(dm) <= 0.01) {
+        break;
+      }
+    }
+
+    return m * 24;
   },
 
   /* Interpolation of a value given equidistant
