@@ -450,6 +450,16 @@ test('getting recommended high latitude rule', () => {
   expect(HighLatitudeRule.recommended(coords2)).toBe(
     HighLatitudeRule.SeventhOfTheNight,
   );
+
+  const coords3 = new Coordinates(-48.983226, -3.216649);
+  expect(HighLatitudeRule.recommended(coords3)).toBe(
+    HighLatitudeRule.SeventhOfTheNight,
+  );
+
+  const coords4 = new Coordinates(-45.983226, -3.216649);
+  expect(HighLatitudeRule.recommended(coords4)).toBe(
+    HighLatitudeRule.MiddleOfTheNight,
+  );
 });
 
 describe('Moonsighting Committee method with shafaq general', () => {
