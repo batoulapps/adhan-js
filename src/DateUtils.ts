@@ -19,30 +19,24 @@ export function dateByAddingSeconds(date: Date, seconds: number) {
   return new Date(date.getTime() + seconds * 1000);
 }
 
+const MILLISECONDS_PER_MINUTE = 60 * 1000;
+
 export function roundedMinute(
   date: Date,
   rounding: ValueOf<typeof Rounding> = Rounding.Nearest,
 ) {
-  const seconds = date.getUTCSeconds();
-  let offset = seconds >= 30 ? 60 - seconds : -1 * seconds;
-  if (rounding === Rounding.Up) {
-    // A time already on an exact minute is its own ceiling; adding a full
-    // minute to it would over-round.
-    offset = (60 - seconds) % 60;
-  } else if (rounding === Rounding.None) {
-    offset = 0;
+  if (rounding === Rounding.None) {
+    return new Date(date.getTime());
   }
 
-  if (rounding !== Rounding.None) {
-    // Rounding to the minute must also clear sub-second residue: the
-    // high-latitude night-portion path (safeFajr/safeIsha) produces
-    // fractional seconds that otherwise survive into the result.
-    const rounded = dateByAddingSeconds(date, offset);
-    rounded.setUTCMilliseconds(0);
-    return rounded;
-  }
-
-  return dateByAddingSeconds(date, offset);
+  // Like the Swift and Kotlin ports, drop sub-second residue (produced by the
+  // high-latitude night-portion path) and round the whole seconds, so a time
+  // already on an exact minute is its own ceiling.
+  const seconds = Math.floor(date.getTime() / 1000);
+  const minutes = seconds / 60;
+  const rounded =
+    rounding === Rounding.Up ? Math.ceil(minutes) : Math.round(minutes);
+  return new Date(rounded * MILLISECONDS_PER_MINUTE);
 }
 
 /* Whether or not a year is a leap year (has 366 days). */

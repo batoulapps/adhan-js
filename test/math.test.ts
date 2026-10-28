@@ -118,14 +118,59 @@ test('rounding a date to the closest minute', () => {
   expect(date7.getSeconds()).toBe(0);
   expect(date7.getMilliseconds()).toBe(0);
 
+  // Like the Swift and Kotlin ports, sub-second residue is dropped before
+  // rounding up, so it doesn't push an exact minute to the next one.
   const date8 = roundedMinute(new Date(2015, 0, 1, 10, 2, 0, 500), Rounding.Up);
   expect(date8.getMinutes()).toBe(2);
+  expect(date8.getSeconds()).toBe(0);
   expect(date8.getMilliseconds()).toBe(0);
 
+  const date12 = roundedMinute(
+    new Date(2015, 0, 1, 10, 2, 1, 500),
+    Rounding.Up,
+  );
+  expect(date12.getMinutes()).toBe(3);
+  expect(date12.getMilliseconds()).toBe(0);
+
+  const date10 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29, 999));
+  expect(date10.getMinutes()).toBe(2);
+  const date11 = roundedMinute(new Date(2015, 0, 1, 10, 2, 30));
+  expect(date11.getMinutes()).toBe(3);
+
   // Rounding.None keeps the instant untouched, milliseconds included.
-  const date9 = roundedMinute(new Date(2015, 0, 1, 10, 2, 29, 500), Rounding.None);
+  const date9 = roundedMinute(
+    new Date(2015, 0, 1, 10, 2, 29, 500),
+    Rounding.None,
+  );
   expect(date9.getSeconds()).toBe(29);
   expect(date9.getMilliseconds()).toBe(500);
+});
+
+test('rounding a date before 1970 to the closest minute', () => {
+  const instant = new Date(Date.UTC(1960, 5, 15, 4, 32, 0, 500));
+  expect(roundedMinute(instant).toISOString()).toBe('1960-06-15T04:32:00.000Z');
+  expect(roundedMinute(instant, Rounding.Up).toISOString()).toBe(
+    '1960-06-15T04:32:00.000Z',
+  );
+
+  const pastMinute = new Date(Date.UTC(1960, 5, 15, 4, 32, 1, 500));
+  expect(roundedMinute(pastMinute, Rounding.Up).toISOString()).toBe(
+    '1960-06-15T04:33:00.000Z',
+  );
+
+  const exact = new Date(Date.UTC(1960, 5, 15, 4, 32, 0));
+  expect(roundedMinute(exact, Rounding.Up).toISOString()).toBe(
+    '1960-06-15T04:32:00.000Z',
+  );
+
+  const halfway = new Date(Date.UTC(1960, 5, 15, 4, 32, 30));
+  expect(roundedMinute(halfway).toISOString()).toBe('1960-06-15T04:33:00.000Z');
+});
+
+test('rounding an invalid date keeps it invalid', () => {
+  for (const rounding of Object.values(Rounding)) {
+    expect(roundedMinute(new Date(NaN), rounding).getTime()).toBeNaN();
+  }
 });
 
 test('adding days to date', () => {
