@@ -1,5 +1,6 @@
 import moment from 'moment-timezone';
 import CalculationMethod from '../src/CalculationMethod.js';
+import { dateByAddingSeconds, roundedMinute } from '../src/DateUtils.js';
 import Coordinates from '../src/Coordinates.js';
 import HighLatitudeRule from '../src/HighLatitudeRule.js';
 import { PolarCircleResolution } from '../src/PolarCircleResolution.js';
@@ -199,17 +200,55 @@ test("isValid is false when today's PrayerTimes is valid but tomorrow's independ
 test('sunnah times honor the rounding setting of the calculation parameters', () => {
   const coords = new Coordinates(35.775, -78.6336);
   const date = new Date(2015, 6, 12);
+  const nextDate = new Date(2015, 6, 13);
+
+  // Mirrors the unrounded computation in SunnahTimes.
+  const exactSunnahTimes = (p: PrayerTimes, next: PrayerTimes) => {
+    const nightDuration = (next.fajr.getTime() - p.maghrib.getTime()) / 1000;
+    return {
+      middleOfTheNight: dateByAddingSeconds(p.maghrib, nightDuration / 2),
+      lastThirdOfTheNight: dateByAddingSeconds(
+        p.maghrib,
+        nightDuration * (2 / 3),
+      ),
+    };
+  };
 
   // With rounding disabled, the prayer times keep their seconds and the
   // sunnah times must not silently round them back to the nearest minute.
-  const params = CalculationMethod.NorthAmerica();
-  params.rounding = Rounding.None;
-  const p = new PrayerTimes(coords, date, params);
-  const sunnah = new SunnahTimes(p);
+  const noneParams = CalculationMethod.NorthAmerica();
+  noneParams.rounding = Rounding.None;
+  const noneTimes = new PrayerTimes(coords, date, noneParams);
+  const noneSunnah = new SunnahTimes(noneTimes);
+  const noneExpected = exactSunnahTimes(
+    noneTimes,
+    new PrayerTimes(coords, nextDate, noneParams),
+  );
+  expect(noneSunnah.middleOfTheNight.getTime()).toBe(
+    noneExpected.middleOfTheNight.getTime(),
+  );
+  expect(noneSunnah.lastThirdOfTheNight.getTime()).toBe(
+    noneExpected.lastThirdOfTheNight.getTime(),
+  );
 
-  const nightDuration =
-    new PrayerTimes(coords, new Date(2015, 6, 13), params).fajr.getTime() -
-    p.maghrib.getTime();
-  const expectedMiddle = new Date(p.maghrib.getTime() + nightDuration / 2);
-  expect(sunnah.middleOfTheNight.getTime()).toBe(expectedMiddle.getTime());
+  // With rounding up, the sunnah times are rounded up just like the prayer
+  // times, rather than to the nearest minute.
+  const upParams = CalculationMethod.NorthAmerica();
+  upParams.rounding = Rounding.Up;
+  const upTimes = new PrayerTimes(coords, date, upParams);
+  const upSunnah = new SunnahTimes(upTimes);
+  const upExpected = exactSunnahTimes(
+    upTimes,
+    new PrayerTimes(coords, nextDate, upParams),
+  );
+  for (const key of ['middleOfTheNight', 'lastThirdOfTheNight'] as const) {
+    expect(upSunnah[key].getTime()).toBe(
+      roundedMinute(upExpected[key], Rounding.Up).getTime(),
+    );
+  }
+  // The exact last third falls 20 seconds past the minute on this date, so
+  // rounding up and rounding to the nearest minute disagree.
+  expect(upSunnah.lastThirdOfTheNight.getTime()).not.toBe(
+    roundedMinute(upExpected.lastThirdOfTheNight, Rounding.Nearest).getTime(),
+  );
 });
