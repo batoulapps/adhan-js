@@ -95,10 +95,12 @@ export default class CalculationParameters {
 
   horizonElevations() {
     const value = this.elevationFromHorizon ?? 0;
-    const elevations =
-      typeof value === 'number'
-        ? { sunrise: value, sunset: value }
-        : { sunrise: value.sunrise, sunset: value.sunset };
+    let elevations: { sunrise: number; sunset: number };
+    if (typeof value === 'number') {
+      elevations = { sunrise: value, sunset: value };
+    } else {
+      elevations = { sunrise: value.sunrise, sunset: value.sunset };
+    }
 
     for (const [key, elevation] of Object.entries(elevations)) {
       if (
