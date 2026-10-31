@@ -177,12 +177,13 @@ const Astronomical = {
 
   /* The geometric dip of the horizon in degrees, i.e. how far the visible
      horizon lies below the astronomical horizon for an observer at the given
-     height in meters above it. Terrestrial refraction is not included. */
+     height in meters above it. */
   horizonDip(elevation: number) {
     if (elevation <= 0) {
       return 0;
     }
-    /* Mean radius of the Earth from Astronomical Algorithms page 84 */
+    /* Mean radius of the Earth in meters (6371 km) from Astronomical
+       Algorithms page 84 */
     const R = 6371000;
     /* Astronomical Algorithms does not cover the dip of the horizon (page 96).
        The line of sight to the horizon is tangent to the Earth, forming a
