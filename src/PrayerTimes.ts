@@ -49,31 +49,36 @@ export default class PrayerTimes {
       Number.isFinite(coordinates.longitude) &&
       isValidDate(date);
 
-    // Compute times for the requested location and date. This only fails near
-    // the polar circles during extreme situations like midnight sun or polar
-    // night.
-    let result: PrayerTimesResult = hasValidInput
-      ? computePrayerTimesForDay(coordinates, date, calculationParameters)
-      : { isValid: false };
+    let result: PrayerTimesResult = { isValid: false };
 
-    // If the initial calculation failed, attempt polar circle resolution.
-    // AqrabBalad uses the nearest latitude that works,
-    // AqrabYaum uses the nearest day that works,
-    // and Unresolved leaves the result invalid.
-    if (
-      hasValidInput &&
-      !result.isValid &&
-      calculationParameters.polarCircleResolution !==
-        PolarCircleResolution.Unresolved
-    ) {
-      const resolved = resolvePolarCircle(
-        calculationParameters.polarCircleResolution,
+    if (hasValidInput) {
+      // Compute times for the requested location and date. This only fails
+      // near the polar circles during extreme situations like midnight sun or
+      // polar night.
+      result = computePrayerTimesForDay(
         coordinates,
         date,
         calculationParameters,
       );
-      if (resolved) {
-        result = resolved;
+
+      // If the initial calculation failed, attempt polar circle resolution.
+      // AqrabBalad uses the nearest latitude that works,
+      // AqrabYaum uses the nearest day that works,
+      // and Unresolved leaves the result invalid.
+      if (
+        !result.isValid &&
+        calculationParameters.polarCircleResolution !==
+          PolarCircleResolution.Unresolved
+      ) {
+        const resolved = resolvePolarCircle(
+          calculationParameters.polarCircleResolution,
+          coordinates,
+          date,
+          calculationParameters,
+        );
+        if (resolved) {
+          result = resolved;
+        }
       }
     }
 
