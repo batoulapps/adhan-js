@@ -42,11 +42,12 @@ export default class SolarTime {
        Algorithms page 101 */
     const solarAltitude = -50.0 / 60.0;
     // An observer elevated above the horizon sees the Sun rise earlier and set
-    // later, by the amount the visible horizon dips below the astronomical one.
+    // later, since the visible horizon is lower and the Sun's rays are
+    // refracted further.
     const sunriseAltitude =
-      solarAltitude - Astronomical.horizonDip(sunriseElevation);
+      solarAltitude - Astronomical.elevationCorrection(sunriseElevation);
     const sunsetAltitude =
-      solarAltitude - Astronomical.horizonDip(sunsetElevation);
+      solarAltitude - Astronomical.elevationCorrection(sunsetElevation);
 
     this.approxTransit = m0;
 

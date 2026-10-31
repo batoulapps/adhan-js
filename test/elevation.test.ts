@@ -26,27 +26,38 @@ const unroundedParams = (
 const antalya = new Coordinates(36.3, 30.1);
 const equinox = new Date(2024, 2, 20);
 
-describe('Astronomical.horizonDip', () => {
+describe('Astronomical.elevationCorrection', () => {
   it('is zero at or below the horizon', () => {
-    expect(Astronomical.horizonDip(0)).toBe(0);
-    expect(Astronomical.horizonDip(-100)).toBe(0);
+    expect(Astronomical.elevationCorrection(0)).toBe(0);
+    expect(Astronomical.elevationCorrection(-100)).toBe(0);
   });
 
-  it('matches the geometric dip cos(dip) = R / (R + h)', () => {
-    const R = 6371000;
+  it('matches Odeh equation (8): 0.035333 * sqrt(h)', () => {
     for (const h of [1.5, 100, 450, 1600, 3000]) {
-      const expected = (Math.acos(R / (R + h)) * 180) / Math.PI;
-      expect(Astronomical.horizonDip(h)).toBeCloseTo(expected, 10);
-      // small angle approximation dip = sqrt(2h / R)
-      expect(Astronomical.horizonDip(h)).toBeCloseTo(
-        (Math.sqrt((2 * h) / R) * 180) / Math.PI,
-        3,
+      expect(Astronomical.elevationCorrection(h)).toBeCloseTo(
+        0.035333 * Math.sqrt(h),
+        12,
       );
     }
   });
 
-  it('gives about 41 arcminutes at 450 meters', () => {
-    expect(Astronomical.horizonDip(450) * 60).toBeCloseTo(40.86, 2);
+  it('is the dip plus the additional refraction', () => {
+    // dip 0.02917 * sqrt(h) and refraction 0.00617 * sqrt(h), which Odeh
+    // rounds to a total of 0.035333 * sqrt(h)
+    const h = 450;
+    const components = (0.02917 + 0.00617) * Math.sqrt(h);
+    expect(Astronomical.elevationCorrection(h)).toBeCloseTo(components, 3);
+  });
+
+  it("reproduces Odeh's worked example of 91.948 degrees at 1000 meters", () => {
+    const horizontalParallax = 0.0024;
+    const zenith =
+      90 +
+      16 / 60 +
+      34 / 60 +
+      Astronomical.elevationCorrection(1000) -
+      horizontalParallax;
+    expect(zenith).toBeCloseTo(91.948, 3);
   });
 });
 
@@ -89,10 +100,10 @@ describe('CalculationParameters.horizonElevations', () => {
 });
 
 describe('SolarTime with elevation', () => {
-  it('computes sunrise and sunset at the standard altitude lowered by the dip', () => {
+  it('computes sunrise and sunset at the standard altitude lowered by the elevation correction', () => {
     const elevation = 450;
     const solar = new SolarTime(equinox, antalya, elevation, elevation);
-    const altitude = -50 / 60 - Astronomical.horizonDip(elevation);
+    const altitude = -50 / 60 - Astronomical.elevationCorrection(elevation);
     expect(solar.sunrise).toBeCloseTo(solar.hourAngle(altitude, false), 10);
     expect(solar.sunset).toBeCloseTo(solar.hourAngle(altitude, true), 10);
   });
@@ -144,62 +155,28 @@ describe('PrayerTimes with elevationFromHorizon', () => {
     expect(maghribShift).toBeCloseTo(sunsetShift, 10);
   });
 
-  it('does not change dhuhr or asr', () => {
+  it('does not change fajr, dhuhr, asr, or isha', () => {
     const base = new PrayerTimes(antalya, equinox, unroundedParams());
     const elevated = new PrayerTimes(antalya, equinox, unroundedParams(450));
+    expect(elevated.fajr).toEqual(base.fajr);
     expect(elevated.dhuhr).toEqual(base.dhuhr);
     expect(elevated.asr).toEqual(base.asr);
+    expect(elevated.isha).toEqual(base.isha);
   });
 
-  it('lowers the fajr and isha twilight angles by the dip', () => {
-    const elevation = 450;
-    const params = unroundedParams(elevation);
-    const dip = Astronomical.horizonDip(elevation);
-    const solar = new SolarTime(equinox, antalya, elevation, elevation);
-    const times = new PrayerTimes(antalya, equinox, params);
-
-    const expectedFajr = solar.hourAngle(-(params.fajrAngle + dip), false);
-    const expectedIsha = solar.hourAngle(-(params.ishaAngle + dip), true);
-    const hoursUTC = (date: Date) =>
-      date.getUTCHours() +
-      date.getUTCMinutes() / 60 +
-      date.getUTCSeconds() / 3600 +
-      date.getUTCMilliseconds() / 3600000;
-
-    // TimeComponents truncates to whole seconds
-    expect(Math.abs(hoursUTC(times.fajr) - expectedFajr) * 3600).toBeLessThan(
-      1,
-    );
-    expect(Math.abs(hoursUTC(times.isha) - expectedIsha) * 3600).toBeLessThan(
-      1,
-    );
-  });
-
-  it('moves fajr earlier and isha later by a few minutes at 450 meters', () => {
-    const base = new PrayerTimes(antalya, equinox, unroundedParams());
-    const elevated = new PrayerTimes(antalya, equinox, unroundedParams(450));
-
-    const fajrShift = minutesBetween(elevated.fajr, base.fajr);
-    const ishaShift = minutesBetween(base.isha, elevated.isha);
-    expect(fajrShift).toBeGreaterThan(3);
-    expect(fajrShift).toBeLessThan(5);
-    expect(ishaShift).toBeGreaterThan(3);
-    expect(ishaShift).toBeLessThan(5);
-  });
-
-  it('lowers the maghrib angle by the sunset dip', () => {
+  it('does not change an angle based maghrib', () => {
     const baseParams = CalculationMethod.Tehran();
     baseParams.rounding = Rounding.None;
     const elevatedParams = CalculationMethod.Tehran();
     elevatedParams.rounding = Rounding.None;
-    elevatedParams.elevationFromHorizon = { sunrise: 0, sunset: 450 };
+    elevatedParams.elevationFromHorizon = 450;
 
     const base = new PrayerTimes(antalya, equinox, baseParams);
     const elevated = new PrayerTimes(antalya, equinox, elevatedParams);
-    const maghribShift = minutesBetween(base.maghrib, elevated.maghrib);
-    expect(maghribShift).toBeGreaterThan(3);
-    expect(maghribShift).toBeLessThan(5);
+    expect(elevated.sunset.getTime()).toBeGreaterThan(base.sunset.getTime());
+    expect(elevated.maghrib).toEqual(base.maghrib);
     expect(elevated.fajr).toEqual(base.fajr);
+    expect(elevated.isha).toEqual(base.isha);
   });
 
   it('shifts interval based isha along with sunset', () => {
@@ -232,13 +209,11 @@ describe('PrayerTimes with elevationFromHorizon', () => {
     const both = new PrayerTimes(antalya, equinox, unroundedParams(450));
 
     expect(sunriseOnly.sunrise).toEqual(both.sunrise);
-    expect(sunriseOnly.fajr).toEqual(both.fajr);
     expect(sunriseOnly.sunset).toEqual(base.sunset);
-    expect(sunriseOnly.isha).toEqual(base.isha);
+    expect(sunriseOnly.maghrib).toEqual(base.maghrib);
     expect(sunsetOnly.sunrise).toEqual(base.sunrise);
-    expect(sunsetOnly.fajr).toEqual(base.fajr);
     expect(sunsetOnly.sunset).toEqual(both.sunset);
-    expect(sunsetOnly.isha).toEqual(both.isha);
+    expect(sunsetOnly.maghrib).toEqual(both.maghrib);
   });
 
   it('increases the shift with elevation', () => {
@@ -268,12 +243,15 @@ describe('PrayerTimes with elevationFromHorizon', () => {
       -1,
     );
 
-    // A later maghrib and earlier fajr shorten the night, moving the last
-    // third earlier.
+    // A later maghrib with an unchanged fajr shortens the night, moving both
+    // times later.
     const base = new SunnahTimes(
       new PrayerTimes(antalya, equinox, unroundedParams()),
     );
-    expect(sunnah.lastThirdOfTheNight.getTime()).toBeLessThan(
+    expect(sunnah.middleOfTheNight.getTime()).toBeGreaterThan(
+      base.middleOfTheNight.getTime(),
+    );
+    expect(sunnah.lastThirdOfTheNight.getTime()).toBeGreaterThan(
       base.lastThirdOfTheNight.getTime(),
     );
   });

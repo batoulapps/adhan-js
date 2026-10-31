@@ -175,21 +175,20 @@ const Astronomical = {
     return radiansToDegrees(Math.asin(term1 + term2));
   },
 
-  /* The geometric dip of the horizon in degrees, i.e. how far the visible
-     horizon lies below the astronomical horizon for an observer at the given
-     height in meters above it. */
-  horizonDip(elevation: number) {
+  /* How far, in degrees, the Sun's altitude at rising and setting is lowered
+     for an observer at the given height in meters above their horizon. */
+  elevationCorrection(elevation: number) {
     if (elevation <= 0) {
       return 0;
     }
-    /* Mean radius of the Earth in meters (6371 km) from Astronomical
-       Algorithms page 84 */
-    const R = 6371000;
     /* Astronomical Algorithms does not cover the dip of the horizon (page 96).
-       The line of sight to the horizon is tangent to the Earth, forming a
-       right triangle with the Earth's center, so cos(dip) = R / (R + h).
-       Derivation: https://aty.sdsu.edu/explain/atmos_refr/dip.html */
-    return radiansToDegrees(Math.acos(R / (R + elevation)));
+       Equation (8) from "Calculating Prayer Times" (حساب مواقيت الصلاة),
+       Mohammad Odeh, International Astronomical Center, 2001 (revised 2004),
+       section 4. The total combines the dip of the visible horizon below the
+       astronomical horizon (0.02917 * sqrt(h)) and the additional refraction
+       of the Sun's rays for an elevated observer (0.00617 * sqrt(h)).
+       See ELEVATION.md for details. */
+    return 0.035333 * Math.sqrt(elevation);
   },
 
   approximateTransit(

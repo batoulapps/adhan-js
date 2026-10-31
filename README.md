@@ -130,6 +130,9 @@ The rest of the needed information is contained within the `CalculationParameter
 
 [Calculation Parameters & Methods Guide](METHODS.md)
 
+If the location is above its horizon, such as a hill or tower overlooking the
+sea, see [Elevation](ELEVATION.md) for adjusting sunrise and sunset.
+
 ### Prayer Times
 
 The `PrayerTimes` object outputs raw JavaScript `Date` instances initialized to absolute UTC values.

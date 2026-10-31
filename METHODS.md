@@ -81,7 +81,7 @@ Shafaq is used by the MoonsightingCommittee method to determine what type of twi
 
 #### elevationFromHorizon
 
-An observer who is higher than the horizon can see further around the curve of the Earth, so the sun rises earlier and sets later for them, and twilight begins earlier and ends later. `elevationFromHorizon` is the height in meters of the observer **above the horizon they are looking at**. It lowers the sunrise and sunset altitude and the Fajr, Isha, and Maghrib twilight angles by the dip of the horizon, using the `sunrise` value for Fajr and sunrise and the `sunset` value for sunset, Maghrib, and Isha. Times derived from these (Isha when using `ishaInterval`, and the night length used by high latitude rules and Sunnah times) shift with them. Dhuhr and Asr are not affected.
+An observer who is higher than the horizon can see further around the curve of the Earth, so the sun rises earlier and sets later for them. `elevationFromHorizon` is the height in meters of the observer **above the horizon they are looking at**. It changes sunrise using the `sunrise` value, and sunset and Maghrib using the `sunset` value. Times defined relative to sunrise or sunset shift with them (Isha when using `ishaInterval`, and the night length used by high latitude rules and Sunnah times). Fajr, Dhuhr, Asr, Isha, and an angle based Maghrib are not affected.
 
 ```js
 var params = adhan.CalculationMethod.MuslimWorldLeague();
@@ -91,6 +91,6 @@ params.elevationFromHorizon = 450;
 params.elevationFromHorizon = { sunrise: 450, sunset: 0 };
 ```
 
-**This is not the elevation of the observer above sea level.** Do not pass the altitude reported by a device's GPS or an elevation lookup for the user's coordinates. A city on a plateau (e.g. Denver, Mexico City, Addis Ababa, or Sana'a) is at the same elevation as its horizon, so the correct value is `0`. Using its elevation above sea level would make sunset, Maghrib, and Isha about 6 to 7 minutes too late, and sunrise and Fajr about as much too early. Only use this value when the height above the horizon is actually known, such as a tower or hill with an open view of a sea level horizon.
+**This is not the elevation of the observer above sea level.** Do not pass the altitude reported by a device's GPS or an elevation lookup for the user's coordinates. A city on a plateau (e.g. Denver, Mexico City, Addis Ababa, or Sana'a) is at the same elevation as its horizon, so the correct value is `0`. Using its elevation above sea level would make sunset and Maghrib about 7 to 9 minutes too late, and sunrise about as much too early. Only use this value when the height above the horizon is actually known, such as a tower or hill with an open view of a sea level horizon.
 
-The adjustment is the geometric dip of the horizon, `cos(dip) = R / (R + h)`, using the mean radius of the Earth `R = 6371 km`. It is subtracted from the standard sunrise and sunset altitude of `-0°50'` and added to the twilight angles. At mid latitudes, 450 meters moves sunrise, sunset, Fajr, and Isha by roughly 3 to 4 minutes. The calculation assumes nothing between the observer and the horizon rises above the line of sight, so only the height difference matters. Hills, buildings, or ridges that block part of the view are not taken into account.
+See [Elevation](ELEVATION.md) for how the adjustment is calculated, why Fajr and Isha are not adjusted, and the references used.
