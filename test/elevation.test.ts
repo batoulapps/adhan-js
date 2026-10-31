@@ -78,11 +78,25 @@ describe('CalculationParameters.horizonElevations', () => {
     expect(params.horizonElevations()).toEqual({ sunrise: 500, sunset: 0 });
   });
 
+  it('treats negative values as 0', () => {
+    expect(unroundedParams(-50).horizonElevations()).toEqual({
+      sunrise: 0,
+      sunset: 0,
+    });
+    expect(
+      unroundedParams({ sunrise: 100, sunset: -5 }).horizonElevations(),
+    ).toEqual({ sunrise: 100, sunset: 0 });
+
+    const base = new PrayerTimes(antalya, equinox, unroundedParams());
+    const valley = new PrayerTimes(antalya, equinox, unroundedParams(-200));
+    expect(valley.sunrise).toEqual(base.sunrise);
+    expect(valley.sunset).toEqual(base.sunset);
+  });
+
   it.each([
-    -1,
     NaN,
     Infinity,
-    { sunrise: 100, sunset: -5 },
+    -Infinity,
     { sunrise: NaN, sunset: 100 },
     { sunrise: 100 },
     '100',

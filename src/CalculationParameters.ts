@@ -103,17 +103,18 @@ export default class CalculationParameters {
     }
 
     for (const [key, elevation] of Object.entries(elevations)) {
-      if (
-        typeof elevation !== 'number' ||
-        !Number.isFinite(elevation) ||
-        elevation < 0
-      ) {
+      if (typeof elevation !== 'number' || !Number.isFinite(elevation)) {
         throw new Error(
-          `Invalid elevationFromHorizon ${key} value: ${elevation}. Expected a finite number of meters >= 0.`,
+          `Invalid elevationFromHorizon ${key} value: ${elevation}. Expected a finite number of meters.`,
         );
       }
     }
 
-    return elevations;
+    // A negative value means the horizon is above the observer, such as in a
+    // valley, which is treated the same as a level horizon.
+    return {
+      sunrise: Math.max(0, elevations.sunrise),
+      sunset: Math.max(0, elevations.sunset),
+    };
   }
 }

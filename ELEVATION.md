@@ -46,7 +46,7 @@ In other words:
 
 The `sunrise` value describes the eastern horizon and the `sunset` value describes the western horizon. A single number applies to both.
 
-Hills, mountains, or buildings that block the view of the horizon are not taken into account, and negative values are not accepted. Odeh notes in section 7-2 that the sun disappearing behind a distant hill or mountain is not sunset, and that "neglecting mountains or high ground is what is practiced in calculating sunrise and sunset in all Islamic countries to our knowledge" [[2]](#references).
+Hills, mountains, or buildings that block the view of the horizon are not taken into account, and negative values are treated as `0`. Odeh notes in section 7-2 that the sun disappearing behind a distant hill or mountain is not sunset, and that "neglecting mountains or high ground is what is practiced in calculating sunrise and sunset in all Islamic countries to our knowledge" [[2]](#references).
 
 ## What changes
 
