@@ -46,7 +46,15 @@ In other words:
 
 The `sunrise` value describes the eastern horizon and the `sunset` value describes the western horizon. A single number applies to both.
 
-Hills, mountains, or buildings that block the view of the horizon are not taken into account, and negative values are treated as `0`. Odeh notes in section 7-2 that the sun disappearing behind a distant hill or mountain is not sunset, and that "neglecting mountains or high ground is what is practiced in calculating sunrise and sunset in all Islamic countries to our knowledge" [[2]](#references).
+### Valleys and obstructions
+
+When the land around the observer is higher than they are, such as in a valley or surrounded by mountains, the sun disappears behind that land before it sets and appears from behind it after it rises. The land blocks the view of the horizon, but it isn't the horizon, so sunrise and sunset are still calculated for a level horizon.
+
+Odeh addresses this in section 7-2 [[2]](#references) (translated):
+
+> Some people watch the sun, and as soon as they notice it has disappeared in the west they pray Maghrib, or break their fast if fasting, ignoring that the sun may not have actually set, but may have disappeared behind a distant hill or mountain. … The true time of sunset must be determined, not merely its disappearance as it appears to the naked eye. Neglecting mountains or high ground is what is practiced in calculating the time of sunrise and sunset in all Islamic countries, to our knowledge.
+
+Muwaqqit takes the same approach: "Difference in elevation is not considered where the observer is in a valley (ie. the elevation of the observer is lower than the horizon)" [[5]](#references).
 
 ## What changes
 
@@ -183,7 +191,7 @@ The uncertainty in the twilight angles themselves is also much larger than the e
 2. Mohammad Shawkat Odeh, _Calculating Prayer Times_ (حساب مواقيت الصلاة), International Astronomical Center, October 2001, revised September 2004. Sections 4, 5-1, 7-2, and 7-4. https://www.astronomycenter.net/article/2001_salat.html
 3. William Chauvenet, _A Manual of Spherical and Practical Astronomy_, Volume I, J. B. Lippincott, 1891 (first published 1863). Articles 121 to 123 "Dip of the Horizon", pages 172 to 176, and article 157, page 220. https://archive.org/details/manualofspherica031436mbp
 4. W. M. Smart, _Text-Book on Spherical Astronomy_, 4th edition, Cambridge University Press, 1944 (reprinted 1949). Section 178 "Corrections to the observed altitude", pages 317 to 318. https://archive.org/details/dli.ernet.240942
-5. Muwaqqit documentation, Fajr and Isha. https://docs.muwaqqit.com
+5. Muwaqqit documentation, Fajr, Isha, and technical notes. https://docs.muwaqqit.com/technical-notes
 6. Time4J, `net.time4j.calendar.astro.SolarTime`. https://github.com/MenoData/Time4J
 7. Andrew T. Young, "Sunset Science. IV. Low-Altitude Refraction", _The Astronomical Journal_ 127, 3622 to 3637, 2004. Sections 4.3 and 5. https://doi.org/10.1086/420806
 8. HM Nautical Almanac Office and U.S. Naval Observatory, _The Air Almanac 2026_. Explanation section 14 "Corrections for Height of Observer", page A12, and tables 2 and 3 "Depression of Sun at Various Heights", page A151. https://aa.usno.navy.mil/downloads/publications/aira26_all.pdf

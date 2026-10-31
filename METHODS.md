@@ -91,6 +91,6 @@ params.elevationFromHorizon = 450;
 params.elevationFromHorizon = { sunrise: 450, sunset: 0 };
 ```
 
-**This is not the elevation of the observer above sea level.** Do not pass the altitude reported by a device's GPS or an elevation lookup for the user's coordinates. A city on a plateau (e.g. Denver, Mexico City, Addis Ababa, or Sana'a) is at the same elevation as its horizon, so the correct value is `0`. Using its elevation above sea level would make sunset and Maghrib about 7 to 9 minutes too late, and sunrise about as much too early. Only use this value when the height above the horizon is actually known, such as a tower or hill with an open view of a sea level horizon.
+**This is not the elevation of the observer above sea level.** Do not pass the altitude reported by a device's GPS or an elevation lookup for the user's coordinates. A city on a plateau (e.g. Denver, Mexico City, Addis Ababa, or Sana'a) is at the same elevation as its horizon, so the correct value is `0`. Using its elevation above sea level would make sunset and Maghrib about 7 to 9 minutes too late, and sunrise about as much too early. Only use this value when the height above the horizon is actually known, such as a tower or hill with an open view of a sea level horizon. Don't pass a negative value when the horizon is higher than the observer, such as in a valley. Use `0` instead.
 
 See [Elevation](ELEVATION.md) for how the adjustment is calculated, why Fajr and Isha are not adjusted, and the references used.
