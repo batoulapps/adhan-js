@@ -110,6 +110,11 @@ you want prayer times for.
 const coordinates = new Coordinates(35.78056, -78.6389);
 ```
 
+The latitude must be within ±90° and both values must be finite numbers. If
+they aren't, or if the date is invalid, every prayer time field is set to an
+invalid `Date` (see [Polar circle locations](#polar-circle-locations) for how to
+check `prayerTimes.isValid`).
+
 #### Date
 
 The date parameter passed in should be an instance of the JavaScript `Date` object. The year, month, and day values need to be populated. All other values will be ignored. The year, month and day values should be for the date that you want prayer times for. These date values are expected to be for the Gregorian calendar.

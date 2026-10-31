@@ -3,6 +3,7 @@ import CalculationParameters from './CalculationParameters.js';
 import Coordinates from './Coordinates.js';
 import { isValidDate } from './DateUtils.js';
 import { computePrayerTimesForDay } from './PrayerTimesCalculation.js';
+import type { PrayerTimesResult } from './PrayerTimesCalculation.js';
 import {
   PolarCircleResolution,
   resolvePolarCircle,
@@ -21,6 +22,9 @@ import { ValueOf } from './TypeUtils.js';
  * every prayer time field below is set to an invalid `Date` (i.e.
  * `isNaN(date.getTime())`) rather than a subset of them, so check `isValid`
  * (or an individual field) before using the times.
+ *
+ * The same happens when the input is invalid: a latitude outside ±90°, a
+ * latitude or longitude that isn't a finite number, or an invalid `date`.
  */
 export default class PrayerTimes {
   fajr: Date;
@@ -36,13 +40,28 @@ export default class PrayerTimes {
     public date: Date,
     public calculationParameters: CalculationParameters,
   ) {
-    let result = computePrayerTimesForDay(
-      coordinates,
-      date,
-      calculationParameters,
-    );
+    // Latitude must be within ±90° and longitude must be a finite number.
+    // Longitude isn't range checked since values outside ±180° wrap around
+    // to the same meridian. The date must be a valid Date.
+    const hasValidInput =
+      Number.isFinite(coordinates.latitude) &&
+      Math.abs(coordinates.latitude) <= 90 &&
+      Number.isFinite(coordinates.longitude) &&
+      isValidDate(date);
 
+    // Compute times for the requested location and date. This only fails near
+    // the polar circles during extreme situations like midnight sun or polar
+    // night.
+    let result: PrayerTimesResult = hasValidInput
+      ? computePrayerTimesForDay(coordinates, date, calculationParameters)
+      : { isValid: false };
+
+    // If the initial calculation failed, attempt polar circle resolution.
+    // AqrabBalad uses the nearest latitude that works,
+    // AqrabYaum uses the nearest day that works,
+    // and Unresolved leaves the result invalid.
     if (
+      hasValidInput &&
       !result.isValid &&
       calculationParameters.polarCircleResolution !==
         PolarCircleResolution.Unresolved
@@ -58,6 +77,10 @@ export default class PrayerTimes {
       }
     }
 
+    // Prayer times can't be determined for this location and date. Either the
+    // input was invalid, polarCircleResolution is Unresolved, or it was unable
+    // to find valid times for the given parameters. Every field is set to an
+    // invalid Date so callers can't accidentally use a subset of the times.
     if (result.isValid) {
       this.fajr = result.fajr;
       this.sunrise = result.sunrise;
@@ -79,9 +102,9 @@ export default class PrayerTimes {
 
   /**
    * Whether all prayer times could be computed. This is false when the
-   * location and date fall inside a polar circle where the sun's position
-   * doesn't reach the angle required for one or more prayers (see the class
-   * doc comment above).
+   * coordinates or date are invalid, or when the location and date fall
+   * inside a polar circle where the sun's position doesn't reach the angle
+   * required for one or more prayers (see the class doc comment above).
    */
   get isValid() {
     return (
