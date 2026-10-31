@@ -1104,3 +1104,82 @@ test('calculating prayer times near the International Date Line', () => {
   expect(p2.asr.getTime()).toBeLessThan(p2.maghrib.getTime());
   expect(p2.maghrib.getTime()).toBeLessThan(p2.isha.getTime());
 });
+
+describe('Input validation', () => {
+  const date = new Date(2024, 2, 20);
+  const prayerNames = [
+    'fajr',
+    'sunrise',
+    'dhuhr',
+    'asr',
+    'sunset',
+    'maghrib',
+    'isha',
+  ] as const;
+  const resolutions = Object.values(polarCircleResolver.PolarCircleResolution);
+
+  const expectInvalid = (prayerTimes: PrayerTimes) => {
+    expect(prayerTimes.isValid).toBe(false);
+    for (const prayerName of prayerNames) {
+      expect(isValidDate(prayerTimes[prayerName])).toBe(false);
+    }
+  };
+
+  describe.each(resolutions)('with %s', (resolution) => {
+    const params = CalculationMethod.MuslimWorldLeague();
+    params.polarCircleResolution = resolution;
+
+    it.each([
+      [90.1, 0],
+      [-90.1, 0],
+      [NaN, 0],
+      [Infinity, 0],
+      [-Infinity, 0],
+      [21.4225, NaN],
+      [21.4225, Infinity],
+      [21.4225, -Infinity],
+    ])('returns invalid times for coordinates (%s, %s)', (lat, lng) => {
+      expectInvalid(new PrayerTimes(new Coordinates(lat, lng), date, params));
+    });
+
+    it('returns invalid times for an invalid date', () => {
+      expectInvalid(
+        new PrayerTimes(
+          new Coordinates(21.4225, 39.8262),
+          new Date(NaN),
+          params,
+        ),
+      );
+    });
+  });
+
+  it('accepts latitudes at the poles', () => {
+    const params = CalculationMethod.MuslimWorldLeague();
+    for (const lat of [90, -90]) {
+      const prayerTimes = new PrayerTimes(
+        new Coordinates(lat, 0),
+        date,
+        params,
+      );
+      expect(prayerTimes.isValid).toBe(true);
+    }
+  });
+
+  it('accepts longitudes outside ±180 as the same meridian', () => {
+    const params = CalculationMethod.MuslimWorldLeague();
+    const wrapped = new PrayerTimes(
+      new Coordinates(21.4225, 200),
+      date,
+      params,
+    );
+    const normal = new PrayerTimes(
+      new Coordinates(21.4225, -160),
+      date,
+      params,
+    );
+    expect(wrapped.isValid).toBe(true);
+    for (const prayerName of prayerNames) {
+      expect(wrapped[prayerName]).toEqual(normal[prayerName]);
+    }
+  });
+});
