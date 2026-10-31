@@ -6,6 +6,8 @@ import { Rounding } from './Rounding.js';
 import { Shafaq } from './Shafaq.js';
 import { ValueOf } from './TypeUtils.js';
 
+export type ElevationFromHorizon = number | { sunrise: number; sunset: number };
+
 export default class CalculationParameters {
   // Madhab to determine how Asr is calculated.
   madhab: ValueOf<typeof Madhab> = Madhab.Shafi;
@@ -48,6 +50,13 @@ export default class CalculationParameters {
   // Used by the MoonsightingCommittee method to determine how to calculate Isha
   shafaq: ValueOf<typeof Shafaq> = Shafaq.General;
 
+  // Height in meters of the observer above the horizon, used to calculate
+  // sunrise and sunset. This is NOT the observer's elevation above sea level:
+  // a city on a plateau has the same elevation as its horizon, so the value
+  // should be 0. Provide { sunrise, sunset } when the eastern and western
+  // horizons differ.
+  elevationFromHorizon: ElevationFromHorizon = 0;
+
   constructor(
     // Name of the method, can be used to apply special behavior in calculations.
     // This property should not be manually modified.
@@ -82,5 +91,27 @@ export default class CalculationParameters {
           `Invalid high latitude rule found when attempting to compute night portions: ${this.highLatitudeRule}`,
         );
     }
+  }
+
+  horizonElevations() {
+    const value = this.elevationFromHorizon ?? 0;
+    const elevations =
+      typeof value === 'number'
+        ? { sunrise: value, sunset: value }
+        : { sunrise: value.sunrise, sunset: value.sunset };
+
+    for (const [key, elevation] of Object.entries(elevations)) {
+      if (
+        typeof elevation !== 'number' ||
+        !Number.isFinite(elevation) ||
+        elevation < 0
+      ) {
+        throw new Error(
+          `Invalid elevationFromHorizon ${key} value: ${elevation}. Expected a finite number of meters >= 0.`,
+        );
+      }
+    }
+
+    return elevations;
   }
 }

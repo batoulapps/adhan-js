@@ -48,9 +48,26 @@ export function computePrayerTimesForDay(
   date: Date,
   calculationParameters: CalculationParameters,
 ): PrayerTimesResult {
-  const solarTime = new SolarTime(date, coordinates);
+  const { sunrise: sunriseElevation, sunset: sunsetElevation } =
+    calculationParameters.horizonElevations();
+  const solarTime = new SolarTime(
+    date,
+    coordinates,
+    sunriseElevation,
+    sunsetElevation,
+  );
   const tomorrow = dateByAddingDays(date, 1);
-  const tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
+  const tomorrowSolarTime = new SolarTime(
+    tomorrow,
+    coordinates,
+    sunriseElevation,
+    sunsetElevation,
+  );
+  // Twilight angles are measured below the astronomical horizon, so an
+  // observer elevated above the horizon sees the same twilight when the Sun
+  // is lower by the dip of the horizon.
+  const sunriseDip = Astronomical.horizonDip(sunriseElevation);
+  const sunsetDip = Astronomical.horizonDip(sunsetElevation);
 
   const dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
     date.getFullYear(),
@@ -81,7 +98,10 @@ export function computePrayerTimesForDay(
   let nightFraction;
 
   let fajrTime = new TimeComponents(
-    solarTime.hourAngle(-1 * calculationParameters.fajrAngle, false),
+    solarTime.hourAngle(
+      -1 * (calculationParameters.fajrAngle + sunriseDip),
+      false,
+    ),
   ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
   // special case for moonsighting committee above latitude 55
@@ -124,7 +144,10 @@ export function computePrayerTimesForDay(
     );
   } else {
     ishaTime = new TimeComponents(
-      solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true),
+      solarTime.hourAngle(
+        -1 * (calculationParameters.ishaAngle + sunsetDip),
+        true,
+      ),
     ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
 
     // special case for moonsighting committee above latitude 55
@@ -164,7 +187,10 @@ export function computePrayerTimesForDay(
   let maghribTime = sunsetTime;
   if (calculationParameters.maghribAngle) {
     const angleBasedMaghrib = new TimeComponents(
-      solarTime.hourAngle(-1 * calculationParameters.maghribAngle, true),
+      solarTime.hourAngle(
+        -1 * (calculationParameters.maghribAngle + sunsetDip),
+        true,
+      ),
     ).utcDate(date.getFullYear(), date.getMonth(), date.getDate());
     if (sunsetTime < angleBasedMaghrib && ishaTime > angleBasedMaghrib) {
       maghribTime = angleBasedMaghrib;
