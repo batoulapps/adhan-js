@@ -102,12 +102,13 @@ export default class CalculationParameters {
       elevations = { sunrise: value.sunrise, sunset: value.sunset };
     }
 
-    for (const [key, elevation] of Object.entries(elevations)) {
-      if (typeof elevation !== 'number' || !Number.isFinite(elevation)) {
-        throw new Error(
-          `Invalid elevationFromHorizon ${key} value: ${elevation}. Expected a finite number of meters.`,
-        );
-      }
+    if (
+      !Number.isFinite(elevations.sunrise) ||
+      !Number.isFinite(elevations.sunset)
+    ) {
+      throw new Error(
+        `Invalid elevationFromHorizon: ${JSON.stringify(value)}. Expected a finite number of meters.`,
+      );
     }
 
     // A negative value means the horizon is above the observer, such as in a
