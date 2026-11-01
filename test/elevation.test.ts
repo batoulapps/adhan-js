@@ -22,7 +22,7 @@ const unroundedParams = (
   return params;
 };
 
-// Antalya, Turkey (the region discussed in issue #146)
+// Antalya, Turkey
 const antalya = new Coordinates(36.3, 30.1);
 const equinox = new Date(2024, 2, 20);
 

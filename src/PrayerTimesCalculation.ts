@@ -50,9 +50,8 @@ export function computePrayerTimesForDay(
 ): PrayerTimesResult {
   const { sunrise: sunriseElevation, sunset: sunsetElevation } =
     calculationParameters.horizonElevations();
-  // Elevation only changes sunrise and sunset. Twilight angles for Fajr, Isha,
-  // and Maghrib are not adjusted, following Odeh's "Calculating Prayer Times"
-  // section 7-4. See ELEVATION.md for details.
+  // Elevation only changes sunrise and sunset. Twilight angles for
+  // Fajr and Isha are not adjusted. See ELEVATION.md for details.
   const solarTime = new SolarTime(
     date,
     coordinates,

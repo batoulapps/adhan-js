@@ -1,6 +1,6 @@
 # Elevation
 
-This document explains the `elevationFromHorizon` calculation parameter: what it means, how the adjustment is calculated, why only sunrise and sunset are adjusted, and the references used. See [issue #146](https://github.com/batoulapps/adhan-js/issues/146) for the original discussion.
+This document explains the `elevationFromHorizon` calculation parameter: what it means, how the adjustment is calculated, why only sunrise and sunset are adjusted, and the references used.
 
 - [Summary](#summary)
 - [What the value means](#what-the-value-means)
