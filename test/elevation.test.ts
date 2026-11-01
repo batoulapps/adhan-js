@@ -59,6 +59,35 @@ describe('Astronomical.elevationCorrection', () => {
       horizontalParallax;
     expect(zenith).toBeCloseTo(91.948, 3);
   });
+
+  // The Air Almanac 2026, table 2 "Depression of Sun at Various Heights, at
+  // Sunrise and Sunset", page A151. Heights are in feet and depressions are
+  // rounded to 0.1 degrees. Rows above 30 000 feet (aircraft heights) are not
+  // included.
+  it.each([
+    [500, 1.3],
+    [1000, 1.5],
+    [2000, 1.7],
+    [3000, 1.9],
+    [4000, 2.1],
+    [5000, 2.2],
+    [6000, 2.4],
+    [7000, 2.5],
+    [8000, 2.6],
+    [9000, 2.7],
+    [10000, 2.8],
+    [15000, 3.2],
+    [20000, 3.6],
+    [25000, 3.9],
+    [30000, 4.2],
+  ])(
+    'matches the Air Almanac depression of the Sun at %d feet',
+    (feet, depression) => {
+      const meters = feet * 0.3048;
+      const computed = 50 / 60 + Astronomical.elevationCorrection(meters);
+      expect(Math.abs(computed - depression)).toBeLessThan(0.06);
+    },
+  );
 });
 
 describe('CalculationParameters.horizonElevations', () => {
@@ -154,6 +183,8 @@ describe('PrayerTimes with elevationFromHorizon', () => {
     }
   });
 
+  // Regression check: these bounds come from this library's own output, not
+  // from a published source.
   it('moves sunrise earlier and sunset/maghrib later by a few minutes at 450 meters', () => {
     const base = new PrayerTimes(antalya, equinox, unroundedParams());
     const elevated = new PrayerTimes(antalya, equinox, unroundedParams(450));
