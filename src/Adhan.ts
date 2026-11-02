@@ -1,5 +1,6 @@
 import CalculationMethod from './CalculationMethod.js';
 import CalculationParameters from './CalculationParameters.js';
+import type { ElevationFromHorizon } from './CalculationParameters.js';
 import Coordinates from './Coordinates.js';
 import HighLatitudeRule from './HighLatitudeRule.js';
 import { Madhab } from './Madhab.js';
@@ -25,3 +26,5 @@ export {
   Rounding,
   Shafaq,
 };
+
+export type { ElevationFromHorizon };

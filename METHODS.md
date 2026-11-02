@@ -24,6 +24,7 @@ params.adjustments.fajr = 2;
 | rounding              | The behavior for rounding prayer times. Either to nearest minute, to the higher minute, or none. `Nearest` is the default value.                                    |
 | polarCircleResolution | Value from the PolarCircleResolution object, strategy used to resolve undefined prayer times for areas located in polar circles. `AqrabBalad` is the default value. |
 | shafaq                | Used by the MoonsightingCommittee method to determine how to calculate Isha. See explanation of values below. `General` is the default value.                       |
+| elevationFromHorizon  | Height in meters of the observer above the horizon, used for sunrise and sunset. A number or `{ sunrise, sunset }`. `0` is the default value. See below.            |
 
 #### CalculationMethod
 
@@ -77,3 +78,19 @@ Shafaq is used by the MoonsightingCommittee method to determine what type of twi
 | adhan.Shafaq.General | General is a combination of Ahmer and Abyad. This is the defualt value and will provide more reasonable times for locations at higher latitudes.   |
 | adhan.Shafaq.Ahmer   | Ahmer means the twilight is the red glow in the sky. Used by the Shafi, Maliki, and Hanbali madhabs. This generally produces an earlier Isha time. |
 | adhan.Shafaq.Abyad   | Abyad means the twilight is the white glow in the sky. Used by the Hanafi madhab. This generally produces a later Isha time.                       |
+
+#### elevationFromHorizon
+
+An observer who is higher than the horizon can see further around the curve of the Earth, so the sun rises earlier and sets later for them. `elevationFromHorizon` is the height in meters of the observer **above the horizon they are looking at**. It changes sunrise using the `sunrise` value, and sunset and Maghrib using the `sunset` value. Times defined relative to sunrise or sunset shift with them (Isha when using `ishaInterval`, and the night length used by high latitude rules and Sunnah times). Fajr, Dhuhr, Asr, Isha, and an angle based Maghrib are not affected.
+
+```js
+var params = adhan.CalculationMethod.MuslimWorldLeague();
+// 450 meters above both the eastern and western horizon
+params.elevationFromHorizon = 450;
+// or different values for the eastern (sunrise) and western (sunset) horizon
+params.elevationFromHorizon = { sunrise: 450, sunset: 0 };
+```
+
+**This is not the elevation of the observer above sea level.** Do not pass the altitude reported by a device's GPS or an elevation lookup for the user's coordinates. A city on a plateau (e.g. Denver, Mexico City, Addis Ababa, or Sana'a) is at the same elevation as its horizon, so the correct value is `0`. Using its elevation above sea level would make sunset and Maghrib about 7 to 9 minutes too late, and sunrise about as much too early. Only use this value when the height above the horizon is actually known, such as a tower or hill with an open view of a sea level horizon. Don't pass a negative value when the horizon is higher than the observer, such as in a valley. Use `0` instead.
+
+See [Elevation](ELEVATION.md) for how the adjustment is calculated, why Fajr and Isha are not adjusted, and the references used.

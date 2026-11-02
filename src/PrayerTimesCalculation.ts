@@ -48,9 +48,23 @@ export function computePrayerTimesForDay(
   date: Date,
   calculationParameters: CalculationParameters,
 ): PrayerTimesResult {
-  const solarTime = new SolarTime(date, coordinates);
+  const { sunrise: sunriseElevation, sunset: sunsetElevation } =
+    calculationParameters.horizonElevations();
+  // Elevation only changes sunrise and sunset. Twilight angles for
+  // Fajr and Isha are not adjusted. See ELEVATION.md for details.
+  const solarTime = new SolarTime(
+    date,
+    coordinates,
+    sunriseElevation,
+    sunsetElevation,
+  );
   const tomorrow = dateByAddingDays(date, 1);
-  const tomorrowSolarTime = new SolarTime(tomorrow, coordinates);
+  const tomorrowSolarTime = new SolarTime(
+    tomorrow,
+    coordinates,
+    sunriseElevation,
+    sunsetElevation,
+  );
 
   const dhuhrTime = new TimeComponents(solarTime.transit).utcDate(
     date.getFullYear(),

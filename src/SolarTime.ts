@@ -13,7 +13,12 @@ export default class SolarTime {
   sunrise: number;
   sunset: number;
 
-  constructor(date: Date, coordinates: Coordinates) {
+  constructor(
+    date: Date,
+    coordinates: Coordinates,
+    sunriseElevation = 0,
+    sunsetElevation = 0,
+  ) {
     const julianDay = Astronomical.julianDay(
       date.getFullYear(),
       date.getMonth() + 1,
@@ -32,7 +37,17 @@ export default class SolarTime {
       this.solar.apparentSiderealTime,
       this.solar.rightAscension,
     );
+    /* Standard altitude of the Sun at apparent rising and setting, accounting
+       for refraction (0°34') and the semidiameter (0°16'), from Astronomical
+       Algorithms page 101 */
     const solarAltitude = -50.0 / 60.0;
+    // An observer elevated above the horizon sees the Sun rise earlier and set
+    // later, since the visible horizon is lower and the Sun's rays are
+    // refracted further.
+    const sunriseAltitude =
+      solarAltitude - Astronomical.elevationCorrection(sunriseElevation);
+    const sunsetAltitude =
+      solarAltitude - Astronomical.elevationCorrection(sunsetElevation);
 
     this.approxTransit = m0;
 
@@ -47,7 +62,7 @@ export default class SolarTime {
 
     this.sunrise = Astronomical.correctedHourAngle(
       m0,
-      solarAltitude,
+      sunriseAltitude,
       coordinates,
       false,
       this.solar.apparentSiderealTime,
@@ -61,7 +76,7 @@ export default class SolarTime {
 
     this.sunset = Astronomical.correctedHourAngle(
       m0,
-      solarAltitude,
+      sunsetAltitude,
       coordinates,
       true,
       this.solar.apparentSiderealTime,
