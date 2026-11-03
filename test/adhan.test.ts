@@ -10,6 +10,7 @@ import CalculationParameters from '../src/CalculationParameters.js';
 import Coordinates from '../src/Coordinates.js';
 import Prayer from '../src/Prayer.js';
 import PrayerTimes from '../src/PrayerTimes.js';
+import { Rounding } from '../src/Rounding.js';
 import { describe, it, expect, test, vi } from 'vitest';
 
 test('Verifying the night portion defined by the high latitude rule', () => {
@@ -224,7 +225,7 @@ test('calculating prayer times using the Moonsighting Committee calculation meth
   expect(moment(p.dhuhr).tz('America/New_York').format('h:mm A')).toBe(
     '12:33 PM',
   );
-  expect(moment(p.asr).tz('America/New_York').format('h:mm A')).toBe('3:20 PM');
+  expect(moment(p.asr).tz('America/New_York').format('h:mm A')).toBe('3:19 PM');
   expect(moment(p.maghrib).tz('America/New_York').format('h:mm A')).toBe(
     '5:43 PM',
   );
@@ -242,7 +243,7 @@ test('calculating Moonsighting Committee prayer times at a high latitude locatio
   expect(moment(p.fajr).tz('Europe/Oslo').format('h:mm A')).toBe('7:34 AM');
   expect(moment(p.sunrise).tz('Europe/Oslo').format('h:mm A')).toBe('9:19 AM');
   expect(moment(p.dhuhr).tz('Europe/Oslo').format('h:mm A')).toBe('12:25 PM');
-  expect(moment(p.asr).tz('Europe/Oslo').format('h:mm A')).toBe('1:36 PM');
+  expect(moment(p.asr).tz('Europe/Oslo').format('h:mm A')).toBe('1:35 PM');
   expect(moment(p.maghrib).tz('Europe/Oslo').format('h:mm A')).toBe('3:25 PM');
   expect(moment(p.isha).tz('Europe/Oslo').format('h:mm A')).toBe('5:02 PM');
 });
@@ -259,7 +260,7 @@ test('calculating times for turkey method', () => {
   expect(moment(p.dhuhr).tz('Europe/Istanbul').format('h:mm A')).toBe(
     '1:09 PM',
   );
-  expect(moment(p.asr).tz('Europe/Istanbul').format('h:mm A')).toBe('4:53 PM'); // original time 4:52 PM
+  expect(moment(p.asr).tz('Europe/Istanbul').format('h:mm A')).toBe('4:52 PM');
   expect(moment(p.maghrib).tz('Europe/Istanbul').format('h:mm A')).toBe(
     '7:52 PM',
   );
@@ -559,7 +560,7 @@ describe('Moonsighting Committee method with shafaq general', () => {
       '1:08 PM',
     );
     expect(moment(p.asr).tz('America/New_York').format('h:mm A')).toBe(
-      '4:26 PM',
+      '4:27 PM',
     );
     expect(moment(p.maghrib).tz('America/New_York').format('h:mm A')).toBe(
       '6:13 PM',
@@ -587,7 +588,7 @@ describe('Moonsighting Committee method with shafaq ahmer', () => {
       '12:28 PM',
     );
     expect(moment(p.asr).tz('America/New_York').format('h:mm A')).toBe(
-      '2:37 PM',
+      '2:36 PM',
     );
     expect(moment(p.maghrib).tz('America/New_York').format('h:mm A')).toBe(
       '4:57 PM',
@@ -612,7 +613,7 @@ describe('Moonsighting Committee method with shafaq ahmer', () => {
       '1:28 PM',
     );
     expect(moment(p.asr).tz('America/New_York').format('h:mm A')).toBe(
-      '4:59 PM',
+      '4:58 PM',
     );
     expect(moment(p.maghrib).tz('America/New_York').format('h:mm A')).toBe(
       '7:49 PM',
@@ -662,7 +663,7 @@ describe('Moonsighting Committee method with shafaq ahmer', () => {
       '1:08 PM',
     );
     expect(moment(p.asr).tz('America/New_York').format('h:mm A')).toBe(
-      '3:45 PM',
+      '3:46 PM',
     );
     expect(moment(p.maghrib).tz('America/New_York').format('h:mm A')).toBe(
       '6:13 PM',
@@ -769,7 +770,7 @@ describe('Moonsighting Committee method with shafaq abyad', () => {
       '1:08 PM',
     );
     expect(moment(p.asr).tz('America/New_York').format('h:mm A')).toBe(
-      '4:26 PM',
+      '4:27 PM',
     );
     expect(moment(p.maghrib).tz('America/New_York').format('h:mm A')).toBe(
       '6:13 PM',
@@ -973,7 +974,7 @@ describe('Polar circle resolution cases', () => {
       ).toBe('June 21, 2020 12:55 PM');
       expect(
         moment(p.asr).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
-      ).toBe('June 21, 2020 5:49 PM');
+      ).toBe('June 21, 2020 5:50 PM');
       expect(
         moment(p.maghrib).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
       ).toBe('June 22, 2020 12:30 AM');
@@ -1007,7 +1008,7 @@ test('prayer times are ordered when sun barely clears the Asr altitude threshold
   params.polarCircleResolution =
     polarCircleResolver.PolarCircleResolution.Unresolved;
 
-  const date = new Date(2026, 0, 8);
+  const date = new Date(2026, 0, 9);
   const p = new PrayerTimes(coordinates, date, params);
   expect(p.fajr.getTime()).toBeLessThan(p.sunrise.getTime());
   expect(p.sunrise.getTime()).toBeLessThan(p.dhuhr.getTime());
@@ -1025,6 +1026,29 @@ test('asr is NaN when sun cannot reach the required altitude at 67N in early Jan
   const date = new Date(2026, 0, 5);
   const p = new PrayerTimes(coordinates, date, params);
   expect(isNaN(p.asr.getTime())).toBe(true);
+});
+
+test('asr uses the solar declination at transit', () => {
+  // Reference times are when the Sun's geometric altitude satisfies
+  // cot(a) = shadowLength + tan(|latitude - declination at transit|),
+  // computed with JPL DE440 (Skyfield). In Toronto transit is ~17.5h after
+  // 0h UT, so using the declination at 0h UT shifted Asr by up to ~65s.
+  const coordinates = new Coordinates(43.6532, -79.3832);
+  const cases: [Date, ValueOf<typeof Madhab>, string][] = [
+    // Declination increasing: the 0h UT declination made Asr late
+    [new Date(2023, 1, 13), Madhab.Shafi, '2023-02-13T20:18:55.092Z'],
+    // Declination decreasing: the 0h UT declination made Asr early
+    [new Date(2023, 9, 15), Madhab.Hanafi, '2023-10-15T20:49:20.706Z'],
+  ];
+  cases.forEach(([date, madhab, reference]) => {
+    const params = CalculationMethod.MuslimWorldLeague();
+    params.madhab = madhab;
+    params.rounding = Rounding.None;
+    const p = new PrayerTimes(coordinates, date, params);
+    const errorSeconds =
+      (p.asr.getTime() - new Date(reference).getTime()) / 1000;
+    expect(Math.abs(errorSeconds)).toBeLessThan(5);
+  });
 });
 
 test("isValid is false when a resolver is configured but resolution still can't find valid times", () => {

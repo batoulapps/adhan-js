@@ -110,7 +110,7 @@ test('calculating prayer times using the Moonsighting Committee calculation meth
   expect(moment(p.dhuhr).tz('America/New_York').format('h:mm A')).toBe(
     '12:33 PM',
   );
-  expect(moment(p.asr).tz('America/New_York').format('h:mm A')).toBe('3:20 PM');
+  expect(moment(p.asr).tz('America/New_York').format('h:mm A')).toBe('3:19 PM');
   expect(moment(p.maghrib).tz('America/New_York').format('h:mm A')).toBe(
     '5:43 PM',
   );
@@ -132,7 +132,7 @@ test('calculating Moonsighting Committee prayer times at a high latitude locatio
   expect(moment(p.fajr).tz('Europe/Oslo').format('h:mm A')).toBe('7:34 AM');
   expect(moment(p.sunrise).tz('Europe/Oslo').format('h:mm A')).toBe('9:19 AM');
   expect(moment(p.dhuhr).tz('Europe/Oslo').format('h:mm A')).toBe('12:25 PM');
-  expect(moment(p.asr).tz('Europe/Oslo').format('h:mm A')).toBe('1:36 PM');
+  expect(moment(p.asr).tz('Europe/Oslo').format('h:mm A')).toBe('1:35 PM');
   expect(moment(p.maghrib).tz('Europe/Oslo').format('h:mm A')).toBe('3:25 PM');
   expect(moment(p.isha).tz('Europe/Oslo').format('h:mm A')).toBe('5:02 PM');
 });

@@ -89,7 +89,12 @@ export default class SolarTime {
     );
   }
 
-  hourAngle(angle: number, afterTransit: boolean) {
+  hourAngle(
+    angle: number,
+    afterTransit: boolean,
+    initialDeclination?: number,
+    tolerance?: number,
+  ) {
     return Astronomical.correctedHourAngle(
       this.approxTransit,
       angle,
@@ -102,11 +107,22 @@ export default class SolarTime {
       this.solar.declination,
       this.prevSolar.declination,
       this.nextSolar.declination,
+      initialDeclination,
+      tolerance,
     );
   }
 
   afternoon(shadowLength: number) {
-    const tangent = Math.abs(this.observer.latitude - this.solar.declination);
+    // The noon shadow is cast when the sun is at transit, so use the
+    // declination interpolated to transit rather than the one at 0h UT.
+    // Transit can be up to a day away from 0h UT depending on longitude.
+    const noonDeclination = Astronomical.interpolate(
+      this.solar.declination,
+      this.prevSolar.declination,
+      this.nextSolar.declination,
+      this.transit / 24,
+    );
+    const tangent = Math.abs(this.observer.latitude - noonDeclination);
     const inverse = shadowLength + Math.tan(degreesToRadians(tangent));
     const angle = radiansToDegrees(Math.atan(1.0 / inverse));
 
@@ -120,7 +136,7 @@ export default class SolarTime {
 
     const maxAltitude = Astronomical.altitudeOfCelestialBody(
       this.observer.latitude,
-      this.solar.declination,
+      noonDeclination,
       0,
     );
 
@@ -130,7 +146,9 @@ export default class SolarTime {
     }
 
     // Confirm the resulting time is after solar transit (noon) to ensure this is afternoon.
-    const result = this.hourAngle(angle, true);
+    // Iterate to convergence, since the textbook's ±0.01 day tolerance can leave
+    // several seconds of error in Asr.
+    const result = this.hourAngle(angle, true, noonDeclination, 1e-7);
     if (result <= this.transit) {
       return NaN;
     }

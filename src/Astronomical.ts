@@ -252,6 +252,8 @@ const Astronomical = {
     declination: number,
     previousDeclination: number,
     nextDeclination: number,
+    initialDeclination = declination,
+    tolerance = 0.01,
   ) {
     const m0 = approximateTransit;
     const h0 = angle;
@@ -263,20 +265,27 @@ const Astronomical = {
     const d1 = previousDeclination;
     const d3 = nextDeclination;
 
-    /* Equation from Astronomical Algorithms page 102 */
+    /* Equation (15.1) from Astronomical Algorithms page 102, which uses the
+       declination at 0h (δ2) for these approximate times. A caller that knows
+       a closer declination (e.g. at transit) can pass it instead, avoiding a
+       spurious NaN when the altitude is only reached with the declination
+       nearer the event. This departs from the text only in the starting
+       estimate; the iteration below determines the final result. */
     const Lw = coordinates.longitude * -1;
     const term1 =
       Math.sin(degreesToRadians(h0)) -
       Math.sin(degreesToRadians(coordinates.latitude)) *
-        Math.sin(degreesToRadians(d2));
+        Math.sin(degreesToRadians(initialDeclination));
     const term2 =
       Math.cos(degreesToRadians(coordinates.latitude)) *
-      Math.cos(degreesToRadians(d2));
+      Math.cos(degreesToRadians(initialDeclination));
     const H0 = radiansToDegrees(Math.acos(term1 / term2));
     let m = afterTransit ? m0 + H0 / 360 : m0 - H0 / 360;
 
-    // Astronomical Algorithms page 103 notes that the correction value of dm
-    // should be ±0.01 and to recalculate with the corrected m value if needed.
+    // Astronomical Algorithms page 103 notes that the corrections dm are in most
+    // cases between -0.01 and +0.01, and that the calculation should be repeated
+    // with the corrected m if necessary; Example 15.a repeats it until the
+    // corrections are negligible.
     // Iteration is capped at 10 to account for situations where convergence doesn't occur.
     for (let i = 0; i < 10; i++) {
       const Theta = unwindAngle(Theta0 + 360.985647 * m);
@@ -299,8 +308,10 @@ const Astronomical = {
       const dm = (h - h0) / dmDenominator;
       m = m + dm;
 
-      // Stop iteration once the correction value of dm is ±0.01
-      if (Math.abs(dm) <= 0.01) {
+      // Stop iteration once dm is within the tolerance. The default of 0.01
+      // day is this library's historical stopping point, not a limit from the
+      // text; callers needing a fully converged time pass a smaller tolerance.
+      if (Math.abs(dm) <= tolerance) {
         break;
       }
     }
