@@ -262,45 +262,109 @@ const Astronomical = {
     const d2 = declination;
     const d1 = previousDeclination;
     const d3 = nextDeclination;
+    const L = coordinates.longitude;
+    const Phi = coordinates.latitude;
 
-    /* Equation from Astronomical Algorithms page 102 */
-    const Lw = coordinates.longitude * -1;
-    const term1 =
-      Math.sin(degreesToRadians(h0)) -
-      Math.sin(degreesToRadians(coordinates.latitude)) *
-        Math.sin(degreesToRadians(d2));
-    const term2 =
-      Math.cos(degreesToRadians(coordinates.latitude)) *
-      Math.cos(degreesToRadians(d2));
-    const H0 = radiansToDegrees(Math.acos(term1 / term2));
-    let m = afterTransit ? m0 + H0 / 360 : m0 - H0 / 360;
-
-    // Astronomical Algorithms page 103 notes that the correction value of dm
-    // should be ±0.01 and to recalculate with the corrected m value if needed.
-    // Iteration is capped at 10 to account for situations where convergence doesn't occur.
-    for (let i = 0; i < 10; i++) {
+    /* The altitude of the body at time m (a fraction of the day), with the
+       right ascension and declination interpolated to m.
+       Equations from Astronomical Algorithms page 103 */
+    const Lw = L * -1;
+    const altitudeAt = (m: number) => {
       const Theta = unwindAngle(Theta0 + 360.985647 * m);
       const a = unwindAngle(Astronomical.interpolateAngles(a2, a1, a3, m));
       const delta = Astronomical.interpolate(d2, d1, d3, m);
       const H = Theta - Lw - a;
-      const h = Astronomical.altitudeOfCelestialBody(
-        coordinates.latitude,
+      return {
+        h: Astronomical.altitudeOfCelestialBody(Phi, delta, H),
         delta,
         H,
-      );
-      const dmDenominator =
-        360 *
-        Math.cos(degreesToRadians(delta)) *
-        Math.cos(degreesToRadians(coordinates.latitude)) *
-        Math.sin(degreesToRadians(H));
-      if (dmDenominator === 0) {
-        return NaN;
-      }
-      const dm = (h - h0) / dmDenominator;
-      m = m + dm;
+      };
+    };
 
-      // Stop iteration once the correction value of dm is ±0.01
-      if (Math.abs(dm) <= 0.01) {
+    /* The altitude is highest at transit and lowest at the lower culmination,
+       and, since the declination changes only slightly over half a day,
+       changes monotonically between them. So the requested altitude is
+       reached once between transit and the adjacent lower culmination if, and
+       only if, it lies between the altitudes at those two instants (see Note 2
+       on page 104). The lower culmination is the transit across the opposite
+       meridian, L + 180°. */
+    const transit =
+      Astronomical.correctedTransit(m0, L, Theta0, a2, a1, a3) / 24;
+    const lowerCulmination =
+      Astronomical.correctedTransit(
+        afterTransit ? transit + 0.5 : transit - 0.5,
+        L + 180,
+        Theta0,
+        a2,
+        a1,
+        a3,
+      ) / 24;
+    if (
+      !(altitudeAt(transit).h > h0) ||
+      !(altitudeAt(lowerCulmination).h < h0)
+    ) {
+      return NaN;
+    }
+    // Bracket [lo, hi] around the solution, with the altitude above h0 on the
+    // transit side and below h0 on the lower culmination side.
+    let lo = Math.min(transit, lowerCulmination);
+    let hi = Math.max(transit, lowerCulmination);
+
+    /* Approximate time from equations (15.1) and (15.2) on page 102, using the
+       declination at 0h. If it does not exist or falls outside the bracket,
+       start from the middle of the bracket instead. */
+    const cosH0 =
+      (Math.sin(degreesToRadians(h0)) -
+        Math.sin(degreesToRadians(Phi)) * Math.sin(degreesToRadians(d2))) /
+      (Math.cos(degreesToRadians(Phi)) * Math.cos(degreesToRadians(d2)));
+    const H0 = radiansToDegrees(Math.acos(cosH0));
+    let m = afterTransit ? m0 + H0 / 360 : m0 - H0 / 360;
+    if (!(m > lo && m < hi)) {
+      m = (lo + hi) / 2;
+    }
+
+    /* Correct m by dm = (h - h0) / (360 cos δ cos φ sin H) (page 103),
+       repeating the calculation with the corrected m until the correction is
+       negligible, as in Example 15.a on page 104. Near the transit or the lower
+       culmination sin H approaches zero and this correction can overshoot, so
+       a correction that would leave the bracket, or that is not shrinking fast
+       enough, is replaced by halving the bracket, the binary search of
+       Astronomical Algorithms chapter 5 (page 52). The rule for switching
+       between the two is that of rtsafe in Numerical Recipes, section 9.4.
+       This always converges, to the same solution the textbook iteration
+       converges to when it does. */
+    let dm = hi - lo;
+    let previousDm = dm;
+    for (let i = 0; i < 100; i++) {
+      const { h, delta, H } = altitudeAt(m);
+      const f = h - h0;
+      if (f === 0) {
+        break;
+      }
+      if (f > 0 === afterTransit) {
+        lo = m;
+      } else {
+        hi = m;
+      }
+      // Rate of change of the altitude, in degrees per day
+      const slope =
+        -360 *
+        Math.cos(degreesToRadians(delta)) *
+        Math.cos(degreesToRadians(Phi)) *
+        Math.sin(degreesToRadians(H));
+      const newtonLeavesBracket =
+        ((m - hi) * slope - f) * ((m - lo) * slope - f) >= 0;
+      const newtonTooSlow = Math.abs(2 * f) > Math.abs(previousDm * slope);
+      previousDm = dm;
+      if (newtonLeavesBracket || newtonTooSlow) {
+        dm = (hi - lo) / 2;
+        m = lo + dm;
+      } else {
+        dm = -f / slope;
+        m = m + dm;
+      }
+      // About 0.1 milliseconds
+      if (Math.abs(dm) < 1e-9) {
         break;
       }
     }

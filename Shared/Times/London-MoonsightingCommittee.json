@@ -11,7 +11,7 @@
 		"http://www.moonsighting.com/pray.php",
 		"adjusted +/- 1 minute",
 		"Jan 01 (Fri)   06:25 am    08:06 am   12:09 pm    02:15 pm    04:05 pm    05:38 pm",
-		"Feb 01 (Mon)   06:02 am    07:40 am   12:19 pm    03:00 pm+1  04:52 pm    06:18 pm",
+		"Feb 01 (Mon)   06:02 am    07:40 am   12:19 pm    03:00 pm    04:52 pm    06:18 pm",
 		"Mar 01 (Tue)   05:10 am    06:45 am   12:18 pm    03:48 pm+1  05:44 pm    07:03 pm",
 		"Apr 01 (Fri)   04:59 am    06:35 am   01:09 pm    05:31 pm+1  07:37 pm    08:49 pm",
 		"May 01 (Sun)   03:47 am    05:32 am   01:02 pm+1  06:05 pm    08:27 pm    09:32 pm",
@@ -21,7 +21,7 @@
 		"Sep 01 (Thu)   04:35 am    06:14 am   01:05 pm    05:40 pm-1  07:49 pm    08:58 pm",
 		"Oct 01 (Sat)   05:28 am    07:02 am   12:55 pm    04:43 pm-1  06:40 pm    07:57 pm",
 		"Nov 01 (Tue)   05:17 am+1  06:55 am   11:49 am    02:44 pm-1  04:36 pm    05:59 pm+1",
-		"Dec 01 (Thu)   06:04 am    07:44 am   11:55 am    02:08 pm-1  03:58 pm    05:29 pm"
+		"Dec 01 (Thu)   06:04 am    07:44 am   11:55 am    02:08 pm    03:58 pm    05:29 pm"
 	],
 	"times": [
 		{
@@ -38,7 +38,7 @@
 			"fajr": "6:02 AM",
 			"sunrise": "7:40 AM",
 			"dhuhr": "12:19 PM",
-			"asr": "3:01 PM",
+			"asr": "3:00 PM",
 			"maghrib": "4:52 PM",
 			"isha": "6:18 PM"
 		},	
@@ -128,7 +128,7 @@
 			"fajr": "6:04 AM",
 			"sunrise": "7:44 AM",
 			"dhuhr": "11:55 AM",
-			"asr": "2:07 PM",
+			"asr": "2:08 PM",
 			"maghrib": "3:58 PM",
 			"isha": "5:29 PM"
 		}

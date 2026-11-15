@@ -147,6 +147,37 @@ test('calculate Solar Time values', () => {
   expect(timeString(invalid)).toBe('');
 });
 
+test('hour angle converges near the lower culmination', () => {
+  // Reference times are when the Sun's geometric altitude reaches the angle,
+  // computed with JPL DE440 (Skyfield). On these nights the Sun only just
+  // reaches the angle, where a single correction of the approximate time
+  // left the result about 3 minutes off.
+  const cases: [Coordinates, Date, number, boolean, number][] = [
+    // Anchorage, Fajr at 18°
+    [
+      new Coordinates(61.2181, -149.9003),
+      new Date(2024, 7, 25),
+      -18,
+      false,
+      10.56005,
+    ],
+    // Glasgow, Isha at 18°
+    [
+      new Coordinates(55.8642, -4.2518),
+      new Date(2028, 7, 9),
+      -18,
+      true,
+      23.59859,
+    ],
+  ];
+  cases.forEach(([coordinates, date, angle, afterTransit, reference]) => {
+    const solar = new SolarTime(date, coordinates);
+    const errorSeconds =
+      (solar.hourAngle(angle, afterTransit) - reference) * 3600;
+    expect(Math.abs(errorSeconds)).toBeLessThan(10);
+  });
+});
+
 test('verify Right Ascension Edge Case', () => {
   const coordinates = new Coordinates(35 + 47 / 60, -78 - 39 / 60);
   const solar = [];

@@ -39,7 +39,8 @@ export default class SolarTime {
     );
     /* Standard altitude of the Sun at apparent rising and setting, accounting
        for refraction (0°34') and the semidiameter (0°16'), from Astronomical
-       Algorithms page 101 */
+       Algorithms page 101. As in the text and in published prayer time
+       tables, the Sun's parallax (8.8", about 1 second) is not included. */
     const solarAltitude = -50.0 / 60.0;
     // An observer elevated above the horizon sees the Sun rise earlier and set
     // later, since the visible horizon is lower and the Sun's rays are
@@ -106,7 +107,16 @@ export default class SolarTime {
   }
 
   afternoon(shadowLength: number) {
-    const tangent = Math.abs(this.observer.latitude - this.solar.declination);
+    // The noon shadow is cast when the sun is at transit, so use the
+    // declination interpolated to transit rather than the one at 0h UT.
+    // Transit can be up to a day away from 0h UT depending on longitude.
+    const noonDeclination = Astronomical.interpolate(
+      this.solar.declination,
+      this.prevSolar.declination,
+      this.nextSolar.declination,
+      this.transit / 24,
+    );
+    const tangent = Math.abs(this.observer.latitude - noonDeclination);
     const inverse = shadowLength + Math.tan(degreesToRadians(tangent));
     const angle = radiansToDegrees(Math.atan(1.0 / inverse));
 
@@ -120,7 +130,7 @@ export default class SolarTime {
 
     const maxAltitude = Astronomical.altitudeOfCelestialBody(
       this.observer.latitude,
-      this.solar.declination,
+      noonDeclination,
       0,
     );
 
