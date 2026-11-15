@@ -962,25 +962,28 @@ describe('Polar circle resolution cases', () => {
       params.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight;
       const date = new Date(2020, 5, 21);
 
+      // The Sun neither rises nor sets here from June 3 to July 8, 2020
+      // (confirmed with JPL DE440), so times come from the closest day outside
+      // that period.
       const p = new PrayerTimes(coordinates, date, params);
       expect(
         moment(p.fajr).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
-      ).toBe('June 21, 2020 12:48 AM');
+      ).toBe('June 21, 2020 1:09 AM');
       expect(
         moment(p.sunrise).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
-      ).toBe('June 21, 2020 12:54 AM');
+      ).toBe('June 21, 2020 1:19 AM');
       expect(
         moment(p.dhuhr).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
       ).toBe('June 21, 2020 12:55 PM');
       expect(
         moment(p.asr).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
-      ).toBe('June 21, 2020 5:50 PM');
+      ).toBe('June 21, 2020 5:49 PM');
       expect(
         moment(p.maghrib).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
-      ).toBe('June 22, 2020 12:30 AM');
+      ).toBe('June 22, 2020 12:20 AM');
       expect(
         moment(p.isha).tz('Europe/Stockholm').format('MMMM DD, YYYY h:mm A'),
-      ).toBe('June 22, 2020 12:37 AM');
+      ).toBe('June 22, 2020 12:30 AM');
     });
   });
 });
@@ -1026,6 +1029,17 @@ test('asr is NaN when sun cannot reach the required altitude at 67N in early Jan
   const date = new Date(2026, 0, 5);
   const p = new PrayerTimes(coordinates, date, params);
   expect(isNaN(p.asr.getTime())).toBe(true);
+});
+
+test('isha falls back to the high latitude rule when the sun does not reach the isha angle', () => {
+  // On this night the Sun does not reach 15° below the horizon (confirmed with
+  // JPL DE440), so Isha is the seventh of the night time. Previously a
+  // spurious 15° time 32 minutes earlier was used instead.
+  const coordinates = new Coordinates(61.2181, -149.9003);
+  const params = CalculationMethod.NorthAmerica();
+  params.highLatitudeRule = HighLatitudeRule.SeventhOfTheNight;
+  const p = new PrayerTimes(coordinates, new Date(2025, 3, 26), params);
+  expect(p.isha.toISOString()).toBe('2025-04-27T07:02:00.000Z');
 });
 
 test('asr uses the solar declination at transit', () => {

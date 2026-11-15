@@ -39,7 +39,8 @@ export default class SolarTime {
     );
     /* Standard altitude of the Sun at apparent rising and setting, accounting
        for refraction (0°34') and the semidiameter (0°16'), from Astronomical
-       Algorithms page 101 */
+       Algorithms page 101. As in the text and in published prayer time
+       tables, the Sun's parallax (8.8", about 1 second) is not included. */
     const solarAltitude = -50.0 / 60.0;
     // An observer elevated above the horizon sees the Sun rise earlier and set
     // later, since the visible horizon is lower and the Sun's rays are
@@ -89,12 +90,7 @@ export default class SolarTime {
     );
   }
 
-  hourAngle(
-    angle: number,
-    afterTransit: boolean,
-    initialDeclination?: number,
-    tolerance?: number,
-  ) {
+  hourAngle(angle: number, afterTransit: boolean) {
     return Astronomical.correctedHourAngle(
       this.approxTransit,
       angle,
@@ -107,8 +103,6 @@ export default class SolarTime {
       this.solar.declination,
       this.prevSolar.declination,
       this.nextSolar.declination,
-      initialDeclination,
-      tolerance,
     );
   }
 
@@ -146,9 +140,7 @@ export default class SolarTime {
     }
 
     // Confirm the resulting time is after solar transit (noon) to ensure this is afternoon.
-    // Iterate to convergence, since the textbook's ±0.01 day tolerance can leave
-    // several seconds of error in Asr.
-    const result = this.hourAngle(angle, true, noonDeclination, 1e-7);
+    const result = this.hourAngle(angle, true);
     if (result <= this.transit) {
       return NaN;
     }
