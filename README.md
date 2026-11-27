@@ -110,10 +110,19 @@ you want prayer times for.
 const coordinates = new Coordinates(35.78056, -78.6389);
 ```
 
-The latitude must be within ±90° and both values must be finite numbers. If
-they aren't, or if the date is invalid, every prayer time field is set to an
-invalid `Date` (see [Polar circle locations](#polar-circle-locations) for how to
-check `prayerTimes.isValid`).
+You can also pass in the location's UTC offset in hours. Without it,
+certain places near the international date line (South Pacific Islands)
+may get either the previous or next day's times instead.
+
+```js
+const coordinates = new Coordinates(-21.1368, -175.2011, 13); // Nuku'alofa
+```
+
+The latitude must be within ±90°, both values must be finite numbers, and the
+offset, if given, must be between -12 and +14. If they aren't, or if the date is
+invalid, every prayer time field is set to an invalid `Date` (see
+[Polar circle locations](#polar-circle-locations) for how to check
+`prayerTimes.isValid`).
 
 #### Date
 

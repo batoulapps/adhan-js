@@ -10,6 +10,18 @@ import {
 import { Shafaq } from './Shafaq.js';
 import { ValueOf } from './TypeUtils.js';
 
+/* Rough transit time as a fraction of the UTC day. Without a UTC offset this
+   is based on the longitude alone. The longitude can't tell which side of the
+   date line a location keeps its calendar on, so with an offset the estimate
+   is moved onto the location's local date (e.g. a day earlier in Tonga). */
+export function expectedTransit(longitude: number, utcOffset?: number) {
+  const fromLongitude = normalizeToScale((12.0 - longitude / 15.0) / 24.0, 1);
+  if (utcOffset === undefined || utcOffset === null) {
+    return fromLongitude;
+  }
+  return fromLongitude - Math.floor(fromLongitude + utcOffset / 24);
+}
+
 const Astronomical = {
   /* The geometric mean longitude of the sun in degrees. */
   meanSolarLongitude(julianCentury: number) {
@@ -195,6 +207,7 @@ const Astronomical = {
     longitude: number,
     siderealTime: number,
     rightAscension: number,
+    utcOffset?: number,
   ) {
     const L = longitude;
     const Theta0 = siderealTime;
@@ -206,10 +219,10 @@ const Astronomical = {
     // an m0 for the wrong calendar date.  We detect this by comparing m0 to a
     // generalized transit time based on the longitude. If they differ by more than
     // half a day, m0 is off by one cycle and we adjust in the correct direction.
-    const expectedTransit = normalizeToScale((12.0 - L / 15.0) / 24.0, 1);
-    if (m0 - expectedTransit > 0.5) {
+    const expected = expectedTransit(L, utcOffset);
+    if (m0 - expected > 0.5) {
       return m0 - 1.0;
-    } else if (expectedTransit - m0 > 0.5) {
+    } else if (expected - m0 > 0.5) {
       return m0 + 1.0;
     } else {
       return m0;

@@ -23,7 +23,8 @@ import { ValueOf } from './TypeUtils.js';
  * (or an individual field) before using the times.
  *
  * The same happens when the input is invalid: a latitude outside ±90°, a
- * latitude or longitude that isn't a finite number, or an invalid `date`.
+ * latitude or longitude that isn't a finite number, a `utcOffset` outside
+ * -12 to +14, or an invalid `date`.
  */
 export default class PrayerTimes {
   // Every field starts as an invalid Date and is only set once all prayer
@@ -44,11 +45,16 @@ export default class PrayerTimes {
   ) {
     // Latitude must be within ±90° and longitude must be a finite number.
     // Longitude isn't range checked since values outside ±180° wrap around
-    // to the same meridian. The date must be a valid Date.
+    // to the same meridian. The UTC offset is optional but must be a real
+    // offset when given. The date must be a valid Date.
+    const { utcOffset } = coordinates;
     if (
       !Number.isFinite(coordinates.latitude) ||
       Math.abs(coordinates.latitude) > 90 ||
       !Number.isFinite(coordinates.longitude) ||
+      (utcOffset !== undefined &&
+        utcOffset !== null &&
+        (!Number.isFinite(utcOffset) || utcOffset < -12 || utcOffset > 14)) ||
       !isValidDate(date)
     ) {
       return;

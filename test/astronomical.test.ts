@@ -1,4 +1,4 @@
-import Astronomical from '../src/Astronomical.js';
+import Astronomical, { expectedTransit } from '../src/Astronomical.js';
 import TimeComponents from '../src/TimeComponents.js';
 import Coordinates from '../src/Coordinates.js';
 import SolarTime from '../src/SolarTime.js';
@@ -299,6 +299,32 @@ test('verify Right Ascension Edge Case near the International Date Line', () => 
     expect(Math.abs(time.sunrise - previousTime.sunrise)).toBeLessThan(2 / 60);
     expect(Math.abs(time.sunset - previousTime.sunset)).toBeLessThan(2 / 60);
   }
+});
+
+test('expected transit from the longitude alone', () => {
+  // Returned as a fraction of the UTC day; compare in hours.
+  expect(expectedTransit(0) * 24).toBeCloseTo(12);
+  expect(expectedTransit(-75) * 24).toBeCloseTo(17);
+  expect(expectedTransit(180) * 24).toBeCloseTo(0);
+  expect(expectedTransit(-180) * 24).toBeCloseTo(0);
+  expect(expectedTransit(-175.2) * 24).toBeCloseTo(23.68);
+  expect(expectedTransit(-175.2, null as unknown as number) * 24).toBeCloseTo(
+    23.68,
+  );
+});
+
+test('expected transit moves onto the local date with a UTC offset', () => {
+  // Tonga (UTC+13, 175.2°W): noon is the previous UTC day.
+  expect(expectedTransit(-175.2, 13) * 24).toBeCloseTo(-0.32);
+  // Shemya (UTC-10, 174.15°E): noon is the next UTC day.
+  expect(expectedTransit(174.15, -10) * 24).toBeCloseTo(24.39);
+});
+
+test('expected transit is unchanged when the UTC offset agrees with the longitude', () => {
+  expect(expectedTransit(-170.7, -11) * 24).toBeCloseTo(23.38); // Pago Pago
+  expect(expectedTransit(178.5, 12) * 24).toBeCloseTo(0.1); // Suva
+  expect(expectedTransit(-75, -5) * 24).toBeCloseTo(17); // New York
+  expect(expectedTransit(0, 0) * 24).toBeCloseTo(12);
 });
 
 test('calculate the days since the winter or summer solstice', () => {
