@@ -55,7 +55,11 @@ const aqrabBaladResolver = (
   latitude: number,
   calculationParameters: CalculationParameters,
 ): PrayerTimesResult | null => {
-  const candidateCoordinates = new Coordinates(latitude, coordinates.longitude);
+  const candidateCoordinates = new Coordinates(
+    latitude,
+    coordinates.longitude,
+    coordinates.utcOffset,
+  );
   const result = computePrayerTimesForDay(
     candidateCoordinates,
     date,

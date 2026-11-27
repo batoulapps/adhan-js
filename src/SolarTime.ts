@@ -36,6 +36,7 @@ export default class SolarTime {
       coordinates.longitude,
       this.solar.apparentSiderealTime,
       this.solar.rightAscension,
+      coordinates.utcOffset,
     );
     /* Standard altitude of the Sun at apparent rising and setting, accounting
        for refraction (0°34') and the semidiameter (0°16'), from Astronomical

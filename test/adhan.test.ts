@@ -10,6 +10,7 @@ import CalculationParameters from '../src/CalculationParameters.js';
 import Coordinates from '../src/Coordinates.js';
 import Prayer from '../src/Prayer.js';
 import PrayerTimes from '../src/PrayerTimes.js';
+import SunnahTimes from '../src/SunnahTimes.js';
 import { Rounding } from '../src/Rounding.js';
 import { describe, it, expect, test, vi } from 'vitest';
 
@@ -1220,4 +1221,73 @@ describe('Input validation', () => {
       expect(wrapped[prayerName]).toEqual(normal[prayerName]);
     }
   });
+});
+
+describe('utcOffset near the International Date Line', () => {
+  const date = new Date(2027, 10, 12);
+  const format = (time: Date, zone: string) =>
+    moment(time).tz(zone).format('YYYY-MM-DD h:mm A');
+
+  test('returns the requested local day east of 180° on UTC+13', () => {
+    const p = new PrayerTimes(
+      new Coordinates(-21.1368, -175.2011, 13),
+      date,
+      CalculationMethod.MuslimWorldLeague(),
+    );
+    expect(format(p.fajr, 'Pacific/Tongatapu')).toBe('2027-11-12 4:33 AM');
+    expect(format(p.dhuhr, 'Pacific/Tongatapu')).toBe('2027-11-12 12:26 PM');
+    expect(format(p.isha, 'Pacific/Tongatapu')).toBe('2027-11-12 8:12 PM');
+  });
+
+  test('returns the requested local day west of 180° on UTC-10', () => {
+    const p = new PrayerTimes(
+      new Coordinates(52.72, 174.11, -10),
+      date,
+      CalculationMethod.MuslimWorldLeague(),
+    );
+    expect(format(p.fajr, 'America/Adak')).toBe('2027-11-12 7:41 AM');
+    expect(format(p.dhuhr, 'America/Adak')).toBe('2027-11-12 2:09 PM');
+    expect(format(p.isha, 'America/Adak')).toBe('2027-11-12 8:27 PM');
+  });
+
+  test('does not change times where the longitude already gives the right day', () => {
+    const params = CalculationMethod.MuslimWorldLeague();
+    const withOffset = new PrayerTimes(
+      new Coordinates(-14.28, -170.7, -11),
+      date,
+      params,
+    );
+    const withoutOffset = new PrayerTimes(
+      new Coordinates(-14.28, -170.7),
+      date,
+      params,
+    );
+    expect(withOffset.dhuhr).toEqual(withoutOffset.dhuhr);
+    expect(format(withOffset.dhuhr, 'Pacific/Pago_Pago')).toBe(
+      '2027-11-12 12:08 PM',
+    );
+  });
+
+  test('carries the offset into Sunnah times', () => {
+    const p = new PrayerTimes(
+      new Coordinates(-21.1368, -175.2011, 13),
+      date,
+      CalculationMethod.MuslimWorldLeague(),
+    );
+    expect(
+      format(new SunnahTimes(p).middleOfTheNight, 'Pacific/Tongatapu'),
+    ).toBe('2027-11-12 11:45 PM');
+  });
+
+  test.each([NaN, Infinity, 14.5, -12.5])(
+    'returns invalid times for a utcOffset of %s',
+    (utcOffset) => {
+      const p = new PrayerTimes(
+        new Coordinates(0, 0, utcOffset),
+        date,
+        CalculationMethod.MuslimWorldLeague(),
+      );
+      expect(p.isValid).toBe(false);
+    },
+  );
 });
